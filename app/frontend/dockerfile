@@ -1,0 +1,13 @@
+FROM ghcr.io/buka-lnc/nodejs-slim:18 as builder
+
+ARG PORT=80
+ARG API_BASE_ORIGIN=http://backend-svc
+
+COPY . /repo
+WORKDIR /repo
+
+
+RUN apt update && apt install -y curl
+RUN pnpm install --filter "frontend..." --frozen-lockfile && turbo build --filter "frontend..."
+
+CMD ["bash", "-c", "cd /repo/app/frontend && pnpm run start:prod"]

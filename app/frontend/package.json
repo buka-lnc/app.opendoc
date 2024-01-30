@@ -1,0 +1,53 @@
+{
+  "name": "frontend",
+  "private": true,
+  "version": "1.2.0",
+  "packageManager": "pnpm@8.12.1",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev --host",
+    "start:prod": "nuxt start",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "devDependencies": {
+    "@buka/eslint-config": "^1.6.0",
+    "@nuxt/devtools": "^1.0.8",
+    "@nuxtjs/eslint-config": "^12.0.0",
+    "@nuxtjs/eslint-config-typescript": "^12.1.0",
+    "@rushstack/eslint-patch": "^1.7.0",
+    "@types/node": "^20.11.5",
+    "@typescript-eslint/parser": "^6.19.0",
+    "@vite-pwa/nuxt": "^0.3.6",
+    "@vue/eslint-config-typescript": "^12.0.0",
+    "@vue/tsconfig": "^0.4.0",
+    "autoprefixer": "^10.4.17",
+    "eslint": "^8.56.0",
+    "keq-cli": "^4.0.0",
+    "nuxt": "^3.9.3",
+    "nuxt-svgo": "^3.7.0",
+    "nuxt-viewport": "^2.1.0",
+    "postcss": "^8.4.33",
+    "stylelint": "^15.11.0",
+    "stylelint-config-html": "^1.1.0",
+    "stylelint-config-recommended-vue": "^1.5.0",
+    "tailwindcss": "^3.4.1",
+    "tailwindcss-safe-area": "^0.4.1",
+    "tailwind-scrollbar-hide": "^1.1.7",
+    "vue-eslint-parser": "^9.4.0"
+  },
+  "dependencies": {
+    "@nuxtjs/tailwindcss": "^6.10.4",
+    "@types/ramda": "^0.29.9",
+    "@types/unist": "^3.0.2",
+    "@vueuse/core": "^10.7.2",
+    "@vueuse/nuxt": "^10.7.2",
+    "@vueuse/router": "^10.7.2",
+    "keq": "^2.1.2",
+    "keq-debug": "^2.0.3",
+    "ramda": "^0.29.1",
+    "vue": "^3.4.15",
+    "vue-router": "^4.2.5"
+  }
+}

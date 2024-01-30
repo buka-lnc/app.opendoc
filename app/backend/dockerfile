@@ -1,0 +1,11 @@
+FROM ghcr.io/buka-lnc/nodejs-slim:18 as builder
+
+ARG PORT=80
+
+COPY . /repo
+WORKDIR /repo
+
+
+RUN pnpm install --filter "backend..." --frozen-lockfile && turbo build --filter "backend..."
+
+CMD ["bash", "-c", "cd /repo/app/backend && pnpm run start:prod"]

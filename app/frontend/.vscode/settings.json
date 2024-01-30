@@ -1,0 +1,7 @@
+{
+  /**
+   * 修复Tailwind代码提示无法生效问题
+   * https://github.com/tailwindlabs/tailwindcss-intellisense/issues/561
+   */
+  "tailwindCSS.experimental.configFile": "./app/frontend/.nuxt/tailwind.config.d.ts"
+}

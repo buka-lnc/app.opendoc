@@ -1,0 +1,20 @@
+@tailwind base;
+
+@layer base {
+  body {
+    @apply overflow-hidden bg-gray-50;
+  }
+
+  #__nuxt {
+    @apply h-full;
+  }
+}
+
+
+:root {
+  /* 使JS可以获取safe-area-inset-top的值 */
+  --safe-top: env(safe-area-inset-top);
+  --safe-right: env(safe-area-inset-right);
+  --safe-bottom: env(safe-area-inset-bottom);
+  --safe-left: env(safe-area-inset-left);
+}
