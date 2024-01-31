@@ -1,17 +1,15 @@
 import { INestApplication } from '@nestjs/common'
 import { DocumentBuilder, SwaggerDocumentOptions, SwaggerModule } from '@nestjs/swagger'
 import * as packageJson from '~~/package.json'
-import { AppConfig } from '../config/app.config.js'
 
 
 export function swaggerEnhance(app: INestApplication): void {
-  const appConfig = app.get(AppConfig)
-
   const config = new DocumentBuilder()
     .setTitle(packageJson.name)
     .setDescription(packageJson.description)
     .setVersion(packageJson.version)
-    .addServer(`http://${appConfig.host}:${appConfig.port}`, '本地')
+    // .addServer(`http://${appConfig.host}:${appConfig.port}`, '本地')
+    .addServer('/', '本地')
     .addServer('http://backend-svc.aladdin', '内网')
     .build()
 

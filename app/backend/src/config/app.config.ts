@@ -1,5 +1,5 @@
 import { Configuration } from '@buka/nestjs-config'
-import { IsIP, IsNumberString } from 'class-validator'
+import { IsIP, IsNumberString, IsString } from 'class-validator'
 
 
 @Configuration()
@@ -9,4 +9,7 @@ export class AppConfig {
 
   @IsNumberString()
   port: string = '8080'
+
+  @IsString()
+  storage: string = './storage'
 }

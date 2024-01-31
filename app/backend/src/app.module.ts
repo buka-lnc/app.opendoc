@@ -10,6 +10,8 @@ import { AppService } from './app.service'
 import { AppConfig } from './config/app.config'
 import { MysqlConfig } from './config/mysql.config'
 import { PinoConfig } from './config/pino.config'
+import { DocumentModule } from './modules/document/document.module'
+import { FolderModule } from './modules/folder/folder.module'
 
 @Module({
   imports: [
@@ -26,13 +28,19 @@ import { PinoConfig } from './config/pino.config'
       },
     })),
 
-    TerminusModule,
 
     ConfigModule.inject(MysqlConfig, MikroOrmModule, (config) => ({
       ...config,
+      debug: true,
       entities: ['dist/**/*.entity.js'],
       driver: MySqlDriver,
     })),
+
+    ScheduleModule.forRoot(),
+
+    TerminusModule,
+    FolderModule,
+    DocumentModule,
   ],
   controllers: [AppController],
   providers: [AppService],
