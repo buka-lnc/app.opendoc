@@ -1,7 +1,7 @@
 import { EntityManager } from '@mikro-orm/core'
-import { Injectable } from '@nestjs/common'
+import { BadRequestException, Injectable } from '@nestjs/common'
 import * as R from 'ramda'
-import { RegisterFolderDto } from './dto/register-folder.dto'
+import { RegisterFolderDTO } from './dto/register-folder.dto'
 import { Folder } from './entities/folder.entity'
 
 
@@ -11,26 +11,52 @@ export class FolderService {
     private readonly em: EntityManager,
   ) { }
 
-  async register(dto: RegisterFolderDto): Promise<void> {
+  async queryFolders(): Promise<Folder[]> {
+    const folders = await this.em.findAll(Folder, {})
+    return folders
+  }
+
+  async register(dto: RegisterFolderDTO): Promise<void> {
     await this.ensurePath(dto.mpath)
 
     const folder = await this.em.findOneOrFail(Folder, {
-      mpath: dto.mpath,
+      mpath: this.formatMpath(dto.mpath),
     })
 
     folder.title = dto.title
   }
 
-  async ensurePath(mpath: string): Promise<void> {
-    const mpathOfAncestors = mpath
-      .split('/')
-      .map((code, index, paths) => paths.slice(0, index + 1).join('/'))
+  private formatMpath(mpath: string): string {
+    return mpath.endsWith('/') ? mpath : `${mpath}/`
+  }
 
-    const ancestors = await this.em.find(Folder, { mpath: { $in: mpathOfAncestors } })
+  private parseMpath(mpath: string): string[] {
+    if (mpath.endsWith('/')) {
+      return mpath.slice(0, -1).split('/')
+    }
 
-    const nonExistFolder = R.uniq([...mpathOfAncestors, ...ancestors.map((folder) => folder.mpath)])
+    return mpath.split('/')
+  }
+
+  private stringifyMpath(paths: string[]): string {
+    return `${paths.join('/')}/`
+  }
+
+  async ensurePath(mpath: string): Promise<Folder> {
+    const paths = this.parseMpath(mpath)
+    if (paths[0] !== 'opendoc') {
+      throw new BadRequestException('Invalid mpath')
+    }
+
+    const mpathOfAncestors = paths.map((code, index, paths) => this.stringifyMpath(paths.slice(0, index + 1)))
+
+    const ancestors = await this.em.find(Folder, {
+      mpath: { $in: mpathOfAncestors }
+    })
+
+    const nonExistFolders = R.uniq([...mpathOfAncestors, ...ancestors.map((folder) => folder.mpath)])
       .map((mpath) => {
-        const code = mpath.split('/').pop()
+        const code = R.last(this.parseMpath(mpath))
 
         return this.em.create(Folder, {
           mpath,
@@ -39,7 +65,8 @@ export class FolderService {
         })
       })
 
-    this.em.persist(nonExistFolder)
-  }
+    this.em.persist(nonExistFolders)
 
+    return R.last(nonExistFolders)
+  }
 }

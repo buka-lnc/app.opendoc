@@ -1,7 +1,7 @@
 {
   "name": "aladdin",
   "description": "",
-  "packageManager": "pnpm@8.15.0",
+  "packageManager": "pnpm@8.15.1",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "pnpm -r exec rm -rf node_modules && rm -rf node_modules"

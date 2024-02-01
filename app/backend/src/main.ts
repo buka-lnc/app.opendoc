@@ -1,5 +1,5 @@
-import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common'
-import { NestFactory, Reflector } from '@nestjs/core'
+import { ValidationPipe } from '@nestjs/common'
+import { NestFactory } from '@nestjs/core'
 import { Logger } from 'nestjs-pino'
 import { AppModule } from './app.module'
 import { AppConfig } from './config/app.config.js'
@@ -17,9 +17,9 @@ async function bootstrap() {
   swaggerEnhance(app)
 
   app.useGlobalPipes(new ValidationPipe({ transform: true }))
-  app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)))
 
   const appConfig = app.get(AppConfig)
+  app.enableShutdownHooks()
 
   await app.listen(appConfig.port)
   logger.log(`application listen on ${appConfig.host}:${appConfig.port}`)

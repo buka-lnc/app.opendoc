@@ -3,7 +3,7 @@ import { Body, Controller, Post, UploadedFile, UseInterceptors } from '@nestjs/c
 import { FileInterceptor } from '@nestjs/platform-express'
 import { ApiConsumes } from '@nestjs/swagger'
 import { DocumentService } from './document.service'
-import { RegisterDocumentDto } from './dto/register-document.dto'
+import { RegisterDocumentDTO } from './dto/register-document.dto'
 
 
 @Controller('document')
@@ -17,7 +17,7 @@ export class DocumentController {
   @Post()
   @UseInterceptors(FileInterceptor('file'))
   async registerDocument(
-    @Body() dto: RegisterDocumentDto,
+    @Body() dto: RegisterDocumentDTO,
     @UploadedFile() file: Express.Multer.File,
   ) {
     await this.documentService.register({

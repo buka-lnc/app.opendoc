@@ -2,5 +2,5 @@ import { TakeType } from '@miaooo/nestjs-take-type'
 import { Folder } from '../entities/folder.entity'
 
 
-export class RegisterFolderDto extends TakeType(Folder, ['mpath'], ['title']) {
+export class RegisterFolderDTO extends TakeType(Folder, ['mpath'], ['title']) {
 }

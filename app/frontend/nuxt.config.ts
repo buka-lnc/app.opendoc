@@ -3,7 +3,7 @@ import { defineNuxtConfig } from 'nuxt/config'
 export default defineNuxtConfig({
   devtools: { enabled: false },
 
-  ssr: true,
+  ssr: false,
   modules: ['@nuxtjs/tailwindcss', '@vite-pwa/nuxt', '@vueuse/nuxt', 'nuxt-svgo', 'nuxt-viewport'],
 
   css: ['~/assets/css/main.css'],
@@ -59,7 +59,7 @@ export default defineNuxtConfig({
   tailwindcss: {
     exposeConfig: true,
     config: {
-      plugins: [require('tailwindcss-safe-area'), require('tailwind-scrollbar-hide')],
+      plugins: [require('tailwindcss-safe-area'), require('tailwind-scrollbar-hide'), require('daisyui')],
     },
   },
 

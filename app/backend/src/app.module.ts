@@ -1,10 +1,11 @@
 import { ConfigModule } from '@buka/nestjs-config'
 import { MySqlDriver } from '@mikro-orm/mysql'
 import { MikroOrmModule } from '@mikro-orm/nestjs'
-import { Module } from '@nestjs/common'
+import { BadRequestException, Module } from '@nestjs/common'
 import { ScheduleModule } from '@nestjs/schedule'
 import { TerminusModule } from '@nestjs/terminus'
 import { LoggerModule } from 'nestjs-pino'
+import * as util from 'util'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { AppConfig } from './config/app.config'
@@ -31,9 +32,9 @@ import { FolderModule } from './modules/folder/folder.module'
 
     ConfigModule.inject(MysqlConfig, MikroOrmModule, (config) => ({
       ...config,
-      debug: true,
       entities: ['dist/**/*.entity.js'],
       driver: MySqlDriver,
+      findOneOrFailHandler: (entityName, where) => new BadRequestException(`Failed: ${entityName} in ${util.inspect(where)}`)
     })),
 
     ScheduleModule.forRoot(),

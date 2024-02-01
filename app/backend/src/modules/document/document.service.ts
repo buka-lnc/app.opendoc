@@ -6,9 +6,8 @@ import { request } from 'keq'
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino'
 import * as path from 'path'
 import { AppConfig } from '~/config/app.config'
-import { Folder } from '../folder/entities/folder.entity'
 import { FolderService } from '../folder/folder.service'
-import { RegisterDocumentDto } from './dto/register-document.dto'
+import { RegisterDocumentDTO } from './dto/register-document.dto'
 import { Document } from './entities/document.entity'
 
 
@@ -24,9 +23,8 @@ export class DocumentService {
     private readonly folderService: FolderService,
   ) {}
 
-  async register(dto: RegisterDocumentDto): Promise<void> {
-    await this.folderService.ensurePath(dto.folderMpath)
-    const folder = await this.em.findOneOrFail(Folder, { mpath: dto.folderMpath })
+  async register(dto: RegisterDocumentDTO): Promise<void> {
+    const folder = await this.folderService.ensurePath(dto.folderMpath)
 
     let document: Document
 
@@ -48,7 +46,6 @@ export class DocumentService {
     this.em.persist(document)
 
     await this.persistFile(document, dto.file)
-
   }
 
   private async persistFile(doc: Document, buf: Buffer): Promise<void> {

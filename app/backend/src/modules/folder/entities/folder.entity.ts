@@ -1,4 +1,4 @@
-import { Collection, Entity, OneToMany, Property } from '@mikro-orm/core'
+import { BeforeCreate, BeforeUpdate, Collection, Entity, EventArgs, OneToMany, Property } from '@mikro-orm/core'
 import { IsString } from 'class-validator'
 import { BaseEntity } from '~/entities/base.entity'
 import { Document } from '~/modules/document/entities/document.entity'
@@ -34,5 +34,15 @@ export class Folder extends BaseEntity {
     mappedBy: 'folder',
   })
   documents: Collection<Document>
+
+  @BeforeCreate()
+  @BeforeUpdate()
+  async fixMpath(args: EventArgs<Folder>) {
+    const mpath = args.changeSet.payload.mpath
+    if (mpath && !mpath.endsWith('/')) {
+      args.changeSet.payload.mpath = `${mpath}/`
+    }
+  }
+
 }
 
