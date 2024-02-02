@@ -39,6 +39,7 @@
   },
   "dependencies": {
     "@nuxtjs/tailwindcss": "^6.10.4",
+    "@pinia/nuxt": "^0.5.1",
     "@remixicon/vue": "^4.1.0",
     "@types/ramda": "^0.29.9",
     "@types/unist": "^3.0.2",
@@ -47,6 +48,7 @@
     "@vueuse/router": "^10.7.2",
     "keq": "^2.1.2",
     "keq-debug": "^2.0.3",
+    "pinia": "^2.1.7",
     "ramda": "^0.29.1",
     "vue": "^3.4.15",
     "vue-router": "^4.2.5"

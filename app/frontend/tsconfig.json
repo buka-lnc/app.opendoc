@@ -1,4 +1,6 @@
 {
   "extends": "./.nuxt/tsconfig.json",
-  "compilerOptions": {}
+  "compilerOptions": {
+    "verbatimModuleSyntax": false
+  }
 }

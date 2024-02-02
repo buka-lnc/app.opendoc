@@ -4,7 +4,7 @@ export default defineNuxtConfig({
   devtools: { enabled: false },
 
   ssr: false,
-  modules: ['@nuxtjs/tailwindcss', '@vite-pwa/nuxt', '@vueuse/nuxt', 'nuxt-svgo', 'nuxt-viewport'],
+  modules: ['@pinia/nuxt', '@nuxtjs/tailwindcss', '@vite-pwa/nuxt', '@vueuse/nuxt', 'nuxt-svgo', 'nuxt-viewport'],
 
   css: ['~/assets/css/main.css'],
 
@@ -60,6 +60,10 @@ export default defineNuxtConfig({
     exposeConfig: true,
     config: {
       plugins: [require('tailwindcss-safe-area'), require('tailwind-scrollbar-hide'), require('daisyui')],
+      daisyui: {
+        themes: ['dim'],
+        prefix: 'd-',
+      },
     },
   },
 

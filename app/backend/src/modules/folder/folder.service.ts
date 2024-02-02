@@ -23,7 +23,8 @@ export class FolderService {
       mpath: this.formatMpath(dto.mpath),
     })
 
-    folder.title = dto.title
+    folder.title = dto.title || folder.code
+    this.em.persist(folder)
   }
 
   private formatMpath(mpath: string): string {
@@ -54,7 +55,9 @@ export class FolderService {
       mpath: { $in: mpathOfAncestors }
     })
 
-    const nonExistFolders = R.uniq([...mpathOfAncestors, ...ancestors.map((folder) => folder.mpath)])
+    const nonExistMpath = R.difference(mpathOfAncestors, R.pluck('mpath', ancestors))
+
+    const nonExistFolders = nonExistMpath
       .map((mpath) => {
         const code = R.last(this.parseMpath(mpath))
 
