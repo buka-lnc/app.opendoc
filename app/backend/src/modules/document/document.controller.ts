@@ -24,8 +24,6 @@ export class DocumentController {
       ...dto,
       file: file.buffer,
     })
-
-    await this.em.flush()
   }
 
   @Post('sync')

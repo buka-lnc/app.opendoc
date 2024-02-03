@@ -1,4 +1,5 @@
-import { Keq, request } from 'keq'
+import { Keq } from 'keq'
+import { request } from 'keq'
 import { RegisterDocumentDTO } from "./components/schemas/register_document_dto"
 
 interface QueryArg {

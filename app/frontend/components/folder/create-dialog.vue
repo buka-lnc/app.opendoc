@@ -53,7 +53,7 @@ const { execute, isLoading } = useAsyncState(
             </button>
 
             <button class="d-btn d-btn-primary" @click="execute()">
-              <span v-if="isLoading" class="loading loading-spinner" />
+              <span v-if="isLoading" class="d-loading d-loading-spinner" />
 
               创建
             </button>

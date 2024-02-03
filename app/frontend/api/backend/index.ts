@@ -1,5 +1,7 @@
 export * from "./check_health"
 export * from "./register_folder"
 export * from "./query_folders"
+export * from "./query_folder"
+export * from "./remove_folder"
 export * from "./register_document"
 export * from "./sync_documents"

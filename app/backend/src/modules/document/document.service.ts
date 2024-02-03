@@ -23,6 +23,7 @@ export class DocumentService {
     private readonly folderService: FolderService,
   ) {}
 
+  @EnsureRequestContext()
   async register(dto: RegisterDocumentDTO): Promise<void> {
     const folder = await this.folderService.ensurePath(dto.folderMpath)
 
@@ -46,6 +47,7 @@ export class DocumentService {
     this.em.persist(document)
 
     await this.persistFile(document, dto.file)
+    await this.em.flush()
   }
 
   private async persistFile(doc: Document, buf: Buffer): Promise<void> {
@@ -77,7 +79,6 @@ export class DocumentService {
     const documents = await this.em.find(Document, {
       cronSyncUrl: { $ne: null },
     })
-    console.log('🚀 ~ DocumentService ~ syncDocuments ~ documents:', documents)
 
     for (const document of documents) {
       const res = await request

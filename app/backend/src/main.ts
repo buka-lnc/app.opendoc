@@ -14,13 +14,15 @@ async function bootstrap() {
   const globalPrefix = 'api'
   app.setGlobalPrefix(globalPrefix)
 
-  swaggerEnhance(app)
 
   app.useGlobalPipes(new ValidationPipe({ transform: true }))
 
   const appConfig = app.get(AppConfig)
   app.enableShutdownHooks()
 
+  await app.init()
+
+  await swaggerEnhance(app)
   await app.listen(appConfig.port)
   logger.log(`application listen on ${appConfig.host}:${appConfig.port}`)
 }

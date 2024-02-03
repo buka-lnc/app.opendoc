@@ -1,33 +1,42 @@
 <script setup lang="ts">
-import { FOLDERS_INJECT_KEY } from './constants'
-import { queryFolders } from '~/api/backend'
+import { TreeFolder } from '~/types/tree-folder'
 
-const { data: folders, execute } = useAsyncData(async () => {
-  const folders = await queryFolders()
-  return folders
-})
+const props = defineProps<{
+  folders: TreeFolder[]
+}>()
 
-provide(FOLDERS_INJECT_KEY, {
-  folders,
-  reloadFolders: execute,
-})
+const emit = defineEmits(['created', 'deleted'])
 </script>
 
 <template>
-  <ul class="menu text-sm text-base-content px-4 w-full ">
-    <li v-for="folder in folders" :key="folder.id">
-      <folder-item :folder="folder" />
-    </li>
+  <ul class="menu text-sm text-base-content">
+    <folder-item
+      v-for="folder in props.folders"
+      :key="folder.id"
+      :folder="folder"
+      @created="emit('created')"
+      @deleted="emit('deleted')"
+    />
   </ul>
 </template>
-<style lane="postcss" scoped>
-.menu:not(:last-child)::after {
-  @apply top-3 bottom-3 w-px;
+<style lang="postcss" scoped>
+.menu > li > ul {
+  margin-inline-start: 1rem;
+  padding-inline-start: 0.5rem;
+  position: relative;
 
-  top: 0.75rem;
-  bottom: 0.75rem;
-
-  position: absolute;
-  content: '';
+  &::before {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0.75rem;
+    bottom: 0.75rem;
+    inset-inline-start: 0;
+    width: 1px;
+    opacity: .1;
+    --tw-bg-opacity: 1;
+    background-color: var(--fallback-bc,oklch(var(--bc)/var(--tw-bg-opacity)));
+  }
 }
+
 </style>

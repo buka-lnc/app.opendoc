@@ -11,24 +11,8 @@ export class FolderService {
     private readonly em: EntityManager,
   ) { }
 
-  async queryFolders(): Promise<Folder[]> {
-    const folders = await this.em.findAll(Folder, {})
-    return folders
-  }
-
-  async register(dto: RegisterFolderDTO): Promise<void> {
-    await this.ensurePath(dto.mpath)
-
-    const folder = await this.em.findOneOrFail(Folder, {
-      mpath: this.formatMpath(dto.mpath),
-    })
-
-    folder.title = dto.title || folder.code
-    this.em.persist(folder)
-  }
-
   private formatMpath(mpath: string): string {
-    return mpath.endsWith('/') ? mpath : `${mpath}/`
+    return mpath.endsWith('/') ? mpath : mpath.concat('/')
   }
 
   private parseMpath(mpath: string): string[] {
@@ -41,6 +25,17 @@ export class FolderService {
 
   private stringifyMpath(paths: string[]): string {
     return `${paths.join('/')}/`
+  }
+
+  async register(dto: RegisterFolderDTO): Promise<void> {
+    await this.ensurePath(dto.mpath)
+
+    const folder = await this.em.findOneOrFail(Folder, {
+      mpath: this.formatMpath(dto.mpath),
+    })
+
+    folder.title = dto.title || folder.code
+    this.em.persist(folder)
   }
 
   async ensurePath(mpath: string): Promise<Folder> {
@@ -70,6 +65,38 @@ export class FolderService {
 
     this.em.persist(nonExistFolders)
 
-    return R.last(nonExistFolders)
+    return this.queryFolderByMpath(mpath)
+  }
+
+  async removeById(folderId: string): Promise<void> {
+    const folder = await this.em.findOneOrFail(Folder, folderId)
+    await this.removeByMpath(folder.mpath)
+  }
+
+  async removeByMpath(mpath: string): Promise<void> {
+    const paths = this.parseMpath(mpath)
+    if (paths.length < 2) {
+      throw new BadRequestException('Invalid mpath')
+    }
+
+    const folders = await this.em.find(Folder, {
+      mpath: { $like: `${mpath}%` }
+    })
+
+    this.em.remove(folders)
+  }
+
+
+  async queryFolders(): Promise<Folder[]> {
+    const folders = await this.em.findAll(Folder, {})
+    return folders
+  }
+
+  async queryFolderById(folderId): Promise<Folder> {
+    return this.em.findOneOrFail(Folder, { id: folderId })
+  }
+
+  async queryFolderByMpath(mpath: string): Promise<Folder> {
+    return this.em.findOneOrFail(Folder, { mpath: this.formatMpath(mpath) })
   }
 }

@@ -2,6 +2,8 @@ import { defineNuxtConfig } from 'nuxt/config'
 
 export default defineNuxtConfig({
   devtools: { enabled: false },
+  app: {
+  },
 
   ssr: false,
   modules: ['@pinia/nuxt', '@nuxtjs/tailwindcss', '@vite-pwa/nuxt', '@vueuse/nuxt', 'nuxt-svgo', 'nuxt-viewport'],
