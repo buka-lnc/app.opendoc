@@ -11,8 +11,8 @@ import { AppService } from './app.service'
 import { AppConfig } from './config/app.config'
 import { MysqlConfig } from './config/mysql.config'
 import { PinoConfig } from './config/pino.config'
-import { DocumentModule } from './modules/document/document.module'
 import { FolderModule } from './modules/folder/folder.module'
+import { ApiDocumentModule } from './modules/api-document/api-document.module'
 
 @Module({
   imports: [
@@ -34,14 +34,14 @@ import { FolderModule } from './modules/folder/folder.module'
       ...config,
       entities: ['dist/**/*.entity.js'],
       driver: MySqlDriver,
-      findOneOrFailHandler: (entityName, where) => new BadRequestException(`Failed: ${entityName} in ${util.inspect(where)}`)
+      findOneOrFailHandler: (entityName, where) => new BadRequestException(`Failed: ${entityName} in ${util.inspect(where)}`),
     })),
 
     ScheduleModule.forRoot(),
 
     TerminusModule,
     FolderModule,
-    DocumentModule,
+    ApiDocumentModule,
   ],
   controllers: [AppController],
   providers: [AppService],

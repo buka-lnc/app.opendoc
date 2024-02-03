@@ -1,9 +1,9 @@
 import { TakeType } from '@miaooo/nestjs-take-type'
 import { ApiProperty } from '@nestjs/swagger'
 import { IsString } from 'class-validator'
-import { Document } from '../entities/document.entity'
+import { ApiDocument } from '../entities/api-document.entity'
 
-export class RegisterDocumentDTO extends TakeType(Document, ['type', 'code'], ['title', 'cronSyncUrl']) {
+export class RegisterApiDocumentDTO extends TakeType(ApiDocument, ['type', 'code'], ['title', 'cronSyncUrl', 'order']) {
   @IsString()
   folderMpath: string
 
@@ -13,8 +13,8 @@ export class RegisterDocumentDTO extends TakeType(Document, ['type', 'code'], ['
       file: {
         type: 'string',
         format: 'binary',
-      }
-    }
+      },
+    },
   })
-  file: Buffer
+  file?: Buffer
 }

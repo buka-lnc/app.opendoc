@@ -11,7 +11,7 @@ interface HeaderArg {
 }
 
 
-export function syncDocuments(arg?: QueryArg & ParamArg & HeaderArg): Keq<any> {
+export function syncApiDocuments(arg?: QueryArg & ParamArg & HeaderArg): Keq<any> {
   const req = request.post("/api/document/sync")
     .option('module', {
       name: "backend",

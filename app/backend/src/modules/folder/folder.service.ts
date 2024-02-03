@@ -47,7 +47,7 @@ export class FolderService {
     const mpathOfAncestors = paths.map((code, index, paths) => this.stringifyMpath(paths.slice(0, index + 1)))
 
     const ancestors = await this.em.find(Folder, {
-      mpath: { $in: mpathOfAncestors }
+      mpath: { $in: mpathOfAncestors },
     })
 
     const nonExistMpath = R.difference(mpathOfAncestors, R.pluck('mpath', ancestors))
@@ -80,7 +80,7 @@ export class FolderService {
     }
 
     const folders = await this.em.find(Folder, {
-      mpath: { $like: `${mpath}%` }
+      mpath: { $like: `${mpath}%` },
     })
 
     this.em.remove(folders)

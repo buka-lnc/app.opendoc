@@ -4,6 +4,7 @@ import { Logger } from 'nestjs-pino'
 import { AppModule } from './app.module'
 import { AppConfig } from './config/app.config.js'
 import { swaggerEnhance } from './core/swagger.enhance'
+import { AppService } from './app.service'
 
 
 async function bootstrap() {
@@ -20,9 +21,12 @@ async function bootstrap() {
   const appConfig = app.get(AppConfig)
   app.enableShutdownHooks()
 
-  await app.init()
+  const openapiDocument = swaggerEnhance(app)
 
-  await swaggerEnhance(app)
+  await app.init()
+  const appService = app.get(AppService)
+  await appService.registerOpenDocDocuments(openapiDocument)
+
   await app.listen(appConfig.port)
   logger.log(`application listen on ${appConfig.host}:${appConfig.port}`)
 }

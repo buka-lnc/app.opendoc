@@ -1,7 +1,7 @@
 import { BeforeCreate, BeforeUpdate, Collection, Entity, EventArgs, OneToMany, Property } from '@mikro-orm/core'
 import { IsString } from 'class-validator'
 import { BaseEntity } from '~/entities/base.entity'
-import { Document } from '~/modules/document/entities/document.entity'
+import { ApiDocument } from '~/modules/api-document/entities/api-document.entity'
 
 
 @Entity()
@@ -27,22 +27,21 @@ export class Folder extends BaseEntity {
     columnType: 'varchar(64)',
     comment: '文件夹名称',
   })
-  title: string = ''
+  title: string
 
   @OneToMany({
-    entity: () => Document,
+    entity: () => ApiDocument,
     mappedBy: 'folder',
   })
-  documents: Collection<Document>
+  documents: Collection<ApiDocument>
 
   @BeforeCreate()
   @BeforeUpdate()
-  async fixMpath(args: EventArgs<Folder>) {
+  fixMpath(args: EventArgs<Folder>) {
     const mpath = args.changeSet.payload.mpath
     if (mpath && !mpath.endsWith('/')) {
       args.changeSet.payload.mpath = `${mpath}/`
     }
   }
-
 }
 

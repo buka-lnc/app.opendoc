@@ -1,9 +1,9 @@
 /**
- * @interface RegisterDocumentDTO
+ * @interface RegisterApiDocumentDTO
  * @export
  */
-export interface RegisterDocumentDTO {
-  file: {
+export interface RegisterApiDocumentDTO {
+  file?: {
     /**
      * @type binary
      */
@@ -12,6 +12,7 @@ export interface RegisterDocumentDTO {
   folderMpath: string
   title?: string
   cronSyncUrl?: string
+  order?: number
   type: "readme" | "openapi" | "asyncapi"
   code: string
 }

@@ -6,7 +6,15 @@ export default defineNuxtConfig({
   },
 
   ssr: false,
-  modules: ['@pinia/nuxt', '@nuxtjs/tailwindcss', '@vite-pwa/nuxt', '@vueuse/nuxt', 'nuxt-svgo', 'nuxt-viewport'],
+  modules: [
+    '@pinia/nuxt',
+    '@nuxtjs/tailwindcss',
+    '@vite-pwa/nuxt',
+    '@vueuse/nuxt',
+    'nuxt-svgo',
+    'nuxt-viewport',
+    'nuxt-monaco-editor',
+  ],
 
   css: ['~/assets/css/main.css'],
 
@@ -61,9 +69,14 @@ export default defineNuxtConfig({
   tailwindcss: {
     exposeConfig: true,
     config: {
-      plugins: [require('tailwindcss-safe-area'), require('tailwind-scrollbar-hide'), require('daisyui')],
+      plugins: [
+        require('tailwindcss-safe-area'),
+        require('tailwind-scrollbar-hide'),
+        require('daisyui'),
+        require('@tailwindcss/typography'),
+      ],
       daisyui: {
-        themes: ['dim'],
+        themes: ['corporate'],
         prefix: 'd-',
       },
     },

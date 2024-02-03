@@ -6,7 +6,7 @@ definePageMeta({
   alias: '/',
 })
 
-const { data: folders, execute } = useAsyncData(async () => {
+const { data: folders, pending, execute } = useAsyncData(async () => {
   const folders = await queryFolders()
   return folders
 }, {
@@ -16,10 +16,12 @@ const { data: folders, execute } = useAsyncData(async () => {
 const tree = useFolderTree(folders)
 </script>
 <template>
+  <NuxtLoadingIndicator v-if="pending" />
+
   <div class="flex">
     <div class="bg-base-100 w-80 min-h-screen">
-      <div class="px-5 py-3 mb-4">
-        <a class="btn btn-sm btn-link text-base-content no-underline hover:no-underline px-1 text-3xl">
+      <div class="px-5 py-3 mb-4 select-none">
+        <a class="btn btn-sm btn-link text-base-content no-underline hover:no-underline text-3xl">
           OpenDoc
         </a>
         <span class="text-xs">1.0.0</span>
@@ -33,7 +35,7 @@ const tree = useFolderTree(folders)
       />
     </div>
 
-    <div>
+    <div class="flex-1">
       <NuxtPage />
     </div>
   </div>

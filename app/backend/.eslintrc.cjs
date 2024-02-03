@@ -10,7 +10,6 @@ module.exports = {
   env: {
     node: true,
     jest: true,
-    document: false,
   },
   ignorePatterns: ['src/api/**', 'dist'],
   rules: {

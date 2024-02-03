@@ -24,17 +24,3 @@ if (process.server) {
     })
 }
 </script>
-<style lang="postcss">
-@tailwind base;
-
-@layer base {
-  html {
-    -webkit-tap-highlight-color: transparent;
-  }
-
-  * {
-    /* stylelint-disable-next-line font-family-no-missing-generic-family-keyword */
-    font-family: "pixel" !important;
-  }
-}
-</style>
