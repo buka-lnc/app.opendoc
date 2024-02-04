@@ -14,25 +14,30 @@ const { data: apiDocument, pending: isLoadingApiDocument } = useAsyncData(
   },
 )
 
-const { data: apiDocumentFile, pending: isLoadingApiDocumentFile } = useAsyncData(
+const apiDocumentFile = ref<string | null>(null)
+
+const { pending: isLoadingApiDocumentFile } = useAsyncData(
   async () => {
+    apiDocumentFile.value = null
+
     const res = await queryApiDocumentFile({
       documentId: apiDocumentId.value,
     }).option('resolveWithFullResponse')
 
-    return res.text()
+    apiDocumentFile.value = await res.text()
   },
 )
 
 const monacoOptions: monaco.editor.IEditorConstructionOptions = {
-  readOnly: true,
+  // readOnly: true,
   automaticLayout: true,
+  scrollBeyondLastLine: false,
 }
 </script>
 <template>
   <nuxt-loading-indicator v-if="isLoadingApiDocument || isLoadingApiDocumentFile" />
 
-  <div v-if="apiDocumentFile && apiDocument" class="h-full">
+  <div v-if="apiDocumentFile && apiDocument && !isLoadingApiDocument" class="h-full bg-base-300">
     <div
       v-if="apiDocument.type === 'readme'"
       class="h-full overflow-y-auto"
@@ -42,13 +47,21 @@ const monacoOptions: monaco.editor.IEditorConstructionOptions = {
       />
     </div>
 
-    <lazy-monaco-editor
-      v-if="apiDocument.type === 'openapi'"
-      class="h-full"
-      theme="vs"
-      :model-value="JSON.stringify(JSON.parse(apiDocumentFile), null, 2) "
-      lang="json"
-      :options="monacoOptions"
-    />
+    <Suspense>
+      <lazy-openapi-monaco-editor
+        v-if="apiDocument.type === 'openapi'"
+        class="h-full"
+        :modal-value="apiDocumentFile"
+        theme="vs"
+        lang="json"
+        :options="monacoOptions"
+      />
+
+      <template #fallback>
+        <div class="h-full w-full grid place-content-center bg-base-300">
+          <span class="d-loading d-loading-ring d-loading-lg" />
+        </div>
+      </template>
+    </Suspense>
   </div>
 </template>

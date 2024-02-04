@@ -39,7 +39,7 @@ watchEffect(() => {
   <NuxtLoadingIndicator v-if="isLoadingFolder || isLoadingApiDocuments" />
 
   <div v-if="folder" class="w-full h-screen flex flex-col overflow-hidden">
-    <div class="flex-0 w-full bg-base-100">
+    <div class="flex-0 w-full bg-base-200">
       <h1 class="text-4xl p-4">
         {{ folder.title }}
       </h1>

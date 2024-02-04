@@ -76,7 +76,7 @@ export default defineNuxtConfig({
         require('@tailwindcss/typography'),
       ],
       daisyui: {
-        themes: ['corporate'],
+        themes: ['light'],
         prefix: 'd-',
       },
     },
