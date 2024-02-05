@@ -22,7 +22,7 @@
   "dependencies": {
     "@apidevtools/swagger-parser": "^10.1.0",
     "@buka/class-transformer-extra": "^1.0.0",
-    "@buka/nestjs-config": "file:///home/admin/workdir/@buka/npm.nestjs-config",
+    "@buka/nestjs-config": "^1.2.0",
     "@miaooo/nestjs-take-type": "^1.2.0",
     "@mikro-orm/cli": "^6.0.5",
     "@mikro-orm/core": "^6.0.5",
