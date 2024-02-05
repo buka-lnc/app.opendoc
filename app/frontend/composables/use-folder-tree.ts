@@ -1,22 +1,27 @@
 import * as R from 'ramda'
 import { Folder } from '~/api/backend/components/schemas'
-import { TreeFolder } from '~/types/tree-folder'
+import { ParsedFolder } from '~/types/parsed-folder'
 
-export function useFolderTree (maybeRefOrGetterFolders: MaybeRefOrGetter<Folder[]>): Ref<TreeFolder[]> {
+export function useFolderTree (maybeRefOrGetterFolders: MaybeRefOrGetter<Folder[]>): Ref<ParsedFolder[]> {
   const folders = toRef(maybeRefOrGetterFolders)
 
   const tree = computed(() => {
     if (!folders.value.length) return []
 
-    const treeFolders = folders.value.map((f): TreeFolder => ({ ...f, children: [] }))
+    const treeFolders = folders.value.map((f): ParsedFolder => ({
+      ...f,
+      mpaths: f.mpath.slice(0, -1).split('/'),
+      children: [],
+    }))
+
     const groupedFolders = R.groupBy(R.prop('mpath'), treeFolders)
 
-    const foldersWithChildren: TreeFolder[] = []
+    const foldersWithChildren: ParsedFolder[] = []
 
     for (const [mpath, children] of Object.entries(groupedFolders)) {
-      const parentMpath = mpath
-        .split('/')
-        .slice(0, -2)
+      const mpaths = mpath.slice(0, -1).split('/')
+      const parentMpath = mpaths
+        .slice(0, -1)
         .join('/')
         .concat('/')
 

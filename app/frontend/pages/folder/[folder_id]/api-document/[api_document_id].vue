@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import type * as monaco from 'monaco-editor'
-import { queryApiDocumentById, queryApiDocumentFile } from '~/api/backend'
+import { queryApiDocumentById } from '~/api/backend'
 
 const route = useRoute()
 const apiDocumentId = computed(() => String(route.params.api_document_id))
@@ -13,55 +12,18 @@ const { data: apiDocument, pending: isLoadingApiDocument } = useAsyncData(
     return apiDocument
   },
 )
-
-const apiDocumentFile = ref<string | null>(null)
-
-const { pending: isLoadingApiDocumentFile } = useAsyncData(
-  async () => {
-    apiDocumentFile.value = null
-
-    const res = await queryApiDocumentFile({
-      documentId: apiDocumentId.value,
-    }).option('resolveWithFullResponse')
-
-    apiDocumentFile.value = await res.text()
-  },
-)
-
-const monacoOptions: monaco.editor.IEditorConstructionOptions = {
-  // readOnly: true,
-  automaticLayout: true,
-  scrollBeyondLastLine: false,
-}
 </script>
 <template>
-  <nuxt-loading-indicator v-if="isLoadingApiDocument || isLoadingApiDocumentFile" />
+  <nuxt-loading-indicator v-if="isLoadingApiDocument" />
 
-  <div v-if="apiDocumentFile && apiDocument && !isLoadingApiDocument" class="h-full bg-base-300">
-    <div
-      v-if="apiDocument.type === 'readme'"
-      class="h-full overflow-y-auto"
-    >
-      <markdown
-        :content="apiDocumentFile"
-      />
-    </div>
+  <div v-if="apiDocument && !isLoadingApiDocument" class="h-full bg-base-100 relative">
+    <NuxtPage />
 
-    <Suspense>
-      <lazy-openapi-monaco-editor
-        v-if="apiDocument.type === 'openapi'"
-        class="h-full"
-        :modal-value="apiDocumentFile"
-        theme="vs"
-        lang="json"
-        :options="monacoOptions"
-      />
-
-      <template #fallback>
-        <div class="h-full w-full grid place-content-center bg-base-300">
-          <span class="d-loading d-loading-ring d-loading-lg" />
-        </div>
-      </template>
-    </Suspense>
+    <openapi-view-switch
+      v-if="apiDocument.type === 'openapi'"
+      class="absolute top-4 left-4"
+      :folder-id="String($route.params.folder_id)"
+      :api-document-id="String($route.params.api_document_id)"
+    />
   </div>
 </template>

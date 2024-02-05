@@ -1,6 +1,6 @@
 <template>
   <!-- eslint-disable-next-line vue/no-v-html -->
-  <div class="prose lg:prose-xl w-full mx-auto" v-html="html" />
+  <div class="prose lg:prose-xl md:prose-md w-full mx-auto py-6" v-html="html" />
 </template>
 <script setup lang="ts">
 // import 'github-markdown-css/github-markdown.css'
@@ -63,14 +63,4 @@ const { data: html } = useAsyncData(
 )
 </script>
 <style lang="postcss">
-.markdown-body {
-  font-size: 18px;
-
-  ol {
-    list-style: decimal;
-  }
-  ul {
-    list-style: square;
-  }
-}
 </style>

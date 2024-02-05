@@ -8,5 +8,6 @@
       // "source.organizeImports",
       "source.fixAll.eslint"
     ]
-  }
+  },
+  "cSpell.words": ["asyncapi", "mpaths"]
 }

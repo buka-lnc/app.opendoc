@@ -1,9 +1,16 @@
 <script setup lang="ts">
-import { TreeFolder } from '~/types/tree-folder'
+import { ParsedFolder } from '~/types/parsed-folder'
 
 const props = defineProps<{
-  folders: TreeFolder[]
+  folders: ParsedFolder[]
+  mpath?: string
+  activeFolderId?: string
 }>()
+
+const children = computed(() => props.folders.filter(folder => (
+  folder.mpath.startsWith(props.mpath || '') &&
+    folder.mpaths.length === (props.mpath?.length || 0) + 1
+)))
 
 const emit = defineEmits(['created', 'deleted'])
 </script>
@@ -11,9 +18,11 @@ const emit = defineEmits(['created', 'deleted'])
 <template>
   <ul class="menu text-sm text-base-content">
     <folder-item
-      v-for="folder in props.folders"
+      v-for="folder in children"
       :key="folder.id"
+      :folders="folders"
       :folder="folder"
+      :active-folder-id="$props.activeFolderId"
       @created="emit('created')"
       @deleted="emit('deleted')"
     />

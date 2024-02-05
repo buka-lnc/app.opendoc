@@ -34,17 +34,30 @@ watchEffect(() => {
   activeApiDocumentId.value = apiDocuments.value[0].id
 })
 
+function toLink (apiDocument: ApiDocument): string {
+  if (apiDocument.type === 'readme') {
+    return `/folder/${folderId.value}/api-document/${apiDocument.id}/readme`
+  } else if (apiDocument.type === 'openapi') {
+    return `/folder/${folderId.value}/api-document/${apiDocument.id}/openapi-code`
+  }
+  return `/folder/${folderId.value}/api-document/${apiDocument.id}/asyncapi-code`
+}
+
 </script>
 <template>
   <NuxtLoadingIndicator v-if="isLoadingFolder || isLoadingApiDocuments" />
 
   <div v-if="folder" class="w-full h-screen flex flex-col overflow-hidden">
-    <div class="flex-0 w-full bg-base-200">
-      <h1 class="text-4xl p-4">
-        {{ folder.title }}
-      </h1>
-      <p>{{ folder.code }}</p>
-      <p>{{ folder.mpath }}</p>
+    <div class="flex-0 w-full bg-base-100">
+      <div class="py-3 px-5">
+        <div class="mb-1">
+          <h1 class="inline text-3xl">
+            {{ folder.title }}
+          </h1>
+          <span class="ml-1 text-xs">1.0.0</span>
+        </div>
+        <span class="text-gray-400">{{ folder.mpath.substring(0, folder.mpath.length - 1) }}</span>
+      </div>
 
       <div role="tablist" class="d-tabs d-tabs-lifted">
         <template v-for="apiDocument in apiDocuments" :key="apiDocument.id">
@@ -52,7 +65,7 @@ watchEffect(() => {
             role="tab"
             class="d-tab flex items-center"
             active-class="d-tab-active"
-            :to="`/folder/${folderId}/api-document/${apiDocument.id}`"
+            :to="toLink(apiDocument)"
           >
             <OpenApiInitiativeIcon class="fill-base-content w-4 h-4 mx-1" />
 

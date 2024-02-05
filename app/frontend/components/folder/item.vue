@@ -1,17 +1,20 @@
 <script setup lang="ts">
 import {
-  RiArticleFill,
   RiBookletFill,
+  RiBookReadFill,
   RiDeleteBinLine,
   RiMore2Fill,
-  RiStickyNoteAddLine,
+  RiFileAddLine,
+  RiFileEditLine,
 } from '@remixicon/vue'
 import { ref } from 'vue'
 import { removeFolder } from '~/api/backend'
-import { TreeFolder } from '~/types/tree-folder'
+import { ParsedFolder } from '~/types/parsed-folder'
 
 const props = defineProps<{
-  folder: TreeFolder
+  folders: ParsedFolder[]
+  folder: ParsedFolder
+  activeFolderId?: string
 }>()
 
 const emit = defineEmits(['created', 'deleted'])
@@ -45,7 +48,17 @@ const { isLoading: isDeleting, execute: deleteFolder } = useAsyncState(
 )
 
 const folder = ref(props.folder)
-const children = computed(() => props.folder.children)
+const hasChildren = computed(() => props.folders.some(folder => folder.mpath.startsWith(props.folder.mpath) && folder.mpaths.length === props.folder.mpaths.length + 1))
+
+const isAncestorOfActiveFolder = computed(() => {
+  if (!props.activeFolderId) return false
+
+  const activeFolder = props.folders.find(folder => folder.id === props.activeFolderId)
+  console.log('🚀 ~ isAncestorOfActiveFolder ~ activeFolder:', activeFolder)
+  if (!activeFolder) return false
+
+  return props.folder.mpath.startsWith(activeFolder.mpath)
+})
 
 </script>
 <template>
@@ -61,14 +74,16 @@ const children = computed(() => props.folder.children)
       class="w-full relative"
     >
       <NuxtLink
-        class="inline-block items-center rounded-btn hover:bg-base-200 transition-colors px-3 py-1 w-full"
+        class="inline-block items-center rounded-btn hover:bg-base-300 transition-colors px-3 py-1 w-full"
         :to="`/folder/${folder.id}`"
-        active-class="bg-base-200"
+        active-class="bg-base-300"
       >
         <div class="flex w-full h-8 items-center">
-          <RiBookletFill v-if="children.length" size="1rem" class="mr-1" />
-          <RiArticleFill v-else size="1rem" class="mr-1" />
-          {{ folder.title }}
+          <RiBookReadFill v-if="isAncestorOfActiveFolder" size="1rem" />
+          <RiBookletFill v-else size="1rem" />
+          <span class="truncate ml-1">
+            {{ folder.title }}
+          </span>
         </div>
       </NuxtLink>
 
@@ -80,10 +95,18 @@ const children = computed(() => props.folder.children)
         <ul tabindex="0" class="z-[1] shadow p2 d-menu d-menu-sm d-dropdown-content bg-base-100 rounded-box w-24">
           <li>
             <a class="d-btn d-btn-ghost d-btn-squash d-btn-sm place-content-center" @click.stop="openCreateDialog">
-              <RiStickyNoteAddLine size="1rem" />
+              <RiFileAddLine size="1rem" />
               新建
             </a>
           </li>
+
+          <li>
+            <a class="d-btn d-btn-ghost d-btn-squash d-btn-sm place-content-center" @click.stop="openCreateDialog">
+              <RiFileEditLine size="1rem" />
+              编辑
+            </a>
+          </li>
+
           <li v-if="folder.code !== 'opendoc'">
             <a class="d-btn d-btn-ghost d-btn-squash d-btn-sm  place-content-center" @click.stop="deleteFolder()">
               <span v-if="isDeleting" class="d-loading d-loading-spinner d-loading-xs" />
@@ -97,11 +120,12 @@ const children = computed(() => props.folder.children)
     </div>
 
     <folder-tree
-      v-if="children.length > 0"
-      :folders="children"
+      v-if="hasChildren"
+      :folders="folders"
+      :mpath="folder.mpath"
+      :active-folder-id="props.activeFolderId"
       @created="emit('created')"
       @deleted="emit('deleted')"
     />
   </li>
 </template>
-../../types/tree-folder
