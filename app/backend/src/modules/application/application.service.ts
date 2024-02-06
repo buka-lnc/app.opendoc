@@ -1,0 +1,65 @@
+import { EntityManager, MikroORM } from '@mikro-orm/core'
+import { Injectable } from '@nestjs/common'
+import { RegisterApplicationDTO } from './dto/register-application.dto'
+import { Application } from './entity/application.entity'
+import { InjectRepository } from '@mikro-orm/nestjs'
+import { QueryApplicationsDTO } from './dto/query-applications.dto'
+import { QueryApplicationsResponseDTO } from './dto/query-applications-response.dto'
+import { EntityRepository } from '@mikro-orm/mysql'
+
+
+@Injectable()
+export class ApplicationService {
+  constructor(
+    private readonly em: EntityManager,
+    private readonly orm: MikroORM,
+
+    @InjectRepository(Application)
+    private readonly applicationRepo: EntityRepository<Application>
+  ) {}
+
+  async register(dto: RegisterApplicationDTO): Promise<void> {
+    let application = await this.applicationRepo.findOne({
+      code: dto.code,
+    })
+
+    if (application) return
+
+    application = this.applicationRepo.create(dto)
+
+    this.em.persist(application)
+  }
+
+  async queryApplicationByIdOrCode(idOrCode: string): Promise<Application> {
+    return this.applicationRepo.findOneOrFail({
+      $or: [
+        { id: idOrCode },
+        { code: idOrCode },
+      ],
+    })
+  }
+
+  async queryApplications(dto: QueryApplicationsDTO): Promise<QueryApplicationsResponseDTO> {
+    const qb = this.applicationRepo.createQueryBuilder('app')
+      .select('*')
+
+    if (dto.title) {
+      void qb.andWhere({ $like: { title: `%${dto.title}%` } })
+    }
+
+    if (dto.limit || dto.offset) {
+      void qb.limit(dto.limit || 10).offset(dto.offset || 0)
+    }
+
+    const [results, total] = await qb.getResultAndCount()
+
+    return {
+      results,
+      page: {
+        total,
+        limit: dto.limit || 10,
+        offset: dto.offset || 0,
+      },
+    }
+  }
+}

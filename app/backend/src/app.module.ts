@@ -11,8 +11,8 @@ import { AppService } from './app.service'
 import { AppConfig } from './config/app.config'
 import { MysqlConfig } from './config/mysql.config'
 import { PinoConfig } from './config/pino.config'
-import { FolderModule } from './modules/folder/folder.module'
 import { ApiDocumentModule } from './modules/api-document/api-document.module'
+import { ApplicationModule } from './modules/application/application.module'
 
 @Module({
   imports: [
@@ -40,8 +40,8 @@ import { ApiDocumentModule } from './modules/api-document/api-document.module'
     ScheduleModule.forRoot(),
 
     TerminusModule,
-    FolderModule,
     ApiDocumentModule,
+    ApplicationModule,
   ],
   controllers: [AppController],
   providers: [AppService],

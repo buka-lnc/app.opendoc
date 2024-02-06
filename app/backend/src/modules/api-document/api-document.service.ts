@@ -6,10 +6,13 @@ import { request } from 'keq'
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino'
 import * as path from 'path'
 import { AppConfig } from '~/config/app.config'
-import { FolderService } from '../folder/folder.service'
 import { QueryApiDocumentsDTO } from './dto/query-api-documents.dto'
 import { RegisterApiDocumentDTO } from './dto/register-api-document.dto'
 import { ApiDocument } from './entities/api-document.entity'
+import { InjectRepository } from '@mikro-orm/nestjs'
+import { Application } from '../application/entity/application.entity'
+import { EntityRepository } from '@mikro-orm/mysql'
+import { QueryApiDocumentsResponseDTO } from './dto/query-api-documents-response.dto'
 
 
 @Injectable()
@@ -21,43 +24,46 @@ export class ApiDocumentService {
     private readonly appConfig: AppConfig,
     private readonly em: EntityManager,
     private readonly orm: MikroORM,
-    private readonly folderService: FolderService,
+
+    @InjectRepository(ApiDocument)
+    private readonly apiDocumentRepo: EntityRepository<ApiDocument>,
+
+    @InjectRepository(Application)
+    private readonly applicationRepo: EntityRepository<Application>,
   ) {}
 
   @EnsureRequestContext()
   async register(dto: RegisterApiDocumentDTO): Promise<ApiDocument> {
-    const folder = await this.folderService.ensurePath(dto.folderMpath)
+    const application = await this.applicationRepo.findOneOrFail({
+      code: dto.applicationCode,
+    })
 
     let document: ApiDocument
 
     document = await this.em.findOne(ApiDocument, {
-      type: dto.type,
-      code: dto.code,
-      folder,
+      code: dto.apiDocumentCode,
     })
 
     if (!document) {
       document = new ApiDocument()
-      document.type = dto.type
-      document.code = dto.code
-      document.title = dto.code
-      document.folder = wrap(folder).toReference()
+      document.type = dto.apiDocumentType
+      document.code = dto.apiDocumentCode
+      document.application = wrap(application).toReference()
     }
 
-    if (dto.cronSyncUrl) document.cronSyncUrl = dto.cronSyncUrl
-    if (dto.title) document.title = dto.title
-    if (dto.order) document.order = dto.order
-    this.em.persist(document)
+    if (dto.apiDocumentCronSyncUrl) document.cronSyncUrl = dto.apiDocumentCronSyncUrl
+    if (dto.apiDocumentTitle) document.title = dto.apiDocumentTitle
+    if (dto.apiDocumentOrder) document.order = dto.apiDocumentOrder
+    await this.em.persistAndFlush(document)
 
-    if (dto.file) await this.persistFile(document, dto.file)
+    if (dto.apiDocumentFile) await this.persistFile(document, dto.apiDocumentFile)
     await this.em.flush()
     return document
   }
 
 
-  private async getFilepath(document: ApiDocument): Promise<string> {
-    const folder = await document.folder.load()
-    return path.join(path.resolve(this.appConfig.storage), folder.mpath, document.code)
+  private getFilepath(document: ApiDocument): string {
+    return path.join(path.resolve(this.appConfig.storage), document.id)
   }
 
   private async persistFile(document: ApiDocument, buf: Buffer): Promise<void> {
@@ -71,7 +77,7 @@ export class ApiDocumentService {
 
     this.logger.info('document hash is different, persisting')
 
-    const filepath = await this.getFilepath(document)
+    const filepath = this.getFilepath(document)
     const dir = path.dirname(filepath)
 
     await fs.ensureDir(dir)
@@ -119,30 +125,41 @@ export class ApiDocumentService {
   }
 
   async queryDocumentById(documentId: string): Promise<ApiDocument> {
-    return await this.em.findOneOrFail(ApiDocument, documentId)
+    return this.apiDocumentRepo.findOneOrFail(documentId)
   }
 
-  async queryDocumentByCode(folderId: string, code: string): Promise<ApiDocument> {
-    const folder = this.em.getReference('Folder', folderId)
-    return await this.em.findOneOrFail(ApiDocument, { folder, code })
-  }
+  async queryDocuments(dto: QueryApiDocumentsDTO): Promise<QueryApiDocumentsResponseDTO> {
+    const qb = this.apiDocumentRepo.createQueryBuilder('d')
+      .select('*')
 
-  async queryDocuments(dto: QueryApiDocumentsDTO): Promise<ApiDocument[]> {
-    const folder = this.em.getReference('Folder', dto.folderId)
-    return await this.em.find(
-      ApiDocument,
-      { folder },
-      {
-        orderBy: {
-          order: 'ASC',
-        },
-      }
-    )
+    if (dto.title) {
+      void qb.andWhere({ title: dto.title })
+    }
+
+    if (dto.type) {
+      void qb.andWhere({ type: dto.type })
+    }
+
+    if (dto.limit || dto.offset) {
+      void qb.limit(dto.limit || 10).offset(dto.offset || 0)
+    }
+
+    const [results, total] = await qb.getResultAndCount()
+
+    return {
+      results,
+      page: {
+        limit: dto.limit || 10,
+        offset: dto.offset || 0,
+        total,
+      },
+    }
   }
 
   async queryDocumentFileById(documentId: string): Promise<fs.ReadStream> {
     const document = await this.em.findOneOrFail(ApiDocument, documentId)
-    const filepath = await this.getFilepath(document)
+    const filepath = this.getFilepath(document)
     return fs.createReadStream(filepath)
   }
 }
+

@@ -3,16 +3,16 @@
  * @export
  */
 export interface RegisterApiDocumentDTO {
-  file?: {
+  apiDocumentFile?: {
     /**
      * @type binary
      */
     file?: string
   }
-  folderMpath: string
-  title?: string
-  cronSyncUrl?: string
-  order?: number
-  type: "readme" | "openapi" | "asyncapi"
-  code: string
+  applicationCode: string
+  apiDocumentCode: string
+  apiDocumentType?: "markdown" | "openapi" | "asyncapi"
+  apiDocumentTitle?: string
+  apiDocumentCronSyncUrl?: string
+  apiDocumentOrder?: number
 }

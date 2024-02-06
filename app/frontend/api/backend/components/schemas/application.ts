@@ -2,14 +2,13 @@ import { Collection } from "./collection"
 
 
 /**
- * @interface Folder
+ * @interface Application
  * @export
  */
-export interface Folder {
+export interface Application {
   code: string
-  mpath: string
   title: string
-  documents: Collection
+  apiDocuments: Collection
   id: string
   /**
    * @type date-time

@@ -7,6 +7,7 @@ import { ApiDocumentService } from './api-document.service'
 import { QueryApiDocumentsDTO } from './dto/query-api-documents.dto'
 import { RegisterApiDocumentDTO } from './dto/register-api-document.dto'
 import { ApiDocument } from './entities/api-document.entity'
+import { QueryApiDocumentsResponseDTO } from './dto/query-api-documents-response.dto'
 
 
 @Controller()
@@ -25,7 +26,7 @@ export class ApiDocumentController {
   ): Promise<void> {
     await this.apiDocumentService.register({
       ...dto,
-      file: file.buffer,
+      apiDocumentFile: file.buffer,
     })
   }
 
@@ -37,7 +38,7 @@ export class ApiDocumentController {
   @Get('document')
   async queryApiDocuments(
     @Query() dto: QueryApiDocumentsDTO,
-  ): Promise<ApiDocument[]> {
+  ): Promise<QueryApiDocumentsResponseDTO> {
     return this.apiDocumentService.queryDocuments(dto)
   }
 
@@ -54,13 +55,5 @@ export class ApiDocumentController {
   ): Promise<StreamableFile> {
     const stream = await this.apiDocumentService.queryDocumentFileById(documentId)
     return new StreamableFile(stream)
-  }
-
-  @Get('folder/:folderId/document/:documentCode')
-  async queryApiDocumentByCode(
-    @Param('folderId') folderId: string,
-    @Param('documentCode') documentCode: string,
-  ): Promise<ApiDocument> {
-    return this.apiDocumentService.queryDocumentByCode(folderId, documentCode)
   }
 }

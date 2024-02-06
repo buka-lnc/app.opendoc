@@ -1,5 +1,5 @@
 export enum API_DOCUMENT_TYPE {
-  README = 'readme',
+  MARKDOWN = 'markdown',
   OPEN_API = 'openapi',
   ASYNC_API = 'asyncapi'
 }

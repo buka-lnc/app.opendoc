@@ -1,11 +1,29 @@
-import { TakeType } from '@miaooo/nestjs-take-type'
+import { IsEnum, IsNumber, IsString, MaxLength } from 'class-validator'
+import { API_DOCUMENT_TYPE } from '../constants/api-document-type.enum'
 import { ApiProperty } from '@nestjs/swagger'
-import { IsString } from 'class-validator'
-import { ApiDocument } from '../entities/api-document.entity'
 
-export class RegisterApiDocumentDTO extends TakeType(ApiDocument, ['type', 'code'], ['title', 'cronSyncUrl', 'order']) {
+export class RegisterApiDocumentDTO {
   @IsString()
-  folderMpath: string
+  @MaxLength(63)
+  applicationCode: string
+
+  @IsString()
+  @MaxLength(63)
+  apiDocumentCode: string
+
+  @IsEnum(API_DOCUMENT_TYPE)
+  apiDocumentType?: API_DOCUMENT_TYPE
+
+  @IsString()
+  @MaxLength(127)
+  apiDocumentTitle?: string
+
+  @IsString()
+  @MaxLength(255)
+  apiDocumentCronSyncUrl?: string
+
+  @IsNumber()
+  apiDocumentOrder?: number
 
   @ApiProperty({
     type: 'file',
@@ -16,5 +34,5 @@ export class RegisterApiDocumentDTO extends TakeType(ApiDocument, ['type', 'code
       },
     },
   })
-  file?: Buffer
+  apiDocumentFile?: Buffer
 }

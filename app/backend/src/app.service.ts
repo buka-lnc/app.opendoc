@@ -4,10 +4,9 @@ import { Injectable, OnModuleInit } from '@nestjs/common'
 import { HealthCheckResult, HealthCheckService } from '@nestjs/terminus'
 import { API_DOCUMENT_TYPE } from './modules/api-document/constants/api-document-type.enum'
 import { ApiDocumentService } from './modules/api-document/api-document.service'
-import { Folder } from './modules/folder/entities/folder.entity'
-import { FolderService } from './modules/folder/folder.service'
 import { AppConfig } from './config/app.config'
 import { OpenAPIObject } from '@nestjs/swagger'
+import { ApplicationService } from './modules/application/application.service'
 
 @Injectable()
 export class AppService implements OnModuleInit {
@@ -18,7 +17,7 @@ export class AppService implements OnModuleInit {
     private readonly em: EntityManager,
     private health: HealthCheckService,
 
-    private readonly folderService: FolderService,
+    private readonly applicationService: ApplicationService,
     private readonly apiDocumentService: ApiDocumentService,
   ) {}
 
@@ -28,19 +27,15 @@ export class AppService implements OnModuleInit {
 
   async onModuleInit() {
     await this.orm.schema.refreshDatabase()
-    await this.initRootFolder()
+    await this.registerApplication()
   }
 
   @EnsureRequestContext()
-  async initRootFolder() {
-    const root = await this.em.findOne(Folder, { mpath: 'opendoc/' })
-    if (!root) {
-      await this.folderService.register({
-        mpath: 'opendoc/',
-        title: 'OpenDoc',
-      })
-    }
-
+  async registerApplication() {
+    await this.applicationService.register({
+      code: 'opendoc',
+      title: 'OpenDoc',
+    })
     await this.em.flush()
   }
 
@@ -48,22 +43,22 @@ export class AppService implements OnModuleInit {
   async registerOpenDocDocuments(openapi: OpenAPIObject) {
     const buf = await fs.readFile('README.md')
     await this.apiDocumentService.register({
-      type: API_DOCUMENT_TYPE.README,
-      code: 'readme',
-      order: 1,
-      title: 'README',
-      folderMpath: 'opendoc',
-      file: buf,
+      applicationCode: 'opendoc',
+      apiDocumentType: API_DOCUMENT_TYPE.MARKDOWN,
+      apiDocumentCode: 'opendoc.readme',
+      apiDocumentOrder: 1,
+      apiDocumentTitle: 'README',
+      apiDocumentFile: buf,
     })
 
     await this.apiDocumentService.register({
-      type: API_DOCUMENT_TYPE.OPEN_API,
-      code: 'openapi',
-      title: 'OpenAPI',
-      order: 2,
-      folderMpath: 'opendoc',
-      cronSyncUrl: `http://${this.appConfig.host}:${this.appConfig.port}/swagger`,
-      file: Buffer.from(JSON.stringify(openapi), 'utf-8'),
+      applicationCode: 'opendoc',
+      apiDocumentType: API_DOCUMENT_TYPE.OPEN_API,
+      apiDocumentCode: 'openapi',
+      apiDocumentTitle: 'OpenAPI',
+      apiDocumentOrder: 2,
+      apiDocumentCronSyncUrl: `http://${this.appConfig.host}:${this.appConfig.port}/swagger`,
+      apiDocumentFile: Buffer.from(JSON.stringify(openapi), 'utf-8'),
     })
   }
 }

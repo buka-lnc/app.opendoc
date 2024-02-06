@@ -3,11 +3,11 @@
  * @export
  */
 export interface ApiDocument {
-  type: "readme" | "openapi" | "asyncapi"
+  type: "markdown" | "openapi" | "asyncapi"
   code: string
   order: number
   title: string
-  folder: {
+  application: {
   }
   hash: string
   version: string
