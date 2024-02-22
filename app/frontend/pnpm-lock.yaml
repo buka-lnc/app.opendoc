@@ -14,9 +14,9 @@ dependencies:
   '@pinia/nuxt':
     specifier: ^0.5.1
     version: 0.5.1(rollup@2.79.1)(typescript@5.3.3)(vue@3.4.15)
-  '@remixicon/vue':
-    specifier: ^4.1.0
-    version: 4.1.0(vue@3.4.15)
+  '@tabler/icons-vue':
+    specifier: ^2.47.0
+    version: 2.47.0(vue@3.4.15)
   '@types/ramda':
     specifier: ^0.29.9
     version: 0.29.10
@@ -2550,14 +2550,6 @@ packages:
   /@polka/url@1.0.0-next.24:
     resolution: {integrity: sha512-2LuNTFBIO0m7kKIQvvPHN6UE63VjpmL9rnEEaOOaiSPbZK+zUOYIzBAWcED+3XYzhYsd/0mD57VdxAEqqV52CQ==}
 
-  /@remixicon/vue@4.1.0(vue@3.4.15):
-    resolution: {integrity: sha512-FhaF5b33V6JCHtYMbxZDvzYYqX2CqgoQPwu7+U0SB6x9yfOPdJ61jZKIs0ovPiH8qMVXDJ6uCcKQPK+P/57eGQ==}
-    peerDependencies:
-      vue: '>= 3'
-    dependencies:
-      vue: 3.4.15(typescript@5.3.3)
-    dev: false
-
   /@rollup/plugin-alias@5.1.0(rollup@4.9.6):
     resolution: {integrity: sha512-lpA3RZ9PdIG7qqhEfv79tBffNaoDuukFDrmhLqg9ifv99u/ehn+lOg30x2zmhf8AQqQUZaMk/B9fZraQ6/acDQ==}
     engines: {node: '>=14.0.0'}
@@ -2920,6 +2912,19 @@ packages:
       magic-string: 0.25.9
       string.prototype.matchall: 4.0.10
     dev: true
+
+  /@tabler/icons-vue@2.47.0(vue@3.4.15):
+    resolution: {integrity: sha512-huEDak5xouwsRjbTUZlYZny9kC8ez61vdx/KwhR2Uc5HcUpxpFy+7p+IKH/ZZ48IcTHmCbdBJgbFRUI1mePJog==}
+    peerDependencies:
+      vue: '>=3.0.1'
+    dependencies:
+      '@tabler/icons': 2.47.0
+      vue: 3.4.15(typescript@5.3.3)
+    dev: false
+
+  /@tabler/icons@2.47.0:
+    resolution: {integrity: sha512-4w5evLh+7FUUiA1GucvGj2ReX2TvOjEr4ejXdwL/bsjoSkof6r1gQmzqI+VHrE2CpJpB3al7bCTulOkFa/RcyA==}
+    dev: false
 
   /@tailwindcss/typography@0.5.10(tailwindcss@3.4.1):
     resolution: {integrity: sha512-Pe8BuPJQJd3FfRnm6H0ulKIGoMEQS+Vq01R6M5aCrFB/ccR/shT+0kXLjouGC1gFLm9hopTFN+DMP0pfwRWzPw==}

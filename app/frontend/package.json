@@ -44,7 +44,7 @@
     "@jongwooo/prism-theme-github": "^1.14.0",
     "@nuxtjs/tailwindcss": "^6.10.4",
     "@pinia/nuxt": "^0.5.1",
-    "@remixicon/vue": "^4.1.0",
+    "@tabler/icons-vue": "^2.47.0",
     "@types/ramda": "^0.29.9",
     "@types/unist": "^3.0.2",
     "@vueuse/core": "^10.7.2",

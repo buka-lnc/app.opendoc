@@ -1,15 +1,18 @@
-import { IsNumber } from 'class-validator'
+import { ToNumber } from '@buka/class-transformer-extra'
+import { IsInt } from 'class-validator'
 
 export class PaginationDTO {
   /**
    * @default 10
    */
-  @IsNumber()
+  @ToNumber()
+  @IsInt()
   limit: number
 
   /**
    * @default 0
    */
-  @IsNumber()
+  @ToNumber()
+  @IsInt()
   offset: number
 }

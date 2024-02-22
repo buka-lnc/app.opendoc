@@ -8,7 +8,7 @@ interface QueryArg {
 }
 
 interface ParamArg {
-    applicationId: string
+    applicationIdOrCode: string
 }
 
 interface HeaderArg {
@@ -22,7 +22,7 @@ export function queryApplication(arg?: QueryArg & ParamArg & HeaderArg): Keq<Res
       pathname: "/api/application/:applicationIdOrCode",
     })
 
-  if (arg && "applicationId" in arg) req.params("applicationId", String(arg["applicationId"]))
+  if (arg && "applicationIdOrCode" in arg) req.params("applicationIdOrCode", String(arg["applicationIdOrCode"]))
 
   return req
 }

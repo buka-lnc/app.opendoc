@@ -28,7 +28,7 @@ export class ApplicationController {
 
   @Get(':applicationIdOrCode')
   async queryApplication(
-    @Param('applicationId') applicationIdOrCode: string
+    @Param('applicationIdOrCode') applicationIdOrCode: string
   ): Promise<Application> {
     return this.applicationService.queryApplicationByIdOrCode(applicationIdOrCode)
   }

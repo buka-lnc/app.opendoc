@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import {
-  RiSettingsLine,
-} from '@remixicon/vue'
+import { IconSettings } from '@tabler/icons-vue'
 import { queryApplications } from '~/api/backend'
 import { Application } from '~/api/backend/components/schemas'
 
@@ -36,7 +34,7 @@ const { pending } = useAsyncData(
       </h1>
 
       <button class="d-btn d-btn-square d-btn-lg d-btn-ghost">
-        <RiSettingsLine size="2rem" />
+        <IconSettings class="w-8 h-8" />
       </button>
     </div>
 
@@ -66,7 +64,11 @@ const { pending } = useAsyncData(
       </button>
     </div>
 
-    <div class="flex-auto" />
+    <div class="flex-auto pt-6">
+      <div v-for="application in applications" :key="application.id">
+        <application-preview-card :application="application" />
+      </div>
+    </div>
   </div>
 </template>
 
