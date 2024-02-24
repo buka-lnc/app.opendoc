@@ -1,13 +1,13 @@
 import { PageDTO } from '~/dto/page.dto'
-import { Application } from '../entity/application.entity'
 import { ValidateNested } from 'class-validator'
 import { Type } from 'class-transformer'
+import { ApplicationDTO } from './application.dto'
 
 
 export class QueryApplicationsResponseDTO {
   @ValidateNested({ each: true })
-  @Type(() => Application)
-  results: Application[]
+  @Type(() => ApplicationDTO)
+  results: ApplicationDTO[]
 
   @ValidateNested()
   @Type(() => PageDTO)

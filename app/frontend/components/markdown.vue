@@ -1,9 +1,15 @@
 <template>
   <!-- eslint-disable-next-line vue/no-v-html -->
-  <div class="prose lg:prose-xl md:prose-md w-full mx-auto py-6" v-html="html" />
+  <div
+    :class="[
+      'prose lg:prose-xl',
+      'prose-pre:shadow-lg',
+      'markdown',
+    ]"
+    v-html="html"
+  />
 </template>
 <script setup lang="ts">
-// import 'github-markdown-css/github-markdown.css'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import rehypeKatex from 'rehype-katex'
 import rehypePrism from 'rehype-prism'
@@ -19,9 +25,7 @@ import { unified } from 'unified'
 import { remarkReplaceImageUrl } from '~/utils/remark-replace-image-url'
 
 import 'prismjs/themes/prism.min.css'
-// prism.min.css 需要在github theme之前以避免行号错误
-// import '@jongwooo/prism-theme-github/themes/prism-github-default-auto.min.css'
-// import '@jongwooo/prism-theme-github/themes/prism-github-default-dark.css'
+import 'prism-themes/themes/prism-a11y-dark.min.css'
 import 'prismjs/components/prism-bash.js'
 import 'prismjs/components/prism-docker.js'
 import 'prismjs/components/prism-yaml.js'
@@ -48,7 +52,9 @@ const processor = unified()
   .use(rehypeSlug)
   .use(rehypeAutolinkHeadings)
   .use(rehypeKatex)
-  .use(rehypePrism, { plugins: ['line-numbers', 'toolbar', 'copy-to-clipboard'] })
+  .use(rehypePrism, {
+    plugins: ['line-numbers'],
+  })
   .use(rehypeStringify)
 
 const { data: html } = useAsyncData(
@@ -63,4 +69,8 @@ const { data: html } = useAsyncData(
 )
 </script>
 <style lang="postcss">
+.markdown code[class*=language-],
+.markdown pre[class*=language-] {
+  text-shadow: none;
+}
 </style>

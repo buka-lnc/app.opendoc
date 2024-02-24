@@ -1,4 +1,5 @@
 import { Collection, Entity, OneToMany, Property } from '@mikro-orm/core'
+import { ApiProperty } from '@nestjs/swagger'
 import { BaseEntity } from '~/entities/base.entity'
 import { ApiDocument } from '~/modules/api-document/entities/api-document.entity'
 
@@ -17,6 +18,10 @@ export class Application extends BaseEntity {
   })
   title: string
 
+  @ApiProperty({
+    type: () => ApiDocument,
+    isArray: true,
+  })
   @OneToMany({
     entity: () => ApiDocument,
     mappedBy: 'application',

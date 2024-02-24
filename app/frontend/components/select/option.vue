@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RiCheckLine } from '@remixicon/vue'
+import { IconCheck } from '@tabler/icons-vue'
 import { SELECT_VISIBLE_INJECT_KEY } from './constants'
 
 const props = defineProps<{
@@ -19,11 +19,10 @@ const { toggleVisible } = inject(SELECT_VISIBLE_INJECT_KEY, {
     @click="toggleVisible(false)"
   >
     <div class="absolute top-0 left-7 w-6 h-full flex items-center">
-      <RiCheckLine
+      <IconCheck
         v-if="props.selected"
-        class="text-primary"
+        class="text-primary w-6 h-6"
         aria-hidden="true"
-        size="1.5rem"
       />
     </div>
 

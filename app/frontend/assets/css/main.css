@@ -1,13 +1,9 @@
 @tailwind base;
 
 @layer base {
-  /* body {
-    @apply overflow-hidden bg-gray-50;
-  } */
-
-  /* #__nuxt {
-    @apply h-full;
-  } */
+  #__nuxt {
+    @apply size-full;
+  }
 }
 
 

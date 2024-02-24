@@ -12,10 +12,10 @@ interface HeaderArg {
 
 
 export function syncApiDocuments(arg?: QueryArg & ParamArg & HeaderArg): Keq<any> {
-  const req = request.post("/api/document/sync")
+  const req = request.post("/api/api-document/sync")
     .option('module', {
       name: "backend",
-      pathname: "/api/document/sync",
+      pathname: "/api/api-document/sync",
     })
 
 

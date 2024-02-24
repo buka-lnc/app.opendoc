@@ -10,7 +10,7 @@ import { ApiDocument } from './entities/api-document.entity'
 import { QueryApiDocumentsResponseDTO } from './dto/query-api-documents-response.dto'
 
 
-@Controller()
+@Controller('api-document')
 export class ApiDocumentController {
   constructor(
     private readonly em: EntityManager,
@@ -18,7 +18,7 @@ export class ApiDocumentController {
   ) {}
 
   @ApiConsumes('multipart/form-data')
-  @Post('document')
+  @Post()
   @UseInterceptors(FileInterceptor('file'))
   async registerApiDocument(
     @Body() dto: RegisterApiDocumentDTO,
@@ -30,30 +30,30 @@ export class ApiDocumentController {
     })
   }
 
-  @Post('document/sync')
+  @Post('sync')
   async syncApiDocuments(): Promise<void> {
     await this.apiDocumentService.syncDocuments()
   }
 
-  @Get('document')
+  @Get()
   async queryApiDocuments(
     @Query() dto: QueryApiDocumentsDTO,
   ): Promise<QueryApiDocumentsResponseDTO> {
     return this.apiDocumentService.queryDocuments(dto)
   }
 
-  @Get('document/:documentId')
+  @Get(':apiDocumentId')
   async queryApiDocumentById(
-    @Param('documentId') documentId: string,
+    @Param('apiDocumentId') id: string,
   ): Promise<ApiDocument> {
-    return this.apiDocumentService.queryDocumentById(documentId)
+    return this.apiDocumentService.queryDocumentById(id)
   }
 
-  @Get('document/:documentId/file')
+  @Get(':apiDocumentId/file')
   async queryApiDocumentFile(
-    @Param('documentId') documentId: string,
+    @Param('apiDocumentId') id: string,
   ): Promise<StreamableFile> {
-    const stream = await this.apiDocumentService.queryDocumentFileById(documentId)
+    const stream = await this.apiDocumentService.queryDocumentFileById(id)
     return new StreamableFile(stream)
   }
 }

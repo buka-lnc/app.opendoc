@@ -4,6 +4,9 @@ useHead({
     {
       src: '/script/fix-100vh.js',
     },
+    {
+      innerHTML: 'window.Prism={manual:true};',
+    },
   ],
 })
 </script>

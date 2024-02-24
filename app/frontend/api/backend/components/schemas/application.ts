@@ -1,4 +1,4 @@
-import { Collection } from "./collection"
+import { ApiDocument } from "./api_document"
 
 
 /**
@@ -6,9 +6,9 @@ import { Collection } from "./collection"
  * @export
  */
 export interface Application {
+  apiDocuments: (ApiDocument)[]
   code: string
   title: string
-  apiDocuments: Collection
   id: string
   /**
    * @type date-time

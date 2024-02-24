@@ -13,10 +13,10 @@ interface HeaderArg {
 
 
 export function registerApiDocument(arg?: QueryArg & ParamArg & HeaderArg & (RegisterApiDocumentDTO)): Keq<any> {
-  const req = request.post("/api/document")
+  const req = request.post("/api/api-document")
     .option('module', {
       name: "backend",
-      pathname: "/api/document",
+      pathname: "/api/api-document",
     })
 
 

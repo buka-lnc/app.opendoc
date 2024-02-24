@@ -43,7 +43,7 @@ provide(SELECT_VISIBLE_INJECT_KEY, {
     >
       <ul
         v-if="optionsVisible"
-        class="absolute mt-1 max-h-60 overflow-hidden rounded-md bg-base-100 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm d-join d-join-vertical"
+        class="z-10 absolute mt-1 max-h-60 overflow-hidden rounded-md bg-base-100 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm d-join d-join-vertical"
       >
         <slot
           name="options"

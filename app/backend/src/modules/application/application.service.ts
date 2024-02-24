@@ -31,12 +31,19 @@ export class ApplicationService {
   }
 
   async queryApplicationByIdOrCode(idOrCode: string): Promise<Application> {
-    return this.applicationRepo.findOneOrFail({
-      $or: [
-        { id: idOrCode },
-        { code: idOrCode },
-      ],
-    })
+    const app = await this.applicationRepo.findOneOrFail(
+      {
+        $or: [
+          { id: idOrCode },
+          { code: idOrCode },
+        ],
+      },
+      {
+        populate: ['apiDocuments'],
+      }
+    )
+
+    return app
   }
 
   async queryApplications(dto: QueryApplicationsDTO): Promise<QueryApplicationsResponseDTO> {

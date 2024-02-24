@@ -8,7 +8,7 @@ interface QueryArg {
 }
 
 interface ParamArg {
-    documentId: string
+    apiDocumentId: string
 }
 
 interface HeaderArg {
@@ -16,13 +16,13 @@ interface HeaderArg {
 
 
 export function queryApiDocumentById(arg?: QueryArg & ParamArg & HeaderArg): Keq<Response_200_application_json> {
-  const req = request.get<Response_200_application_json>("/api/document/:documentId")
+  const req = request.get<Response_200_application_json>("/api/api-document/:apiDocumentId")
     .option('module', {
       name: "backend",
-      pathname: "/api/document/:documentId",
+      pathname: "/api/api-document/:apiDocumentId",
     })
 
-  if (arg && "documentId" in arg) req.params("documentId", String(arg["documentId"]))
+  if (arg && "apiDocumentId" in arg) req.params("apiDocumentId", String(arg["apiDocumentId"]))
 
   return req
 }
