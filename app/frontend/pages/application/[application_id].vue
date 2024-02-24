@@ -17,6 +17,26 @@ const { data: application, pending } = useAsyncData(
     default: () => null,
   },
 )
+
+const router = useRouter()
+const apiDocumentId = computed(() => String(route.params.api_document_id))
+watch(
+  () => application.value,
+  async () => {
+    const app = application.value
+    if (!app) return
+
+    if (apiDocumentId && app.apiDocuments.some(d => d.id === apiDocumentId.value)) {
+      return
+    }
+
+    const firstApiDocument = app.apiDocuments[0]
+    if (firstApiDocument) {
+      await router.replace(`/application/${app.id}/api-document/${firstApiDocument.id}`)
+    }
+  },
+)
+
 </script>
 
 <template>
@@ -46,6 +66,7 @@ const { data: application, pending } = useAsyncData(
                 v-for="apiDocument of application.apiDocuments"
                 :key="apiDocument.id"
                 :to="`/application/${$route.params.application_id}/api-document/${apiDocument.id}`"
+                replace
                 class="d-tab"
                 active-class="d-tab-active"
               >
