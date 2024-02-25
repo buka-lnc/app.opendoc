@@ -32,8 +32,14 @@ const { pending } = useAsyncData(
   <div class="size-full">
     <!-- code -->
     <template v-if="apiDocumentFile && apiDocument && !pending">
-      <markdown
+      <markdown-view
         v-if="apiDocument.type === 'markdown'"
+        class="w-full mx-auto py-6"
+        :content="apiDocumentFile"
+      />
+
+      <openapi-view
+        v-else-if="apiDocument.type === 'openapi'"
         class="w-full mx-auto"
         :content="apiDocumentFile"
       />

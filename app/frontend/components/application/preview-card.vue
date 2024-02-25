@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { Application } from '~/api/backend/components/schemas'
+import { ApplicationDTO } from '~/api/backend/components/schemas'
 
 const props = defineProps<{
-  application: Application
+  application: ApplicationDTO
 }>()
 </script>
 

@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { IconSettings } from '@tabler/icons-vue'
 import { queryApplications } from '~/api/backend'
-import { Application } from '~/api/backend/components/schemas'
+import { ApplicationDTO } from '~/api/backend/components/schemas'
 
-const applications = ref<Application[]>([])
+const applications = ref<ApplicationDTO[]>([])
 const pagination = reactive({
   total: 0,
   limit: 10,
