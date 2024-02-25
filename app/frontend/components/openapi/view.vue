@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { IconCode, IconCodeOff } from '@tabler/icons-vue'
+import { IconCode, IconBrowser } from '@tabler/icons-vue'
 
 const props = defineProps<{
   content: string
@@ -8,12 +8,20 @@ const props = defineProps<{
 const route = useRoute()
 const router = useRouter()
 const mode = computed(() => (['code', 'ui'].includes(String(route.query.mode)) ? route.query.mode : 'ui'))
-async function toggleMode () {
+async function toggleMode (m?: 'code' | 'ui') {
+  if (m) {
+    if (route.query.mode !== m) {
+      await router.replace({ query: { mode: m } })
+    }
+    return
+  }
+
   if (mode.value === 'ui') {
     await router.replace({ query: { mode: 'code' } })
-  } else {
-    await router.replace({ query: { mode: 'ui' } })
+    return
   }
+
+  await router.replace({ query: { mode: 'ui' } })
 }
 
 </script>
@@ -37,27 +45,27 @@ async function toggleMode () {
       <div />
 
       <div class="flex items-center space-x-1">
-        <button
-          class="d-swap swap-flip d-btn d-btn-xs d-btn-square d-btn-ghost"
-          :title="mode === 'ui' ? '切换至OpenAPI源代码' : '切换至可视化编辑器'"
-          @click="toggleMode()"
-        >
-          <IconCode
-            class="text-base-content size-5"
-            :class="{
-              'd-swap-on': mode === 'code',
-              'd-swap-off': mode !== 'code'
-            }"
-          />
+        <div class="d-join">
+          <button
+            class="d-join-item d-btn d-btn-xs d-btn-ghost d-btn-square"
+            :class="mode === 'code' && 'd-btn-active'"
+            @click="toggleMode('code')"
+          >
+            <IconCode
+              class="size-4"
+            />
+          </button>
 
-          <IconCodeOff
-            class="text-base-content size-5"
-            :class="{
-              'd-swap-on': mode === 'ui',
-              'd-swap-off': mode !== 'ui'
-            }"
-          />
-        </button>
+            <div
+              class="d-join-item d-btn d-btn-xs d-btn-ghost d-btn-square"
+              :class="mode === 'ui' && 'd-btn-active'"
+              @click="toggleMode('ui')"
+            >
+              <IconBrowser
+                class="size-4"
+              />
+            </div>
+        </div>
       </div>
     </div>
   </div>

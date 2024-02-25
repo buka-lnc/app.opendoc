@@ -2,7 +2,13 @@ require('@rushstack/eslint-patch/modern-module-resolution')
 
 module.exports = {
   root: true,
-  extends: ['@buka/eslint-config/typescript/recommended'],
+  parser: '@typescript-eslint/parser',
+  plugins: ['typescript-eslint'],
+  extends: [
+    'plugin:@typescript-eslint/recommended',
+    'plugin:@typescript-eslint/recommended-requiring-type-checking',
+    '@buka/eslint-config/typescript/recommended',
+  ],
   parserOptions: {
     sourceType: 'module',
     project: true,

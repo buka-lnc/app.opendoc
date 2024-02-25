@@ -25,7 +25,6 @@ const { pending } = useAsyncData(
     apiDocumentFile.value = apiDocumentFileRes
   },
 )
-// route.params
 </script>
 
 <template>
