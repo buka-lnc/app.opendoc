@@ -88,10 +88,9 @@ export default defineNuxtConfig({
           // 使用addComponents方法添加新的组件样式
           addComponents(newProseStyles)
         }),
-
       ],
       daisyui: {
-        themes: ['light'],
+        themes: ['corporate'],
         prefix: 'd-',
       },
     },

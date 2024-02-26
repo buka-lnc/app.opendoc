@@ -27,16 +27,34 @@ const props = defineProps<{
 
     <div role="tablist" class="d-navbar-center">
       <div class="d-tabs d-tabs-boxed d-tabs">
-        <NuxtLink
+        <template
           v-for="apiDocument of props.application.apiDocuments"
           :key="apiDocument.id"
-          :to="`/application/${$route.params.application_id}/api-document/${apiDocument.id}`"
-          replace
-          class="d-tab"
-          active-class="d-tab-active"
         >
-          {{ apiDocument.title }}
-        </NuxtLink>
+          <NuxtLink
+            v-if="apiDocument.type === 'openapi'"
+            :to="`/application/${$route.params.application_id}/api-document/${apiDocument.id}/openapi/ui`"
+            replace
+            class="d-tab"
+            :class="{
+              'd-tab-active': $route.params.api_document_id === apiDocument.id,
+            }"
+          >
+            {{ apiDocument.title }}
+          </NuxtLink>
+
+          <NuxtLink
+            v-if="apiDocument.type === 'markdown'"
+            :to="`/application/${$route.params.application_id}/api-document/${apiDocument.id}/markdown`"
+            replace
+            class="d-tab"
+            :class="{
+              'd-tab-active': $route.params.api_document_id === apiDocument.id,
+            }"
+          >
+            {{ apiDocument.title }}
+          </NuxtLink>
+        </template>
       </div>
     </div>
 
