@@ -1,0 +1,32 @@
+.schema-keyword {
+  @apply text-blue-500
+}
+
+.schema-string {
+  @apply text-green-500
+}
+
+.schema-number{
+  @apply text-orange-500
+}
+
+.schema-punctuation,
+.schema-operator {
+  @apply text-gray-500
+}
+
+.schema-line {
+  @apply cursor-default
+}
+.schema-line:hover {
+  @apply bg-gray-100 cursor-default
+}
+
+.schema-block-start:hover + .schema-block,
+.schema-block-start:hover + .schema-block +.schema-block-end {
+  @apply bg-gray-100
+}
+
+.schema-builtin {
+  @apply text-purple-500
+}

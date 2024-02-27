@@ -28,6 +28,7 @@ import 'prismjs/themes/prism.min.css'
 import 'prism-themes/themes/prism-a11y-dark.min.css'
 import 'prismjs/components/prism-bash.js'
 import 'prismjs/components/prism-docker.js'
+import 'prismjs/components/prism-typescript.js'
 import 'prismjs/components/prism-yaml.js'
 import 'prismjs/plugins/line-numbers/prism-line-numbers.css'
 import 'prismjs/plugins/toolbar/prism-toolbar.min.css'
@@ -72,5 +73,8 @@ const { data: html } = useAsyncData(
 .markdown code[class*=language-],
 .markdown pre[class*=language-] {
   text-shadow: none;
+}
+.markdown .token.operator {
+  background: none;
 }
 </style>

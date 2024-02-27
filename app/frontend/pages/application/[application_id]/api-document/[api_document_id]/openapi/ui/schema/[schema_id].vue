@@ -1,10 +1,15 @@
 <script setup lang="ts">
+import { OPENDOC_SCHEMAS_INJECT_KEY } from '~/constants/opendoc-schemas-inject-key'
 
+const route = useRoute()
+const { schemas } = inject(OPENDOC_SCHEMAS_INJECT_KEY, { schemas: [] })
+
+const schema = computed(() => toValue(schemas).find(schema => schema.id === route.params.schema_id))
 </script>
 
 <template>
-  <div>
-    [schema_id]
+  <div class="size-full p-10 bg-base-100 text-base-content">
+    <schema-lang-ts-type v-if="schema" :schema="schema.value" />
   </div>
 </template>
 

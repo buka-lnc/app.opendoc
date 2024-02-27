@@ -75,7 +75,7 @@ provide(OPENDOC_OPERATIONS_INJECT_KEY, { operations })
 
 <template>
   <div class="size-full flex">
-    <ul class="flex-0 d-menu d-menu-lg w-fit h-full border-r">
+    <ul class="flex-0 d-menu d-menu-lg w-fit h-full border-r p-0">
       <li>
         <NuxtLink
           class="d-tooltip d-tooltip-right p-4"

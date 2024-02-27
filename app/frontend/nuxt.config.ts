@@ -17,7 +17,10 @@ export default defineNuxtConfig({
     'nuxt-monaco-editor',
   ],
 
-  css: ['~/assets/css/main.css'],
+  css: [
+    '~/assets/css/main.css',
+    '~/assets/css/schema.css',
+  ],
 
   // build: {
   //   extractCSS: true,
