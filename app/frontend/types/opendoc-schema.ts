@@ -2,9 +2,14 @@ import { OpenAPIV3 } from 'openapi-types'
 
 export interface OpendocSchema {
   /**
-   * @example "#/components/schemas/OpendocSchema"
+   * @example md5("#/components/schemas/OpendocSchema")
    */
   id: string
+
+  /**
+   * @example "#/components/schemas/OpendocSchema"
+   */
+  $id: string
 
   /**
    * @example "OpendocSchema"

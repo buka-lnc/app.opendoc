@@ -11,10 +11,14 @@ defineProps<{
     <div class="schema-line schema-punctuation">
       {
     </div>
-    <schema-lang-ts-properties
-      v-if="$props.schema.properties"
-      :properties="$props.schema.properties"
-    />
+
+    <div>
+      <schema-lang-ts-properties
+        v-if="$props.schema.properties"
+        :properties="$props.schema.properties"
+      />
+    </div>
+
     <div class="schema-line schema-punctuation">
       }
     </div>

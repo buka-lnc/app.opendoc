@@ -30,3 +30,11 @@
 .schema-builtin {
   @apply text-purple-500
 }
+
+.schema-prompt {
+  @apply bg-gray-50 text-gray-400 px-1 rounded-sm mr-2
+}
+
+.schema-prompt:hover {
+  @apply text-gray-700
+}

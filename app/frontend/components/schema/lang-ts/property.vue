@@ -1,71 +1,100 @@
 <script setup lang="ts">
 import { OpenAPIV3 } from 'openapi-types'
-import md5 from 'md5'
-import { OPENDOC_SCHEMAS_INJECT_KEY } from '~/constants/opendoc-schemas-inject-key'
+import { OPENDOC_REFERENCE_MAP_INJECT_KEY } from '~/constants/opendoc-reference-map-inject-key'
 
-const { schemas } = inject(OPENDOC_SCHEMAS_INJECT_KEY, { schemas: [] })
+const { referenceMap } = inject(OPENDOC_REFERENCE_MAP_INJECT_KEY, { referenceMap: new Map() })
 
 const props = defineProps<{
   name: string
   value: OpenAPIV3.SchemaObject | OpenAPIV3.ReferenceObject
 }>()
-console.log('🚀 ~ props:', props)
 
-function decodeReference ($ref: string): OpenAPIV3.SchemaObject | undefined {
-  const pool = toValue(schemas)
-  let target: OpenAPIV3.SchemaObject | OpenAPIV3.ReferenceObject | undefined = { $ref }
+const schema = computed(() => props.value)
 
-  while (target && '$ref' in target) {
-    const id: string = md5(target.$ref)
-    target = pool.find(s => s.id === id)?.value
-  }
+const resolvedSchema = ref<OpenAPIV3.SchemaObject | undefined>()
+const arrayDimension = ref(0)
+const referencePath = ref<string[]>([])
 
-  return target
-}
+watch(
+  () => props.value,
+  () => {
+    arrayDimension.value = 0
+    referencePath.value = []
 
-const schema = computed(() => {
-  const value = props.value
+    function flattenRef (schema: OpenAPIV3.ReferenceObject): OpenAPIV3.SchemaObject | undefined {
+      const ref = schema.$ref
+      const result = toValue(referenceMap).get(ref)
+      if (!result) return
 
-  if ('type' in value) return value
-  if ('$ref' in value) return decodeReference(value.$ref)
+      referencePath.value.push(...result.path)
+      if (!result.schema) return
 
-  return undefined
+      if (result.schema.type === 'array') {
+        return flattenArray(result.schema)
+      }
+
+      return result.schema
+    }
+
+    function flattenArray (schema: OpenAPIV3.ArraySchemaObject): OpenAPIV3.SchemaObject | undefined {
+      if (!(typeof schema.items === 'object')) return schema
+
+      arrayDimension.value += arrayDimension.value + 1
+      const items = schema.items
+      if ('$ref' in items && items.$ref) return flattenRef(items)
+
+      return items as OpenAPIV3.SchemaObject
+    }
+
+    if ('$ref' in props.value && props.value.$ref) {
+      resolvedSchema.value = flattenRef(props.value)
+    } else if ('type' in props.value && props.value.type === 'array') {
+      resolvedSchema.value = flattenArray(props.value)
+    } else {
+      resolvedSchema.value = props.value as OpenAPIV3.SchemaObject
+    }
+  },
+  {
+    immediate: true,
+  },
+)
+
+const isBasicType = computed(() => {
+  if (!resolvedSchema.value) return false
+  if (!('type' in resolvedSchema.value)) return false
+  if (!resolvedSchema.value.type) return false
+
+  return resolvedSchema.value.type !== 'object' && resolvedSchema.value.type !== 'array'
 })
-
-const schemaItems = computed(() => {
-  if (!schema.value || !('type' in schema.value) || schema.value.type !== 'array') return undefined
-  if (typeof schema.value.items !== 'object') return undefined
-
-  return '$ref' in schema.value.items ? decodeReference(schema.value.items.$ref) : schema.value.items
-})
-
-const isObject = computed(() => !!schema.value && 'type' in schema.value && schema.value.type === 'object')
-const isArray = computed(() => !!schema.value && 'type' in schema.value && schema.value.type === 'array')
-const isArrayObject = computed(() => {
-  const value = schemaItems.value
-  if (!value) return false
-  return value.type === 'object'
-})
+const isObject = computed(() => !!resolvedSchema.value && 'type' in schema.value && resolvedSchema.value.type === 'object')
 </script>
 
 <template>
   <div class="pl-6 schema-line schema-block-start">
     <span>{{ name }}</span>
     <span class="pr-2">:</span>
-    <span v-if="!isObject && !isArray">
-      <schema-lang-ts-type :schema="value" />
-      <span v-if="isArray">[]</span>
+
+    <span v-if="referencePath.length > 0" class="schema-prompt">
+      <span>&lt;</span>
+      <schema-lang-ts-ref :reference="referencePath[referencePath.length - 1]" />
+      <schema-lang-ts-array-dimension :dimension="arrayDimension" />
+      <span>&gt;</span>
     </span>
-    <span v-if="isObject || isArrayObject" class="schema-punctuation">{</span>
+
+    <span v-if="isBasicType">
+      <schema-lang-ts-type :schema="value" />
+      <schema-lang-ts-array-dimension :dimension="arrayDimension" />
+    </span>
+
+    <span v-if="isObject" class="schema-punctuation">{</span>
   </div>
-  <div v-if="isObject && schema?.properties" class="pl-6 schema-block">
-    <schema-lang-ts-properties :properties="schema.properties" />
+
+  <div v-if="isObject && resolvedSchema?.properties" class="pl-6 schema-block">
+    <schema-lang-ts-properties :properties="resolvedSchema.properties" />
   </div>
-  <div v-if="isArrayObject && schemaItems?.properties" class="pl-6 schema-block">
-    <schema-lang-ts-properties :properties="schemaItems.properties" />
-  </div>
-  <div v-if="isObject || isArrayObject" class="pl-6 schema-line schema-block-end">
+
+  <div v-if="isObject" class="pl-6 schema-line schema-block-end">
     <span class="schema-punctuation">}</span>
-    <span v-if="isArray">[]</span>
+    <schema-lang-ts-array-dimension :dimension="arrayDimension" />
   </div>
 </template>

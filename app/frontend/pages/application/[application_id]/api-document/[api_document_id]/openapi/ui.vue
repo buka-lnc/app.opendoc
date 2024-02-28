@@ -1,13 +1,17 @@
 <script setup lang="ts">
+import * as R from 'ramda'
 import type { OpenAPIV3 } from 'openapi-types'
 import { IconApi, IconSchema, IconServer, IconSdk } from '@tabler/icons-vue'
 import md5 from 'md5'
 import { inject } from 'vue'
 import { OpendocSchema } from '~/types/opendoc-schema'
 import { OpendocOperation } from '~/types/opendoc-operation'
+import { OpendocReference } from '~/types/opendoc-reference'
 import { API_DOCUMENT_FILE_INJECT_KEY } from '~/constants/api-document-file-inject-key'
 import { OPENDOC_SCHEMAS_INJECT_KEY } from '~/constants/opendoc-schemas-inject-key'
+import { OPENDOC_SCHEMA_MAP_INJECT_KEY } from '~/constants/opendoc-schema-map-inject-key'
 import { OPENDOC_SERVERS_INJECT_KEY } from '~/constants/opendoc-servers-inject-key'
+import { OPENDOC_REFERENCE_MAP_INJECT_KEY } from '~/constants/opendoc-reference-map-inject-key'
 import { OPENDOC_OPERATIONS_INJECT_KEY } from '~/constants/opendoc-operations-inject-key'
 
 const route = useRoute()
@@ -35,13 +39,57 @@ const openapi = computed((): OpenAPIV3.Document => {
 const servers = computed(() => openapi.value.servers || [])
 provide(OPENDOC_SERVERS_INJECT_KEY, { servers })
 
-const schemas = computed(() => Object.entries(openapi.value.components?.schemas || {})
-  .map(([title, value]): OpendocSchema => ({
-    id: md5(`#/components/schemas/${title}`),
-    title,
-    value,
-  })))
+const schemaMap = computed(
+  () => Object.entries(openapi.value.components?.schemas || {})
+    .reduce(
+      (map, [title, value]) => {
+        const $id = `#/components/schemas/${title}`
+        const id = md5($id)
+        const schema: OpendocSchema = { id, $id, title, value }
+        map.set(id, schema)
+        map.set($id, schema)
 
+        return map
+      },
+      new Map<string, OpendocSchema>(),
+    ),
+)
+provide(OPENDOC_SCHEMA_MAP_INJECT_KEY, { schemaMap })
+
+function resolveSchema ($ref: string): OpendocReference {
+  let ref = $ref
+  let target: OpenAPIV3.SchemaObject | undefined
+  const path: string[] = [ref]
+
+  while (true) {
+    const schema = schemaMap.value.get(ref)
+    if (!schema) break
+    if ('$ref' in schema.value && schema.value.$ref) {
+      ref = schema.value.$ref
+      path.push(ref)
+      continue
+    }
+
+    target = schema.value as OpenAPIV3.SchemaObject
+    break
+  }
+
+  return { path, schema: target }
+}
+
+const referenceMap = computed(() => {
+  const map = new Map<string, OpendocReference>()
+
+  for (const schema of schemaMap.value.values()) {
+    const $id = schema.$id
+    map.set($id, resolveSchema($id))
+  }
+
+  return map
+})
+provide(OPENDOC_REFERENCE_MAP_INJECT_KEY, { referenceMap })
+
+const schemas = computed(() => R.uniq([...schemaMap.value.values()]))
 provide(OPENDOC_SCHEMAS_INJECT_KEY, { schemas })
 
 const methods = ['get', 'post', 'put', 'delete', 'patch', 'options', 'head', 'trace']

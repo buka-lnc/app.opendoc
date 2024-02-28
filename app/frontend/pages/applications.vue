@@ -31,7 +31,7 @@ const { pending } = useAsyncData(
 <template>
   <NuxtLoadingIndicator v-if="pending" />
 
-  <div class="container mx-auto flex flex-col">
+  <div class="container mx-auto flex flex-col font-mono">
     <div class="flex-0 py-4 flex items-center justify-between">
       <h1 class="select-none text-5xl font-bold text-gray-600">
         Applications

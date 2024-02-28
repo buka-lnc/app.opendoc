@@ -1,20 +1,21 @@
 <script setup lang="ts">
-import { OpenAPIV3 } from 'openapi-types'
 import md5 from 'md5'
-import { OPENDOC_SCHEMAS_INJECT_KEY } from '~/constants/opendoc-schemas-inject-key'
 
 const props = defineProps<{
-  schema: OpenAPIV3.ReferenceObject
+  reference: string
 }>()
-
-const { schemas } = inject(OPENDOC_SCHEMAS_INJECT_KEY, { schemas: [] })
-const schema = computed(() => toValue(schemas).find(s => s.id === md5(props.schema.$ref))?.value)
+console.log('🚀 ~ reference:', props.reference)
+const id = computed(() => md5(props.reference))
+const title = computed(() => props.reference.split('/').pop())
 </script>
 
 <template>
-  <span>
-    <schema-lang-ts-type v-if="schema" :schema="schema" />
-  </span>
+  <NuxtLink
+    class="schema-ref"
+    :to="`/application/${$route.params.application_id}/api-document/${$route.params.api_document_id}/openapi/ui/schema/${id}`"
+  >
+    {{ title }}
+  </NuxtLink>
 </template>
 
 <style scoped lang="postcss">
