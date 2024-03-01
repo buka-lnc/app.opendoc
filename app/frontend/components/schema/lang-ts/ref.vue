@@ -4,7 +4,7 @@ import md5 from 'md5'
 const props = defineProps<{
   reference: string
 }>()
-console.log('🚀 ~ reference:', props.reference)
+
 const id = computed(() => md5(props.reference))
 const title = computed(() => props.reference.split('/').pop())
 </script>

@@ -1,22 +1,5 @@
-.schema-keyword {
-  @apply text-blue-500
-}
-
-.schema-string {
-  @apply text-green-500
-}
-
-.schema-number{
-  @apply text-orange-500
-}
-
-.schema-punctuation,
-.schema-operator {
-  @apply text-gray-500
-}
-
 .schema-line {
-  @apply cursor-default
+  @apply cursor-default transition
 }
 .schema-line:hover {
   @apply bg-gray-100 cursor-default
@@ -27,14 +10,34 @@
   @apply bg-gray-100
 }
 
+
+.schema-keyword {
+  @apply text-blue-500
+}
+
+.schema-string {
+  @apply text-green-500
+}
+
+.schema-constant,
+.schema-number {
+  @apply text-orange-500
+}
+
+.schema-prompt:hover,
+.schema-ref:hover {
+  @apply font-bold
+}
+
+.schema-punctuation,
+.schema-operator {
+  @apply text-gray-500
+}
+
 .schema-builtin {
   @apply text-purple-500
 }
 
-.schema-prompt {
-  @apply bg-gray-50 text-gray-400 px-1 rounded-sm mr-2
-}
-
 .schema-prompt:hover {
-  @apply text-gray-700
+  @apply font-bold
 }

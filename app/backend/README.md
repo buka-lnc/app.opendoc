@@ -13,6 +13,11 @@ interface Test {
     t4: any;
   }[];
   t5: "a" | "b" | "c";
+  t6: ApiDocument;
+}
+
+class T {
+  a: A;
 }
 ```
 
