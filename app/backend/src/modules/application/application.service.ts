@@ -69,4 +69,15 @@ export class ApplicationService {
       },
     }
   }
+
+  async deleteApplication(idOrCode: string): Promise<void> {
+    const application = this.applicationRepo.find({
+      $or: [
+        { id: idOrCode },
+        { code: idOrCode }
+      ]
+    })
+
+    await this.em.remove(application)
+  }
 }

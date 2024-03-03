@@ -1,4 +1,4 @@
-import { OpenAPIV3 } from "openapi-types"
+import { OpenAPIV3 } from 'openapi-types'
 
 export interface OpendocOperation {
   /**
@@ -17,6 +17,11 @@ export interface OpendocOperation {
   method: string
 
   title: string
+
+  /**
+   * @example false
+   */
+  deprecated: boolean
 
   value: OpenAPIV3.OperationObject
 }

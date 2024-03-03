@@ -24,20 +24,19 @@ watch(
 
 <template>
   <div class="size-full flex items-stretch">
-    <ul class="flex-0 d-menu d-menu-sm bg-base-200 overflow-hidden p-0 w-fit h-full">
+    <ul class="bg-base-200 flex-0 d-menu d-menu-sm bg-base-200 overflow-hidden p-0 w-fit h-full">
       <li v-for="operation in operations" :key="operation.id">
         <NuxtLink
-          class="inline-flex flex-col items-start gap-0"
+          class="gap-0 rounded-none p-0"
           :to="`${prefix}/${operation.id}`"
           active-class="d-active"
         >
-          <span class="leading-6">{{ operation.title }}</span>
-          <span class="text-xs leading-3 text-gray-400">{{ operation.pathname }}</span>
+          <OperationPreviewCard :operation="operation" />
         </NuxtLink>
       </li>
     </ul>
 
-    <div class="flex-1">
+    <div class="flex-1 bg-base-300">
       <NuxtPage />
     </div>
   </div>

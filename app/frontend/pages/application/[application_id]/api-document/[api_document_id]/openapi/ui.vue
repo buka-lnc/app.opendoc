@@ -110,6 +110,7 @@ const operations = computed((): OpendocOperation[] => {
         id: md5(`#${pathname}/${method}`),
         pathname,
         method,
+        deprecated: !!operation.deprecated || false,
         title: operation.summary || operation.operationId || '',
         value: operation,
       })

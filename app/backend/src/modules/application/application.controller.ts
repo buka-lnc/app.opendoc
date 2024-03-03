@@ -1,9 +1,10 @@
 import { QueryApplicationsResponseDTO } from './dto/query-applications-response.dto'
-import { Body, Controller, Get, Param, Put, Query } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Param, Put, Query } from '@nestjs/common'
 import { ApplicationService } from './application.service'
 import { RegisterApplicationDTO } from './dto/register-application.dto'
 import { QueryApplicationsDTO } from './dto/query-applications.dto'
 import { Application } from './entity/application.entity'
+import { ApiOperation } from '@nestjs/swagger'
 
 
 @Controller('application')
@@ -12,6 +13,9 @@ export class ApplicationController {
     private readonly applicationService: ApplicationService
   ) {}
 
+  @ApiOperation({
+    deprecated: true,
+  })
   @Put()
   async registerApplication(
     @Body() dto: RegisterApplicationDTO
@@ -31,6 +35,13 @@ export class ApplicationController {
     @Param('applicationIdOrCode') applicationIdOrCode: string
   ): Promise<Application> {
     return this.applicationService.queryApplicationByIdOrCode(applicationIdOrCode)
+  }
+
+  @Delete(':applicationIdOrCode')
+  async deleteApplication(
+    @Param('applicationIdOrCode') applicationIdOrCode: string
+  ): Promise<void> {
+    await this.applicationService.deleteApplication(applicationIdOrCode)
   }
 }
 
