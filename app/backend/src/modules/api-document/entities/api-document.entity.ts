@@ -8,6 +8,9 @@ import { Application } from '~/modules/application/entity/application.entity'
 @Entity()
 @Unique({ properties: ['application', 'code'] })
 export class ApiDocument extends BaseEntity {
+  /**
+   * 文档类型
+   */
   @IsEnum(API_DOCUMENT_TYPE)
   @Enum({
     items: () => API_DOCUMENT_TYPE,
@@ -15,6 +18,9 @@ export class ApiDocument extends BaseEntity {
   })
   type: API_DOCUMENT_TYPE
 
+  /**
+   * 易于阅读的文档编码(Folder下唯一)
+   */
   @IsString()
   @MaxLength(64)
   @Property({
@@ -24,6 +30,9 @@ export class ApiDocument extends BaseEntity {
   })
   code: string
 
+  /**
+   * 文档排序
+   */
   @IsString()
   @Property({
     type: t.integer,
@@ -31,6 +40,9 @@ export class ApiDocument extends BaseEntity {
   })
   order: number = 1
 
+  /**
+   * 文档名称
+   */
   @IsString()
   @MaxLength(128)
   @IsOptional()
@@ -40,6 +52,9 @@ export class ApiDocument extends BaseEntity {
   })
   title: string = ''
 
+  /**
+   * 文档所属的应用
+   */
   @ManyToOne({
     entity: () => Application,
     comment: '文档所属的应用',
@@ -47,6 +62,9 @@ export class ApiDocument extends BaseEntity {
   })
   application: Ref<Application>
 
+  /**
+   * 文档文件的指纹
+   */
   @MaxLength(10)
   @IsString()
   @Property({
@@ -55,6 +73,9 @@ export class ApiDocument extends BaseEntity {
   })
   hash: string = ''
 
+  /**
+   * 文档文件的版本
+   */
   @IsString()
   @MaxLength(16)
   @Property({
@@ -63,6 +84,9 @@ export class ApiDocument extends BaseEntity {
   })
   version: string = '0.0.0'
 
+  /**
+   * 文档文件的定时同步地址
+   */
   @IsString()
   @MaxLength(255)
   @Property({

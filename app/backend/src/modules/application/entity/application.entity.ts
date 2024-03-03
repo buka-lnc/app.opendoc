@@ -5,6 +5,9 @@ import { ApiDocument } from '~/modules/api-document/entities/api-document.entity
 
 @Entity()
 export class Application extends BaseEntity {
+  /**
+   * 唯一应用编码
+   */
   @Property({
     columnType: 'varchar(63)',
     unique: true,
@@ -12,6 +15,9 @@ export class Application extends BaseEntity {
   })
   code: string
 
+  /**
+   * 应用名称
+   */
   @Property({
     columnType: 'varchar(127)',
     comment: '应用名称',

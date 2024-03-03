@@ -67,10 +67,16 @@ const isBasicType = computed(() => {
 const isObject = computed(() => !!resolvedSchema.value && 'type' in resolvedSchema.value && resolvedSchema.value.type === 'object')
 
 const [fold, toggleFold] = useToggle(true)
+
+const [showPopover, toggleShowPopover] = useToggle(false)
 </script>
 
 <template>
-  <div class="relative pl-6 schema-line schema-block-start">
+  <div
+    class="relative pl-6 schema-line schema-block-start"
+    @mouseover="toggleShowPopover(true)"
+    @mouseleave="toggleShowPopover(false)"
+  >
     <span>{{ name }}</span>
     <span class="pr-2">:</span>
 
@@ -100,6 +106,11 @@ const [fold, toggleFold] = useToggle(true)
     </span>
 
     <span v-if="isBasicType">
+      <schema-lang-ts-popover
+        :show="showPopover"
+        :schema="resolvedSchema"
+      />
+
       <schema-lang-ts-type :schema="value" />
       <schema-lang-ts-array-dimension :dimension="arrayDimension" />
     </span>
