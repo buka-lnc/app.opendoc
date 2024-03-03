@@ -8,11 +8,11 @@ const props = defineProps<{
 
 <template>
   <NuxtLink
-    class="d-card bg-base-100 shadow-sm hover:shadow-md transition-shadow cursor-pointer"
+    class="group d-card bg-base-100 hover:shadow-md transition-shadow cursor-pointer border-b last:border-none border-neutral"
     :to="`/application/${props.application.id}`"
   >
     <div class="d-card-body">
-      <div class="d-card-title">
+      <div class="d-card-title group-hover:font-bold">
         {{ props.application.title }}
       </div>
 

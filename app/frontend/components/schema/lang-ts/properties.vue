@@ -3,6 +3,7 @@ import { OpenAPIV3 } from 'openapi-types'
 
 defineProps<{
   properties: OpenAPIV3.NonArraySchemaObject['properties']
+  required: OpenAPIV3.NonArraySchemaObject['required']
 }>()
 </script>
 
@@ -15,6 +16,7 @@ defineProps<{
       v-bind="$attrs"
       :name="value[0]"
       :value="value[1]"
+      :required="$props.required?.includes(value[0]) || false"
     />
   </template>
 </template>

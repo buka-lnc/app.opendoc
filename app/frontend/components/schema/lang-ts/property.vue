@@ -7,6 +7,7 @@ const { referenceMap } = inject(OPENDOC_REFERENCE_MAP_INJECT_KEY, { referenceMap
 const props = defineProps<{
   name: string
   value: OpenAPIV3.SchemaObject | OpenAPIV3.ReferenceObject
+  required: boolean
 }>()
 
 const resolvedSchema = ref<OpenAPIV3.SchemaObject | undefined>()
@@ -78,11 +79,13 @@ const [showPopover, toggleShowPopover] = useToggle(false)
     @mouseleave="toggleShowPopover(false)"
   >
     <span>{{ name }}</span>
+    <span v-if="!$props.required">?</span>
+
     <span class="pr-2">:</span>
 
     <span
       v-if="!fold && referencePath.length > 0"
-      class="bg-gray-50 text-gray-400 px-1 rounded-sm mr-2"
+      class="bg-base-200 text-base-content/70 px-1 rounded-sm mr-2"
     >
       <span>&lt;</span>
       <schema-lang-ts-ref :reference="referencePath[referencePath.length - 1]" />
@@ -130,7 +133,10 @@ const [showPopover, toggleShowPopover] = useToggle(false)
     v-if="!fold && isObject && resolvedSchema?.properties"
     class="pl-6 schema-block"
   >
-    <schema-lang-ts-properties :properties="resolvedSchema.properties" />
+    <schema-lang-ts-properties
+      :properties="resolvedSchema.properties"
+      :required="resolvedSchema.required"
+    />
   </div>
 
   <div v-if="!fold && isObject" class="pl-6 schema-line schema-block-end">

@@ -16,6 +16,7 @@ defineProps<{
       <schema-lang-ts-properties
         v-if="$props.schema.properties"
         :properties="$props.schema.properties"
+        :required="$props.schema.required"
       />
     </div>
 

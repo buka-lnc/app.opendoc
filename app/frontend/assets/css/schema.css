@@ -2,12 +2,12 @@
   @apply cursor-default transition
 }
 .schema-line:hover {
-  @apply bg-gray-100 cursor-default
+  @apply bg-neutral cursor-default
 }
 
 .schema-block-start:hover + .schema-block,
 .schema-block-start:hover + .schema-block +.schema-block-end {
-  @apply bg-gray-100
+  @apply bg-neutral
 }
 
 

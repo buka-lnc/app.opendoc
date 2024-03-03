@@ -43,11 +43,11 @@ watch(
     <StuffedLoading :pending="pending">
       <div v-if="application" class="flex flex-col size-full overflow-y-scroll">
         <ApplicationNavbar
-          class="sticky z-10 top-0 border-b"
+          class="sticky z-10 top-0"
           :application="application"
         />
 
-        <div class="flex-1 py overflow-hidden">
+        <div class="flex-1 py overflow-hidden bg-base-200">
           <NuxtPage />
         </div>
       </div>

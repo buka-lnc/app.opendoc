@@ -10,7 +10,6 @@ const { apiDocumentFile } = inject(API_DOCUMENT_FILE_INJECT_KEY, { apiDocumentFi
     <JsonCodeView
       class="size-full"
       :value="apiDocumentFile"
-      theme="vs"
     />
   </template>
 </template>

@@ -19,6 +19,10 @@ onMounted(() => {
   document.addEventListener('mousemove', traceMouse)
 })
 
+onUnmounted(() => {
+  document.removeEventListener('mousemove', traceMouse)
+})
+
 // watch(
 //   () => popover.value,
 //   () => {
@@ -56,8 +60,9 @@ onMounted(() => {
     >
       <div
         v-show="props.show"
+        v-bind="$attrs"
         ref="popover"
-        class="absolute bg-base-100 shadow-sm rounded-sm top-0 left-0"
+        class="absolute top-0 left-0 popover bg-base-200 border border-[#5b6078] text-[#c5ceef]"
       >
         <slot />
       </div>

@@ -24,9 +24,10 @@ watch(
 
 <template>
   <div class="size-full flex items-stretch">
-    <ul class="flex-0 d-menu d-menu-sm bg-base-100 overflow-hidden border-r p-0 w-fit h-full">
+    <ul class="flex-0 d-menu d-menu-sm bg-base-200 overflow-hidden p-0 w-fit h-full">
       <li v-for="schema in schemas" :key="schema.title">
         <NuxtLink
+          class="rounded-none"
           :to="`${prefix}/${schema.id}`"
           active-class="d-active"
         >

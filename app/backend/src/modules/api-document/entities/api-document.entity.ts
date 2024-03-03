@@ -10,6 +10,8 @@ import { Application } from '~/modules/application/entity/application.entity'
 export class ApiDocument extends BaseEntity {
   /**
    * 文档类型
+   *
+   * @example "openapi"
    */
   @IsEnum(API_DOCUMENT_TYPE)
   @Enum({

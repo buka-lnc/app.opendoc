@@ -3,7 +3,6 @@ import * as monaco from 'monaco-editor'
 
 const props = defineProps<{
   value: string
-  theme: string
 }>()
 
 const modalValue = computed(() => {
@@ -14,8 +13,9 @@ const modalValue = computed(() => {
   }
 })
 
-const options: monaco.editor.IEditorConstructionOptions = {
+const options: monaco.editor.IStandaloneEditorConstructionOptions = {
   readOnly: true,
+  theme: 'vs-dark',
 }
 
 </script>
@@ -24,6 +24,5 @@ const options: monaco.editor.IEditorConstructionOptions = {
     lang="json"
     :model-value="modalValue"
     :options="options"
-    :theme="props.theme"
   />
 </template>

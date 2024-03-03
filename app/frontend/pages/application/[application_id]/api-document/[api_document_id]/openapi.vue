@@ -10,7 +10,7 @@ const prefix = computed(() => `/application/${String(route.params.application_id
     <div class="flex-1 overflow-hidden">
       <NuxtPage />
     </div>
-    <div class="flex-0 border-t px-2 flex items-center justify-between">
+    <div class="flex-0 px-2 flex items-center justify-between">
       <div />
 
       <div class="flex items-center space-x-1">

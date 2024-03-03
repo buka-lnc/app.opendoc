@@ -123,13 +123,18 @@ provide(OPENDOC_OPERATIONS_INJECT_KEY, { operations })
 
 <template>
   <div class="size-full flex">
-    <ul class="flex-0 d-menu d-menu-lg w-fit h-full border-r p-0">
+    <ul class="bg-base-100 flex-0 d-menu d-menu-lg w-fit h-full p-0">
       <li>
         <NuxtLink
-          class="d-tooltip d-tooltip-right p-4"
+          :class="[
+            'd-tooltip d-tooltip-right',
+            'p-4 rounded-none',
+            'hover:bg-base-100 active:!bg-base-100 focus:!bg-base-100 focus-visible:!bg-base-100',
+            'hover:text-primary/70 active:!text-primary focus:text-primary focus-visible:text-primary'
+          ]"
           data-tip="接口模型/Operation"
           :to="`${prefix}/operation`"
-          active-class="d-active"
+          active-class="text-primary"
         >
           <IconApi class="size-8" />
         </NuxtLink>
@@ -137,10 +142,15 @@ provide(OPENDOC_OPERATIONS_INJECT_KEY, { operations })
 
       <li>
         <NuxtLink
-          class="d-tooltip d-tooltip-right p-4"
+          :class="[
+            'd-tooltip d-tooltip-right',
+            'p-4 rounded-none',
+            'hover:bg-base-100 active:!bg-base-100 focus:!bg-base-100 focus-visible:!bg-base-100',
+            'hover:text-primary/70 active:!text-primary focus:text-primary focus-visible:text-primary'
+          ]"
           data-tip="数据结构/Schema"
           :to="`${prefix}/schema`"
-          active-class="d-active"
+          active-class="text-primary"
         >
           <IconSchema class="size-8" />
         </NuxtLink>
@@ -148,10 +158,15 @@ provide(OPENDOC_OPERATIONS_INJECT_KEY, { operations })
 
       <li>
         <NuxtLink
-          class="d-tooltip d-tooltip-right p-4"
+          :class="[
+            'd-tooltip d-tooltip-right',
+            'p-4 rounded-none',
+            'hover:bg-base-100 active:!bg-base-100 focus:!bg-base-100 focus-visible:!bg-base-100',
+            'hover:text-primary/70 active:!text-primary focus:text-primary focus-visible:text-primary'
+          ]"
           data-tip="服务器/Server"
           :to="`${prefix}/server`"
-          active-class="d-active"
+          active-class="text-primary"
         >
           <IconServer class="size-8" />
         </NuxtLink>
@@ -159,10 +174,15 @@ provide(OPENDOC_OPERATIONS_INJECT_KEY, { operations })
 
       <li>
         <NuxtLink
-          class="d-tooltip d-tooltip-right p-4"
+          :class="[
+            'd-tooltip d-tooltip-right',
+            'p-4 rounded-none',
+            'hover:bg-base-100 active:!bg-base-100 focus:!bg-base-100 focus-visible:!bg-base-100',
+            'hover:text-primary/70 active:!text-primary focus:text-primary focus-visible:text-primary'
+          ]"
           data-tip="SDK"
           :to="`${prefix}/sdk`"
-          active-class="d-active"
+          active-class="text-primary"
         >
           <IconSdk class="size-8" />
         </NuxtLink>
