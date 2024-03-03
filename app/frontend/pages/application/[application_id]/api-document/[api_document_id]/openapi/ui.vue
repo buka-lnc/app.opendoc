@@ -120,6 +120,21 @@ const operations = computed((): OpendocOperation[] => {
   return operations
 })
 provide(OPENDOC_OPERATIONS_INJECT_KEY, { operations })
+
+const router = useRouter()
+watch(
+  () => toValue(operations),
+  async () => {
+    const ops = toValue(operations)
+
+    if (route.path === prefix.value && ops.length > 0) {
+      await router.replace(`${prefix.value}/operation/${ops[0].id}`)
+    }
+  },
+  {
+    immediate: true,
+  },
+)
 </script>
 
 <template>
