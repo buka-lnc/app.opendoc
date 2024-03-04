@@ -19,6 +19,11 @@ export interface OpendocOperation {
   title: string
 
   /**
+   * @example "获取用户信息"
+   */
+  description: string
+
+  /**
    * @example false
    */
   deprecated: boolean

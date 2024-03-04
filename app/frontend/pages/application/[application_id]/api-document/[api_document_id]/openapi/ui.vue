@@ -112,6 +112,7 @@ const operations = computed((): OpendocOperation[] => {
         method,
         deprecated: !!operation.deprecated || false,
         title: operation.summary || operation.operationId || '',
+        description: operation.description || 'No description',
         value: operation,
       })
     }

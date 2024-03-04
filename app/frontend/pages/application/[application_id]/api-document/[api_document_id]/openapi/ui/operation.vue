@@ -24,17 +24,19 @@ watch(
 
 <template>
   <div class="size-full flex items-stretch">
-    <ul class="bg-base-200 flex-0 d-menu d-menu-sm bg-base-200 overflow-hidden p-0 w-fit h-full">
-      <li v-for="operation in operations" :key="operation.id">
-        <NuxtLink
-          class="gap-0 rounded-none p-0"
-          :to="`${prefix}/${operation.id}`"
-          active-class="d-active"
-        >
-          <OperationPreviewCard :operation="operation" />
-        </NuxtLink>
-      </li>
-    </ul>
+    <div class="bg-base-200 flex-0 overflow-y-scroll overflow-x-hidden h-full">
+      <ul class="flex-nowrap d-menu d-menu-sm bg-base-200 p-0 w-72 h-full">
+        <li v-for="operation in operations" :key="operation.id">
+          <NuxtLink
+            class="block rounded-none p-0 w-full"
+            :to="`${prefix}/${operation.id}`"
+            active-class="d-active"
+          >
+            <OperationPreviewCard :operation="operation" />
+          </NuxtLink>
+        </li>
+      </ul>
+    </div>
 
     <div class="flex-1 bg-base-300">
       <NuxtPage />

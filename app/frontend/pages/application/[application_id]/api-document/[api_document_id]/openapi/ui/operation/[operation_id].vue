@@ -12,6 +12,8 @@ const method = computed(() => operation.value?.method || 'unknown')
 
 const textColor = useOpenapiMethodTextColor(method)
 const color = computed(() => (deprecated.value ? 'text-gray-600' : textColor.value))
+
+const description = computed(() => operation.value?.description || 'No description')
 </script>
 
 <template>
@@ -27,6 +29,8 @@ const color = computed(() => (deprecated.value ? 'text-gray-600' : textColor.val
         {{ pathname }}
       </span>
     </div>
+
+    <div>{{ description }}</div>
   </div>
 </template>
 

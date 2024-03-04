@@ -17,6 +17,9 @@ export class ApiDocumentController {
     private readonly apiDocumentService: ApiDocumentService,
   ) {}
 
+  /**
+   * 注册 API 文档
+   */
   @ApiConsumes('multipart/form-data')
   @Post()
   @UseInterceptors(FileInterceptor('file'))
@@ -35,6 +38,9 @@ export class ApiDocumentController {
     await this.apiDocumentService.syncDocuments()
   }
 
+  /**
+   * 查询 API 文档列表
+   */
   @Get()
   async queryApiDocuments(
     @Query() dto: QueryApiDocumentsDTO,
@@ -42,6 +48,9 @@ export class ApiDocumentController {
     return this.apiDocumentService.queryDocuments(dto)
   }
 
+  /**
+   * 查询 API 文档详情
+   */
   @Get(':apiDocumentId')
   async queryApiDocumentById(
     @Param('apiDocumentId') id: string,
@@ -49,6 +58,9 @@ export class ApiDocumentController {
     return this.apiDocumentService.queryDocumentById(id)
   }
 
+  /**
+   * 查询 API 文档文件内容
+   */
   @Get(':apiDocumentId/file')
   async queryApiDocumentFile(
     @Param('apiDocumentId') id: string,
