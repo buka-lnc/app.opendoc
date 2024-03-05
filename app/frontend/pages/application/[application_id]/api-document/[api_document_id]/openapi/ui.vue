@@ -142,67 +142,39 @@ watch(
   <div class="size-full flex">
     <ul class="bg-base-100 flex-0 d-menu d-menu-lg w-fit h-full p-0">
       <li>
-        <NuxtLink
-          :class="[
-            'd-tooltip d-tooltip-right',
-            'p-4 rounded-none',
-            'hover:bg-base-100 active:!bg-base-100 focus:!bg-base-100 focus-visible:!bg-base-100',
-            'hover:text-primary/70 active:!text-primary focus:text-primary focus-visible:text-primary'
-          ]"
-          data-tip="接口模型/Operation"
+        <openapi-menu-button
           :to="`${prefix}/operation`"
-          active-class="text-primary"
+          tip="接口文档/OpenAPI"
         >
           <IconApi class="size-8" />
-        </NuxtLink>
+        </openapi-menu-button>
       </li>
 
       <li>
-        <NuxtLink
-          :class="[
-            'd-tooltip d-tooltip-right',
-            'p-4 rounded-none',
-            'hover:bg-base-100 active:!bg-base-100 focus:!bg-base-100 focus-visible:!bg-base-100',
-            'hover:text-primary/70 active:!text-primary focus:text-primary focus-visible:text-primary'
-          ]"
-          data-tip="数据结构/Schema"
+        <openapi-menu-button
+          tip="数据结构/Schema"
           :to="`${prefix}/schema`"
-          active-class="text-primary"
         >
           <IconSchema class="size-8" />
-        </NuxtLink>
+        </openapi-menu-button>
       </li>
 
       <li>
-        <NuxtLink
-          :class="[
-            'd-tooltip d-tooltip-right',
-            'p-4 rounded-none',
-            'hover:bg-base-100 active:!bg-base-100 focus:!bg-base-100 focus-visible:!bg-base-100',
-            'hover:text-primary/70 active:!text-primary focus:text-primary focus-visible:text-primary'
-          ]"
-          data-tip="服务器/Server"
+        <openapi-menu-button
+          tip="服务器/Server"
           :to="`${prefix}/server`"
-          active-class="text-primary"
         >
           <IconServer class="size-8" />
-        </NuxtLink>
+        </openapi-menu-button>
       </li>
 
       <li>
-        <NuxtLink
-          :class="[
-            'd-tooltip d-tooltip-right',
-            'p-4 rounded-none',
-            'hover:bg-base-100 active:!bg-base-100 focus:!bg-base-100 focus-visible:!bg-base-100',
-            'hover:text-primary/70 active:!text-primary focus:text-primary focus-visible:text-primary'
-          ]"
-          data-tip="SDK"
+        <openapi-menu-button
+          tip="SDK"
           :to="`${prefix}/sdk`"
-          active-class="text-primary"
         >
           <IconSdk class="size-8" />
-        </NuxtLink>
+        </openapi-menu-button>
       </li>
     </ul>
 

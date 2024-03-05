@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useElementHover } from '@vueuse/core'
 import { OpendocOperation } from '~/types/opendoc-operation.js'
 
 const props = defineProps<{
@@ -6,13 +7,29 @@ const props = defineProps<{
 }>()
 
 const deprecated = computed(() => !!props.operation.deprecated)
+const description = computed(() => props.operation.value.description)
+
+const card = ref()
+const isCardHover = useElementHover(card)
+
 </script>
 
 <template>
   <div
-    class="d-tooltip d-tooltip-right flex items-start py-2 px-2 space-x-1 size-full"
+    ref="card"
+    class="flex items-start py-2 px-2 space-x-1 size-full"
     :data-tip="operation.description"
   >
+    <tip
+      v-if="description || deprecated"
+      :show="isCardHover"
+      :error="deprecated"
+      class="space-x-2"
+    >
+      <span v-if="deprecated">废弃</span>
+      <span v-if="description">{{ description }}</span>
+    </tip>
+
     <div class="flex-0">
       <OperationIcon :operation="props.operation" />
     </div>

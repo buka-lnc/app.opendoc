@@ -101,6 +101,8 @@ export default defineNuxtConfig({
             accent: colors.gray[950],
             neutral: '#2f3347',
             'neutral-content': '#cad3f5',
+            error: colors.red[600],
+            'error-content': '#ffffff',
             'base-100': '#181926',
             'base-200': '#1e2030',
             'base-300': '#24273a',

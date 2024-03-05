@@ -3,7 +3,6 @@ const props = defineProps<{
   show: boolean
 }>()
 
-// const mark = ref<HTMLSpanElement | null>(null)
 const popover = ref<HTMLDivElement | null>(null)
 
 function traceMouse (e: MouseEvent) {
@@ -22,36 +21,9 @@ onMounted(() => {
 onUnmounted(() => {
   document.removeEventListener('mousemove', traceMouse)
 })
-
-// watch(
-//   () => popover.value,
-//   () => {
-//     const parentNode = mark.value?.parentNode
-//     if (
-//       !popover.value ||
-//     !parentNode ||
-//     !('getBoundingClientRect' in parentNode)
-//     ) {
-//       return
-//     }
-
-//     const rect = (parentNode as HTMLElement).getBoundingClientRect()
-//     const width = popover.value.offsetWidth
-
-//     popover.value.style.top = `${rect.top + rect.height + 4}px`
-//     popover.value.style.left = `${rect.left + rect.width}px`
-//   },
-//   {
-//     immediate: true,
-//   },
-// )
-
 </script>
 
 <template>
-  <!-- 用于跟随元素 -->
-  <!-- <span ref="mark" /> -->
-
   <Teleport to="body">
     <Transition
       enter-active-class="transition-opacity"
