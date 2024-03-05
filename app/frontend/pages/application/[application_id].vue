@@ -41,7 +41,7 @@ watch(
 <template>
   <div class="size-full font-mono">
     <StuffedLoading :pending="pending">
-      <div v-if="application" class="flex flex-col size-full overflow-y-scroll">
+      <div v-if="application" class="flex flex-col size-full overflow-y-auto">
         <ApplicationNavbar
           class="sticky z-10 top-0"
           :application="application"

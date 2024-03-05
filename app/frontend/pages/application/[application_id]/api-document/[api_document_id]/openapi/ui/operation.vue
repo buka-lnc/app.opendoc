@@ -24,7 +24,7 @@ watch(
 
 <template>
   <div class="size-full flex items-stretch">
-    <div class="bg-base-200 flex-0 overflow-y-scroll overflow-x-hidden h-full">
+    <div class="bg-base-200 flex-0 overflow-y-auto overflow-x-hidden h-full">
       <ul class="flex-nowrap d-menu d-menu-sm bg-base-200 p-0 w-72 h-full">
         <li v-for="operation in operations" :key="operation.id">
           <NuxtLink
