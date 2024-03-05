@@ -9,13 +9,16 @@ const { apiDocumentFile } = inject(API_DOCUMENT_FILE_INJECT_KEY, { apiDocumentFi
 </script>
 
 <template>
-  <template v-if="apiDocument && apiDocumentFile">
+  <div
+    v-if="apiDocument && apiDocumentFile"
+    class="size-full overflow-x-hidden overflow-y-auto"
+  >
     <markdown-view
       v-if="apiDocument.type === 'markdown'"
       class="w-full mx-auto py-6"
       :content="apiDocumentFile"
     />
-  </template>
+  </div>
 </template>
 
 <style scoped lang="postcss">
