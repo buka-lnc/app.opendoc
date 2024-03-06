@@ -13,9 +13,7 @@ useHead({
 <template>
   <div class="w-full !h-full">
     <Head>
-      <Title>Val.istar.Guo Blog</Title>
-      <VitePwaManifest />
-
+      <Title>OpenDoc</Title>
       <!-- <Script src="/script/fix-100vh.js" /> -->
 
       <!-- <Link rel="preload" href="/fonts/unifontexmono.woff2" as="font" crossorigin="anonymous" /> -->

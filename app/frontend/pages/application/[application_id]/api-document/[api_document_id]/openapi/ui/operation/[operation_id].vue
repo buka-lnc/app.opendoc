@@ -17,20 +17,52 @@ const description = computed(() => operation.value?.description || 'No descripti
 </script>
 
 <template>
-  <div class="p-10 bg-base-300">
-    <div
-      class="text-2xl space-x-2"
-      :class="deprecated && 'line-through opacity-60'"
-    >
-      <span class="flex-0 uppercase" :class="!deprecated && color">
-        {{ method }}
-      </span>
-      <span>
-        {{ pathname }}
-      </span>
+  <div class="p-10 bg-base-300 space-y-8">
+    <div>
+      <div
+        class="text-2xl space-x-2"
+        :class="deprecated && 'line-through opacity-60'"
+      >
+        <span class="flex-0 uppercase" :class="!deprecated && color">
+          {{ method }}
+        </span>
+        <span>
+          {{ pathname }}
+        </span>
+      </div>
+
+      <div>{{ description }}</div>
     </div>
 
-    <div>{{ description }}</div>
+    <div role="tablist" class="d-tabs d-tabs-lifted">
+      <a role="tab" class="d-tab">Request Header</a>
+
+      <div role="tabpanel" class="d-tab-content bg-base-100 border-base-300 rounded-box p-6">
+        123
+      </div>
+
+      <a role="tab" class="d-tab">Request Query</a>
+      <div role="tabpanel" class="d-tab-content bg-base-100 border-base-300 rounded-box p-6">
+        123
+      </div>
+
+      <a role="tab" class="d-tab d-tab-active">Request Body</a>
+      <div role="tabpanel" class="d-tab-content bg-base-100 border-base-300 rounded-box p-6">
+        <operation-request-body v-if="operation" :operation="operation.value" />
+      </div>
+    </div>
+
+    <div role="tablist" class="d-tabs d-tabs-lifted">
+      <a role="tab" class="d-tab d-tab-active">Response Header</a>
+      <div role="tabpanel" class="d-tab-content bg-base-100 border-base-300 rounded-box p-6">
+        123
+      </div>
+
+      <a role="tab" class="d-tab">Response Body</a>
+      <div role="tabpanel" class="d-tab-content bg-base-100 border-base-300 rounded-box p-6">
+        123
+      </div>
+    </div>
   </div>
 </template>
 

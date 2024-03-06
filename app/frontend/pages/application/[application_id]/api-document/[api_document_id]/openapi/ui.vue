@@ -13,6 +13,7 @@ import { OPENDOC_SCHEMA_MAP_INJECT_KEY } from '~/constants/opendoc-schema-map-in
 import { OPENDOC_SERVERS_INJECT_KEY } from '~/constants/opendoc-servers-inject-key'
 import { OPENDOC_REFERENCE_MAP_INJECT_KEY } from '~/constants/opendoc-reference-map-inject-key'
 import { OPENDOC_OPERATIONS_INJECT_KEY } from '~/constants/opendoc-operations-inject-key'
+import { SCHEMA_INJECT_KEY } from '~/constants/schema-inject-key.js'
 
 const route = useRoute()
 const prefix = computed(() => `/application/${String(route.params.application_id)}/api-document/${String(route.params.api_document_id)}/openapi/ui`)
@@ -35,6 +36,7 @@ const openapi = computed((): OpenAPIV3.Document => {
 
   return JSON.parse(str) as OpenAPIV3.Document
 })
+provide(SCHEMA_INJECT_KEY, openapi)
 
 const servers = computed(() => openapi.value.servers || [])
 provide(OPENDOC_SERVERS_INJECT_KEY, { servers })

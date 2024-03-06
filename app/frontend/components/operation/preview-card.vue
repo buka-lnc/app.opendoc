@@ -29,6 +29,7 @@ const isCardHover = useElementHover(card)
       <span v-if="deprecated">废弃</span>
       <span v-if="description">{{ description }}</span>
     </tip>
+
     <div class="flex items-start py-2 px-2 space-x-1 size-full">
       <div class="flex-0">
         <OperationIcon :operation="props.operation" />

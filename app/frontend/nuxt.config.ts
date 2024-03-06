@@ -5,8 +5,7 @@ import colors from 'tailwindcss/colors'
 
 export default defineNuxtConfig({
   devtools: { enabled: false },
-  app: {
-  },
+  app: {},
 
   ssr: false,
   modules: [
@@ -22,10 +21,6 @@ export default defineNuxtConfig({
     '~/assets/css/main.css',
     '~/assets/css/schema.css',
   ],
-
-  // build: {
-  //   extractCSS: true,
-  // },
 
   nitro: {
     devProxy: {

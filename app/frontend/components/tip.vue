@@ -1,4 +1,8 @@
 <script setup lang="ts">
+defineOptions({
+  inheritAttrs: false,
+})
+
 const props = defineProps<{
   show: boolean
   error?: boolean
