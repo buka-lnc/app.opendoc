@@ -17,7 +17,7 @@ const isCardHover = useElementHover(card)
 <template>
   <div
     ref="card"
-    class="flex items-start py-2 px-2 space-x-1 size-full"
+    class="size-full"
     :data-tip="operation.description"
   >
     <tip
@@ -29,24 +29,25 @@ const isCardHover = useElementHover(card)
       <span v-if="deprecated">废弃</span>
       <span v-if="description">{{ description }}</span>
     </tip>
+    <div class="flex items-start py-2 px-2 space-x-1 size-full">
+      <div class="flex-0">
+        <OperationIcon :operation="props.operation" />
+      </div>
 
-    <div class="flex-0">
-      <OperationIcon :operation="props.operation" />
-    </div>
-
-    <div class="flex-auto flex flex-col justify-center items-start h-full overflow-hidden">
-      <span
-        class="leading-4 max-w-full truncate"
-        :class="deprecated && 'text-gray-600'"
-      >
-        {{ props.operation.title }}
-      </span>
-      <span
-        class="text-xs leading-4 text-gray-400 max-w-full truncate"
-        :class="deprecated && 'text-gray-600'"
-      >
-        {{ props.operation.pathname }}
-      </span>
+      <div class="flex-auto flex flex-col justify-center items-start h-full overflow-hidden">
+        <span
+          class="leading-4 max-w-full truncate"
+          :class="deprecated && 'text-gray-600'"
+        >
+          {{ props.operation.title }}
+        </span>
+        <span
+          class="text-xs leading-4 text-gray-400 max-w-full truncate"
+          :class="deprecated && 'text-gray-600'"
+        >
+          {{ props.operation.pathname }}
+        </span>
+      </div>
     </div>
   </div>
 </template>
