@@ -34,22 +34,13 @@ const description = computed(() => operation.value?.description || 'No descripti
       <div>{{ description }}</div>
     </div>
 
-    <div role="tablist" class="d-tabs d-tabs-lifted">
-      <a role="tab" class="d-tab">Request Header</a>
+    <operation-request
+      v-if="operation"
+      :operation="operation.value"
+    />
 
-      <div role="tabpanel" class="d-tab-content bg-base-100 border-base-300 rounded-box p-6">
-        123
-      </div>
-
-      <a role="tab" class="d-tab">Request Query</a>
-      <div role="tabpanel" class="d-tab-content bg-base-100 border-base-300 rounded-box p-6">
-        123
-      </div>
-
-      <a role="tab" class="d-tab d-tab-active">Request Body</a>
-      <div role="tabpanel" class="d-tab-content bg-base-100 border-base-300 rounded-box p-6">
-        <operation-request-body v-if="operation" :operation="operation.value" />
-      </div>
+    <div class="text-xl font-bold text-base-content/70">
+      Response
     </div>
 
     <div role="tablist" class="d-tabs d-tabs-lifted">

@@ -50,6 +50,8 @@ const [requestBodyMediaSchema] = useDereference<OpenAPIV3.SchemaObject | OpenAPI
       />
     </div>
   </div>
+
+  <empty-placeholder v-else class="flex-1 py-8" />
 </template>
 
 <style scoped lang="postcss">

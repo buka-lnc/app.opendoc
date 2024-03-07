@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common'
+import { Controller, Get, Headers } from '@nestjs/common'
 import { HealthCheck, HealthCheckResult } from '@nestjs/terminus'
 import { AppService } from './app.service'
 
@@ -8,7 +8,10 @@ export class AppController {
 
   @Get('health')
   @HealthCheck()
-  checkHealth(): Promise<HealthCheckResult> {
+  checkHealth(
+    @Headers('Authorization') auth: string
+  ): Promise<HealthCheckResult> {
+    console.log('🚀 ~ AppController ~ auth:', auth)
     return this.appService.checkHealth()
   }
 }

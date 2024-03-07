@@ -1,43 +1,19 @@
-import * as R from 'ramda'
-import { SCHEMA_INJECT_KEY } from '~/constants/schema-inject-key'
+import { useDereferenceFn } from './use-dereference-fn'
 
 export function useDereference<T> (o: MaybeRefOrGetter<Object | undefined>): [Ref<T | undefined>, Ref<string[]>] {
-  const schema = inject(SCHEMA_INJECT_KEY)
   const re = computed(() => toValue(o))
+
+  const dereference = useDereferenceFn()
 
   const target = ref<T>()
   const paths = ref<string[]>([])
 
   watchEffect(() => {
-
-  })
-
-  watchEffect(() => {
-    target.value = undefined
-    paths.value = []
-
     const v = re.value
-    const s = toValue(schema)
+    const [t, p] = dereference<T>(v)
 
-    if (!v || !('$ref' in v) || typeof v.$ref !== 'string') {
-      target.value = v as T
-      return
-    }
-
-    let $ref = v.$ref
-
-    while ($ref) {
-      paths.value.push($ref)
-      if (!$ref.startsWith('#')) break
-
-      const result = R.path($ref.split('/').slice(1), s) as any
-      if (!result || !('$ref' in result) || typeof result.$ref !== 'string') {
-        target.value = result as (T | undefined)
-        break
-      }
-
-      $ref = result.$ref
-    }
+    target.value = t
+    paths.value = p
   })
 
   return [target, paths]
