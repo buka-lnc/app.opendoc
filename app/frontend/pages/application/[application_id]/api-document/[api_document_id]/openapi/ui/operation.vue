@@ -29,7 +29,7 @@ watch(
         <li v-for="operation in operations" :key="operation.id">
           <NuxtLink
             class="block rounded-none p-0 w-full"
-            :to="`${prefix}/${operation.id}`"
+            :to="{ path: `${prefix}/${operation.id}`, query: $route.query }"
             active-class="d-active"
           >
             <OperationPreviewCard :operation="operation" />

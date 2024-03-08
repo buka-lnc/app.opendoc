@@ -1,10 +1,10 @@
 import { QueryApplicationsResponseDTO } from './dto/query-applications-response.dto'
-import { Body, Controller, Delete, Get, Param, Put, Query } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Header, Param, Put, Query } from '@nestjs/common'
 import { ApplicationService } from './application.service'
 import { RegisterApplicationDTO } from './dto/register-application.dto'
 import { QueryApplicationsDTO } from './dto/query-applications.dto'
 import { Application } from './entity/application.entity'
-import { ApiOperation } from '@nestjs/swagger'
+import { ApiOperation, ApiResponse } from '@nestjs/swagger'
 
 
 @Controller('application')

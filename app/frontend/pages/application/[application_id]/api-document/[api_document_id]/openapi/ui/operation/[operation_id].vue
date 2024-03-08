@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import * as R from 'ramda'
+import { OpenAPIV3 } from 'openapi-types'
 import { OPENDOC_OPERATIONS_INJECT_KEY } from '~/constants/opendoc-operations-inject-key'
 
+const dereference = useDereferenceFn()
 const { operations } = inject(OPENDOC_OPERATIONS_INJECT_KEY, { operations: [] })
 
 const route = useRoute()
@@ -14,10 +17,17 @@ const textColor = useOpenapiMethodTextColor(method)
 const color = computed(() => (deprecated.value ? 'text-gray-600' : textColor.value))
 
 const description = computed(() => operation.value?.description || 'No description')
+
+const responses = computed(
+  () => R.mapObjIndexed(
+    response => dereference<OpenAPIV3.ResponseObject>(response)[0],
+    operation.value?.value.responses || {},
+  ),
+)
 </script>
 
 <template>
-  <div class="p-10 bg-base-300 space-y-8">
+  <div class="p-10 bg-base-300 space-y-8 overflow-y-auto size-full">
     <div>
       <div
         class="text-2xl space-x-2"
@@ -34,26 +44,32 @@ const description = computed(() => operation.value?.description || 'No descripti
       <div>{{ description }}</div>
     </div>
 
+    <div class="text-xl font-bold text-base-content/70">
+      Request
+    </div>
+
     <operation-request
       v-if="operation"
       :operation="operation.value"
     />
 
-    <div class="text-xl font-bold text-base-content/70">
-      Response
-    </div>
+    <template v-for="(response, code) in responses" :key="code">
+      <template v-if="response">
+        <div class="flex flex-col">
+          <div class="text-xl font-bold text-base-content/70">
+            Response {{ code }}
+          </div>
+          <div v-if="response" class="text-sm text-base-content/40">
+            {{ response.description }}
+          </div>
+        </div>
 
-    <div role="tablist" class="d-tabs d-tabs-lifted">
-      <a role="tab" class="d-tab d-tab-active">Response Header</a>
-      <div role="tabpanel" class="d-tab-content bg-base-100 border-base-300 rounded-box p-6">
-        123
-      </div>
-
-      <a role="tab" class="d-tab">Response Body</a>
-      <div role="tabpanel" class="d-tab-content bg-base-100 border-base-300 rounded-box p-6">
-        123
-      </div>
-    </div>
+        <operation-response
+          :code="<string>code"
+          :response="response"
+        />
+      </template>
+    </template>
   </div>
 </template>
 
