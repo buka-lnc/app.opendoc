@@ -27,7 +27,7 @@ const isCardHover = useElementHover(card)
       class="space-x-2"
     >
       <span v-if="deprecated">废弃</span>
-      <span v-if="description">{{ description }}</span>
+      <span v-if="description">：{{ description }}</span>
     </tip>
 
     <div class="flex items-start py-2 px-2 space-x-1 size-full">

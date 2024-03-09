@@ -8,23 +8,8 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get('health')
-  @ApiResponse({
-    status: 201,
-    headers: {
-      'Cache-Control': {
-        description: 'no-cache',
-        schema: {
-          type: 'string',
-          example: 'no-cache',
-        },
-      },
-    }
-  })
   @HealthCheck()
-  checkHealth(
-    @Headers('Authorization') auth: string
-  ): Promise<HealthCheckResult> {
-    console.log('🚀 ~ AppController ~ auth:', auth)
+  checkHealth(): Promise<HealthCheckResult> {
     return this.appService.checkHealth()
   }
 }

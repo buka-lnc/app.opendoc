@@ -4,19 +4,19 @@ import { ApplicationService } from './application.service'
 import { RegisterApplicationDTO } from './dto/register-application.dto'
 import { QueryApplicationsDTO } from './dto/query-applications.dto'
 import { Application } from './entity/application.entity'
-import { ApiOperation, ApiResponse } from '@nestjs/swagger'
+import { ApiInternalServerErrorResponse, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger'
 
 
+@ApiTags('Application')
 @Controller('application')
+@ApiInternalServerErrorResponse({ description: '系统异常' })
 export class ApplicationController {
   constructor(
     private readonly applicationService: ApplicationService
   ) {}
 
-  @ApiOperation({
-    deprecated: true,
-  })
   @Put()
+  @ApiOperation({ summary: '注册应用' })
   async registerApplication(
     @Body() dto: RegisterApplicationDTO
   ): Promise<void> {
@@ -24,6 +24,7 @@ export class ApplicationController {
   }
 
   @Get()
+  @ApiOperation({ summary: '查询应用列表' })
   async queryApplications(
     @Query() dto: QueryApplicationsDTO
   ): Promise<QueryApplicationsResponseDTO> {
@@ -31,6 +32,7 @@ export class ApplicationController {
   }
 
   @Get(':applicationIdOrCode')
+  @ApiOperation({ summary: '查询应用详情' })
   async queryApplication(
     @Param('applicationIdOrCode') applicationIdOrCode: string
   ): Promise<Application> {
@@ -38,6 +40,7 @@ export class ApplicationController {
   }
 
   @Delete(':applicationIdOrCode')
+  @ApiOperation({ summary: '删除应用' })
   async deleteApplication(
     @Param('applicationIdOrCode') applicationIdOrCode: string
   ): Promise<void> {

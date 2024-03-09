@@ -29,6 +29,9 @@ dependencies:
   '@mikro-orm/nestjs':
     specifier: ^5.2.3
     version: 5.2.3(@mikro-orm/core@6.0.6)(@nestjs/common@10.3.1)(@nestjs/core@10.3.1)
+  '@nanogiants/nestjs-swagger-api-exception-decorator':
+    specifier: ^1.6.11
+    version: 1.6.11(@nestjs/common@10.3.1)(@nestjs/swagger@7.2.0)
   '@nestjs/common':
     specifier: ^10.3.0
     version: 10.3.1(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.1.14)(rxjs@7.8.1)
@@ -1129,6 +1132,16 @@ packages:
       '@mikro-orm/core': 6.0.6
       '@nestjs/common': 10.3.1(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.1.14)(rxjs@7.8.1)
       '@nestjs/core': 10.3.1(@nestjs/common@10.3.1)(@nestjs/platform-express@10.3.1)(reflect-metadata@0.1.14)(rxjs@7.8.1)
+    dev: false
+
+  /@nanogiants/nestjs-swagger-api-exception-decorator@1.6.11(@nestjs/common@10.3.1)(@nestjs/swagger@7.2.0):
+    resolution: {integrity: sha512-F2Jvj52BDFvKo0I5LFj+kSjwLQecqrs+ibDWokq6Xkod/wrT6gxGia1H/z7ENGk9XwwXfQL9rZt4W/+Vwp0ZhQ==}
+    peerDependencies:
+      '@nestjs/common': ^7.6.0 || ^8.0.0 || ^9.0.0 || ^10.0.0
+      '@nestjs/swagger': ^4.8.1 || ^5.0.0 || ^6.0.0 || ^7.0.0
+    dependencies:
+      '@nestjs/common': 10.3.1(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.1.14)(rxjs@7.8.1)
+      '@nestjs/swagger': 7.2.0(@nestjs/common@10.3.1)(@nestjs/core@10.3.1)(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.1.14)
     dev: false
 
   /@nestjs/cli@10.3.0:

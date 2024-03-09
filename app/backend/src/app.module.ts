@@ -13,6 +13,7 @@ import { MysqlConfig } from './config/mysql.config'
 import { PinoConfig } from './config/pino.config'
 import { ApiDocumentModule } from './modules/api-document/api-document.module'
 import { ApplicationModule } from './modules/application/application.module'
+import { ExampleModule } from './modules/example/example.module'
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { ApplicationModule } from './modules/application/application.module'
     TerminusModule,
     ApiDocumentModule,
     ApplicationModule,
+    ExampleModule,
   ],
   controllers: [AppController],
   providers: [AppService],

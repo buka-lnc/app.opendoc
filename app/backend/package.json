@@ -28,6 +28,7 @@
     "@mikro-orm/core": "^6.0.5",
     "@mikro-orm/mysql": "^6.0.5",
     "@mikro-orm/nestjs": "^5.2.3",
+    "@nanogiants/nestjs-swagger-api-exception-decorator": "^1.6.11",
     "@nestjs/common": "^10.3.0",
     "@nestjs/config": "^3.1.1",
     "@nestjs/core": "^10.3.0",

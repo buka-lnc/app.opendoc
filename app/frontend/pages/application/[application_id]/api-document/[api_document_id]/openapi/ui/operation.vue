@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import * as R from 'ramda'
 import { OPENDOC_OPERATIONS_INJECT_KEY } from '~/constants/opendoc-operations-inject-key'
+import { OpendocOperation } from '~/types/opendoc-operation.js'
 
 const { operations } = inject(OPENDOC_OPERATIONS_INJECT_KEY, { operations: [] })
 
@@ -20,21 +22,44 @@ watch(
     immediate: true,
   },
 )
+
+const groups = computed(() => {
+  const operationMap = R.groupBy(
+    (operation: OpendocOperation) => JSON.stringify(operation.value.tags || []),
+    toValue(operations),
+  )
+
+  const groups = R.toPairs(operationMap)
+    .map(([key, value]) => ({
+      key,
+      tags: JSON.parse(key),
+      operations: value,
+    }))
+    .sort(R.ascend(o => o.tags.length))
+
+  return groups
+})
 </script>
 
 <template>
   <div class="size-full flex items-stretch">
     <div class="bg-base-200 flex-0 overflow-y-auto overflow-x-hidden h-full">
       <ul class="flex-nowrap d-menu d-menu-sm bg-base-200 p-0 w-72 h-full">
-        <li v-for="operation in operations" :key="operation.id">
-          <NuxtLink
-            class="block rounded-none p-0 w-full"
-            :to="{ path: `${prefix}/${operation.id}`, query: $route.query }"
-            active-class="d-active"
-          >
-            <OpenapiOperationPreviewCard :operation="operation" />
-          </NuxtLink>
-        </li>
+        <template v-for="group in groups" :key="group.key">
+          <li v-if="group.tags.length" class="d-menu-title">
+            {{ group.tags.join(',') }}
+          </li>
+
+          <li v-for="operation in group.operations" :key="operation.id">
+            <NuxtLink
+              class="block rounded-none p-0 w-full"
+              :to="{ path: `${prefix}/${operation.id}`, query: $route.query }"
+              active-class="d-active"
+            >
+              <OpenapiOperationPreviewCard :operation="operation" />
+            </NuxtLink>
+          </li>
+        </template>
       </ul>
     </div>
 
