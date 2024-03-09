@@ -32,7 +32,7 @@ watch(
             :to="{ path: `${prefix}/${operation.id}`, query: $route.query }"
             active-class="d-active"
           >
-            <OperationPreviewCard :operation="operation" />
+            <OpenapiOperationPreviewCard :operation="operation" />
           </NuxtLink>
         </li>
       </ul>

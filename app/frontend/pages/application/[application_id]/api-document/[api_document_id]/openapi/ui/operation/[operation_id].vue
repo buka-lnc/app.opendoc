@@ -64,7 +64,7 @@ const responses = computed(
           </div>
         </div>
 
-        <operation-response
+        <openapi-operation-response
           :code="<string>code"
           :response="response"
         />

@@ -82,17 +82,17 @@ const [showPopover, toggleShowPopover] = useToggle(false)
       class="bg-base-200 text-base-content/70 px-1 rounded-sm mr-2"
     >
       <span>&lt;</span>
-      <schema-lang-ts-ref :reference="referencePath[referencePath.length - 1]" />
-      <schema-lang-ts-array-dimension :dimension="arrayDimension" />
+      <json-schema-lang-ts-ref :reference="referencePath[referencePath.length - 1]" />
+      <json-schema-lang-ts-array-dimension :dimension="arrayDimension" />
       <span>&gt;</span>
     </span>
 
     <span v-if="fold && referencePath.length > 0">
-      <schema-lang-ts-ref
+      <json-schema-lang-ts-ref
         class="schema-constant"
         :reference="referencePath[referencePath.length - 1]"
       />
-      <schema-lang-ts-array-dimension :dimension="arrayDimension" />
+      <json-schema-lang-ts-array-dimension :dimension="arrayDimension" />
 
       <button
         class="cursor-pointer mx-2 hover:font-bold"
@@ -103,13 +103,13 @@ const [showPopover, toggleShowPopover] = useToggle(false)
     </span>
 
     <span v-if="isBasicType">
-      <schema-lang-ts-popover
+      <json-schema-lang-ts-popover
         :show="showPopover"
         :schema="resolvedSchema"
       />
 
-      <schema-lang-ts-type :schema="value" />
-      <schema-lang-ts-array-dimension :dimension="arrayDimension" />
+      <json-schema-lang-ts-type :schema="value" />
+      <json-schema-lang-ts-array-dimension :dimension="arrayDimension" />
     </span>
 
     <button
@@ -127,7 +127,7 @@ const [showPopover, toggleShowPopover] = useToggle(false)
     v-if="!fold && isObject && resolvedSchema?.properties"
     class="pl-6 schema-block"
   >
-    <schema-lang-ts-properties
+    <json-schema-lang-ts-properties
       :properties="resolvedSchema.properties"
       :required="resolvedSchema.required"
     />
@@ -135,6 +135,6 @@ const [showPopover, toggleShowPopover] = useToggle(false)
 
   <div v-if="!fold && isObject" class="pl-6 schema-line schema-block-end">
     <span class="schema-punctuation">}</span>
-    <schema-lang-ts-array-dimension :dimension="arrayDimension" />
+    <json-schema-lang-ts-array-dimension :dimension="arrayDimension" />
   </div>
 </template>

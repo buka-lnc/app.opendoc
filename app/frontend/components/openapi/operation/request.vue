@@ -101,17 +101,17 @@ const requestBody = computed(() => dereference<OpenAPIV3.RequestBodyObject>(prop
       <div ref="panelContent" class="overflow-hidden">
         <div class="p-6">
           <div v-if="active=== 'headers'">
-            <schema-lang-ts-type v-if="headersSchema" :schema="headersSchema" />
+            <json-schema-lang-ts-type v-if="headersSchema" :schema="headersSchema" />
             <empty-placeholder v-else class="flex-1 py-8" />
           </div>
 
           <div v-if="active=== 'query'">
-            <schema-lang-ts-type v-if="querySchema" :schema="querySchema" />
+            <json-schema-lang-ts-type v-if="querySchema" :schema="querySchema" />
             <empty-placeholder v-else class="flex-1 py-8" />
           </div>
 
           <div v-if="active=== 'body'">
-            <operation-body v-if="requestBody?.content" :body="requestBody?.content" />
+            <openapi-operation-body v-if="requestBody?.content" :body="requestBody?.content" />
             <empty-placeholder v-else class="flex-1 py-8" />
           </div>
         </div>

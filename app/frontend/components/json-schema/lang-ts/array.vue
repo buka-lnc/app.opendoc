@@ -8,7 +8,7 @@ defineProps<{
 
 <template>
   <span v-if="$props.schema.type === 'array'">
-    <schema-lang-ts-type
+    <json-schema-lang-ts-type
       v-if="$props.schema.items"
       :schema="$props.schema.items"
     />

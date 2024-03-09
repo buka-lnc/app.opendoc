@@ -46,7 +46,7 @@ console.log('🚀 ~ schema:', schema.value)
     </div>
 
     <div>
-      <SchemaLangTsType
+      <json-schema-lang-ts-type
         v-if="schema"
         :schema="schema"
       />

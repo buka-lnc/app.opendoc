@@ -12,7 +12,7 @@ defineProps<{
     v-for="value in Object.entries($props.properties || {})"
     :key="value[0]"
   >
-    <schema-lang-ts-property
+    <json-schema-lang-ts-property
       v-bind="$attrs"
       :name="value[0]"
       :value="value[1]"

@@ -80,12 +80,12 @@ const headersSchema = useOpenapiParametersToJsonSchema(headers)
         <div ref="panelContent" class="overflow-hidden">
           <div class="p-6">
             <div v-if="active=== 'headers'">
-              <schema-lang-ts-type v-if="headersSchema" :schema="headersSchema" />
+              <json-schema-lang-ts-type v-if="headersSchema" :schema="headersSchema" />
               <empty-placeholder v-else class="flex-1 py-8" />
             </div>
 
             <div v-if="active=== 'body'">
-              <operation-body v-if="response.content" :body="response.content" />
+              <openapi-operation-body v-if="response.content" :body="response.content" />
               <empty-placeholder v-else class="flex-1 py-8" />
             </div>
           </div>

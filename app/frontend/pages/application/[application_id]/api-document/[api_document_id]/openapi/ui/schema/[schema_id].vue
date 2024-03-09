@@ -9,7 +9,7 @@ const schema = computed(() => toValue(schemas).find(schema => schema.id === rout
 
 <template>
   <div class="size-full p-10 bg-base-300 text-base-content">
-    <schema-lang-ts-type v-if="schema" :schema="schema.value" />
+    <json-schema-lang-ts-type v-if="schema" :schema="schema.value" />
   </div>
 </template>
 

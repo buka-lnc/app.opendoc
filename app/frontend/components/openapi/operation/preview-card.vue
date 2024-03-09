@@ -32,7 +32,7 @@ const isCardHover = useElementHover(card)
 
     <div class="flex items-start py-2 px-2 space-x-1 size-full">
       <div class="flex-0">
-        <OperationIcon :operation="props.operation" />
+        <openapi-operation-icon :operation="props.operation" />
       </div>
 
       <div class="flex-auto flex flex-col justify-center items-start h-full overflow-hidden">
