@@ -12,16 +12,13 @@ watchEffect(() => {
     active.value = medias[0]
   }
 })
-console.log('🚀 ~ active:', active.value)
 
 const content = computed(() => {
   if (!props.body || !active.value) return
   return props.body[active.value]
 })
-console.log('🚀 ~ content ~ content:', content.value)
 
 const [schema] = useDereference<OpenAPIV3.SchemaObject | OpenAPIV3.ReferenceObject>(() => content?.value?.schema)
-console.log('🚀 ~ schema:', schema.value)
 </script>
 
 <template>

@@ -44,7 +44,7 @@ const headersSchema = useOpenapiParametersToJsonSchema(headers)
         <NuxtLink
           role="tab"
           class="d-tab relative"
-          :class="active === 'headers' && 'd-tab-active'"
+          :class="active === 'headers' && 'd-tab-active !bg-base-100/20'"
           aria-label="Headers"
           :to="{ query: { ...$route.query, [activeQueryKey]: 'headers' } }"
         >
@@ -57,7 +57,7 @@ const headersSchema = useOpenapiParametersToJsonSchema(headers)
         <NuxtLink
           role="tab"
           class="d-tab relative"
-          :class="active === 'body' && 'd-tab-active'"
+          :class="active === 'body' && 'd-tab-active !bg-base-100/20'"
           aria-label="Query"
           :to="{ query: { ...$route.query, [activeQueryKey]: 'body' } }"
         >
@@ -71,7 +71,7 @@ const headersSchema = useOpenapiParametersToJsonSchema(headers)
       <div
         ref="panel"
         role="tabpanel"
-        class="d-tab-content block bg-base-100 border-base-300 rounded-box transition-[height]"
+        class="d-tab-content block bg-base-100/20 border-base-300 rounded-box transition-[height]"
         :class="{
           'rounded-tl-none': active === 'headers',
           'rounded-tr-none': active === 'body',

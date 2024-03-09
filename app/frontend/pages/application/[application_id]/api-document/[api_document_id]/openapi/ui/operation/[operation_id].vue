@@ -48,7 +48,7 @@ const responses = computed(
       Request
     </div>
 
-    <operation-request
+    <openapi-operation-request
       v-if="operation"
       :operation="operation.value"
     />

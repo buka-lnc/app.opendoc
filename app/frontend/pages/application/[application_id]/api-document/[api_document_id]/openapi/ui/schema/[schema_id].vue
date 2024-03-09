@@ -8,8 +8,10 @@ const schema = computed(() => toValue(schemas).find(schema => schema.id === rout
 </script>
 
 <template>
-  <div class="size-full p-10 bg-base-300 text-base-content">
-    <json-schema-lang-ts-type v-if="schema" :schema="schema.value" />
+  <div class="size-full bg-base-300 text-base-content">
+    <div class="p-10 size-full ">
+      <json-schema-lang-ts-type v-if="schema" :schema="schema.value" />
+    </div>
   </div>
 </template>
 
