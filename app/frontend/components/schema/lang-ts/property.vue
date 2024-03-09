@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { OpenAPIV3 } from 'openapi-types'
-import { OPENDOC_REFERENCE_MAP_INJECT_KEY } from '~/constants/opendoc-reference-map-inject-key'
 
-const { referenceMap } = inject(OPENDOC_REFERENCE_MAP_INJECT_KEY, { referenceMap: new Map() })
+const dereference = useDereferenceFn()
 
 const props = defineProps<{
   name: string
@@ -21,18 +20,13 @@ watch(
     referencePath.value = []
 
     function flattenRef (schema: OpenAPIV3.ReferenceObject): OpenAPIV3.SchemaObject | undefined {
-      const ref = schema.$ref
-      const result = toValue(referenceMap).get(ref)
+      const [result, paths] = dereference<OpenAPIV3.SchemaObject>(schema)
+      referencePath.value.push(...paths)
+
       if (!result) return
+      if (result.type === 'array') return flattenArray(result)
 
-      referencePath.value.push(...result.path)
-      if (!result.schema) return
-
-      if (result.schema.type === 'array') {
-        return flattenArray(result.schema)
-      }
-
-      return result.schema
+      return result
     }
 
     function flattenArray (schema: OpenAPIV3.ArraySchemaObject): OpenAPIV3.SchemaObject | undefined {

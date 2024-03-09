@@ -24,6 +24,11 @@ export function useDereferenceFn (): (<T>(v: Object | undefined) => [T | undefin
         return [result as (T | undefined), paths]
       }
 
+      // Circular reference detected
+      if (paths.includes(result.$ref)) {
+        return [result, paths]
+      }
+
       $ref = result.$ref
     }
 
