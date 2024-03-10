@@ -27,21 +27,14 @@ const parameters = computed(
     .filter(R.isNotNil),
 )
 
-const headers = computed(() => {
-  const headers = parameters.value
-    .filter(parameter => parameter.in === 'header')
-
-  return headers
-})
+const headers = useArrayFilter(parameters, p => p.in === 'header')
 const headersSchema = useOpenapiParametersToJsonSchema(headers)
 
-const query = computed(() => {
-  const headers = parameters.value
-    .filter(parameter => parameter.in === 'query')
-
-  return headers
-})
+const query = useArrayFilter(parameters, p => p.in === 'query')
 const querySchema = useOpenapiParametersToJsonSchema(query)
+
+const params = useArrayFilter(parameters, p => p.in === 'path')
+const paramsSchema = useOpenapiParametersToJsonSchema(params)
 
 const requestBody = computed(() => dereference<OpenAPIV3.RequestBodyObject>(props.operation.requestBody)[0])
 </script>
@@ -78,6 +71,19 @@ const requestBody = computed(() => dereference<OpenAPIV3.RequestBodyObject>(prop
       <NuxtLink
         role="tab"
         class="d-tab relative"
+        :class="active === 'params' && 'd-tab-active !bg-base-100/20'"
+        aria-label="Params"
+        :to="{ query: { ...$route.query, requestActive: 'params' } }"
+      >
+        <div class="flex items-center space-x-1">
+          <span>Params</span>
+          <icon-circle-filled v-if="params.length" class="size-2 text-success" />
+        </div>
+      </NuxtLink>
+
+      <NuxtLink
+        role="tab"
+        class="d-tab relative"
         :class="active === 'body' && 'd-tab-active !bg-base-100/20'"
         aria-label="Query"
         :to="{ query: { ...$route.query, requestActive: 'body' } }"
@@ -107,6 +113,11 @@ const requestBody = computed(() => dereference<OpenAPIV3.RequestBodyObject>(prop
 
           <div v-if="active=== 'query'">
             <json-schema-lang-ts-type v-if="querySchema" :schema="querySchema" />
+            <empty-placeholder v-else class="flex-1 py-8" />
+          </div>
+
+          <div v-if="active=== 'params'">
+            <json-schema-lang-ts-type v-if="paramsSchema" :schema="paramsSchema" />
             <empty-placeholder v-else class="flex-1 py-8" />
           </div>
 
