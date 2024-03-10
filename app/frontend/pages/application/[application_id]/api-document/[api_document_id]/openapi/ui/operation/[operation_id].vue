@@ -17,6 +17,7 @@ const textColor = useOpenapiMethodTextColor(method)
 const color = computed(() => (deprecated.value ? 'text-gray-600' : textColor.value))
 
 const description = computed(() => operation.value?.description || 'No description')
+const summary = computed(() => operation.value?.value.summary || 'No summary')
 
 const responses = computed(
   () => R.mapObjIndexed(
@@ -36,12 +37,12 @@ const responses = computed(
         <span class="flex-0 uppercase" :class="!deprecated && color">
           {{ method }}
         </span>
-        <span>
-          {{ pathname }}
-        </span>
+
+        <clipboard-span :text="pathname" />
       </div>
 
-      <div>{{ description }}</div>
+      <div>summary: {{ summary }}</div>
+      <div>description: {{ description }}</div>
     </div>
 
     <div class="text-xl font-bold text-base-content/70">
