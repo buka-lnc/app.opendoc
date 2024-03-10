@@ -14,7 +14,7 @@ const server = computed(() => servers.value[serverIndex.value])
   <div v-if="server" class="size-full bg-base-300 p-10 space-y-10">
     <div>
       <h1 class="text-2xl">
-        {{ server.url }}
+        <clipboard-span :text="server.url" />
       </h1>
 
       <p v-if="server.description" class="font-sans text-base-content/80">
