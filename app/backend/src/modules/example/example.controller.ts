@@ -1,6 +1,6 @@
 import * as R from 'ramda'
 import { XSRF_TOKEN_HEADER } from './constants/xsrf-token-header';
-import { BadRequestException, Body, Controller, Get, Headers, NotFoundException, Patch, Post, Query } from '@nestjs/common'
+import { BadRequestException, Body, Controller, Get, Headers, NotFoundException, Param, Patch, Post, Query } from '@nestjs/common'
 import { ExampleService } from './example.service'
 import { ExampleDTO } from './dto/example.dto'
 import { ApiBasicAuth, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
@@ -30,7 +30,9 @@ export class ExampleController {
   @ApiOperation({ summary: '查询 Example 详情', description: '查询 Example 详情' })
   @ApiOkResponse({ description: '查询 Example 详情成功', headers: R.mergeAll([XSRF_TOKEN_HEADER]) })
   @ApiException(() => NotFoundException)
-  queryExampleById(id: string): ExampleDTO {
+  queryExampleById(
+    @Param('id') id: string
+  ): ExampleDTO {
     return { id, name: 'example' }
   }
 
@@ -50,6 +52,7 @@ export class ExampleController {
   @ApiException(() => BadRequestException, { description: '校验失败' })
   patchExample(
     @Headers('Authorization') token: string,
+    @Param('id') id: string
   ): void {}
 
   @Post('example/:id')
@@ -58,6 +61,7 @@ export class ExampleController {
   @ApiException(() => [NotFoundException, BadRequestException])
   updateExample(
     @Headers('Authorization') token: string,
+    @Param('id') id: string
   ): void {}
 
   @Post('deprecated-example/:id')
@@ -66,5 +70,7 @@ export class ExampleController {
     description: 'This is a deprecated example',
     deprecated: true
   })
-  deprecatedExample(): void {}
+  deprecatedExample(
+    @Param('id') id: string
+  ): void {}
 }
