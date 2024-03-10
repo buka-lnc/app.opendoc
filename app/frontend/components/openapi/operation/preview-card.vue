@@ -26,8 +26,8 @@ const isCardHover = useElementHover(card)
       :error="deprecated"
       class="space-x-2"
     >
-      <span v-if="deprecated">废弃</span>
-      <span v-if="description">：{{ description }}</span>
+      <!-- eslint-disable-next-line vue/singleline-html-element-content-newline -->
+      <template v-if="deprecated">废弃</template><template v-if="deprecated && description">：</template><template v-if="description">{{ description }}</template>
     </tip>
 
     <div class="flex items-start py-2 px-2 space-x-1 size-full">

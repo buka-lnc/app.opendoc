@@ -51,7 +51,7 @@ watch(
         v-bind="$attrs"
         ref="tip"
         :class="[
-          'font-mono absolute drop-shadow-sm top-0 left-0',
+          'font-sans absolute drop-shadow-sm top-0 left-0',
           'tip', { error: props.error }
         ]"
       >

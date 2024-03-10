@@ -3,14 +3,15 @@ import { XSRF_TOKEN_HEADER } from './constants/xsrf-token-header';
 import { BadRequestException, Body, Controller, Get, Headers, NotFoundException, Param, Patch, Post, Query } from '@nestjs/common'
 import { ExampleService } from './example.service'
 import { ExampleDTO } from './dto/example.dto'
-import { ApiBasicAuth, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
+import { ApiBasicAuth, ApiBearerAuth, ApiCookieAuth, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { ApiException } from '@nanogiants/nestjs-swagger-api-exception-decorator'
 import { ExampleFilterDTO } from './dto/example-filter.dto'
 
 
 @ApiTags('Example', 'Useless')
 @Controller()
-@ApiBasicAuth()
+@ApiBearerAuth()
+@ApiCookieAuth()
 @ApiInternalServerErrorResponse({ description: '系统异常' })
 export class ExampleController {
   constructor(
