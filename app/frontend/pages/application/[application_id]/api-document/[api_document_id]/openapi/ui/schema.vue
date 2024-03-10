@@ -1,7 +1,26 @@
 <script setup lang="ts">
+import type { OpenAPIV3 } from 'openapi-types'
+import md5 from 'md5'
+import { inject } from 'vue'
 import { OPENDOC_SCHEMAS_INJECT_KEY } from '~/constants/opendoc-schemas-inject-key'
+import { OpendocSchema } from '~/types/opendoc-schema'
+import { SCHEMA_INJECT_KEY } from '~/constants/schema-inject-key.js'
 
-const { schemas } = inject(OPENDOC_SCHEMAS_INJECT_KEY, { schemas: [] })
+const openapi = inject<Ref<OpenAPIV3.Document>>(SCHEMA_INJECT_KEY)
+
+const schemas = computed(
+  () => Object.entries(toValue(openapi)?.components?.schemas || {})
+    .map(
+      ([title, value]) => {
+        const $id = `#/components/schemas/${title}`
+        const id = md5($id)
+        const schema: OpendocSchema = { id, $id, title, value }
+
+        return schema
+      },
+    ),
+)
+provide(OPENDOC_SCHEMAS_INJECT_KEY, { schemas })
 
 const route = useRoute()
 const prefix = computed(() => `/application/${String(route.params.application_id)}/api-document/${String(route.params.api_document_id)}/openapi/ui/schema`)

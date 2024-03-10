@@ -1,9 +1,41 @@
 <script setup lang="ts">
+import { OpenAPIV3 } from 'openapi-types'
 import * as R from 'ramda'
+import md5 from 'md5'
 import { OPENDOC_OPERATIONS_INJECT_KEY } from '~/constants/opendoc-operations-inject-key'
+import { SCHEMA_INJECT_KEY } from '~/constants/schema-inject-key.js'
 import { OpendocOperation } from '~/types/opendoc-operation.js'
 
-const { operations } = inject(OPENDOC_OPERATIONS_INJECT_KEY, { operations: [] })
+const openapi = inject<Ref<OpenAPIV3.Document>>(SCHEMA_INJECT_KEY)
+const methods = ['get', 'post', 'put', 'delete', 'patch', 'options', 'head', 'trace']
+const operations = computed((): OpendocOperation[] => {
+  const operations: OpendocOperation[] = []
+  for (const pathname in openapi?.value.paths) {
+    const pathObject = openapi.value.paths[pathname]
+
+    for (const method in pathObject) {
+      if (!methods.includes(method)) {
+        continue
+      }
+
+      // @ts-ignore
+      const operation: OpenAPIV3.OperationObject = pathObject[method]
+
+      operations.push({
+        id: md5(`#${pathname}/${method}`),
+        pathname,
+        method,
+        deprecated: !!operation.deprecated || false,
+        title: operation.summary || operation.operationId || '',
+        description: operation.description || 'No description',
+        value: operation,
+      })
+    }
+  }
+
+  return operations
+})
+provide(OPENDOC_OPERATIONS_INJECT_KEY, { operations })
 
 const route = useRoute()
 const prefix = computed(() => `/application/${String(route.params.application_id)}/api-document/${String(route.params.api_document_id)}/openapi/ui/operation`)
@@ -15,7 +47,7 @@ watch(
     const ops = toValue(operations)
 
     if (route.path === prefix.value && ops.length > 0) {
-      await router.replace(`${prefix.value}/${ops[0].id}`)
+      await router.push(`${prefix.value}/${ops[0].id}`)
     }
   },
   {

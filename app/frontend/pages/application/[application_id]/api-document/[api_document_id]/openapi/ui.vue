@@ -1,14 +1,9 @@
 <script setup lang="ts">
 import type { OpenAPIV3 } from 'openapi-types'
 import { IconApi, IconSchema, IconServer, IconSdk } from '@tabler/icons-vue'
-import md5 from 'md5'
 import { inject } from 'vue'
-import { OpendocSchema } from '~/types/opendoc-schema'
-import { OpendocOperation } from '~/types/opendoc-operation'
 import { API_DOCUMENT_FILE_INJECT_KEY } from '~/constants/api-document-file-inject-key'
-import { OPENDOC_SCHEMAS_INJECT_KEY } from '~/constants/opendoc-schemas-inject-key'
 import { OPENDOC_SERVERS_INJECT_KEY } from '~/constants/opendoc-servers-inject-key'
-import { OPENDOC_OPERATIONS_INJECT_KEY } from '~/constants/opendoc-operations-inject-key'
 import { SCHEMA_INJECT_KEY } from '~/constants/schema-inject-key.js'
 
 const route = useRoute()
@@ -37,58 +32,12 @@ provide(SCHEMA_INJECT_KEY, openapi)
 const servers = computed(() => openapi.value.servers || [])
 provide(OPENDOC_SERVERS_INJECT_KEY, { servers })
 
-const schemas = computed(
-  () => Object.entries(openapi.value.components?.schemas || {})
-    .map(
-      ([title, value]) => {
-        const $id = `#/components/schemas/${title}`
-        const id = md5($id)
-        const schema: OpendocSchema = { id, $id, title, value }
-
-        return schema
-      },
-    ),
-)
-provide(OPENDOC_SCHEMAS_INJECT_KEY, { schemas })
-
-const methods = ['get', 'post', 'put', 'delete', 'patch', 'options', 'head', 'trace']
-const operations = computed((): OpendocOperation[] => {
-  const operations: OpendocOperation[] = []
-  for (const pathname in openapi.value.paths) {
-    const pathObject = openapi.value.paths[pathname]
-
-    for (const method in pathObject) {
-      if (!methods.includes(method)) {
-        continue
-      }
-
-      // @ts-ignore
-      const operation: OpenAPIV3.OperationObject = pathObject[method]
-
-      operations.push({
-        id: md5(`#${pathname}/${method}`),
-        pathname,
-        method,
-        deprecated: !!operation.deprecated || false,
-        title: operation.summary || operation.operationId || '',
-        description: operation.description || 'No description',
-        value: operation,
-      })
-    }
-  }
-
-  return operations
-})
-provide(OPENDOC_OPERATIONS_INJECT_KEY, { operations })
-
 const router = useRouter()
 watch(
-  () => toValue(operations),
+  () => toValue(openapi),
   async () => {
-    const ops = toValue(operations)
-
-    if (route.path === prefix.value && ops.length > 0) {
-      await router.replace(`${prefix.value}/operation/${ops[0].id}`)
+    if (route.path === prefix.value) {
+      await router.replace(`${prefix.value}/operation`)
     }
   },
   {
