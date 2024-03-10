@@ -37,14 +37,14 @@ const isCardHover = useElementHover(card)
 
       <div class="flex-auto flex flex-col justify-center items-start h-full overflow-hidden">
         <span
-          class="leading-4 max-w-full truncate"
-          :class="deprecated && 'text-gray-600'"
+          class="leading-4 max-w-full truncate font-sans"
+          :class="deprecated && 'text-base-content/40'"
         >
           {{ props.operation.title }}
         </span>
         <span
           class="text-xs leading-4 text-gray-400 max-w-full truncate"
-          :class="deprecated && 'text-gray-600'"
+          :class="deprecated && '!text-base-content/40'"
         >
           {{ props.operation.pathname }}
         </span>

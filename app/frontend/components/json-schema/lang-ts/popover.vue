@@ -13,14 +13,14 @@ const props = defineProps<{
     v-if="props.schema?.description || props.schema?.example"
     :show="props.show"
   >
-    <div class="px-4 py-2 text-sm font-mono max-w-64">
+    <div class="px-4 py-2 text-sm font-sans max-w-64">
       <div v-if="props.schema?.description" class="inline-flex">
         <span class="flex-0 w-14 opacity-80">描述</span>
-        <span class="font-bold">{{ props.schema?.description }}</span>
+        <span>{{ props.schema?.description }}</span>
       </div>
       <div v-if="props.schema?.example" class="flex">
-        <span class="flex-0 w-14 opacity-80">示例</span>
-        <pre class="font-bold">{{ props.schema.example }}</pre>
+        <span class="flex-0 w-14 font-sans opacity-80">示例</span>
+        <pre>{{ props.schema.example }}</pre>
       </div>
     </div>
   </mouse-popover>

@@ -17,7 +17,7 @@ const props = defineProps<{
 const deprecated = computed(() => !!props.operation.deprecated)
 const method = computed(() => props.operation.method)
 const textColor = useOpenapiMethodTextColor(method)
-const color = computed(() => (deprecated.value ? 'text-gray-600' : textColor.value))
+const color = computed(() => (deprecated.value ? 'text-base-content/40' : textColor.value))
 </script>
 
 <template>
