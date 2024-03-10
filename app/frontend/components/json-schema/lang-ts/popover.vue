@@ -14,7 +14,7 @@ const props = defineProps<{
     :show="props.show"
   >
     <div class="px-4 py-2 text-sm font-mono max-w-64">
-      <div class="inline-flex">
+      <div v-if="props.schema?.description" class="inline-flex">
         <span class="flex-0 w-14 opacity-80">描述</span>
         <span class="font-bold">{{ props.schema?.description }}</span>
       </div>
