@@ -14,6 +14,7 @@ import { PinoConfig } from './config/pino.config'
 import { ApiDocumentModule } from './modules/api-document/api-document.module'
 import { ApplicationModule } from './modules/application/application.module'
 import { ExampleModule } from './modules/example/example.module'
+import { RegistryModule } from './modules/registry/registry.module'
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { ExampleModule } from './modules/example/example.module'
     ApiDocumentModule,
     ApplicationModule,
     ExampleModule,
+    RegistryModule,
   ],
   controllers: [AppController],
   providers: [AppService],

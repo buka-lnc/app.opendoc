@@ -2,12 +2,10 @@
 import { OPENDOC_SERVERS_INJECT_KEY } from '~/constants/opendoc-servers-inject-key.js'
 
 const { servers } = inject(OPENDOC_SERVERS_INJECT_KEY, { servers: toRef([]) })
-console.log('🚀 ~ servers:', servers.value)
 
 const route = useRoute()
 const serverIndex = computed(() => Number(route.params.server_index))
 const server = computed(() => servers.value[serverIndex.value])
-
 </script>
 
 <template>
