@@ -76,6 +76,18 @@ export class ApiDocument extends BaseEntity {
   hash: string = ''
 
   /**
+   * 文档文件的标签
+   * @example "latest"
+   */
+  @MaxLength(24)
+  @IsString()
+  @Property({
+    columnType: 'varchar(24)',
+    comment: '文档文件的标签',
+  })
+  tag: string = 'latest'
+
+  /**
    * 文档文件的版本
    */
   @IsString()
@@ -84,7 +96,7 @@ export class ApiDocument extends BaseEntity {
     columnType: 'varchar(15)',
     comment: '文档文件的版本',
   })
-  version: string = '0.0.0'
+  version: string = '1.0.0'
 
   /**
    * 文档文件的定时同步地址

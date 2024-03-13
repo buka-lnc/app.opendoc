@@ -1,5 +1,5 @@
 import { EntityManager } from '@mikro-orm/core'
-import { Body, Controller, Get, InternalServerErrorException, Param, Post, Put, Query, StreamableFile, UploadedFile, UseInterceptors } from '@nestjs/common'
+import { Body, Controller, Get, Param, Post, Put, Query, StreamableFile, UploadedFile, UseInterceptors } from '@nestjs/common'
 import { Express } from 'express'
 import { FileInterceptor } from '@nestjs/platform-express'
 import { ApiConsumes, ApiInternalServerErrorResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
@@ -22,7 +22,7 @@ export class ApiDocumentController {
   @ApiConsumes('multipart/form-data')
   @ApiOperation({
     summary: '注册 API 文档',
-    description: '若 applicationCode 指定的应用不存在，则会新建一个应用；否则，更新应用。'
+    description: '若 applicationCode 指定的应用不存在，则会新建一个应用；否则，更新应用。',
   })
   @UseInterceptors(FileInterceptor('file'))
   async registerApiDocument(
