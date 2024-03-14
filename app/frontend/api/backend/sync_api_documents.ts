@@ -1,6 +1,13 @@
 import { Keq } from 'keq'
 import { request } from 'keq'
 
+
+interface ResponseMap {
+  201: unknown
+  500: unknown
+}
+
+
 interface QueryArg {
 }
 
@@ -11,8 +18,12 @@ interface HeaderArg {
 }
 
 
-export function syncApiDocuments(arg?: QueryArg & ParamArg & HeaderArg): Keq<any> {
-  const req = request.post("/api/api-document/sync")
+/**
+ * 每隔 10 分钟自动同步一次
+ */
+export function syncApiDocuments<STATUS extends keyof ResponseMap>(arg?: QueryArg & ParamArg & HeaderArg): Keq<ResponseMap[STATUS]> {
+  const req = request.post<ResponseMap[STATUS]>
+  ("/api/api-document/sync")
     .option('module', {
       name: "backend",
       pathname: "/api/api-document/sync",

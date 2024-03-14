@@ -8,16 +8,16 @@ export class NpmPackageDistTag extends BaseEntity {
     columnType: 'varchar(255)',
     comment: 'Npm包名',
   })
-  name: string
+  name!: string
 
   @Property({
     columnType: 'varchar(64)',
     comment: 'Npm包版本',
   })
-  version: string
+  version!: string
 
   @ManyToOne({
     entity: () => NpmPackage,
   })
-  npmPackage: Ref<NpmPackage>
+  npmPackage!: Ref<NpmPackage>
 }

@@ -4,11 +4,13 @@ import { ApiDocumentController } from './api-document.controller'
 import { MikroOrmModule } from '@mikro-orm/nestjs'
 import { ApiDocument } from './entities/api-document.entity'
 import { Application } from '../application/entity/application.entity'
-import { ApiDocumentFile } from './entities/api-document-file.entity'
+import { ApiDocumentFile } from '../api-document-file/entities/api-document-file.entity'
+import { ApiDocumentFileModule } from '../api-document-file/api-document-file.module'
 
 
 @Module({
   imports: [
+    ApiDocumentFileModule,
     MikroOrmModule.forFeature([
       Application,
       ApiDocument,

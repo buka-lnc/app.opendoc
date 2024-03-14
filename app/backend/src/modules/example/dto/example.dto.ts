@@ -1,11 +1,11 @@
-import { IsNumberString, IsOptional, IsString } from "class-validator";
+import { IsNumberString, IsOptional, IsString } from 'class-validator'
 
 
 export class ExampleDTO {
   @IsNumberString()
-  id: string
+  id!: string
 
   @IsString()
   @IsOptional()
-  name: string
+  name!: string
 }

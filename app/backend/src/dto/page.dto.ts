@@ -2,11 +2,11 @@ import { IsNumber } from 'class-validator'
 
 export class PageDTO {
   @IsNumber()
-  limit: number
+  limit!: number
 
   @IsNumber()
-  offset: number
+  offset!: number
 
   @IsNumber()
-  total: number
+  total!: number
 }

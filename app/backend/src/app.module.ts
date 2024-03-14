@@ -15,6 +15,7 @@ import { ApiDocumentModule } from './modules/api-document/api-document.module'
 import { ApplicationModule } from './modules/application/application.module'
 import { ExampleModule } from './modules/example/example.module'
 import { RegistryModule } from './modules/registry/registry.module'
+import { ApiDocumentFileModule } from './modules/api-document-file/api-document-file.module'
 
 @Module({
   imports: [
@@ -26,7 +27,7 @@ import { RegistryModule } from './modules/registry/registry.module'
 
     ConfigModule.inject(PinoConfig, LoggerModule, (config) => ({
       pinoHttp: {
-        transport: config.pretty && { target: 'pino-pretty' },
+        transport: config.pretty ? { target: 'pino-pretty' } : undefined,
         level: config.level,
       },
     })),
@@ -44,6 +45,7 @@ import { RegistryModule } from './modules/registry/registry.module'
     TerminusModule,
     ApiDocumentModule,
     ApplicationModule,
+    ApiDocumentFileModule,
     ExampleModule,
     RegistryModule,
   ],

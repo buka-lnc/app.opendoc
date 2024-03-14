@@ -7,9 +7,9 @@ import { ApplicationDTO } from './application.dto'
 export class QueryApplicationsResponseDTO {
   @ValidateNested({ each: true })
   @Type(() => ApplicationDTO)
-  results: ApplicationDTO[]
+  results!: ApplicationDTO[]
 
   @ValidateNested()
   @Type(() => PageDTO)
-  page: PageDTO
+  page!: PageDTO
 }

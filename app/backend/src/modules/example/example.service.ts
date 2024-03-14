@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable } from '@nestjs/common'
-import { ExampleDTO } from './dto/example.dto';
-import { ExampleFilterDTO } from './dto/example-filter.dto';
+import { ExampleDTO } from './dto/example.dto'
+import { ExampleFilterDTO } from './dto/example-filter.dto'
 
 
 @Injectable()

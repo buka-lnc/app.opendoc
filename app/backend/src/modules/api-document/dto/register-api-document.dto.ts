@@ -9,21 +9,21 @@ export class RegisterApiDocumentDTO {
    */
   @IsString()
   @MaxLength(63)
-  applicationCode: string
+  applicationCode!: string
 
   /**
    * 易于阅读的文档编码(Folder下唯一)
    */
   @IsString()
   @MaxLength(63)
-  apiDocumentCode: string
+  apiDocumentCode!: string
 
   /**
    * 文档类型
    * @example "openapi"
    */
   @IsEnum(API_DOCUMENT_TYPE)
-  apiDocumentType?: API_DOCUMENT_TYPE
+  apiDocumentType!: API_DOCUMENT_TYPE
 
   /**
    * 文档名称

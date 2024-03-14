@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { IconCode, IconBrowser } from '@tabler/icons-vue'
+import { useRouteParams } from '@vueuse/router'
 
-const route = useRoute()
-const prefix = computed(() => `/application/${String(route.params.application_id)}/api-document/${String(route.params.api_document_id)}/openapi`)
+const applicationId = useRouteParams<string>('application_id')
+const apiDocumentId = useRouteParams<string>('api_document_id')
+const version = useRouteParams<string>('version')
+const prefix = computed(() => `/application/${applicationId.value}/api-document/${apiDocumentId.value}/${version.value}/openapi`)
 
 </script>
 <template>

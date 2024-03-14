@@ -7,12 +7,12 @@ export class PaginationDTO {
    */
   @ToNumber()
   @IsInt()
-  limit: number
+  limit!: number
 
   /**
    * @default 0
    */
   @ToNumber()
   @IsInt()
-  offset: number
+  offset!: number
 }

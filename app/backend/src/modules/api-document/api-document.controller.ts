@@ -1,3 +1,4 @@
+import { ApiDocumentFileService } from '~/modules/api-document-file/api-document-file.service'
 import { EntityManager } from '@mikro-orm/core'
 import { Body, Controller, Get, Param, Post, Put, Query, StreamableFile, UploadedFile, UseInterceptors } from '@nestjs/common'
 import { Express } from 'express'
@@ -8,6 +9,7 @@ import { QueryApiDocumentsDTO } from './dto/query-api-documents.dto'
 import { RegisterApiDocumentDTO } from './dto/register-api-document.dto'
 import { ApiDocument } from './entities/api-document.entity'
 import { QueryApiDocumentsResponseDTO } from './dto/query-api-documents-response.dto'
+import { ApiDocumentFile } from '../api-document-file/entities/api-document-file.entity'
 
 @ApiTags('API 文档')
 @Controller('api-document')
@@ -16,6 +18,7 @@ export class ApiDocumentController {
   constructor(
     private readonly em: EntityManager,
     private readonly apiDocumentService: ApiDocumentService,
+    private readonly apiDocumentFileService: ApiDocumentFileService,
   ) {}
 
   @Put()
@@ -33,12 +36,15 @@ export class ApiDocumentController {
       ...dto,
       apiDocumentFile: file.buffer,
     })
+
+    await this.em.flush()
   }
 
   @Post('sync')
   @ApiOperation({ summary: '同步 API 文档', description: '每隔 10 分钟自动同步一次' })
   async syncApiDocuments(): Promise<void> {
     await this.apiDocumentService.syncDocuments()
+    await this.em.flush()
   }
 
   @Get()
@@ -57,12 +63,35 @@ export class ApiDocumentController {
     return this.apiDocumentService.queryDocumentById(id)
   }
 
-  @Get(':apiDocumentId/file')
-  @ApiOperation({ summary: '查询 API 文档文件' })
-  async queryApiDocumentFile(
+  @Get(':apiDocumentId/api-document-file')
+  @ApiOperation({ summary: '查询 API 文档文件列表' })
+  async queryApiDocumentFilesByApiDocumentId(
+    @Param('apiDocumentId') id: string,
+  ): Promise<ApiDocumentFile[]> {
+    return await this.apiDocumentFileService.queryApiDocumentFiles({
+      apiDocumentIds: [id],
+    })
+  }
+
+  @Get(':apiDocumentId/tag/:tagName/api-document-file')
+  @ApiOperation({ summary: '查询 API 文档标签列表' })
+  async queryApiDocumentTags(
+    @Param('tagName') tagName: string,
+    @Param('apiDocumentId') id: string,
+  ): Promise<ApiDocumentFile[]> {
+    return await this.apiDocumentFileService.queryApiDocumentFiles({
+      apiDocumentIds: [id],
+      tags: [tagName],
+    })
+  }
+
+  @Get(':apiDocumentId/version/:version/api-document-file/raw')
+  @ApiOperation({ summary: '查询某一个版本的 API 文档' })
+  async queryRawApiDocumentFileByVersion(
+    @Param('version') version: string,
     @Param('apiDocumentId') id: string,
   ): Promise<StreamableFile> {
-    const stream = await this.apiDocumentService.queryDocumentFileById(id)
+    const stream = await this.apiDocumentFileService.queryRawDocumentFileByVersion(id, version)
     return new StreamableFile(stream)
   }
 }

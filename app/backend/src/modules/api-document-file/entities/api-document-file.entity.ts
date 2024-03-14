@@ -1,6 +1,6 @@
 import { Entity, ManyToOne, Property, Ref, Unique } from '@mikro-orm/core'
 import { IsString, MaxLength } from 'class-validator'
-import { ApiDocument } from './api-document.entity'
+import { ApiDocument } from '../../api-document/entities/api-document.entity'
 import { BaseEntity } from '~/entities/base.entity'
 
 @Entity()
@@ -29,7 +29,7 @@ export class ApiDocumentFile extends BaseEntity {
     nullable: true,
     comment: '文档文件的标签',
   })
-  tag: string | null
+  tag?: string
 
   /**
    * 文档文件的版本
@@ -47,5 +47,5 @@ export class ApiDocumentFile extends BaseEntity {
     comment: '文档',
     ref: true,
   })
-  apiDocument: Ref<ApiDocument>
+  apiDocument!: Ref<ApiDocument>
 }

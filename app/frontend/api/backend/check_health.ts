@@ -1,49 +1,52 @@
 import { Keq } from 'keq'
 import { request } from 'keq'
 
-interface Response_200_application_json {
-  status?: string
-  info?: {
+
+interface ResponseMap {
+  200: {
+  "status"?: string
+  "info"?: {
     [key: string]: undefined | {
-      status?: string
-      [key: string]: undefined | string
+      "status": string
+      [key: string]: undefined | any
     }
   } | null
-  error?: {
+  "error"?: {
     [key: string]: undefined | {
-      status?: string
-      [key: string]: undefined | string
+      "status": string
+      [key: string]: undefined | any
     }
   } | null
-  details?: {
+  "details"?: {
     [key: string]: undefined | {
-      status?: string
-      [key: string]: undefined | string
+      "status": string
+      [key: string]: undefined | any
     }
   }
+}
+  503: {
+  "status"?: string
+  "info"?: {
+    [key: string]: undefined | {
+      "status": string
+      [key: string]: undefined | any
+    }
+  } | null
+  "error"?: {
+    [key: string]: undefined | {
+      "status": string
+      [key: string]: undefined | any
+    }
+  } | null
+  "details"?: {
+    [key: string]: undefined | {
+      "status": string
+      [key: string]: undefined | any
+    }
+  }
+}
 }
 
-interface Response_503_application_json {
-  status?: string
-  info?: {
-    [key: string]: undefined | {
-      status?: string
-      [key: string]: undefined | string
-    }
-  } | null
-  error?: {
-    [key: string]: undefined | {
-      status?: string
-      [key: string]: undefined | string
-    }
-  } | null
-  details?: {
-    [key: string]: undefined | {
-      status?: string
-      [key: string]: undefined | string
-    }
-  }
-}
 
 interface QueryArg {
 }
@@ -55,8 +58,9 @@ interface HeaderArg {
 }
 
 
-export function checkHealth(arg?: QueryArg & ParamArg & HeaderArg): Keq<Response_200_application_json | Response_503_application_json> {
-  const req = request.get<Response_200_application_json | Response_503_application_json>("/api/health")
+export function checkHealth<STATUS extends keyof ResponseMap>(arg?: QueryArg & ParamArg & HeaderArg): Keq<ResponseMap[STATUS]> {
+  const req = request.get<ResponseMap[STATUS]>
+  ("/api/health")
     .option('module', {
       name: "backend",
       pathname: "/api/health",

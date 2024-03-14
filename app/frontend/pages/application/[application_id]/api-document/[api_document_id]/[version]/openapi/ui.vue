@@ -1,13 +1,16 @@
 <script setup lang="ts">
 import type { OpenAPIV3 } from 'openapi-types'
-import { IconApi, IconSchema, IconServer, IconSdk } from '@tabler/icons-vue'
+import { IconVersions, IconApi, IconSchema, IconServer, IconSdk } from '@tabler/icons-vue'
 import { inject } from 'vue'
+import { useRouteParams } from '@vueuse/router'
 import { API_DOCUMENT_FILE_INJECT_KEY } from '~/constants/api-document-file-inject-key'
 import { OPENDOC_SERVERS_INJECT_KEY } from '~/constants/opendoc-servers-inject-key'
 import { SCHEMA_INJECT_KEY } from '~/constants/schema-inject-key.js'
 
-const route = useRoute()
-const prefix = computed(() => `/application/${String(route.params.application_id)}/api-document/${String(route.params.api_document_id)}/openapi/ui`)
+const applicationId = useRouteParams<string>('application_id')
+const apiDocumentId = useRouteParams<string>('api_document_id')
+const version = useRouteParams<string>('version')
+const prefix = computed(() => `/application/${applicationId.value}/api-document/${apiDocumentId.value}/${version.value}/openapi/ui`)
 
 const { apiDocumentFile } = inject(API_DOCUMENT_FILE_INJECT_KEY, { apiDocumentFile: null })
 
@@ -32,6 +35,7 @@ provide(SCHEMA_INJECT_KEY, openapi)
 const servers = computed(() => openapi.value.servers || [])
 provide(OPENDOC_SERVERS_INJECT_KEY, { servers })
 
+const route = useRoute()
 const router = useRouter()
 watch(
   () => toValue(openapi),
@@ -49,6 +53,15 @@ watch(
 <template>
   <div class="size-full flex">
     <ul class="bg-base-100 flex-0 d-menu d-menu-lg w-fit h-full p-0">
+      <li>
+        <openapi-menu-button
+          :to="`${prefix}/version`"
+          tip="版本"
+        >
+          <IconVersions class="size-8" />
+        </openapi-menu-button>
+      </li>
+
       <li>
         <openapi-menu-button
           :to="`${prefix}/operation`"

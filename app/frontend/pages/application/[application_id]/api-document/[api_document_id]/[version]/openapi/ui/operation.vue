@@ -2,6 +2,7 @@
 import { OpenAPIV3 } from 'openapi-types'
 import * as R from 'ramda'
 import md5 from 'md5'
+import { useRouteParams } from '@vueuse/router'
 import { OPENDOC_OPERATIONS_INJECT_KEY } from '~/constants/opendoc-operations-inject-key'
 import { SCHEMA_INJECT_KEY } from '~/constants/schema-inject-key.js'
 import { OpendocOperation } from '~/types/opendoc-operation.js'
@@ -37,9 +38,12 @@ const operations = computed((): OpendocOperation[] => {
 })
 provide(OPENDOC_OPERATIONS_INJECT_KEY, { operations })
 
-const route = useRoute()
-const prefix = computed(() => `/application/${String(route.params.application_id)}/api-document/${String(route.params.api_document_id)}/openapi/ui/operation`)
+const applicationId = useRouteParams<string>('application_id')
+const apiDocumentId = useRouteParams<string>('api_document_id')
+const version = useRouteParams<string>('version')
+const prefix = computed(() => `/application/${applicationId.value}/api-document/${apiDocumentId.value}/${version.value}/openapi/ui/operation`)
 
+const route = useRoute()
 const router = useRouter()
 watch(
   () => toValue(operations),

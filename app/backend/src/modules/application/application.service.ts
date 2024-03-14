@@ -25,7 +25,10 @@ export class ApplicationService {
 
     if (application) return
 
-    application = this.applicationRepo.create(dto)
+    application = this.applicationRepo.create({
+      code: dto.code,
+      title: dto.title || dto.code,
+    })
 
     this.em.persist(application)
   }
@@ -70,14 +73,14 @@ export class ApplicationService {
     }
   }
 
-  async deleteApplication(idOrCode: string): Promise<void> {
+  deleteApplication(idOrCode: string): void {
     const application = this.applicationRepo.find({
       $or: [
         { id: idOrCode },
-        { code: idOrCode }
-      ]
+        { code: idOrCode },
+      ],
     })
 
-    await this.em.remove(application)
+    this.em.remove(application)
   }
 }

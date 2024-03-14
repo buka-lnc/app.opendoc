@@ -2,6 +2,7 @@
 import type { OpenAPIV3 } from 'openapi-types'
 import md5 from 'md5'
 import { inject } from 'vue'
+import { useRouteParams } from '@vueuse/router'
 import { OPENDOC_SCHEMAS_INJECT_KEY } from '~/constants/opendoc-schemas-inject-key'
 import { OpendocSchema } from '~/types/opendoc-schema'
 import { SCHEMA_INJECT_KEY } from '~/constants/schema-inject-key.js'
@@ -23,7 +24,10 @@ const schemas = computed(
 provide(OPENDOC_SCHEMAS_INJECT_KEY, { schemas })
 
 const route = useRoute()
-const prefix = computed(() => `/application/${String(route.params.application_id)}/api-document/${String(route.params.api_document_id)}/openapi/ui/schema`)
+const applicationId = useRouteParams<string>('application_id')
+const apiDocumentId = useRouteParams<string>('api_document_id')
+const version = useRouteParams<string>('version')
+const prefix = computed(() => `/application/${applicationId.value}/api-document/${apiDocumentId.value}/${version.value}/openapi/ui/schema`)
 
 const router = useRouter()
 watch(

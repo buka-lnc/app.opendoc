@@ -2,6 +2,13 @@ import { Keq } from 'keq'
 import { request } from 'keq'
 import { RegisterApplicationDTO } from "./components/schemas/register_application_dto"
 
+
+interface ResponseMap {
+  200: unknown
+  500: unknown
+}
+
+
 interface QueryArg {
 }
 
@@ -12,8 +19,9 @@ interface HeaderArg {
 }
 
 
-export function registerApplication(arg?: QueryArg & ParamArg & HeaderArg & (RegisterApplicationDTO)): Keq<any> {
-  const req = request.put("/api/application")
+export function registerApplication<STATUS extends keyof ResponseMap>(arg?: QueryArg & ParamArg & HeaderArg & (RegisterApplicationDTO)): Keq<ResponseMap[STATUS]> {
+  const req = request.put<ResponseMap[STATUS]>
+  ("/api/application")
     .option('module', {
       name: "backend",
       pathname: "/api/application",

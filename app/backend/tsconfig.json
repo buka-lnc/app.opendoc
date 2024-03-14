@@ -1,6 +1,7 @@
 {
   "include": ["env.d.ts", "src/**/*", ".eslintrc.cjs", "test/**/*"],
   "compilerOptions": {
+    "strict": true,
     "module": "Node16",
     "target": "ESNext",
     "declaration": true,
@@ -9,17 +10,12 @@
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true,
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
     "rootDir": "./",
-    "incremental": true,
     "skipLibCheck": true,
-    "strictNullChecks": false,
     "noImplicitAny": false,
-    "strictBindCallApply": false,
-    "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
       "~/*": ["src/*"],

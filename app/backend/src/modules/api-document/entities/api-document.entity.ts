@@ -3,7 +3,7 @@ import { IsEnum, IsOptional, IsString, MaxLength } from 'class-validator'
 import { BaseEntity } from '~/entities/base.entity'
 import { API_DOCUMENT_TYPE } from '../constants/api-document-type.enum'
 import { Application } from '~/modules/application/entity/application.entity'
-import { ApiDocumentFile } from './api-document-file.entity'
+import { ApiDocumentFile } from '../../api-document-file/entities/api-document-file.entity'
 
 
 @Entity()
@@ -19,7 +19,7 @@ export class ApiDocument extends BaseEntity {
     items: () => API_DOCUMENT_TYPE,
     comment: '文档类型',
   })
-  type: API_DOCUMENT_TYPE
+  type!: API_DOCUMENT_TYPE
 
   /**
    * 易于阅读的文档编码(Folder下唯一)
@@ -31,7 +31,7 @@ export class ApiDocument extends BaseEntity {
     index: true,
     comment: '易于阅读的文档编码(Folder下唯一)',
   })
-  code: string
+  code!: string
 
   /**
    * 文档排序
@@ -75,12 +75,12 @@ export class ApiDocument extends BaseEntity {
     comment: '文档所属的应用',
     ref: true,
   })
-  application: Ref<Application>
+  application!: Ref<Application>
 
   @OneToMany({
     entity: () => ApiDocumentFile,
     mappedBy: 'apiDocument',
     comment: '文档文件',
   })
-  files: Collection<ApiDocumentFile>
+  apiDocumentFiles!: Collection<ApiDocumentFile>
 }

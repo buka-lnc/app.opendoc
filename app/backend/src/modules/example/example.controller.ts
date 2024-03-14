@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import * as R from 'ramda'
-import { XSRF_TOKEN_HEADER } from './constants/xsrf-token-header';
+import { XSRF_TOKEN_HEADER } from './constants/xsrf-token-header'
 import { BadRequestException, Body, Controller, Get, Headers, NotFoundException, Param, Patch, Post, Query } from '@nestjs/common'
 import { ExampleService } from './example.service'
 import { ExampleDTO } from './dto/example.dto'
-import { ApiBasicAuth, ApiBearerAuth, ApiCookieAuth, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiCookieAuth, ApiCreatedResponse, ApiInternalServerErrorResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { ApiException } from '@nanogiants/nestjs-swagger-api-exception-decorator'
 import { ExampleFilterDTO } from './dto/example-filter.dto'
 
@@ -40,7 +41,7 @@ export class ExampleController {
 
   @Post('example')
   @ApiOperation({ summary: '创建 Example', description: '创建 Example' })
-  @ApiCreatedResponse({ description: '创建 Example 成功', headers: R.mergeAll([XSRF_TOKEN_HEADER])  })
+  @ApiCreatedResponse({ description: '创建 Example 成功', headers: R.mergeAll([XSRF_TOKEN_HEADER]) })
   @ApiException(() => [BadRequestException], { description: '校验失败' })
   createExample(
     @Headers('Authorization') token: string,
@@ -58,7 +59,7 @@ export class ExampleController {
 
   @Post('example/:id')
   @ApiOperation({ summary: '删除 Example', description: '删除 Example' })
-  @ApiCreatedResponse({ description: '更新 Example 成功', headers: R.mergeAll([XSRF_TOKEN_HEADER])  })
+  @ApiCreatedResponse({ description: '更新 Example 成功', headers: R.mergeAll([XSRF_TOKEN_HEADER]) })
   @ApiException(() => [NotFoundException, BadRequestException])
   updateExample(
     @Headers('Authorization') token: string,
@@ -69,7 +70,7 @@ export class ExampleController {
   @ApiOperation({
     summary: 'Deprecated Example',
     description: 'This is a deprecated example',
-    deprecated: true
+    deprecated: true,
   })
   deprecatedExample(
     @Param('id') id: string

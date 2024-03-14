@@ -7,6 +7,6 @@ import { PageDTO } from "./page_dto"
  * @export
  */
 export interface QueryApplicationsResponseDTO {
-  results: (ApplicationDTO)[]
-  page: PageDTO
+  "results": (ApplicationDTO)[]
+  "page": PageDTO
 }

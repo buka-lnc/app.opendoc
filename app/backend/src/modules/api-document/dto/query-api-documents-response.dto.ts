@@ -6,9 +6,9 @@ import { Type } from 'class-transformer'
 export class QueryApiDocumentsResponseDTO {
   @ValidateNested()
   @Type(() => ApiDocument)
-  results: ApiDocument[]
+  results!: ApiDocument[]
 
   @ValidateNested()
   @Type(() => PageDTO)
-  page: PageDTO
+  page!: PageDTO
 }

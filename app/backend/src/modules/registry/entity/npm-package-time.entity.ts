@@ -8,16 +8,16 @@ export class NpmPackageTime extends BaseEntity {
     columnType: 'varchar(255)',
     comment: 'Package tag',
   })
-  tag: string
+  tag!: string
 
   @Property({
     type: t.datetime,
     comment: 'Package publish time',
   })
-  publishAt: Date
+  publishAt!: Date
 
   @ManyToOne({
     entity: () => NpmPackage,
   })
-  npmPackage: Ref<NpmPackage>
+  npmPackage!: Ref<NpmPackage>
 }

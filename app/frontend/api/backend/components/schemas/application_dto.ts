@@ -3,15 +3,21 @@
  * @export
  */
 export interface ApplicationDTO {
-  id: string
+  "id": string
   /**
    * @type date-time
    */
-  createAt: string
+  "createAt": string
   /**
    * @type date-time
    */
-  updateAt: string
-  code: string
-  title: string
+  "updateAt": string
+  /**
+   * 唯一应用编码
+   */
+  "code": string
+  /**
+   * 应用名称
+   */
+  "title": string
 }

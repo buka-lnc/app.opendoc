@@ -2,7 +2,12 @@ import { Keq } from 'keq'
 import { request } from 'keq'
 import { QueryApiDocumentsResponseDTO } from "./components/schemas/query_api_documents_response_dto"
 
-type Response_200_application_json = QueryApiDocumentsResponseDTO
+
+interface ResponseMap {
+  200: QueryApiDocumentsResponseDTO
+  500: unknown
+}
+
 
 interface QueryArg {
     title?: string
@@ -18,8 +23,9 @@ interface HeaderArg {
 }
 
 
-export function queryApiDocuments(arg?: QueryArg & ParamArg & HeaderArg): Keq<Response_200_application_json> {
-  const req = request.get<Response_200_application_json>("/api/api-document")
+export function queryApiDocuments<STATUS extends keyof ResponseMap>(arg?: QueryArg & ParamArg & HeaderArg): Keq<ResponseMap[STATUS]> {
+  const req = request.get<ResponseMap[STATUS]>
+  ("/api/api-document")
     .option('module', {
       name: "backend",
       pathname: "/api/api-document",

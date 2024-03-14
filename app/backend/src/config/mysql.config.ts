@@ -9,17 +9,17 @@ export class MysqlConfig {
   dbName = 'openapi'
 
   @IsString()
-  host: string
+  host!: string
 
   @ToNumber()
   @IsNumber({ allowNaN: false })
-  port: number
+  port!: number
 
   @IsString()
-  user: string
+  user!: string
 
   @IsString()
-  password: string
+  password!: string
 
   @IsString()
   timezone? = '+08:00'

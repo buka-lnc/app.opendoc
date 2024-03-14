@@ -24,7 +24,7 @@
     "autoprefixer": "^10.4.17",
     "daisyui": "^4.7.2",
     "eslint": "^8.56.0",
-    "keq-cli": "^4.0.0",
+    "keq-cli": "^4.1.0",
     "monaco-editor": "^0.45.0",
     "nuxt": "^3.9.3",
     "nuxt-monaco-editor": "^1.2.7",

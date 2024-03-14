@@ -9,7 +9,7 @@ export class NpmPackage extends BaseEntity {
     columnType: 'varchar(214)',
     comment: 'Npm包名',
   })
-  name: string
+  name!: string
 
   // @Property({
   //   columnType: 'varchar(512)',
@@ -21,11 +21,11 @@ export class NpmPackage extends BaseEntity {
     entity: () => NpmPackageDistTag,
     mappedBy: 'npmPackage',
   })
-  distTags: Collection<NpmPackageDistTag>
+  distTags!: Collection<NpmPackageDistTag>
 
   @OneToMany({
     entity: () => NpmPackageTime,
     mappedBy: 'npmPackage',
   })
-  times: Collection<NpmPackageTime>
+  times!: Collection<NpmPackageTime>
 }

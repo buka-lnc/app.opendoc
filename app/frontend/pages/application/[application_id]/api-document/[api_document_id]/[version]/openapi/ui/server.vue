@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useRouteParams } from '@vueuse/router'
 import { OpenAPIV3 } from 'openapi-types'
 import { OPENDOC_SERVERS_INJECT_KEY } from '~/constants/opendoc-servers-inject-key.js'
 import { SCHEMA_INJECT_KEY } from '~/constants/schema-inject-key.js'
@@ -9,7 +10,10 @@ const servers = computed(() => openapi?.value.servers || [])
 provide(OPENDOC_SERVERS_INJECT_KEY, { servers })
 
 const route = useRoute()
-const prefix = computed(() => `/application/${String(route.params.application_id)}/api-document/${String(route.params.api_document_id)}/openapi/ui/server`)
+const applicationId = useRouteParams<string>('application_id')
+const apiDocumentId = useRouteParams<string>('api_document_id')
+const version = useRouteParams<string>('version')
+const prefix = computed(() => `/application/${applicationId.value}/api-document/${apiDocumentId.value}/${version.value}/openapi/ui/server`)
 const router = useRouter()
 watch(
   () => toValue(servers),

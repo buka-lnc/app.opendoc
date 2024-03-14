@@ -13,7 +13,7 @@ export class Application extends BaseEntity {
     unique: true,
     comment: '唯一应用编码',
   })
-  code: string
+  code!: string
 
   /**
    * 应用名称
@@ -22,7 +22,7 @@ export class Application extends BaseEntity {
     columnType: 'varchar(127)',
     comment: '应用名称',
   })
-  title: string
+  title!: string
 
   @ApiProperty({
     type: () => ApiDocument,
@@ -32,5 +32,5 @@ export class Application extends BaseEntity {
     entity: () => ApiDocument,
     mappedBy: 'application',
   })
-  apiDocuments: Collection<ApiDocument>
+  apiDocuments!: Collection<ApiDocument>
 }

@@ -3,6 +3,12 @@
  * @export
  */
 export interface RegisterApplicationDTO {
-  title?: string
-  code: string
+  /**
+   * 应用名称
+   */
+  "title"?: string
+  /**
+   * 唯一应用编码
+   */
+  "code": string
 }

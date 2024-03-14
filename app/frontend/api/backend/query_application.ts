@@ -2,7 +2,12 @@ import { Keq } from 'keq'
 import { request } from 'keq'
 import { Application } from "./components/schemas/application"
 
-type Response_200_application_json = Application
+
+interface ResponseMap {
+  200: Application
+  500: unknown
+}
+
 
 interface QueryArg {
 }
@@ -15,8 +20,9 @@ interface HeaderArg {
 }
 
 
-export function queryApplication(arg?: QueryArg & ParamArg & HeaderArg): Keq<Response_200_application_json> {
-  const req = request.get<Response_200_application_json>("/api/application/:applicationIdOrCode")
+export function queryApplication<STATUS extends keyof ResponseMap>(arg?: QueryArg & ParamArg & HeaderArg): Keq<ResponseMap[STATUS]> {
+  const req = request.get<ResponseMap[STATUS]>
+  ("/api/application/:applicationIdOrCode")
     .option('module', {
       name: "backend",
       pathname: "/api/application/:applicationIdOrCode",

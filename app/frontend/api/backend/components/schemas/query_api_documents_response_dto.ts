@@ -7,6 +7,6 @@ import { PageDTO } from "./page_dto"
  * @export
  */
 export interface QueryApiDocumentsResponseDTO {
-  results: (ApiDocument)[]
-  page: PageDTO
+  "results": (ApiDocument)[]
+  "page": PageDTO
 }
