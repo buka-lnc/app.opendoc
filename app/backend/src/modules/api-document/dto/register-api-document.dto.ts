@@ -19,15 +19,6 @@ export class RegisterApiDocumentDTO {
   apiDocumentCode: string
 
   /**
-   * 文档标签
-   * @example "latest"
-   */
-  @IsString()
-  @IsOptional()
-  @MaxLength(24)
-  apiDocumentTag?: string
-
-  /**
    * 文档类型
    * @example "openapi"
    */
@@ -54,6 +45,15 @@ export class RegisterApiDocumentDTO {
    */
   @IsNumber()
   apiDocumentOrder?: number
+
+  /**
+   * 文档标签
+   * @example "latest"
+   */
+  @IsString()
+  @IsOptional()
+  @MaxLength(24)
+  apiDocumentFileTag?: string
 
   /**
    * 文档文件

@@ -1,8 +1,9 @@
-import { Entity, Enum, ManyToOne, Property, Ref, Unique, t } from '@mikro-orm/core'
+import { Collection, Entity, Enum, ManyToOne, OneToMany, Property, Ref, Unique, t } from '@mikro-orm/core'
 import { IsEnum, IsOptional, IsString, MaxLength } from 'class-validator'
 import { BaseEntity } from '~/entities/base.entity'
 import { API_DOCUMENT_TYPE } from '../constants/api-document-type.enum'
 import { Application } from '~/modules/application/entity/application.entity'
+import { ApiDocumentFile } from './api-document-file.entity'
 
 
 @Entity()
@@ -55,50 +56,6 @@ export class ApiDocument extends BaseEntity {
   title: string = ''
 
   /**
-   * 文档所属的应用
-   */
-  @ManyToOne({
-    entity: () => Application,
-    comment: '文档所属的应用',
-    ref: true,
-  })
-  application: Ref<Application>
-
-  /**
-   * 文档文件的指纹
-   */
-  @MaxLength(10)
-  @IsString()
-  @Property({
-    columnType: 'varchar(10)',
-    comment: '文档文件的指纹',
-  })
-  hash: string = ''
-
-  /**
-   * 文档文件的标签
-   * @example "latest"
-   */
-  @MaxLength(24)
-  @IsString()
-  @Property({
-    columnType: 'varchar(24)',
-    comment: '文档文件的标签',
-  })
-  tag: string = 'latest'
-
-  /**
-   * 文档文件的版本
-   */
-  @IsString()
-  @MaxLength(16)
-  @Property({
-    columnType: 'varchar(15)',
-    comment: '文档文件的版本',
-  })
-  version: string = '1.0.0'
-
-  /**
    * 文档文件的定时同步地址
    */
   @IsString()
@@ -109,4 +66,21 @@ export class ApiDocument extends BaseEntity {
     nullable: true,
   })
   cronSyncUrl?: string
+
+  /**
+   * 文档所属的应用
+   */
+  @ManyToOne({
+    entity: () => Application,
+    comment: '文档所属的应用',
+    ref: true,
+  })
+  application: Ref<Application>
+
+  @OneToMany({
+    entity: () => ApiDocumentFile,
+    mappedBy: 'apiDocument',
+    comment: '文档文件',
+  })
+  files: Collection<ApiDocumentFile>
 }
