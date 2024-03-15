@@ -12,7 +12,7 @@ export class Application extends BaseEntity {
   @MaxLength(64)
   @Matches(/^[a-z0-9-]+$/)
   @Property({
-    columnType: 'varchar(64)',
+    columnType: 'varchar(63)',
     unique: true,
     comment: '唯一应用编码',
   })

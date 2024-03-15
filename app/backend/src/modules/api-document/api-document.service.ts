@@ -79,7 +79,7 @@ export class ApiDocumentService {
       },
       {
         limit: 10,
-        orderBy: { updateAt: 'ASC' },
+        orderBy: { updatedAt: 'ASC' },
       }
     )
 

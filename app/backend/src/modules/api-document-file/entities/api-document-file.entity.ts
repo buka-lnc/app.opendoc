@@ -1,7 +1,8 @@
-import { Entity, ManyToOne, Property, Ref, Unique } from '@mikro-orm/core'
+import { Collection, Entity, ManyToOne, OneToMany, Property, Ref, Unique } from '@mikro-orm/core'
 import { IsString, MaxLength } from 'class-validator'
 import { ApiDocument } from '../../api-document/entities/api-document.entity'
 import { BaseEntity } from '~/entities/base.entity'
+import { NpmPackage } from '~/modules/registry/entity/npm-package.entity'
 
 @Entity()
 @Unique({ properties: ['apiDocument', 'version'] })
@@ -37,7 +38,7 @@ export class ApiDocumentFile extends BaseEntity {
   @IsString()
   @MaxLength(16)
   @Property({
-    columnType: 'varchar(15)',
+    columnType: 'varchar(63)',
     comment: '文档文件的版本',
   })
   version: string = '1.0.0'
@@ -48,4 +49,11 @@ export class ApiDocumentFile extends BaseEntity {
     ref: true,
   })
   apiDocument!: Ref<ApiDocument>
+
+  @OneToMany({
+    entity: () => NpmPackage,
+    comment: 'Npm 包',
+    mappedBy: 'apiDocumentFile',
+  })
+  npmPackage!: Collection<NpmPackage>
 }
