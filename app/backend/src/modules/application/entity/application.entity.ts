@@ -1,5 +1,6 @@
 import { Collection, Entity, OneToMany, Property } from '@mikro-orm/core'
 import { ApiProperty } from '@nestjs/swagger'
+import { Matches, MaxLength } from 'class-validator'
 import { BaseEntity } from '~/entities/base.entity'
 import { ApiDocument } from '~/modules/api-document/entities/api-document.entity'
 
@@ -8,8 +9,10 @@ export class Application extends BaseEntity {
   /**
    * 唯一应用编码
    */
+  @MaxLength(64)
+  @Matches(/^[a-z0-9-]+$/)
   @Property({
-    columnType: 'varchar(63)',
+    columnType: 'varchar(64)',
     unique: true,
     comment: '唯一应用编码',
   })

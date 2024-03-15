@@ -1,5 +1,6 @@
 import { ConfigModule } from '@buka/nestjs-config'
 import { MySqlDriver } from '@mikro-orm/mysql'
+import { EventEmitterModule } from '@nestjs/event-emitter'
 import { MikroOrmModule } from '@mikro-orm/nestjs'
 import { BadRequestException, Module } from '@nestjs/common'
 import { ScheduleModule } from '@nestjs/schedule'
@@ -41,6 +42,7 @@ import { ApiDocumentFileModule } from './modules/api-document-file/api-document-
     })),
 
     ScheduleModule.forRoot(),
+    EventEmitterModule.forRoot(),
 
     TerminusModule,
     ApiDocumentModule,

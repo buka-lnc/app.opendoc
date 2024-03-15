@@ -22,8 +22,9 @@ export class ApplicationController {
   async registerApplication(
     @Body() dto: RegisterApplicationDTO
   ): Promise<void> {
+    await this.em.begin()
     await this.applicationService.register(dto)
-    await this.em.flush()
+    await this.em.commit()
   }
 
   @Get()
@@ -47,8 +48,9 @@ export class ApplicationController {
   async deleteApplication(
     @Param('applicationIdOrCode') applicationIdOrCode: string
   ): Promise<void> {
-    this.applicationService.deleteApplication(applicationIdOrCode)
-    await this.em.flush()
+    await this.em.begin()
+    await this.applicationService.deleteApplication(applicationIdOrCode)
+    await this.em.commit()
   }
 }
 

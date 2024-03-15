@@ -45,7 +45,7 @@ export class AppService implements OnModuleInit {
     await this.apiDocumentService.register({
       applicationCode: 'opendoc',
       apiDocumentType: API_DOCUMENT_TYPE.MARKDOWN,
-      apiDocumentCode: 'opendoc.readme',
+      apiDocumentCode: 'readme',
       apiDocumentOrder: 1,
       apiDocumentTitle: 'README',
       apiDocumentFile: buf,

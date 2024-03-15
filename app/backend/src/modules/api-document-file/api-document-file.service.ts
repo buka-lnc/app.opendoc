@@ -11,6 +11,8 @@ import { QueryApiDocumentFilesDTO } from './dto/query-api-document-files.dto'
 import { CreateApiDocumentFileDTO } from './dto/create-api-document-file.dto'
 import { ApiDocument } from '../api-document/entities/api-document.entity'
 import { AppConfig } from '~/config/app.config'
+import { EventEmitter2 } from '@nestjs/event-emitter'
+import { ApiDocumentFileCreatedEvent } from './events/api-document-file-created.event'
 
 
 @Injectable()
@@ -20,8 +22,10 @@ export class ApiDocumentFileService {
     private readonly logger: PinoLogger,
 
     private readonly appConfig: AppConfig,
+    private eventEmitter: EventEmitter2,
     private readonly em: EntityManager,
     private readonly orm: MikroORM,
+
 
     @InjectRepository(ApiDocument)
     private readonly apiDocumentRepo: EntityRepository<ApiDocumentFile>,
@@ -105,7 +109,13 @@ export class ApiDocumentFileService {
     await fs.ensureDir(dir)
     await fs.writeFile(filepath, dto.file)
 
-    this.em.persist(newFile)
+    await this.em.persistAndFlush(newFile)
+
+    this.eventEmitter.emit(
+      'api-document-file.created',
+      new ApiDocumentFileCreatedEvent(newFile.id)
+    )
+
     return newFile
   }
 

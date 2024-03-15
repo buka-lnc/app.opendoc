@@ -30,7 +30,7 @@ export class ApplicationService {
       title: dto.title || dto.code,
     })
 
-    this.em.persist(application)
+    await this.em.persistAndFlush(application)
   }
 
   async queryApplicationByIdOrCode(idOrCode: string): Promise<Application> {
@@ -73,7 +73,7 @@ export class ApplicationService {
     }
   }
 
-  deleteApplication(idOrCode: string): void {
+  async deleteApplication(idOrCode: string): Promise<void> {
     const application = this.applicationRepo.find({
       $or: [
         { id: idOrCode },
@@ -81,6 +81,6 @@ export class ApplicationService {
       ],
     })
 
-    this.em.remove(application)
+    await this.em.removeAndFlush(application)
   }
 }

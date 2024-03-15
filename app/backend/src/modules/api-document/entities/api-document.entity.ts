@@ -1,5 +1,5 @@
 import { Collection, Entity, Enum, ManyToOne, OneToMany, Property, Ref, Unique, t } from '@mikro-orm/core'
-import { IsEnum, IsOptional, IsString, MaxLength } from 'class-validator'
+import { IsEnum, IsOptional, IsString, Matches, MaxLength } from 'class-validator'
 import { BaseEntity } from '~/entities/base.entity'
 import { API_DOCUMENT_TYPE } from '../constants/api-document-type.enum'
 import { Application } from '~/modules/application/entity/application.entity'
@@ -26,6 +26,7 @@ export class ApiDocument extends BaseEntity {
    */
   @IsString()
   @MaxLength(64)
+  @Matches(/^[a-z0-9-]+$/)
   @Property({
     columnType: 'varchar(63)',
     index: true,

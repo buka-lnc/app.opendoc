@@ -11,7 +11,6 @@ import { InjectRepository } from '@mikro-orm/nestjs'
 import { Application } from '../application/entity/application.entity'
 import { EntityRepository } from '@mikro-orm/mysql'
 import { QueryApiDocumentsResponseDTO } from './dto/query-api-documents-response.dto'
-import { ApiDocumentFile } from '../api-document-file/entities/api-document-file.entity'
 import { ApiDocumentFileService } from '../api-document-file/api-document-file.service'
 
 
@@ -26,9 +25,6 @@ export class ApiDocumentService {
     private readonly orm: MikroORM,
 
     private readonly apiDocumentFileService: ApiDocumentFileService,
-
-    @InjectRepository(ApiDocumentFile)
-    private readonly apiDocumentFileRepo: EntityRepository<ApiDocumentFile>,
 
     @InjectRepository(ApiDocument)
     private readonly apiDocumentRepo: EntityRepository<ApiDocument>,
@@ -69,7 +65,6 @@ export class ApiDocumentService {
       })
     }
 
-    await this.em.flush()
     return document
   }
 

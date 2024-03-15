@@ -32,19 +32,20 @@ export class ApiDocumentController {
     @Body() dto: RegisterApiDocumentDTO,
     @UploadedFile() file: Express.Multer.File,
   ): Promise<void> {
+    await this.em.begin()
     await this.apiDocumentService.register({
       ...dto,
       apiDocumentFile: file.buffer,
     })
-
-    await this.em.flush()
+    await this.em.commit()
   }
 
   @Post('sync')
   @ApiOperation({ summary: '同步 API 文档', description: '每隔 10 分钟自动同步一次' })
   async syncApiDocuments(): Promise<void> {
+    await this.em.begin()
     await this.apiDocumentService.syncDocuments()
-    await this.em.flush()
+    await this.em.commit()
   }
 
   @Get()
