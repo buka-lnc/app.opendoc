@@ -12,7 +12,7 @@ const title = computed(() => props.reference.split('/').pop())
 <template>
   <NuxtLink
     class="schema-ref"
-    :to="`/application/${$route.params.application_id}/api-document/${$route.params.api_document_id}/openapi/ui/schema/${id}`"
+    :to="`/application/${$route.params.application_id}/api-document/${$route.params.api_document_id}/${$route.params.version}/openapi/ui/schema/${id}`"
   >
     {{ title }}
   </NuxtLink>

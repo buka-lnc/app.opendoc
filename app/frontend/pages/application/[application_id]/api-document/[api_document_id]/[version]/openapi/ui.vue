@@ -52,7 +52,7 @@ watch(
 
 <template>
   <div class="size-full flex">
-    <ul class="bg-base-100 flex-0 d-menu d-menu-lg w-fit h-full p-0">
+    <ul class="bg-base-100 flex-0 d-menu d-menu-lg flex-nowrap w-fit h-full p-0 overflow-y-auto">
       <li>
         <openapi-menu-button
           :to="`${prefix}/version`"

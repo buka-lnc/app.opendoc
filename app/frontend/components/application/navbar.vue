@@ -33,7 +33,7 @@ const props = defineProps<{
         >
           <NuxtLink
             v-if="apiDocument.type === 'openapi'"
-            :to="`/application/${$route.params.application_id}/api-document/${apiDocument.id}/openapi/ui`"
+            :to="`/application/${$route.params.application_id}/api-document/${apiDocument.id}`"
             class="d-tab"
             :class="{
               'd-tab-active': $route.params.api_document_id === apiDocument.id,
@@ -44,7 +44,7 @@ const props = defineProps<{
 
           <NuxtLink
             v-if="apiDocument.type === 'markdown'"
-            :to="`/application/${$route.params.application_id}/api-document/${apiDocument.id}/markdown`"
+            :to="`/application/${$route.params.application_id}/api-document/${apiDocument.id}`"
             class="d-tab"
             :class="{
               'd-tab-active': $route.params.api_document_id === apiDocument.id,

@@ -29,7 +29,7 @@ const responses = computed(
   <div v-if="operation" class="p-10 bg-base-300 space-y-10 overflow-y-auto size-full">
     <div>
       <div
-        class="text-2xl space-x-2"
+        class="text-2xl space-x-2 flex"
         :class="deprecated && 'line-through opacity-60'"
       >
         <span class="flex-0 uppercase" :class="!deprecated && color">

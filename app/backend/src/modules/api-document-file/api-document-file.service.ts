@@ -61,7 +61,7 @@ export class ApiDocumentFileService {
   }
 
   private getFilepath(file: ApiDocumentFile): string {
-    return path.join(path.resolve(this.appConfig.storage), file.version)
+    return path.join(path.resolve(this.appConfig.storage), file.apiDocument.id, file.version)
   }
 
   async create(dto: CreateApiDocumentFileDTO): Promise<ApiDocumentFile> {
@@ -133,9 +133,35 @@ export class ApiDocumentFileService {
     const apiDocument = this.apiDocumentRepo.getReference(apiDocumentId)
     const documentFile = await this.em.findOneOrFail(ApiDocumentFile, {
       apiDocument,
-      version: version,
+      version: version === 'latest' ? null : version,
     })
+    console.log('🚀 ~ ApiDocumentFileService ~ queryRawDocumentFileByVersion ~ documentFile:', documentFile)
     const filepath = this.getFilepath(documentFile)
     return fs.createReadStream(filepath)
+  }
+
+  async queryDocumentFileByVersion(apiDocumentId: string, version: string): Promise<ApiDocumentFile> {
+    const apiDocument = this.apiDocumentRepo.getReference(apiDocumentId)
+    const documentFile = await this.em.findOneOrFail(ApiDocumentFile, {
+      apiDocument,
+      version,
+    })
+
+    return documentFile
+  }
+
+  async queryDocumentFileByTag(apiDocumentId: string, tag: string | undefined): Promise<ApiDocumentFile> {
+    const apiDocument = this.apiDocumentRepo.getReference(apiDocumentId)
+    const documentFile = await this.apiDocumentFileRepo.findOneOrFail(
+      {
+        apiDocument,
+        tag: tag === 'latest' ? null : tag,
+      },
+      {
+        orderBy: { id: 'DESC' },
+      }
+    )
+
+    return documentFile
   }
 }

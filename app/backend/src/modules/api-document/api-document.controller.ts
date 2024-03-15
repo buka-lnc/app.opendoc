@@ -74,19 +74,25 @@ export class ApiDocumentController {
   }
 
   @Get(':apiDocumentId/tag/:tagName/api-document-file')
-  @ApiOperation({ summary: '查询 API 文档标签列表' })
-  async queryApiDocumentTags(
+  @ApiOperation({ summary: '查询某一 API 文档的某一标签的文件' })
+  async queryApiDocumentFileByTag(
     @Param('tagName') tagName: string,
     @Param('apiDocumentId') id: string,
-  ): Promise<ApiDocumentFile[]> {
-    return await this.apiDocumentFileService.queryApiDocumentFiles({
-      apiDocumentIds: [id],
-      tags: [tagName],
-    })
+  ): Promise<ApiDocumentFile> {
+    return await this.apiDocumentFileService.queryDocumentFileByTag(id, tagName)
+  }
+
+  @Get(':apiDocumentId/version/:version/api-document-file')
+  @ApiOperation({ summary: '查询某一 API 文档的某一版本的文件' })
+  async queryApiDocumentFileByVersion(
+    @Param('version') version: string,
+    @Param('apiDocumentId') id: string,
+  ): Promise<ApiDocumentFile> {
+    return await this.apiDocumentFileService.queryDocumentFileByVersion(id, version)
   }
 
   @Get(':apiDocumentId/version/:version/api-document-file/raw')
-  @ApiOperation({ summary: '查询某一个版本的 API 文档' })
+  @ApiOperation({ summary: '下载某一 API 文档的某一版本的文件内容' })
   async queryRawApiDocumentFileByVersion(
     @Param('version') version: string,
     @Param('apiDocumentId') id: string,
