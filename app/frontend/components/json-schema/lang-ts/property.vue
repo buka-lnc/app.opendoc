@@ -78,46 +78,35 @@ const [showPopover, toggleShowPopover] = useToggle(false)
     <span class="pr-2">:</span>
 
     <span
-      v-if="!fold && referencePath.length > 0"
-      class="bg-base-200 text-base-content/70 px-1 rounded-sm mr-2"
+      v-if="referencePath.length > 0"
+      :class="!fold && 'bg-base-200 text-base-content/70 px-1 rounded-sm mr-2'"
     >
-      <span>&lt;</span>
-      <json-schema-lang-ts-ref :reference="referencePath[referencePath.length - 1]" />
-      <json-schema-lang-ts-array-dimension :dimension="arrayDimension" />
-      <span>&gt;</span>
-    </span>
-
-    <span v-if="fold && referencePath.length > 0">
+      <span v-if="!fold">&lt;</span>
+      <!-- <json-schema-lang-ts-ref :reference="referencePath[referencePath.length - 1]" /> -->
       <json-schema-lang-ts-ref
-        class="schema-constant"
+        :class="fold && 'schema-constant'"
         :reference="referencePath[referencePath.length - 1]"
       />
       <json-schema-lang-ts-array-dimension :dimension="arrayDimension" />
-
-      <button
-        class="cursor-pointer mx-2 hover:font-bold"
-        @click="toggleFold(false)"
-      >
-        {...}
-      </button>
+      <span v-if="!fold">&gt;</span>
     </span>
 
-    <span v-if="isBasicType">
+    <span v-if="isBasicType && resolvedSchema">
       <json-schema-lang-ts-popover
         :show="showPopover"
         :schema="resolvedSchema"
       />
 
-      <json-schema-lang-ts-type :schema="value" />
+      <json-schema-lang-ts-base-type :schema="resolvedSchema" />
       <json-schema-lang-ts-array-dimension :dimension="arrayDimension" />
     </span>
 
     <button
-      v-if="!fold && isObject && referencePath.length > 0"
-      class="schema-punctuation hover:font-bold"
-      @click="toggleFold(true)"
+      v-if="isObject && referencePath.length > 0"
+      class="cursor-pointer mx-2 schema-punctuation hover:font-bold"
+      @click="toggleFold()"
     >
-      {...
+      {{ fold ? '{...}' : '{...' }}
     </button>
 
     <span v-if="isObject && !referencePath.length" class="schema-punctuation">{</span>

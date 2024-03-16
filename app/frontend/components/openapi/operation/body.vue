@@ -17,8 +17,6 @@ const content = computed(() => {
   if (!props.body || !active.value) return
   return props.body[active.value]
 })
-
-const [schema] = useDereference<OpenAPIV3.SchemaObject | OpenAPIV3.ReferenceObject>(() => content?.value?.schema)
 </script>
 
 <template>
@@ -43,9 +41,9 @@ const [schema] = useDereference<OpenAPIV3.SchemaObject | OpenAPIV3.ReferenceObje
     </div>
 
     <div>
-      <json-schema-lang-ts-type
-        v-if="schema"
-        :schema="schema"
+      <json-schema-lang-ts
+        v-if="content?.schema"
+        :schema="content?.schema"
       />
     </div>
   </div>
