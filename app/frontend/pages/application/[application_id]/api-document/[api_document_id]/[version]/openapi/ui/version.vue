@@ -37,8 +37,10 @@ const { pending, data: apiDocumentFiles } = useAsyncData(
           <NuxtLink
             :to="prefix"
             class="d-btn d-btn-sm font-sans"
+            :aria-disabled="version === apiDocumentFile.version"
+            :class="version === apiDocumentFile.version && 'd-btn-disabled'"
           >
-            查看
+            {{ version === apiDocumentFile.version ? '当前版本' : '查看' }}
           </NuxtLink>
         </div>
       </div>

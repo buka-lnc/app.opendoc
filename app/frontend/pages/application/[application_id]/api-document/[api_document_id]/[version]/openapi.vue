@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { IconCode, IconBrowser } from '@tabler/icons-vue'
+import { IconVersions, IconCode, IconBrowser } from '@tabler/icons-vue'
 import { useRouteParams } from '@vueuse/router'
 
 const applicationId = useRouteParams<string>('application_id')
@@ -13,8 +13,16 @@ const prefix = computed(() => `/application/${applicationId.value}/api-document/
     <div class="flex-1 overflow-hidden">
       <NuxtPage />
     </div>
-    <div class="flex-0 px-2 flex items-center justify-between bg-base-100/50">
-      <div />
+    <div class="flex-0 px-4 flex items-center justify-between bg-base-100/50 text-xs">
+      <div>
+        <div
+          class="d-tooltip d-tooltip-right text-base-content/60 flex cursor-default"
+          :data-tip="`版本：${version}`"
+        >
+          <IconVersions class="size-4 mr-1" />
+          {{ version }}
+        </div>
+      </div>
 
       <div class="flex items-center space-x-1">
         <div class="d-join">
