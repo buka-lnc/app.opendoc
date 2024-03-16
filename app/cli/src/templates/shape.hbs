@@ -1,0 +1,44 @@
+{{~#if const~}}
+{{{stringify const}}}
+
+{{~else if enum.length~}}
+{{> t_shape__enum}}
+
+{{~else if (r__isString $ref)~}}
+{{ref-name $ref}}
+
+{{~else if (r__isArray anyOf)~}}
+{{> t_shape__any_of}}
+
+{{~else if (r__isArray oneOf)~}}
+{{> t_shape__one_of}}
+
+{{~else if (r__isArray allOf)~}}
+{{> t_shape__all_of}}
+
+{{~else if (or (r__equals type "object") (r__isObject properties) additionalProperties)~}}
+{
+  {{> t_shape__object}}
+}
+
+{{~else if (r__equals type "array")~}}
+{{> t_shape__array}}
+
+{{~else if (r__equals type "number")~}}
+number
+
+{{~else if (r__equals type "integer")~}}
+number
+
+{{~else if (r__equals type "string")~}}
+string
+
+{{~else if (r__equals type "boolean")~}}
+boolean
+
+{{~else~}}
+any
+
+{{~/if~}}
+
+{{~#if nullable}} | null{{/if~}}

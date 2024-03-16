@@ -52,7 +52,8 @@ export class RegistryListener {
     }
 
     const npmPackage = this.npmPackageRepo.create({
-      name: `@${application.code}/${apiDocument.code}`,
+      scope: application.code,
+      name: apiDocument.code,
       version: apiDocumentFile.version,
       tag: apiDocumentFile.tag,
       isPublished: false,

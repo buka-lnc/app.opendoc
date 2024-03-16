@@ -1,0 +1,141 @@
+import { Keq } from 'keq'
+import { request } from '{{{options.request}}}'
+{{#each
+  (r__uniq
+    (r__flatten
+      (r__map
+        (pick-ref)
+        (r__unnest
+          (r__Array
+            (json-path "$.responses[*].content[*].schema" operation)
+            (json-path "$.requestBody.content[*].schema" operation)
+            (json-path "$.parameters[*].schema" operation)
+          )
+        )
+      )
+    )
+  )
+}}
+import { {{ref-name this}} } from "./components/schemas/{{change-case @root.options.fileNamingStyle (ref-name this)}}"
+{{/each}}
+
+
+interface ResponseMap {
+  {{#each operation.responses as |responseBody code|}}
+  {{code}}: {{#each responseBody.content as |content contentType|~}}
+      {{> t_shape content.schema}}{{#unless @last}} | {{/unless}}
+    {{else~}}
+      unknown
+    {{/each}}
+  {{/each}}
+}
+
+{{#*inline "parameterProperty"}}
+  {{name}}{{#unless required}}?{{/unless}}: {{> t_shape schema}}
+{{/inline}}
+
+interface QueryArg {
+  {{#if operation.parameters}}
+  {{#each (r__filter (r__propEq "in" "query") operation.parameters)}}
+  {{> parameterProperty}}
+  {{/each}}
+  {{/if}}
+}
+
+interface ParamArg {
+  {{#if operation.parameters}}
+  {{#each (r__filter (r__propEq "in" "path") operation.parameters)}}
+  {{> parameterProperty}}
+  {{/each}}
+  {{/if}}
+}
+
+interface HeaderArg {
+  {{#if operation.parameters}}
+  {{#each (r__filter (r__propEq "in" "header") operation.parameters)}}
+  {{> parameterProperty}}
+  {{/each}}
+  {{/if}}
+}
+
+
+{{> t_comments operation}}
+export function {{get-safe-operation-name pathname method operation}}<STATUS extends keyof ResponseMap>(arg?: QueryArg & ParamArg & HeaderArg
+{{~#unless (r__isNil operation.requestBody.content)}}
+ & (
+{{~#each (r__map (r__prop "schema") (r__values operation.requestBody.content))}}
+{{> t_shape this}}{{#unless @last}} | {{/unless}}
+{{~/each~}}
+)
+{{~/unless~}}
+): Keq<ResponseMap[STATUS]> {
+  const req = request.{{method}}<ResponseMap[STATUS]>
+  ("{{{r__replace (regexp "{(.*?)}" flags="g") ":$1" pathname}}}")
+    .option('module', {
+      name: "{{{moduleName}}}",
+      pathname: "{{{r__replace (regexp "{(.*?)}" flags="g") ":$1" pathname}}}",
+    })
+
+  {{#if operation.parameters}}
+  {{#each (r__filter (r__propEq "in" "query") operation.parameters)}}
+  {{#if @first}}
+  const queryWrap = (value: any) => typeof value === 'boolean' ? String(value) : value
+
+  {{/if}}
+  if (arg && "{{name}}" in arg) req.query("{{name}}", queryWrap(arg["{{name}}"]))
+  {{/each~}}
+
+  {{#each (r__filter (r__propEq "in" "header") operation.parameters)}}
+  if (arg && "{{name}}" in arg) req.set("{{name}}", arg["{{name}}"])
+  {{/each~}}
+
+  {{#each (r__filter (r__propEq "in" "path") operation.parameters)}}
+  if (arg && "{{name}}" in arg) req.params("{{name}}", String(arg["{{name}}"]))
+  {{/each~}}
+  {{/if}}
+
+  {{~#each operation.requestBody.content}}
+  {{~#if (r__and (r__equals @key "application/json") this.schema)}}
+
+    {{~#*inline "SchemaSend"}}
+      {{#each properties}}
+  if (arg && "{{@key}}" in arg) req.send({ "{{@key}}": arg["{{@key}}"] })
+      {{/each}}
+    {{/inline}}
+
+
+    {{~#*inline "send"}}
+      {{~#if (is-ref this)}}
+        {{~#with (get-schema-by-ref this)}}
+          {{~> send this}}
+        {{~/with}}
+      {{~else if this.allOf}}
+        {{#each this.allOf}}
+          {{~#with (get-schema-by-ref this)}}
+            {{~> send this}}
+          {{~/with}}
+        {{/each}}
+      {{~else if this.oneOf}}
+        {{#each this.oneOf}}
+          {{~#with (get-schema-by-ref this)}}
+            {{~> send this}}
+          {{~/with}}
+        {{/each}}
+      {{~else if this.anyOf}}
+        {{#each this.anyOf}}
+          {{~#with (get-schema-by-ref this)}}
+            {{~> send this}}
+          {{~/with}}
+        {{/each}}
+      {{~else}}
+        {{~> SchemaSend this}}
+      {{~/if}}
+    {{/inline}}
+
+    {{~> send this.schema}}
+
+  {{~/if}}
+  {{~/each}}
+
+  return req
+}

@@ -1,4 +1,4 @@
-import { Entity, ManyToOne, OneToOne, Property, Ref, t } from '@mikro-orm/core'
+import { Entity, ManyToOne, OneToOne, Opt, Property, Ref, t } from '@mikro-orm/core'
 import { BaseEntity } from '~/entities/base.entity'
 import { ApiDocumentFile } from '~/modules/api-document-file/entities/api-document-file.entity'
 import { BuildTask } from './build-task.entity'
@@ -6,14 +6,25 @@ import { ApiProperty } from '@nestjs/swagger'
 
 @Entity()
 export class NpmPackage extends BaseEntity {
+  @Property({
+    columnType: 'varchar(63)',
+    comment: 'organization',
+  })
+  scope!: string
+
   /**
    * Npm包名
    */
   @Property({
-    columnType: 'varchar(214)',
+    columnType: 'varchar(63)',
     comment: 'Npm包名',
   })
   name!: string
+
+  @Property({ persist: false })
+  get fullName(): Opt<string> {
+    return `@${this.scope}/${this.name}`
+  }
 
   /**
    * 版本

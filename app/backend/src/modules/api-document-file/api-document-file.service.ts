@@ -65,7 +65,7 @@ export class ApiDocumentFileService {
   }
 
   private getFilepath(file: ApiDocumentFile): string {
-    return path.join(path.resolve(this.appConfig.storage), file.apiDocument.id, file.version)
+    return path.join(path.resolve(this.appConfig.storage), 'api-document-file', file.apiDocument.id, file.version)
   }
 
   async create(dto: CreateApiDocumentFileDTO): Promise<ApiDocumentFile> {

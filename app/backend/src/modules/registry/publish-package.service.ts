@@ -1,5 +1,6 @@
 import { ApiDocumentFileService } from '~/modules/api-document-file/api-document-file.service'
 import * as fs from 'fs-extra'
+import * as path from 'path'
 import { EnsureRequestContext, EntityManager, MikroORM } from '@mikro-orm/core'
 import { EntityRepository } from '@mikro-orm/mysql'
 import { InjectRepository } from '@mikro-orm/nestjs'
@@ -100,8 +101,15 @@ export class PublishPackageService {
     await this.em.removeAndFlush(buildTask)
   }
 
+  private getFilepath(npmPackage: NpmPackage): string {
+    return path.join(path.resolve(this.appConfig.storage), 'registry', npmPackage.scope, npmPackage.name)
+  }
+
   async buildOpenapi(swagger: string) {
     await fs.ensureDir(this.appConfig.storage)
+
+
+    // const filepath = this.getFilepath(npmPackage)
     console.log('🚀 ~ PublishPackageService ~ buildOpenapi ~ swagger:', swagger)
   }
 }
