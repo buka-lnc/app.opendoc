@@ -3,6 +3,7 @@ import { IsString, MaxLength } from 'class-validator'
 import { ApiDocument } from '../../api-document/entities/api-document.entity'
 import { BaseEntity } from '~/entities/base.entity'
 import { NpmPackage } from '~/modules/registry/entity/npm-package.entity'
+import { ApiProperty } from '@nestjs/swagger'
 
 @Entity()
 @Unique({ properties: ['apiDocument', 'version'] })
@@ -43,6 +44,9 @@ export class ApiDocumentFile extends BaseEntity {
   })
   version: string = '1.0.0'
 
+  @ApiProperty({
+    type: () => ApiDocument,
+  })
   @ManyToOne({
     entity: () => ApiDocument,
     comment: '文档',
@@ -50,6 +54,10 @@ export class ApiDocumentFile extends BaseEntity {
   })
   apiDocument!: Ref<ApiDocument>
 
+  @ApiProperty({
+    type: () => NpmPackage,
+    isArray: true,
+  })
   @OneToMany({
     entity: () => NpmPackage,
     comment: 'Npm 包',

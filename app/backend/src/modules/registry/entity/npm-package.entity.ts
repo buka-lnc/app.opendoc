@@ -2,6 +2,7 @@ import { Entity, ManyToOne, OneToOne, Property, Ref, t } from '@mikro-orm/core'
 import { BaseEntity } from '~/entities/base.entity'
 import { ApiDocumentFile } from '~/modules/api-document-file/entities/api-document-file.entity'
 import { BuildTask } from './build-task.entity'
+import { ApiProperty } from '@nestjs/swagger'
 
 @Entity()
 export class NpmPackage extends BaseEntity {
@@ -71,6 +72,9 @@ export class NpmPackage extends BaseEntity {
   })
   integrity?: string
 
+  @ApiProperty({
+    type: () => ApiDocumentFile,
+  })
   @ManyToOne({
     entity: () => ApiDocumentFile,
     comment: '文档文件',
@@ -78,6 +82,9 @@ export class NpmPackage extends BaseEntity {
   })
   apiDocumentFile!: Ref<ApiDocumentFile>
 
+  @ApiProperty({
+    type: () => BuildTask,
+  })
   @OneToOne({
     entity: () => BuildTask,
     mappedBy: 'npmPackage',

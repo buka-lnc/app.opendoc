@@ -4,6 +4,7 @@ import { BaseEntity } from '~/entities/base.entity'
 import { API_DOCUMENT_TYPE } from '../constants/api-document-type.enum'
 import { Application } from '~/modules/application/entity/application.entity'
 import { ApiDocumentFile } from '../../api-document-file/entities/api-document-file.entity'
+import { ApiProperty } from '@nestjs/swagger'
 
 
 @Entity()
@@ -71,6 +72,9 @@ export class ApiDocument extends BaseEntity {
   /**
    * 文档所属的应用
    */
+  @ApiProperty({
+    type: () => Application,
+  })
   @ManyToOne({
     entity: () => Application,
     comment: '文档所属的应用',
@@ -78,6 +82,10 @@ export class ApiDocument extends BaseEntity {
   })
   application!: Ref<Application>
 
+  @ApiProperty({
+    type: () => ApiDocumentFile,
+    isArray: true,
+  })
   @OneToMany({
     entity: () => ApiDocumentFile,
     mappedBy: 'apiDocument',
