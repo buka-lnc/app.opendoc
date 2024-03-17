@@ -1,0 +1,10 @@
+{{#if (r__isObject properties)}}
+{{#each properties}}
+{{> t_comments this}}
+"{{@key}}"{{#unless (r__includes @key (r__defaultTo (r__Array) ../required))}}?{{/unless}}: {{> t_json_schema_shape this}}
+{{/each}}
+{{~/if}}
+{{#if additionalProperties}}
+{{> t_comments additionalProperties}}
+[key: string]: undefined | {{#if (r__isBoolean additionalProperties)}}any{{else}}{{> t_json_schema_shape additionalProperties}}{{/if}}
+{{/if~}}

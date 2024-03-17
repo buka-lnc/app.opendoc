@@ -1,5 +1,7 @@
 import { ApiDocumentFileService } from '~/modules/api-document-file/api-document-file.service'
 import * as fs from 'fs-extra'
+import * as crypto from 'crypto'
+import * as childProcess from 'child_process'
 import * as path from 'path'
 import { EnsureRequestContext, EntityManager, MikroORM } from '@mikro-orm/core'
 import { EntityRepository } from '@mikro-orm/mysql'
@@ -13,6 +15,8 @@ import { BuildTask } from './entity/build-task.entity'
 import { buffer } from 'stream/consumers'
 import { API_DOCUMENT_TYPE } from '../api-document/constants/api-document-type.enum'
 import { AppConfig } from '~/config/app.config'
+import { FileNamingStyle, Filetype, compile } from '@opendoc/sdk'
+import compressing from 'compressing'
 
 
 @Injectable()
@@ -88,7 +92,7 @@ export class PublishPackageService {
     const str = buf.toString('utf8')
 
     if (apiDocumentFile.apiDocument.$.type === API_DOCUMENT_TYPE.OPEN_API) {
-      await this.buildOpenapi(str)
+      await this.buildOpenapi(npmPackage, str)
     }
 
     npmPackage.isPublished = true
@@ -101,15 +105,53 @@ export class PublishPackageService {
     await this.em.removeAndFlush(buildTask)
   }
 
-  private getFilepath(npmPackage: NpmPackage): string {
-    return path.join(path.resolve(this.appConfig.storage), 'registry', npmPackage.scope, npmPackage.name)
+  getTarballFilepath(npmPackage: NpmPackage): string {
+    return path.join(path.resolve(this.appConfig.storage), 'registry', npmPackage.scope, npmPackage.name, `${npmPackage.version}.tgz`)
   }
 
-  async buildOpenapi(swagger: string) {
-    await fs.ensureDir(this.appConfig.storage)
+  private getCompileDir(npmPackage: NpmPackage): string {
+    return path.join(path.resolve(this.appConfig.storage), 'compiling', npmPackage.scope, npmPackage.name, `${npmPackage.version}`)
+  }
 
+  async buildOpenapi(npmPackage: NpmPackage, swagger: string) {
+    const compileDir = this.getCompileDir(npmPackage)
+    await fs.ensureDir(compileDir)
+    await fs.emptyDir(compileDir)
 
-    // const filepath = this.getFilepath(npmPackage)
-    console.log('🚀 ~ PublishPackageService ~ buildOpenapi ~ swagger:', swagger)
+    this.logger.debug(`${npmPackage.fullName} compiling`)
+
+    await compile({
+      strict: true,
+      outdir: compileDir,
+      document: JSON.parse(swagger),
+      moduleName: npmPackage.fullName,
+      fileNamingStyle: FileNamingStyle.snakeCase,
+      filetype: Filetype.openapi,
+      project: {
+        name: npmPackage.fullName,
+        version: npmPackage.version,
+      },
+    })
+
+    const tarballFilepath = this.getTarballFilepath(npmPackage)
+    await fs.ensureDir(path.dirname(tarballFilepath))
+
+    this.logger.debug(`${npmPackage.fullName} building`)
+    childProcess.execSync('npm install && npm run build', { cwd: compileDir })
+
+    this.logger.debug(`${npmPackage.fullName} compressing`)
+    await compressing.tgz.compressDir(compileDir, tarballFilepath)
+
+    const buf = await fs.readFile(tarballFilepath)
+    const integrity = crypto
+      .createHash('sha512')
+      .update(buf)
+      .digest('base64')
+
+    npmPackage.tarball = `/@${npmPackage.scope}/${npmPackage.name}/-/${npmPackage.name}-${npmPackage.version}.tgz`
+    npmPackage.integrity = `sha512-${integrity}`
+    this.logger.info(`${npmPackage.fullName} published`)
+
+    this.em.persist(npmPackage)
   }
 }

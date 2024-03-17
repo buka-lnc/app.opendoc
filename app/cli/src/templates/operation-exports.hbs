@@ -1,5 +1,0 @@
-{{#each api.paths as |pathItem pathname|}}
-{{#each pathItem as |operation method|}}
-export * from "./{{change-case @root.options.fileNamingStyle (get-safe-operation-name pathname method operation)}}"
-{{/each}}
-{{/each}}

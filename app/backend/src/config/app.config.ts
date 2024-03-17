@@ -1,5 +1,5 @@
 import { Configuration } from '@buka/nestjs-config'
-import { IsIP, IsNumberString, IsString } from 'class-validator'
+import { IsIP, IsNumberString, IsOptional, IsString, IsUrl } from 'class-validator'
 
 
 @Configuration()
@@ -12,4 +12,16 @@ export class AppConfig {
 
   @IsString()
   storage: string = './storage'
+
+  /**
+   * Registry 的域名
+   * @example https://example.com/registry
+   */
+  @IsUrl({
+    protocols: ['http', 'https'],
+    require_protocol: true,
+    host_whitelist: ['localhost'],
+  })
+  @IsOptional()
+  registry: string = 'http://localhsot:8080/api/registry'
 }

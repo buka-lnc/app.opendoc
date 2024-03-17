@@ -1,0 +1,6 @@
+{{~#if (h__or jsonSchema.nullable (r__not (h__or (r__equals jsonSchema.type "object") (r__isObject jsonSchema.properties) jsonSchema.additionalProperties))) }}
+{{#if export}}export {{/if}}type {{name}} = {{> t_json_schema_shape jsonSchema}}
+{{else}}
+{{!-- only pure object --}}
+{{#if export}}export {{/if}}interface {{name}} {{> t_json_schema_shape jsonSchema}}
+{{/if}}

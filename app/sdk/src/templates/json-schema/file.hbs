@@ -1,0 +1,16 @@
+{{#each
+  (r__filter
+    (r__complement (r__equals name))
+    (r__uniq (r__map (h__ref-name) (h__json-path "$..*['$ref']" jsonSchema)))
+  )
+}}
+import { {{this}} } from "./{{h__change-case @root.fileNamingStyle this}}"
+{{#if @last}}
+
+
+{{/if}}
+{{/each}}
+
+
+{{~> t_comments jsonSchema interface=name export=true}}
+{{> t_json_schema_interface this export=true}}
