@@ -20,7 +20,7 @@ import { {{h__ref-name this}} } from "./components/schemas/{{h__change-case @roo
 
 interface ResponseMap {
   {{#each operation.responses as |responseBody code|}}
-  {{code}}: {{#each responseBody.content as |content contentType|~}}
+  "{{code}}": {{#each responseBody.content as |content contentType|~}}
       {{> t_json_schema_shape content.schema}}{{#unless @last}} | {{/unless}}
     {{else~}}
       unknown
@@ -29,7 +29,7 @@ interface ResponseMap {
 }
 
 {{#*inline "parameterProperty"}}
-  {{name}}{{#unless required}}?{{/unless}}: {{> t_json_schema_shape schema}}
+  "{{name}}"{{#unless required}}?{{/unless}}: {{> t_json_schema_shape schema}}
 {{/inline}}
 
 interface QueryArg {
