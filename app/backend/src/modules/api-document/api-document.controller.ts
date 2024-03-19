@@ -10,6 +10,8 @@ import { RegisterApiDocumentDTO } from './dto/register-api-document.dto'
 import { ApiDocument } from './entities/api-document.entity'
 import { QueryApiDocumentsResponseDTO } from './dto/query-api-documents-response.dto'
 import { ApiDocumentFile } from '../api-document-file/entities/api-document-file.entity'
+import { Sdk } from '../sdk/entity/sdk.entity'
+import { SdkService } from '../sdk/sdk.service'
 
 @ApiTags('API 文档')
 @Controller('api-document')
@@ -19,6 +21,7 @@ export class ApiDocumentController {
     private readonly em: EntityManager,
     private readonly apiDocumentService: ApiDocumentService,
     private readonly apiDocumentFileService: ApiDocumentFileService,
+    private readonly sdkService: SdkService,
   ) {}
 
   @Put()
@@ -96,5 +99,22 @@ export class ApiDocumentController {
   ): Promise<StreamableFile> {
     const stream = await this.apiDocumentFileService.queryRawDocumentFileByVersion(id, version)
     return new StreamableFile(stream)
+  }
+
+  @Get(':apiDocumentId/sdk')
+  @ApiOperation({ summary: '查询 API 文档的 SDK 列表' })
+  async querySdkByApiDocumentId(
+    @Param('apiDocumentId') id: string,
+  ): Promise<Sdk[]> {
+    return this.apiDocumentService.querySdkByApiDocumentId(id)
+  }
+
+  @Get(':apiDocumentId/version/:version/sdk')
+  @ApiOperation({ summary: '查询 API 文档的某一版本的 SDK' })
+  async querySdkByVersion(
+    @Param('version') version: string,
+    @Param('apiDocumentId') id: string,
+  ): Promise<Sdk> {
+    return this.sdkService.querySdkByVersion(id, version)
   }
 }

@@ -7,11 +7,11 @@ export interface ApplicationDTO {
   /**
    * @type date-time
    */
-  "createAt": string
+  "createdAt": string
   /**
    * @type date-time
    */
-  "updateAt": string
+  "updatedAt": string
   /**
    * 唯一应用编码
    */

@@ -1,9 +1,10 @@
 import { Keq } from 'keq'
 import { request } from 'keq'
+import { PackageMetadataDTO } from "./components/schemas/package_metadata_dto"
 
 
 interface ResponseMap {
-  200: unknown
+  200: PackageMetadataDTO
 }
 
 
@@ -11,6 +12,7 @@ interface QueryArg {
 }
 
 interface ParamArg {
+    packageName: string
 }
 
 interface HeaderArg {
@@ -22,12 +24,13 @@ interface HeaderArg {
  */
 export function getPackageMetadata<STATUS extends keyof ResponseMap>(arg?: QueryArg & ParamArg & HeaderArg): Keq<ResponseMap[STATUS]> {
   const req = request.get<ResponseMap[STATUS]>
-  ("/api/registry/:packageName")
+  ("/api/registry/:packageScope/:packageName")
     .option('module', {
       name: "backend",
-      pathname: "/api/registry/:packageName",
+      pathname: "/api/registry/:packageScope/:packageName",
     })
 
+  if (arg && "packageName" in arg) req.params("packageName", String(arg["packageName"]))
 
   return req
 }

@@ -1,17 +1,17 @@
 import { Entity, OneToOne, Ref } from '@mikro-orm/core'
 import { BaseEntity } from '~/entities/base.entity'
-import { NpmPackage } from './npm-package.entity'
+import { Sdk } from './sdk.entity'
 import { ApiProperty } from '@nestjs/swagger'
 
 @Entity()
-export class BuildTask extends BaseEntity {
+export class SdkTask extends BaseEntity {
   @ApiProperty({
-    type: () => NpmPackage,
+    type: () => Sdk,
   })
   @OneToOne({
-    entity: () => NpmPackage,
+    entity: () => Sdk,
     unique: true,
     ref: true,
   })
-  npmPackage!: Ref<NpmPackage>
+  sdk!: Ref<Sdk>
 }

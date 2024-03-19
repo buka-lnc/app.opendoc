@@ -5,6 +5,7 @@ import { API_DOCUMENT_TYPE } from '../constants/api-document-type.enum'
 import { Application } from '~/modules/application/entity/application.entity'
 import { ApiDocumentFile } from '../../api-document-file/entities/api-document-file.entity'
 import { ApiProperty } from '@nestjs/swagger'
+import { Sdk } from '~/modules/sdk/entity/sdk.entity'
 
 
 @Entity()
@@ -92,4 +93,15 @@ export class ApiDocument extends BaseEntity {
     comment: '文档文件',
   })
   apiDocumentFiles!: Collection<ApiDocumentFile>
+
+  @ApiProperty({
+    type: () => Sdk,
+    isArray: true,
+  })
+  @OneToMany({
+    entity: () => Sdk,
+    mappedBy: 'apiDocument',
+    comment: 'Npm 包',
+  })
+  sdks!: Collection<Sdk>
 }

@@ -1,10 +1,33 @@
 {
   "name": "{{ name }}",
-  "main": "dist/umd/src/index.js",
-  "module": "dist/esm/src/index.js",
-  "types": "dist/esm/src/index.d.ts",
   "description": "{{ name }}",
   "version": "{{ version}}",
+
+  "main": "dist/umd/operations/index.js",
+  "module": "dist/esm/operations/index.js",
+  "types": "dist/esm/operations/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/operations/index.js",
+      "require": "./dist/umd/operations/index.js"
+    },
+    "./schemas/": {
+      "import": "./dist/esm/schemas/",
+      "require": "./dist/umd/schemas/"
+    },
+    "./operations/": {
+      "import": "./dist/esm/operations/",
+      "require": "./dist/umd/operations/"
+    },
+    "./hooks/": {
+      "import": "./dist/esm/hooks/",
+      "require": "./dist/umd/hooks/"
+    },
+    "./composables/": {
+      "import": "./dist/esm/composables/",
+      "require": "./dist/umd/composables/"
+    }
+  },
 
   "keywords": ["opendoc", "request"],
 
@@ -19,10 +42,16 @@
     "keq": "^2.3.0",
     "typescript": "^5.3.3"
   },
+
   "dependencies": {
   },
 
   "peerDependencies": {
     "keq": "^2"
+  },
+
+  "optionalDependencies": {
+    "react": "*",
+    "vue": "*"
   }
 }

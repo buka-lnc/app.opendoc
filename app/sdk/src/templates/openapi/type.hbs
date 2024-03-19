@@ -1,0 +1,65 @@
+{{#each
+  (r__uniq
+    (r__flatten
+      (r__map
+        (h__json-path "$..*['$ref']")
+        (r__Array
+          (h__json-path "$.responses[*].content[*].schema" operation)
+          (h__json-path "$.requestBody.content[*].schema" operation)
+          (h__json-path "$.parameters[*].schema" operation)
+        )
+      )
+    )
+  )
+}}
+import { {{h__ref-name this}} } from "../schemas/{{h__change-case @root.fileNamingStyle (h__ref-name this)}}"
+{{/each}}
+
+
+export interface ResponseMap {
+  {{#each operation.responses as |responseBody code|}}
+  "{{code}}": {{#each responseBody.content as |content contentType|~}}
+      {{> t_json_schema_shape content.schema}}{{#unless @last}} | {{/unless}}
+    {{else~}}
+      unknown
+    {{/each}}
+  {{/each}}
+}
+
+{{#*inline "parameterProperty"}}
+  "{{name}}"{{#unless required}}?{{/unless}}: {{> t_json_schema_shape schema}}
+{{/inline}}
+
+export interface QueryParameters {
+  {{#if operation.parameters}}
+  {{#each (r__filter (r__propEq "in" "query") operation.parameters)}}
+  {{> parameterProperty}}
+  {{/each}}
+  {{/if}}
+}
+
+export interface RouteParameters {
+  {{#if operation.parameters}}
+  {{#each (r__filter (r__propEq "in" "path") operation.parameters)}}
+  {{> parameterProperty}}
+  {{/each}}
+  {{/if}}
+}
+
+export interface HeaderParameters {
+  {{#if operation.parameters}}
+  {{#each (r__filter (r__propEq "in" "header") operation.parameters)}}
+  {{> parameterProperty}}
+  {{/each}}
+  {{/if}}
+}
+
+
+export type RequestParameters = QueryParameters & RouteParameters & HeaderParameters
+{{~#unless (r__isNil operation.requestBody.content)}}
+ & (
+{{~#each (r__map (r__prop "schema") (r__values operation.requestBody.content))}}
+{{> t_json_schema_shape this}}{{#unless @last}} | {{/unless}}
+{{~/each~}}
+)
+{{~/unless~}}

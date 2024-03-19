@@ -5,15 +5,15 @@ import { EntityManager, MikroORM } from '@mikro-orm/core'
 import { InjectRepository } from '@mikro-orm/nestjs'
 import { ApiDocumentFile } from '../api-document-file/entities/api-document-file.entity'
 import { EntityRepository } from '@mikro-orm/mysql'
-import { NpmPackage } from './entity/npm-package.entity'
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino'
 import { API_DOCUMENT_TYPE } from '../api-document/constants/api-document-type.enum'
+import { Sdk } from './entity/sdk.entity'
 
 
 @Injectable()
-export class RegistryListener {
+export class SdkListener {
   constructor(
-    @InjectPinoLogger(RegistryListener.name)
+    @InjectPinoLogger(SdkListener.name)
     private readonly logger: PinoLogger,
 
     private readonly em: EntityManager,
@@ -23,12 +23,12 @@ export class RegistryListener {
     @InjectRepository(ApiDocumentFile)
     private readonly apiDocumentFileRepo: EntityRepository<ApiDocumentFile>,
 
-    @InjectRepository(NpmPackage)
-    private readonly npmPackageRepo: EntityRepository<NpmPackage>,
+    @InjectRepository(Sdk)
+    private readonly sdkRepo: EntityRepository<Sdk>,
   ) {}
 
   @OnEvent('api-document-file.created')
-  async addNpmPackage(event: ApiDocumentFileCreatedEvent) {
+  async createSdk(event: ApiDocumentFileCreatedEvent) {
     const apiDocumentFile = await this.apiDocumentFileRepo.findOne({
       id: event.apiDocumentFileId,
     }, {
@@ -51,15 +51,16 @@ export class RegistryListener {
       return
     }
 
-    const npmPackage = this.npmPackageRepo.create({
+    const sdk = this.sdkRepo.create({
       scope: application.code,
       name: apiDocument.code,
       version: apiDocumentFile.version,
       tag: apiDocumentFile.tag,
       isPublished: false,
       apiDocumentFile,
+      apiDocument,
     })
 
-    await this.em.persistAndFlush(npmPackage)
+    await this.em.persistAndFlush(sdk)
   }
 }

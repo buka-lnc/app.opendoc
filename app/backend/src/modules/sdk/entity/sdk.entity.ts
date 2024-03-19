@@ -1,11 +1,12 @@
 import { Entity, ManyToOne, OneToOne, Opt, Property, Ref, t } from '@mikro-orm/core'
 import { BaseEntity } from '~/entities/base.entity'
 import { ApiDocumentFile } from '~/modules/api-document-file/entities/api-document-file.entity'
-import { BuildTask } from './build-task.entity'
+import { SdkTask } from './sdk-task.entity'
 import { ApiProperty } from '@nestjs/swagger'
+import { ApiDocument } from '~/modules/api-document/entities/api-document.entity'
 
 @Entity()
-export class NpmPackage extends BaseEntity {
+export class Sdk extends BaseEntity {
   @Property({
     columnType: 'varchar(63)',
     comment: 'organization',
@@ -21,6 +22,10 @@ export class NpmPackage extends BaseEntity {
   })
   name!: string
 
+  @ApiProperty({
+    type: String,
+    description: 'Npm完整包名',
+  })
   @Property({ persist: false })
   get fullName(): Opt<string> {
     return `@${this.scope}/${this.name}`
@@ -40,7 +45,6 @@ export class NpmPackage extends BaseEntity {
    */
   @Property({
     columnType: 'varchar(24)',
-    default: '',
     nullable: true,
     comment: '标签',
   })
@@ -84,22 +88,34 @@ export class NpmPackage extends BaseEntity {
   integrity?: string
 
   @ApiProperty({
-    type: () => ApiDocumentFile,
+    type: () => ApiDocument,
+    description: '所属文档',
   })
   @ManyToOne({
+    entity: () => ApiDocument,
+    comment: '所属文档',
+    ref: true,
+  })
+  apiDocument!: Ref<ApiDocument>
+
+  @ApiProperty({
+    type: () => ApiDocumentFile,
+    description: '关联的文档文件',
+  })
+  @OneToOne({
     entity: () => ApiDocumentFile,
-    comment: '文档文件',
+    comment: '关联的文档文件',
     ref: true,
   })
   apiDocumentFile!: Ref<ApiDocumentFile>
 
   @ApiProperty({
-    type: () => BuildTask,
+    type: () => SdkTask,
   })
   @OneToOne({
-    entity: () => BuildTask,
-    mappedBy: 'npmPackage',
+    entity: () => SdkTask,
+    mappedBy: 'sdk',
     nullable: true,
   })
-  BuildTask?: Ref<BuildTask>
+  sdkTask?: Ref<SdkTask>
 }

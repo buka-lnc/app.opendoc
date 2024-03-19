@@ -12,7 +12,6 @@
 <script setup lang="ts">
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import rehypeKatex from 'rehype-katex'
-import rehypePrism from 'rehype-prism'
 import rehypeSlug from 'rehype-slug'
 import rehypeStringify from 'rehype-stringify'
 import remarkFrontmatter from 'remark-frontmatter'
@@ -21,17 +20,9 @@ import remarkGithub from 'remark-github'
 import remarkMath from 'remark-math'
 import remarkParse from 'remark-parse'
 import remark2rehype from 'remark-rehype'
+import rehypeShiki from '@shikijs/rehype'
 import { unified } from 'unified'
 import { remarkReplaceImageUrl } from '~/utils/remark-replace-image-url'
-
-import 'prismjs/themes/prism.min.css'
-import 'prism-themes/themes/prism-a11y-dark.min.css'
-import 'prismjs/components/prism-bash.js'
-import 'prismjs/components/prism-docker.js'
-import 'prismjs/components/prism-typescript.js'
-import 'prismjs/components/prism-yaml.js'
-import 'prismjs/plugins/line-numbers/prism-line-numbers.css'
-import 'prismjs/plugins/toolbar/prism-toolbar.min.css'
 
 const props = defineProps<{
   content: string
@@ -53,8 +44,11 @@ const processor = unified()
   .use(rehypeSlug)
   .use(rehypeAutolinkHeadings)
   .use(rehypeKatex)
-  .use(rehypePrism, {
-    plugins: ['line-numbers'],
+  .use(rehypeShiki, {
+    themes: {
+      light: 'material-theme-darker',
+      dark: 'material-theme-darker',
+    },
   })
   .use(rehypeStringify)
 

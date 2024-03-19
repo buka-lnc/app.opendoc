@@ -9,22 +9,24 @@ import { InjectRepository } from '@mikro-orm/nestjs'
 import { Injectable } from '@nestjs/common'
 import { Cron } from '@nestjs/schedule'
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino'
-import { ApiDocumentFile } from '../api-document-file/entities/api-document-file.entity'
-import { NpmPackage } from './entity/npm-package.entity'
-import { BuildTask } from './entity/build-task.entity'
 import { buffer } from 'stream/consumers'
 import { API_DOCUMENT_TYPE } from '../api-document/constants/api-document-type.enum'
 import { AppConfig } from '~/config/app.config'
 import { FileNamingStyle, Filetype, compile } from '@opendoc/sdk'
 import compressing from 'compressing'
+import { Sdk } from './entity/sdk.entity'
+import { SdkTask } from './entity/sdk-task.entity'
+import { SdkService } from './sdk.service'
+import { promisify } from 'util'
 
+const exec = promisify(childProcess.exec)
 
 @Injectable()
-export class PublishPackageService {
+export class PublishService {
   buildTaskId?: string
 
   constructor(
-    @InjectPinoLogger(PublishPackageService.name)
+    @InjectPinoLogger(PublishService.name)
     private readonly logger: PinoLogger,
 
     private readonly appConfig: AppConfig,
@@ -32,15 +34,13 @@ export class PublishPackageService {
     private readonly orm: MikroORM,
 
     private readonly apiDocumentFileService: ApiDocumentFileService,
+    private readonly sdkService: SdkService,
 
-    @InjectRepository(ApiDocumentFile)
-    private readonly apiDocumentFileRepo: EntityRepository<ApiDocumentFile>,
+    @InjectRepository(Sdk)
+    private readonly sdkRepo: EntityRepository<Sdk>,
 
-    @InjectRepository(NpmPackage)
-    private readonly npmPackageRepo: EntityRepository<NpmPackage>,
-
-    @InjectRepository(BuildTask)
-    private readonly buildTaskRepo: EntityRepository<BuildTask>,
+    @InjectRepository(SdkTask)
+    private readonly sdkTaskRepo: EntityRepository<SdkTask>,
   ) {}
 
   // TODO: 避免多个实例同时执行清理程序
@@ -48,7 +48,7 @@ export class PublishPackageService {
   @EnsureRequestContext()
   async clean() {
     // 自动清理五分钟无心跳的任务
-    await this.buildTaskRepo.nativeDelete({
+    await this.sdkTaskRepo.nativeDelete({
       updatedAt: { $lt: new Date(Date.now() - 1000 * 60 * 5) },
     })
   }
@@ -58,7 +58,7 @@ export class PublishPackageService {
   @EnsureRequestContext()
   async sendHeartbeat() {
     if (this.buildTaskId) {
-      await this.buildTaskRepo.nativeUpdate(
+      await this.sdkTaskRepo.nativeUpdate(
         { id: this.buildTaskId },
         { updatedAt: new Date() }
       )
@@ -68,78 +68,87 @@ export class PublishPackageService {
   @Cron('0/10 * * * * *')
   @EnsureRequestContext()
   async publishPackage() {
-    const npmPackage = await this.npmPackageRepo.findOne(
-      { isPublished: false, BuildTask: null },
+    const sdk = await this.sdkRepo.findOne(
+      { isPublished: false, sdkTask: null },
       { populate: ['apiDocumentFile', 'apiDocumentFile.apiDocument'] }
     )
 
-    if (!npmPackage) {
+    if (!sdk) {
       return
     }
 
-    const buildTask = this.buildTaskRepo.create({
-      npmPackage: npmPackage,
+    const buildTask = this.sdkTaskRepo.create({
+      sdk: sdk.id,
     })
 
     this.buildTaskId = buildTask.id
 
     await this.em.persistAndFlush(buildTask)
 
-    const apiDocumentFile = npmPackage.apiDocumentFile.get()
+    const apiDocumentFile = sdk.apiDocumentFile.get()
 
     const stream = await this.apiDocumentFileService.queryRawDocumentFileById(apiDocumentFile.id)
     const buf = await buffer(stream)
     const str = buf.toString('utf8')
 
     if (apiDocumentFile.apiDocument.$.type === API_DOCUMENT_TYPE.OPEN_API) {
-      await this.buildOpenapi(npmPackage, str)
+      await this.buildOpenapi(sdk, str)
     }
 
-    npmPackage.isPublished = true
-    npmPackage.publishedAt = new Date()
-    // npmPackage.tarball = 'TODO'
-    // npmPackage.integrity = 'TODO'
+    sdk.isPublished = true
+    sdk.publishedAt = new Date()
+    // sdk.tarball = 'TODO'
+    // sdk.integrity = 'TODO'
 
-    await this.em.persistAndFlush(npmPackage)
+    await this.em.persistAndFlush(sdk)
     this.buildTaskId = undefined
     await this.em.removeAndFlush(buildTask)
   }
 
-  getTarballFilepath(npmPackage: NpmPackage): string {
-    return path.join(path.resolve(this.appConfig.storage), 'registry', npmPackage.scope, npmPackage.name, `${npmPackage.version}.tgz`)
+  private getCompileDir(sdk: Sdk): string {
+    return path.join(path.resolve(this.appConfig.storage), 'compiling', sdk.scope, sdk.name, `${sdk.version}`)
   }
 
-  private getCompileDir(npmPackage: NpmPackage): string {
-    return path.join(path.resolve(this.appConfig.storage), 'compiling', npmPackage.scope, npmPackage.name, `${npmPackage.version}`)
-  }
-
-  async buildOpenapi(npmPackage: NpmPackage, swagger: string) {
-    const compileDir = this.getCompileDir(npmPackage)
+  async buildOpenapi(sdk: Sdk, swagger: string) {
+    const compileDir = this.getCompileDir(sdk)
     await fs.ensureDir(compileDir)
     await fs.emptyDir(compileDir)
 
-    this.logger.debug(`${npmPackage.fullName} compiling`)
+    this.logger.debug(`${sdk.fullName} compiling`)
 
     await compile({
       strict: true,
       outdir: compileDir,
       document: JSON.parse(swagger),
-      moduleName: npmPackage.fullName,
+      moduleName: sdk.fullName,
       fileNamingStyle: FileNamingStyle.snakeCase,
       filetype: Filetype.openapi,
       project: {
-        name: npmPackage.fullName,
-        version: npmPackage.version,
+        name: sdk.fullName,
+        version: sdk.version,
       },
     })
 
-    const tarballFilepath = this.getTarballFilepath(npmPackage)
+    const tarballFilepath = this.sdkService.getTarballFilepath(sdk)
     await fs.ensureDir(path.dirname(tarballFilepath))
 
-    this.logger.debug(`${npmPackage.fullName} building`)
-    childProcess.execSync('npm install && npm run build', { cwd: compileDir })
+    this.logger.debug(`${sdk.fullName} building`)
+    try {
+      await exec('npm install && npm run build', { cwd: compileDir })
+    } catch (e) {
+      if (e instanceof Error) {
+        if ('stdout' in e) {
+          console.log(e.stdout)
+        }
+        if ('stderr' in e) {
+          console.log(e.stderr)
+        }
+      }
 
-    this.logger.debug(`${npmPackage.fullName} compressing`)
+      throw e
+    }
+
+    this.logger.debug(`${sdk.fullName} compressing`)
     await compressing.tgz.compressDir(compileDir, tarballFilepath)
 
     const buf = await fs.readFile(tarballFilepath)
@@ -148,10 +157,10 @@ export class PublishPackageService {
       .update(buf)
       .digest('base64')
 
-    npmPackage.tarball = `/@${npmPackage.scope}/${npmPackage.name}/-/${npmPackage.name}-${npmPackage.version}.tgz`
-    npmPackage.integrity = `sha512-${integrity}`
-    this.logger.info(`${npmPackage.fullName} published`)
+    sdk.tarball = `/@${sdk.scope}/${sdk.name}/-/${sdk.name}-${sdk.version}.tgz`
+    sdk.integrity = `sha512-${integrity}`
+    this.logger.info(`${sdk.fullName} published`)
 
-    this.em.persist(npmPackage)
+    this.em.persist(sdk)
   }
 }

@@ -3,7 +3,7 @@ import { inject } from 'vue'
 import { API_DOCUMENT_FILE_INJECT_KEY } from '~/constants/api-document-file-inject-key'
 import { API_DOCUMENT_INJECT_KEY } from '~/constants/api-document-inject-key'
 
-const { apiDocument } = inject(API_DOCUMENT_INJECT_KEY, { apiDocument: null })
+const { apiDocument } = inject(API_DOCUMENT_INJECT_KEY, { apiDocument: toRef(null) })
 const { apiDocumentFile } = inject(API_DOCUMENT_FILE_INJECT_KEY, { apiDocumentFile: null })
 
 </script>

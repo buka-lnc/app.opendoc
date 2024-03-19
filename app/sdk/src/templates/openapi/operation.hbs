@@ -1,72 +1,15 @@
+{{#if (r__equals @root.request 'keq')}}
+import { Keq, request } from 'keq'
+{{else}}
 import { Keq } from 'keq'
 import { request } from '{{{@root.request}}}'
-{{#each
-  (r__uniq
-    (r__flatten
-      (r__map
-        (h__json-path "$..*['$ref']")
-        (r__Array
-          (h__json-path "$.responses[*].content[*].schema" operation)
-          (h__json-path "$.requestBody.content[*].schema" operation)
-          (h__json-path "$.parameters[*].schema" operation)
-        )
-      )
-    )
-  )
-}}
-import { {{h__ref-name this}} } from "./components/schemas/{{h__change-case @root.fileNamingStyle (h__ref-name this)}}"
-{{/each}}
+{{/if}}
+import { RequestParameters, ResponseMap } from '../types/{{h__change-case @root.fileNamingStyle (h__get-safe-operation-name pathname method operation)}}'
 
-
-interface ResponseMap {
-  {{#each operation.responses as |responseBody code|}}
-  "{{code}}": {{#each responseBody.content as |content contentType|~}}
-      {{> t_json_schema_shape content.schema}}{{#unless @last}} | {{/unless}}
-    {{else~}}
-      unknown
-    {{/each}}
-  {{/each}}
-}
-
-{{#*inline "parameterProperty"}}
-  "{{name}}"{{#unless required}}?{{/unless}}: {{> t_json_schema_shape schema}}
-{{/inline}}
-
-interface QueryArg {
-  {{#if operation.parameters}}
-  {{#each (r__filter (r__propEq "in" "query") operation.parameters)}}
-  {{> parameterProperty}}
-  {{/each}}
-  {{/if}}
-}
-
-interface ParamArg {
-  {{#if operation.parameters}}
-  {{#each (r__filter (r__propEq "in" "path") operation.parameters)}}
-  {{> parameterProperty}}
-  {{/each}}
-  {{/if}}
-}
-
-interface HeaderArg {
-  {{#if operation.parameters}}
-  {{#each (r__filter (r__propEq "in" "header") operation.parameters)}}
-  {{> parameterProperty}}
-  {{/each}}
-  {{/if}}
-}
 
 
 {{> t_comments operation}}
-export function {{h__get-safe-operation-name pathname method operation}}<STATUS extends keyof ResponseMap>(arg?: QueryArg & ParamArg & HeaderArg
-{{~#unless (r__isNil operation.requestBody.content)}}
- & (
-{{~#each (r__map (r__prop "schema") (r__values operation.requestBody.content))}}
-{{> t_json_schema_shape this}}{{#unless @last}} | {{/unless}}
-{{~/each~}}
-)
-{{~/unless~}}
-): Keq<ResponseMap[STATUS]> {
+export function {{h__get-safe-operation-name pathname method operation}}<STATUS extends keyof ResponseMap>(arg?: RequestParameters): Keq<ResponseMap[STATUS]> {
   const req = request.{{method}}<ResponseMap[STATUS]>("{{{r__replace (h__regexp "{(.*?)}" flags="g") ":$1" pathname}}}")
     .option('module', {
       name: "{{{moduleName}}}",

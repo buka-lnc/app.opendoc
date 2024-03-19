@@ -1,8 +1,14 @@
+import { ApiDocument } from "./api_document"
+import { Sdk } from "./sdk"
+
+
 /**
  * @interface ApiDocumentFile
  * @export
  */
 export interface ApiDocumentFile {
+  "apiDocument": ApiDocument
+  "npmPackage": (Sdk)[]
   /**
    * 文档文件的指纹
    */
@@ -15,15 +21,13 @@ export interface ApiDocumentFile {
    * 文档文件的版本
    */
   "version": string
-  "apiDocument": {
-  }
   "id": string
   /**
    * @type date-time
    */
-  "createAt": string
+  "createdAt": string
   /**
    * @type date-time
    */
-  "updateAt": string
+  "updatedAt": string
 }

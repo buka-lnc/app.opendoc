@@ -19,9 +19,9 @@ export interface Application {
   /**
    * @type date-time
    */
-  "createAt": string
+  "createdAt": string
   /**
    * @type date-time
    */
-  "updateAt": string
+  "updatedAt": string
 }

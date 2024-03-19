@@ -1,9 +1,9 @@
-import { Collection, Entity, ManyToOne, OneToMany, Property, Ref, Unique } from '@mikro-orm/core'
+import { Collection, Entity, ManyToOne, OneToOne, Property, Ref, Unique } from '@mikro-orm/core'
 import { IsString, MaxLength } from 'class-validator'
 import { ApiDocument } from '../../api-document/entities/api-document.entity'
 import { BaseEntity } from '~/entities/base.entity'
-import { NpmPackage } from '~/modules/registry/entity/npm-package.entity'
 import { ApiProperty } from '@nestjs/swagger'
+import { Sdk } from '~/modules/sdk/entity/sdk.entity'
 
 @Entity()
 @Unique({ properties: ['apiDocument', 'version'] })
@@ -27,7 +27,6 @@ export class ApiDocumentFile extends BaseEntity {
   @IsString()
   @Property({
     columnType: 'varchar(24)',
-    default: '',
     nullable: true,
     comment: '文档文件的标签',
   })
@@ -55,13 +54,13 @@ export class ApiDocumentFile extends BaseEntity {
   apiDocument!: Ref<ApiDocument>
 
   @ApiProperty({
-    type: () => NpmPackage,
+    type: () => Sdk,
     isArray: true,
   })
-  @OneToMany({
-    entity: () => NpmPackage,
+  @OneToOne({
+    entity: () => Sdk,
     comment: 'Npm 包',
     mappedBy: 'apiDocumentFile',
   })
-  npmPackage!: Collection<NpmPackage>
+  npmPackage!: Collection<Sdk>
 }

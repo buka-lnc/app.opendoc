@@ -1,0 +1,50 @@
+import { useEffect, useState } from 'react'
+import { RequestParameters, ResponseMap } from '../types/{{h__change-case @root.fileNamingStyle (h__get-safe-operation-name pathname method operation)}}'
+import { {{h__get-safe-operation-name pathname method operation}} } from '../operations/{{h__change-case @root.fileNamingStyle (h__get-safe-operation-name pathname method operation)}}'
+
+
+export interface Use{{h__change-case "pascalCase" (h__get-safe-operation-name pathname method operation)}}<STATUS extends keyof ResponseMap> {
+  data: ResponseMap[STATUS] | undefined
+  error: Error | undefined
+  loading: boolean
+}
+
+{{> t_comments operation}}
+export function use{{h__change-case "pascalCase" (h__get-safe-operation-name pathname method operation)}}<STATUS extends keyof ResponseMap>(args?: RequestParameters, deps?: any[])
+export function use{{h__change-case "pascalCase" (h__get-safe-operation-name pathname method operation)}}<STATUS extends keyof ResponseMap>(deps?: any[])
+export function use{{h__change-case "pascalCase" (h__get-safe-operation-name pathname method operation)}}<STATUS extends keyof ResponseMap>(argsOrDeps?: RequestParameters | any[] | undefined, deps?: any[]) {
+  let args: RequestParameters | undefined
+  let dependencies: any[]
+
+  if (Array.isArray(argsOrDeps)) {
+    args = undefined
+    dependencies = argsOrDeps || []
+  } else {
+    args = argsOrDeps
+    dependencies = deps || []
+  }
+
+  const [pending, setPending] = useState(false)
+  const [error, setError] = useState(null)
+  const [data, setData] = useState<ResponseMap[STATUS] | undefined>()
+
+  useEffect(() => {
+    setPending(true)
+
+    {{h__get-safe-operation-name pathname method operation}}(args)
+      .then((response) => {
+        setData(response)
+        setPending(false)
+      })
+      .catch((error) => {
+        setError(error)
+        setPending(false)
+      })
+  }, [dependencies])
+
+  return {
+    data,
+    error,
+    loading: pending,
+  }
+}

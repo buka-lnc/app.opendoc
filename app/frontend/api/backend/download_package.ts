@@ -29,10 +29,10 @@ interface HeaderArg {
  */
 export function downloadPackage<STATUS extends keyof ResponseMap>(arg?: QueryArg & ParamArg & HeaderArg): Keq<ResponseMap[STATUS]> {
   const req = request.get<ResponseMap[STATUS]>
-  ("/api/registry/:scope/:packageName/-/:packageTag.tgz")
+  ("/api/registry/:packageScope/:packageName/-/:packageTag.tgz")
     .option('module', {
       name: "backend",
-      pathname: "/api/registry/:scope/:packageName/-/:packageTag.tgz",
+      pathname: "/api/registry/:packageScope/:packageName/-/:packageTag.tgz",
     })
 
   if (arg && "packageName" in arg) req.params("packageName", String(arg["packageName"]))

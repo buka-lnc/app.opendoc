@@ -19,6 +19,9 @@ const templates = {
   t_schema_exports: readAndCompileTemplate('json-schema/exports'),
 
   t_operation: readAndCompileTemplate('openapi/operation'),
+  t_hook: readAndCompileTemplate('openapi/hook'),
+  t_type: readAndCompileTemplate('openapi/type'),
+
   t_operation_exports: readAndCompileTemplate('openapi/exports'),
 }
 
@@ -45,7 +48,7 @@ function compile(options: CompileOpenapiOptions): CompileResult[] {
       })
 
       const filename = formatFilename(name)
-      const filepath = path.join(output, 'components', 'schemas', `${filename}.ts`)
+      const filepath = path.join(output, 'schemas', `${filename}.ts`)
 
       results.push({
         name: filename,
@@ -54,7 +57,7 @@ function compile(options: CompileOpenapiOptions): CompileResult[] {
       })
     }
 
-    const schemaExportsFilepath = path.join(output, 'components', 'schemas', 'index.ts')
+    const schemaExportsFilepath = path.join(output, 'schemas', 'index.ts')
     const schemaExportsFileContent = templates.t_schema_exports({
       jsonSchemas: document.components.schemas,
 
@@ -74,7 +77,7 @@ function compile(options: CompileOpenapiOptions): CompileResult[] {
 
       for (const [method, operation] of Object.entries(pathItem)) {
         if (typeof operation === 'object' && !Array.isArray(operation)) {
-          const fileContent = templates.t_operation({
+          const context = {
             pathname,
             method,
             operation,
@@ -83,34 +86,66 @@ function compile(options: CompileOpenapiOptions): CompileResult[] {
             moduleName,
             fileNamingStyle,
             request: requestInstance,
+          }
 
-          })
+          {
+            const fileContent = templates.t_type({ ...context })
+            const filename = formatFilename(getSafeOperationName(pathname, method, operation))
+            const filepath = path.join(output, 'types', `${filename}.ts`)
 
-          const filename = formatFilename(getSafeOperationName(pathname, method, operation))
-          const filepath = path.join(output, `${filename}.ts`)
+            results.push({
+              name: filename,
+              path: filepath,
+              content: fileContent,
+            })
+          }
 
-          results.push({
-            name: filename,
-            path: filepath,
-            content: fileContent,
-          })
+          {
+            const fileContent = templates.t_operation({ ...context })
+            const filename = formatFilename(getSafeOperationName(pathname, method, operation))
+            const filepath = path.join(output, 'operations', `${filename}.ts`)
+
+            results.push({
+              name: filename,
+              path: filepath,
+              content: fileContent,
+            })
+          }
+
+          {
+            const fileContent = templates.t_hook({ ...context })
+            const filename = formatFilename(getSafeOperationName(pathname, method, operation))
+            const filepath = path.join(output, 'hooks', `${filename}.ts`)
+
+            results.push({
+              name: filename,
+              path: filepath,
+              content: fileContent,
+            })
+          }
         } else {
           console.warn(chalk.yellow(`Operation ${String(method)} on path ${String(pathname)} cannot compiled, skipping`))
         }
       }
     }
 
-    const operationExportsFilepath = path.join(output, 'index.ts')
     const operationExportsFileContent = templates.t_operation_exports({
       document,
       fileNamingStyle,
     })
 
-    results.push({
-      name: 'index.ts',
-      path: operationExportsFilepath,
-      content: operationExportsFileContent,
-    })
+    results.push(
+      {
+        name: 'index.ts',
+        path: path.join(output, 'operations', 'index.ts'),
+        content: operationExportsFileContent,
+      },
+      {
+        name: 'index.ts',
+        path: path.join(output, 'hooks', 'index.ts'),
+        content: operationExportsFileContent,
+      },
+    )
   }
 
   return results

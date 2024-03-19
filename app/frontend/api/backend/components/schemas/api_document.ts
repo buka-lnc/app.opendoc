@@ -1,4 +1,6 @@
-import { Collection } from "./collection"
+import { Application } from "./application"
+import { ApiDocumentFile } from "./api_document_file"
+import { Sdk } from "./sdk"
 
 
 /**
@@ -6,6 +8,12 @@ import { Collection } from "./collection"
  * @export
  */
 export interface ApiDocument {
+  /**
+   * 文档所属的应用
+   */
+  "application": Application
+  "apiDocumentFiles": (ApiDocumentFile)[]
+  "sdks": (Sdk)[]
   /**
    * 文档类型
    */
@@ -26,19 +34,13 @@ export interface ApiDocument {
    * 文档文件的定时同步地址
    */
   "cronSyncUrl"?: string
-  /**
-   * 文档所属的应用
-   */
-  "application": {
-  }
-  "apiDocumentFiles": Collection
   "id": string
   /**
    * @type date-time
    */
-  "createAt": string
+  "createdAt": string
   /**
    * @type date-time
    */
-  "updateAt": string
+  "updatedAt": string
 }

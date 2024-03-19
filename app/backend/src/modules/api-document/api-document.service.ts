@@ -12,6 +12,7 @@ import { Application } from '../application/entity/application.entity'
 import { EntityRepository } from '@mikro-orm/mysql'
 import { QueryApiDocumentsResponseDTO } from './dto/query-api-documents-response.dto'
 import { ApiDocumentFileService } from '../api-document-file/api-document-file.service'
+import { Sdk } from '../sdk/entity/sdk.entity'
 
 
 @Injectable()
@@ -133,6 +134,17 @@ export class ApiDocumentService {
         total,
       },
     }
+  }
+
+  async querySdkByApiDocumentId(documentId: string): Promise<Sdk[]> {
+    const document = await this.apiDocumentRepo.findOneOrFail(
+      {
+        id: documentId,
+      },
+      { populate: ['sdks'] }
+    )
+
+    return document.sdks.getItems()
   }
 }
 

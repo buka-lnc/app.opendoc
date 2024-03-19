@@ -6,14 +6,12 @@ import { EntityRepository } from '@mikro-orm/mysql'
 import { InjectRepository } from '@mikro-orm/nestjs'
 import { Injectable, NotFoundException } from '@nestjs/common'
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino'
-import { ApiDocumentFile } from '../api-document-file/entities/api-document-file.entity'
-import { NpmPackage } from './entity/npm-package.entity'
-import { BuildTask } from './entity/build-task.entity'
+import { Sdk } from '~/modules/sdk/entity/sdk.entity'
 import { PackageMetadataDTO } from './dto/package-metadata.dto'
 import { PackageMetadataVersionDistDTO } from './dto/package-metadata-version-dist.dto'
 import { PackageMetadataVersionDTO } from './dto/package-metadata-version.dto'
 import { AppConfig } from '~/config/app.config'
-import { PublishPackageService } from './publish-package.service'
+import { SdkService } from '~/modules/sdk/sdk.service'
 
 
 @Injectable()
@@ -26,20 +24,14 @@ export class RegistryService {
     private readonly em: EntityManager,
     private readonly orm: MikroORM,
 
-    private readonly publishPackageService: PublishPackageService,
+    private readonly sdkService: SdkService,
 
-    @InjectRepository(ApiDocumentFile)
-    private readonly apiDocumentFileRepo: EntityRepository<ApiDocumentFile>,
-
-    @InjectRepository(NpmPackage)
-    private readonly npmPackageRepo: EntityRepository<NpmPackage>,
-
-    @InjectRepository(BuildTask)
-    private readonly buildTaskRepo: EntityRepository<BuildTask>,
+    @InjectRepository(Sdk)
+    private readonly sdkRepo: EntityRepository<Sdk>,
   ) {}
 
   async getPackageMetadata(packageScope: string | undefined, packageName: string): Promise<PackageMetadataDTO> {
-    const npmPackages = await this.npmPackageRepo.find({
+    const npmPackages = await this.sdkRepo.find({
       scope: packageScope,
       name: packageName,
       isPublished: true,
@@ -49,7 +41,7 @@ export class RegistryService {
       throw new NotFoundException()
     }
 
-    const taggedNpmPackages = R.groupWith((p1, p2) => p1.tag === p2.tag, npmPackages)
+    const taggedPackages = R.groupWith((p1, p2) => p1.tag === p2.tag, npmPackages)
       .map((npmPackages) => {
         const npmPackage = npmPackages.reduce(
           (maxVersion, npmPackages) => {
@@ -64,7 +56,7 @@ export class RegistryService {
         return npmPackage
       })
 
-    const distTag = taggedNpmPackages.reduce(
+    const distTag = taggedPackages.reduce(
       (tagMap, npmPackage) => R.assoc(npmPackage.tag || 'latest', npmPackage.version, tagMap),
       <Record<string, string>>{}
     )
@@ -97,14 +89,14 @@ export class RegistryService {
   }
 
   async downloadPackage(packageScope: string | undefined, packageName: string, version: string): Promise<fs.ReadStream> {
-    const npmPackage = await this.npmPackageRepo.findOneOrFail({
+    const npmPackage = await this.sdkRepo.findOneOrFail({
       scope: packageScope,
       name: packageName,
       version: version,
       isPublished: true,
     })
 
-    const tarballFilepath = this.publishPackageService.getTarballFilepath(npmPackage)
+    const tarballFilepath = this.sdkService.getTarballFilepath(npmPackage)
     return fs.createReadStream(tarballFilepath)
   }
 }

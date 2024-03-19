@@ -1,10 +1,10 @@
 import { Keq } from 'keq'
 import { request } from 'keq'
-import { ApiDocumentFile } from "./components/schemas/api_document_file"
+import { Sdk } from "./components/schemas/sdk"
 
 
 interface ResponseMap {
-  200: ApiDocumentFile
+  200: Sdk
   500: unknown
 }
 
@@ -21,12 +21,12 @@ interface HeaderArg {
 }
 
 
-export function queryApiDocumentFileByVersion<STATUS extends keyof ResponseMap>(arg?: QueryArg & ParamArg & HeaderArg): Keq<ResponseMap[STATUS]> {
+export function querySdkByVersion<STATUS extends keyof ResponseMap>(arg?: QueryArg & ParamArg & HeaderArg): Keq<ResponseMap[STATUS]> {
   const req = request.get<ResponseMap[STATUS]>
-  ("/api/api-document/:apiDocumentId/version/:version/api-document-file")
+  ("/api/api-document/:apiDocumentId/version/:version/sdk")
     .option('module', {
       name: "backend",
-      pathname: "/api/api-document/:apiDocumentId/version/:version/api-document-file",
+      pathname: "/api/api-document/:apiDocumentId/version/:version/sdk",
     })
 
   if (arg && "version" in arg) req.params("version", String(arg["version"]))
