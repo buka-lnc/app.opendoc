@@ -17,11 +17,12 @@ export class AppConfig {
    * Registry 的域名
    * @example https://example.com/registry
    */
-  @IsUrl({
-    protocols: ['http', 'https'],
-    require_protocol: true,
-    host_whitelist: ['localhost'],
-  })
+  // @IsUrl({
+  //   protocols: ['http', 'https'],
+  //   require_protocol: true,
+  //   host_whitelist: ['localhost'],
+  // })
+  @IsString()
   @IsOptional()
   registry: string = 'http://localhsot:8080/api/registry'
 }

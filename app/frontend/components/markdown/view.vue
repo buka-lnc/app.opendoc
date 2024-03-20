@@ -46,8 +46,8 @@ const processor = unified()
   .use(rehypeKatex)
   .use(rehypeShiki, {
     themes: {
-      light: 'material-theme-darker',
-      dark: 'material-theme-darker',
+      light: 'nord',
+      dark: 'nord',
     },
   })
   .use(rehypeStringify)
