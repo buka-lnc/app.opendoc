@@ -4,7 +4,7 @@ import { {{h__get-safe-operation-name pathname method operation}} } from '../ope
 
 
 export interface Use{{h__change-case "pascalCase" (h__get-safe-operation-name pathname method operation)}}<STATUS extends keyof ResponseMap> {
-  data: ResponseMap[STATUS] | undefined
+  value: ResponseMap[STATUS] | undefined
   error: Error | undefined
   loading: boolean
 }
@@ -24,27 +24,27 @@ export function use{{h__change-case "pascalCase" (h__get-safe-operation-name pat
     dependencies = deps || []
   }
 
-  const [pending, setPending] = useState(false)
+  const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
-  const [data, setData] = useState<ResponseMap[STATUS] | undefined>()
+  const [value, setValue] = useState<ResponseMap[STATUS] | undefined>()
 
   useEffect(() => {
-    setPending(true)
+    setLoading(true)
 
     {{h__get-safe-operation-name pathname method operation}}(args)
       .then((response) => {
-        setData(response)
-        setPending(false)
+        setValue(response)
+        setLoading(false)
       })
       .catch((error) => {
         setError(error)
-        setPending(false)
+        setLoading(false)
       })
   }, [dependencies])
 
   return {
-    data,
+    value,
     error,
-    loading: pending,
+    loading: loading,
   }
 }
