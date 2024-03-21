@@ -1,10 +1,6 @@
-{{#if (r__equals @root.request 'keq')}}
-import { Keq, request } from 'keq'
-{{else}}
 import { Keq } from 'keq'
-import { request } from '{{{@root.request}}}'
-{{/if}}
-import { RequestParameters, ResponseMap } from '../types/{{h__change-case @root.fileNamingStyle (h__get-safe-operation-name pathname method operation)}}'
+import { request } from '../request.js'
+import type { RequestParameters, ResponseMap } from "../types/{{h__change-case @root.fileNamingStyle (h__get-safe-operation-name pathname method operation)}}.js"
 
 
 

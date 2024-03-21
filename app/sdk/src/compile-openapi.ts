@@ -18,6 +18,7 @@ const templates = {
   t_schema: readAndCompileTemplate('json-schema/file'),
   t_schema_exports: readAndCompileTemplate('json-schema/exports'),
 
+  t_request: readAndCompileTemplate('openapi/request'),
   t_operation: readAndCompileTemplate('openapi/operation'),
   t_hook: readAndCompileTemplate('openapi/hook'),
   t_type: readAndCompileTemplate('openapi/type'),
@@ -34,7 +35,6 @@ function compile(options: CompileOpenapiOptions): CompileResult[] {
   const formatFilename = changeCase[fileNamingStyle]
   const outdir = options?.outdir || `${process.cwd()}/api`
   const output = path.join(outdir)
-  const requestInstance = 'keq'
 
   const results: CompileResult[] = []
   if (document.components?.schemas && !R.isEmpty(document.components.schemas)) {
@@ -85,7 +85,6 @@ function compile(options: CompileOpenapiOptions): CompileResult[] {
             document,
             moduleName,
             fileNamingStyle,
-            request: requestInstance,
           }
 
           {
@@ -146,6 +145,17 @@ function compile(options: CompileOpenapiOptions): CompileResult[] {
         content: operationExportsFileContent,
       },
     )
+
+    const requestFileContent = templates.t_request({
+      document,
+      fileNamingStyle,
+    })
+
+    results.push({
+      name: 'request.ts',
+      path: path.join(output, 'request.ts'),
+      content: requestFileContent,
+    })
   }
 
   return results
