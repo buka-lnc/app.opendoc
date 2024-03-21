@@ -27,7 +27,7 @@ const { pending, data: sdk } = useAsyncData(
         'prose-pre:shadow-none prose-pre:!bg-transparent prose-pre:p-0 prose-pre:m-0',
       ]"
     >
-      <h1 class="text-3xl py-4 pb-0">
+      <h1 class="text-3xl py-4 !mb-2">
         {{ sdk.fullName }}
       </h1>
 
