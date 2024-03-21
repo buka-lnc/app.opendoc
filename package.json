@@ -11,6 +11,6 @@
   "license": "ISC",
   "devDependencies": {
     "@changesets/cli": "^2.27.1",
-    "@nestjs/cli": "^10.2.1"
+    "@nestjs/cli": "^10.3.2"
   }
 }
