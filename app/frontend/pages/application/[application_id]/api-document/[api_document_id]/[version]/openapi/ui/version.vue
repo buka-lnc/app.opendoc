@@ -30,9 +30,20 @@ const { pending, data: apiDocumentFiles } = useAsyncData(
       class="d-card bg-base-300"
     >
       <div class="d-card-body py-2 flex flex-row items-center justify-between">
-        <h2 class="d-card-title">
-          v{{ apiDocumentFile.version }}
-        </h2>
+        <div class="flex items-center space-x-2">
+          <h2 class="d-card-title">
+            v{{ apiDocumentFile.version }}
+          </h2>
+
+          <div v-if="apiDocumentFile.sdk?.isPublished" class="d-badge d-badge-outline d-badge-success">
+            SDK 已发布
+          </div>
+
+          <div v-else class="d-badge d-badge-outline d-badge-warning">
+            SDK 待构建
+          </div>
+        </div>
+
         <div class="d-card-actions">
           <NuxtLink
             :to="prefix"

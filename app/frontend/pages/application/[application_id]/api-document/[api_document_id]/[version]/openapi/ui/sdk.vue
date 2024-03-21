@@ -41,7 +41,7 @@ const { pending, data: sdk } = useAsyncData(
         </div>
 
         <div v-else class="d-badge d-badge-outline d-badge-warning">
-          等待构建
+          待构建
         </div>
       </div>
 

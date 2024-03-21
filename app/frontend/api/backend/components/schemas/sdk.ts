@@ -9,7 +9,7 @@ import { SdkTask } from "./sdk_task"
  */
 export interface Sdk {
   /**
-   * 完整名称
+   * Npm完整包名
    */
   "fullName": string
   /**

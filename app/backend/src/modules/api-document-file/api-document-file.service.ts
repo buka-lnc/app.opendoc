@@ -120,7 +120,9 @@ export class ApiDocumentFileService {
   }
 
   async queryApiDocumentFiles(dto: QueryApiDocumentFilesDTO): Promise<ApiDocumentFile[]> {
-    const qb = this.apiDocumentFileRepo.createQueryBuilder('file')
+    const qb = this.apiDocumentFileRepo
+      .createQueryBuilder('file')
+      .leftJoinAndSelect('file.sdk', 'sdk')
 
     if (dto.apiDocumentIds) {
       void qb.andWhere({ apiDocument: { id: { $in: dto.apiDocumentIds } } })

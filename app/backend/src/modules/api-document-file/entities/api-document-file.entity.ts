@@ -1,4 +1,4 @@
-import { Collection, Entity, ManyToOne, OneToOne, Property, Ref, Unique } from '@mikro-orm/core'
+import { Entity, ManyToOne, OneToOne, Property, Ref, Unique } from '@mikro-orm/core'
 import { IsString, MaxLength } from 'class-validator'
 import { ApiDocument } from '../../api-document/entities/api-document.entity'
 import { BaseEntity } from '~/entities/base.entity'
@@ -55,12 +55,12 @@ export class ApiDocumentFile extends BaseEntity {
 
   @ApiProperty({
     type: () => Sdk,
-    isArray: true,
   })
   @OneToOne({
     entity: () => Sdk,
     comment: 'Npm 包',
     mappedBy: 'apiDocumentFile',
+    ref: true,
   })
-  npmPackage!: Collection<Sdk>
+  sdk?: Ref<Sdk>
 }
