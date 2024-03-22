@@ -14,7 +14,7 @@ const { data } = useAsyncData(
     const fullName = sdk.value.fullName
 
     return await codeToHtml(`
-echo "@${sdk.value.scope}:registry=${window.location.origin}/api/registry" > .npmrc
+echo "@${sdk.value.scope}:registry=${window.location.origin}/api/registry" >> .npmrc
 npm install ${fullName}@${sdk.value.version}
   `, {
       lang: 'bash',

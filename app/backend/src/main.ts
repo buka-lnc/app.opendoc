@@ -5,6 +5,7 @@ import { AppModule } from './app.module'
 import { AppConfig } from './config/app.config.js'
 import { swaggerEnhance } from './core/swagger.enhance'
 import { AppService } from './app.service'
+import { FormDataEnhance } from './core/form-data.enhance'
 
 
 async function bootstrap() {
@@ -21,6 +22,7 @@ async function bootstrap() {
   const appConfig = app.get(AppConfig)
   app.enableShutdownHooks()
 
+  FormDataEnhance(app)
   const openapiDocument = swaggerEnhance(app)
 
   await app.init()

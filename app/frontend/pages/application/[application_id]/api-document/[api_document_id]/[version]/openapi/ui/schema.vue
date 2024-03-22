@@ -46,18 +46,20 @@ watch(
 </script>
 
 <template>
-  <div class="size-full flex items-stretch">
-    <ul class="flex-0 d-menu d-menu-sm bg-base-200 overflow-hidden p-0 w-fit h-full">
-      <li v-for="schema in schemas" :key="schema.title">
-        <NuxtLink
-          class="rounded-none"
-          :to="`${prefix}/${schema.id}`"
-          active-class="d-active"
-        >
-          {{ schema.title }}
-        </NuxtLink>
-      </li>
-    </ul>
+  <div class="size-full flex items-stretch ">
+    <div class="h-full overflow-y-auto overflow-x-hidden">
+      <ul class="flex-0 flex-nowrap d-menu d-menu-sm bg-base-200 p-0 w-fit h-full">
+        <li v-for="schema in schemas" :key="schema.title">
+          <NuxtLink
+            class="rounded-none"
+            :to="`${prefix}/${schema.id}`"
+            active-class="d-active"
+          >
+            {{ schema.title }}
+          </NuxtLink>
+        </li>
+      </ul>
+    </div>
 
     <div class="flex-1">
       <NuxtPage />

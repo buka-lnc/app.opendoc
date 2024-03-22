@@ -4,13 +4,16 @@
   "packageManager": "pnpm@8.15.4",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "clean": "pnpm -r exec rm -rf node_modules && rm -rf node_modules"
+    "clean": "pnpm -r exec rm -rf node_modules && rm -rf node_modules",
+    "build": "turbo build --filter @opendoc/*",
+    "dev": "turbo dev --filter @opendoc/*"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@changesets/cli": "^2.27.1",
-    "@nestjs/cli": "^10.3.2"
+    "@nestjs/cli": "^10.3.2",
+    "turbo": "^1.13.0"
   }
 }

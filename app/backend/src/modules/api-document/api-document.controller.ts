@@ -30,14 +30,14 @@ export class ApiDocumentController {
     summary: '注册 API 文档',
     description: '若 applicationCode 指定的应用不存在，则会新建一个应用；否则，更新应用。',
   })
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('apiDocumentFile'))
   async registerApiDocument(
     @Body() dto: RegisterApiDocumentDTO,
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFile() apiDocumentFile: Express.Multer.File,
   ): Promise<void> {
     await this.apiDocumentService.register({
       ...dto,
-      apiDocumentFile: file.buffer,
+      apiDocumentFile: apiDocumentFile.buffer,
     })
   }
 

@@ -1,5 +1,5 @@
 import { Configuration } from '@buka/nestjs-config'
-import { IsIP, IsNumberString, IsOptional, IsString, IsUrl } from 'class-validator'
+import { IsIP, IsNumberString, IsOptional, IsString } from 'class-validator'
 
 
 @Configuration()
@@ -24,5 +24,5 @@ export class AppConfig {
   // })
   @IsString()
   @IsOptional()
-  registry: string = 'http://localhsot:8080/api/registry'
+  registry: string = 'http://localhost:8080/api/registry'
 }

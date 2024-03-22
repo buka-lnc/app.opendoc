@@ -4,33 +4,48 @@ import { RegisterOpendocOptions } from './interface/register-opendoc-options'
 
 
 export async function registerToOpendoc(options: RegisterOpendocOptions) {
-  const { server, file } = options
+  const { server, application, apiDocuments } = options
 
-  await request
+  const res = await request
     .put(path.join(server, '/api/application'))
     .send({
-      code: 'opendoc',
-      title: 'OpenDoc',
+      code: application.code,
+      title: application.title || application.code,
     })
+    .resolveWith('response')
 
-  let apiDocumentFile: Buffer
-
-  if (typeof file === 'string') {
-    apiDocumentFile = Buffer.from(file)
-  } else if (file instanceof Buffer) {
-    apiDocumentFile = file
-  } else if (typeof file === 'object') {
-    apiDocumentFile = Buffer.from(JSON.stringify(file), 'utf-8')
-  } else {
-    throw new TypeError('file type not supported')
+  if (res.status !== 200) {
+    throw new Error('register application failed')
   }
 
-  await request
-    .put(path.join(server, '/api/api-document'))
-    .field('applicationCode', 'opendoc')
-    .field('apiDocumentType', 'OPEN_API')
-    .field('apiDocumentCode', 'openapi')
-    .field('apiDocumentTitle', 'OpenAPI')
-    .field('apiDocumentOrder', '2')
-    .attach('apiDocumentFile', apiDocumentFile)
+  const promises = apiDocuments.map(async (apiDocument) => {
+    const { code, type, title, order, file } = apiDocument
+    let apiDocumentFile: Buffer
+
+    if (typeof file === 'string') {
+      apiDocumentFile = Buffer.from(file)
+    } else if (file instanceof Buffer) {
+      apiDocumentFile = file
+    } else if (typeof file === 'object') {
+      apiDocumentFile = Buffer.from(JSON.stringify(file), 'utf-8')
+    } else {
+      throw new TypeError('file type not supported')
+    }
+
+    const res = await request
+      .put(path.join(server, '/api/api-document'))
+      .field('applicationCode', application.code)
+      .field('apiDocumentType', type)
+      .field('apiDocumentCode', code)
+      .field('apiDocumentTitle', title || code)
+      .field('apiDocumentOrder', String(order || 1))
+      .attach('apiDocumentFile', apiDocumentFile)
+      .resolveWith('response')
+
+    if (res.status !== 200) {
+      throw new Error(`register api document failed: ${await res.text()}`)
+    }
+  })
+
+  await Promise.allSettled(promises)
 }

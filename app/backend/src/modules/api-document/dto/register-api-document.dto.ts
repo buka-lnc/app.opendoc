@@ -1,6 +1,7 @@
-import { IsEnum, IsNumber, IsOptional, IsString, MaxLength } from 'class-validator'
+import { IsEnum, IsInt, IsOptional, IsString, MaxLength } from 'class-validator'
 import { API_DOCUMENT_TYPE } from '../constants/api-document-type.enum'
 import { ApiProperty } from '@nestjs/swagger'
+import { ToNumber } from '@buka/class-transformer-extra'
 
 export class RegisterApiDocumentDTO {
   /**
@@ -30,6 +31,7 @@ export class RegisterApiDocumentDTO {
    */
   @IsString()
   @MaxLength(127)
+  @IsOptional()
   apiDocumentTitle?: string
 
   /**
@@ -37,13 +39,16 @@ export class RegisterApiDocumentDTO {
    */
   @IsString()
   @MaxLength(255)
+  @IsOptional()
   apiDocumentCronSyncUrl?: string
 
   /**
    * 文档排序
    * @example 1
    */
-  @IsNumber()
+  @ToNumber()
+  @IsInt()
+  @IsOptional()
   apiDocumentOrder?: number
 
   /**
@@ -67,5 +72,6 @@ export class RegisterApiDocumentDTO {
       },
     },
   })
+  @IsOptional()
   apiDocumentFile?: Buffer
 }
