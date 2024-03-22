@@ -4,13 +4,13 @@ import { ExampleDTO } from "./components/schemas/example_dto"
 
 
 interface ResponseMap {
-  201: unknown
-  400: {
+  "201": unknown
+  "400": {
   "statusCode": number
   "message": string
   "error"?: string
 }
-  500: unknown
+  "500": unknown
 }
 
 
@@ -21,7 +21,7 @@ interface ParamArg {
 }
 
 interface HeaderArg {
-    Authorization: string
+    "Authorization": string
 }
 
 

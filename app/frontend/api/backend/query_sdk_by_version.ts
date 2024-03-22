@@ -4,8 +4,8 @@ import { Sdk } from "./components/schemas/sdk"
 
 
 interface ResponseMap {
-  200: Sdk
-  500: unknown
+  "200": Sdk
+  "500": unknown
 }
 
 
@@ -13,8 +13,8 @@ interface QueryArg {
 }
 
 interface ParamArg {
-    version: string
-    apiDocumentId: string
+    "version": string
+    "apiDocumentId": string
 }
 
 interface HeaderArg {

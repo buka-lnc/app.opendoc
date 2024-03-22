@@ -4,16 +4,16 @@ import { QueryApiDocumentsResponseDTO } from "./components/schemas/query_api_doc
 
 
 interface ResponseMap {
-  200: QueryApiDocumentsResponseDTO
-  500: unknown
+  "200": QueryApiDocumentsResponseDTO
+  "500": unknown
 }
 
 
 interface QueryArg {
-    title?: string
-    type?: string
-    limit?: number
-    offset?: number
+    "title"?: string
+    "type"?: string
+    "limit"?: number
+    "offset"?: number
 }
 
 interface ParamArg {

@@ -9,7 +9,7 @@ const prefix = computed(() => `/application/${applicationId.value}/api-document/
 
 const { pending, data: apiDocumentFiles } = useAsyncData(
   async () => {
-    const apiDocumentFiles = await queryApiDocumentFilesByApiDocumentId<200>({
+    const apiDocumentFiles = await queryApiDocumentFilesByApiDocumentId<'200'>({
       apiDocumentId: apiDocumentId.value,
     })
 
@@ -35,7 +35,7 @@ const { pending, data: apiDocumentFiles } = useAsyncData(
             v{{ apiDocumentFile.version }}
           </h2>
 
-          <div v-if="apiDocumentFile.sdk?.isPublished" class="d-badge d-badge-outline d-badge-success">
+          <div v-if="apiDocumentFile.sdk?.status === 'published'" class="d-badge d-badge-outline d-badge-success">
             SDK 已发布
           </div>
 

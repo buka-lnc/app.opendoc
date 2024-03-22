@@ -1,9 +1,11 @@
 import { Entity, ManyToOne, OneToOne, Opt, Property, Ref, t } from '@mikro-orm/core'
 import { BaseEntity } from '~/entities/base.entity'
 import { ApiDocumentFile } from '~/modules/api-document-file/entities/api-document-file.entity'
-import { SdkTask } from './sdk-task.entity'
-import { ApiProperty } from '@nestjs/swagger'
+import { SdkPublishLock } from './sdk-publish-lock.entity'
+import { ApiHideProperty, ApiProperty } from '@nestjs/swagger'
 import { ApiDocument } from '~/modules/api-document/entities/api-document.entity'
+import { SdkStatus } from '../constant/sdk-status'
+import { IsEnum } from 'class-validator'
 
 @Entity()
 export class Sdk extends BaseEntity {
@@ -51,12 +53,13 @@ export class Sdk extends BaseEntity {
   tag?: string
 
   /**
-   * 是否已发布
+   * sdk 可用状态
    */
   @Property({
-    type: t.boolean,
+    columnType: 'varchar(10)',
   })
-  isPublished!: boolean
+  @IsEnum(SdkStatus)
+  status!: SdkStatus
 
   /**
    * 发布时间
@@ -109,13 +112,12 @@ export class Sdk extends BaseEntity {
   })
   apiDocumentFile!: Ref<ApiDocumentFile>
 
-  @ApiProperty({
-    type: () => SdkTask,
-  })
+  @ApiHideProperty()
   @OneToOne({
-    entity: () => SdkTask,
+    entity: () => SdkPublishLock,
     mappedBy: 'sdk',
     nullable: true,
+    hidden: true,
   })
-  sdkTask?: Ref<SdkTask>
+  sdkPublishLock?: Ref<SdkPublishLock>
 }

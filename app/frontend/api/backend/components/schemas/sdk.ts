@@ -1,6 +1,6 @@
 import { ApiDocument } from "./api_document"
 import { ApiDocumentFile } from "./api_document_file"
-import { SdkTask } from "./sdk_task"
+import { SdkPublishLock } from "./sdk_publish_lock"
 
 
 /**
@@ -20,7 +20,7 @@ export interface Sdk {
    * 关联的文档文件
    */
   "apiDocumentFile": ApiDocumentFile
-  "sdkTask"?: SdkTask
+  "sdkPublishLock"?: SdkPublishLock
   "scope": string
   /**
    * Npm包名
@@ -35,9 +35,9 @@ export interface Sdk {
    */
   "tag"?: string
   /**
-   * 是否已发布
+   * sdk 可用状态
    */
-  "isPublished": boolean
+  "status": "pending" | "compiling" | "published"
   /**
    * @type date-time
    * 发布时间

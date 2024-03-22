@@ -3,8 +3,8 @@ import { request } from 'keq'
 
 
 interface ResponseMap {
-  201: unknown
-  500: unknown
+  "201": unknown
+  "500": unknown
 }
 
 
@@ -12,7 +12,7 @@ interface QueryArg {
 }
 
 interface ParamArg {
-    id: string
+    "id": string
 }
 
 interface HeaderArg {

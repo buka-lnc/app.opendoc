@@ -8,7 +8,7 @@ const apiDocumentId = useRouteParams<string>('api_document_id')
 const version = useRouteParams<string>('version')
 
 const { pending, data: sdk } = useAsyncData(
-  async () => await querySdkByVersion<200>({
+  async () => await querySdkByVersion<'200'>({
     apiDocumentId: apiDocumentId.value,
     version: version.value,
   }),
@@ -36,7 +36,7 @@ const { pending, data: sdk } = useAsyncData(
           版本 {{ version }}
         </div>
 
-        <div v-if="sdk.isPublished" class="d-badge d-badge-outline d-badge-success">
+        <div v-if="sdk.status === 'published'" class="d-badge d-badge-outline d-badge-success">
           已发布
         </div>
 
@@ -152,4 +152,5 @@ const { pending, data: sdk } = useAsyncData(
   </div>
 </template>
 
-<style scoped lang="postcss"></style>
+<style scoped lang="postcss">
+</style>

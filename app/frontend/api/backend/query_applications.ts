@@ -4,15 +4,15 @@ import { QueryApplicationsResponseDTO } from "./components/schemas/query_applica
 
 
 interface ResponseMap {
-  200: QueryApplicationsResponseDTO
-  500: unknown
+  "200": QueryApplicationsResponseDTO
+  "500": unknown
 }
 
 
 interface QueryArg {
-    title?: string
-    limit: number
-    offset: number
+    "title"?: string
+    "limit": number
+    "offset": number
 }
 
 interface ParamArg {

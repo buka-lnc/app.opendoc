@@ -12,6 +12,7 @@ import { PackageMetadataVersionDistDTO } from './dto/package-metadata-version-di
 import { PackageMetadataVersionDTO } from './dto/package-metadata-version.dto'
 import { AppConfig } from '~/config/app.config'
 import { SdkService } from '~/modules/sdk/sdk.service'
+import { SdkStatus } from '../sdk/constant/sdk-status'
 
 
 @Injectable()
@@ -34,7 +35,7 @@ export class RegistryService {
     const npmPackages = await this.sdkRepo.find({
       scope: packageScope,
       name: packageName,
-      isPublished: true,
+      status: SdkStatus.published,
     })
 
     if (!npmPackages.length) {
@@ -93,7 +94,7 @@ export class RegistryService {
       scope: packageScope,
       name: packageName,
       version: version,
-      isPublished: true,
+      status: SdkStatus.published,
     })
 
     const tarballFilepath = this.sdkService.getTarballFilepath(npmPackage)

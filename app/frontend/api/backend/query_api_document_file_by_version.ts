@@ -4,8 +4,8 @@ import { ApiDocumentFile } from "./components/schemas/api_document_file"
 
 
 interface ResponseMap {
-  200: ApiDocumentFile
-  500: unknown
+  "200": ApiDocumentFile
+  "500": unknown
 }
 
 
@@ -13,8 +13,8 @@ interface QueryArg {
 }
 
 interface ParamArg {
-    version: string
-    apiDocumentId: string
+    "version": string
+    "apiDocumentId": string
 }
 
 interface HeaderArg {

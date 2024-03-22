@@ -15,15 +15,16 @@ import { AppConfig } from '~/config/app.config'
 import { FileNamingStyle, Filetype, compile } from '@opendoc/sdk'
 import compressing from 'compressing'
 import { Sdk } from './entity/sdk.entity'
-import { SdkTask } from './entity/sdk-task.entity'
+import { SdkPublishLock } from './entity/sdk-publish-lock.entity'
 import { SdkService } from './sdk.service'
 import { promisify } from 'util'
+import { SdkStatus } from './constant/sdk-status'
 
 const exec = promisify(childProcess.exec)
 
 @Injectable()
 export class PublishService {
-  buildTaskId?: string
+  publishLockId?: string
 
   constructor(
     @InjectPinoLogger(PublishService.name)
@@ -39,8 +40,8 @@ export class PublishService {
     @InjectRepository(Sdk)
     private readonly sdkRepo: EntityRepository<Sdk>,
 
-    @InjectRepository(SdkTask)
-    private readonly sdkTaskRepo: EntityRepository<SdkTask>,
+    @InjectRepository(SdkPublishLock)
+    private readonly sdkPublishLockRepo: EntityRepository<SdkPublishLock>,
   ) {}
 
   // TODO: 避免多个实例同时执行清理程序
@@ -48,18 +49,31 @@ export class PublishService {
   @EnsureRequestContext()
   async clean() {
     // 自动清理五分钟无心跳的任务
-    await this.sdkTaskRepo.nativeDelete({
+    const locks = await this.sdkPublishLockRepo.find({
       updatedAt: { $lt: new Date(Date.now() - 1000 * 60 * 5) },
     })
+
+    this.em.remove(locks)
+
+    const sdks = await this.sdkRepo.find({
+      sdkPublishLock: { $in: locks },
+    })
+
+    for (const sdk of sdks) {
+      sdk.status = SdkStatus.pending
+      this.em.persist(sdk)
+    }
+
+    await this.em.flush()
   }
 
 
   @Cron('0 */1 * * * *')
   @EnsureRequestContext()
   async sendHeartbeat() {
-    if (this.buildTaskId) {
-      await this.sdkTaskRepo.nativeUpdate(
-        { id: this.buildTaskId },
+    if (this.publishLockId) {
+      await this.sdkPublishLockRepo.nativeUpdate(
+        { id: this.publishLockId },
         { updatedAt: new Date() }
       )
     }
@@ -68,41 +82,48 @@ export class PublishService {
   @Cron('0/10 * * * * *')
   @EnsureRequestContext()
   async publishPackage() {
+    // 存在正在构建的SDK，跳过
+    if (this.publishLockId) return
+
     const sdk = await this.sdkRepo.findOne(
-      { isPublished: false, sdkTask: null },
+      { status: SdkStatus.pending, sdkPublishLock: null },
       { populate: ['apiDocumentFile', 'apiDocumentFile.apiDocument'] }
     )
 
-    if (!sdk) {
-      return
-    }
+    // 无待构建 SDK
+    if (!sdk) return
 
-    const buildTask = this.sdkTaskRepo.create({
+    const lock = this.sdkPublishLockRepo.create({
       sdk: sdk.id,
     })
 
-    this.buildTaskId = buildTask.id
+    this.publishLockId = lock.id
 
-    await this.em.persistAndFlush(buildTask)
+    try {
+      await this.em.persistAndFlush(lock)
 
-    const apiDocumentFile = sdk.apiDocumentFile.get()
+      const apiDocumentFile = sdk.apiDocumentFile.get()
 
-    const stream = await this.apiDocumentFileService.queryRawDocumentFileById(apiDocumentFile.id)
-    const buf = await buffer(stream)
-    const str = buf.toString('utf8')
+      const stream = await this.apiDocumentFileService.queryRawDocumentFileById(apiDocumentFile.id)
+      const buf = await buffer(stream)
+      const str = buf.toString('utf8')
 
-    if (apiDocumentFile.apiDocument.$.type === API_DOCUMENT_TYPE.OPEN_API) {
-      await this.buildOpenapi(sdk, str)
+      if (apiDocumentFile.apiDocument.$.type === API_DOCUMENT_TYPE.OPEN_API) {
+        await this.buildOpenapi(sdk, str)
+      }
+
+      sdk.status = SdkStatus.published
+      sdk.publishedAt = new Date()
+
+      await this.em.persistAndFlush(sdk)
+      await this.em.removeAndFlush(lock)
+      this.publishLockId = undefined
+    } catch (err) {
+      this.publishLockId = undefined
+
+      this.logger.error(err)
+      throw err
     }
-
-    sdk.isPublished = true
-    sdk.publishedAt = new Date()
-    // sdk.tarball = 'TODO'
-    // sdk.integrity = 'TODO'
-
-    await this.em.persistAndFlush(sdk)
-    this.buildTaskId = undefined
-    await this.em.removeAndFlush(buildTask)
   }
 
   private getCompileDir(sdk: Sdk): string {

@@ -4,7 +4,7 @@ import { Sdk } from './sdk.entity'
 import { ApiProperty } from '@nestjs/swagger'
 
 @Entity()
-export class SdkTask extends BaseEntity {
+export class SdkPublishLock extends BaseEntity {
   @ApiProperty({
     type: () => Sdk,
   })

@@ -3,13 +3,13 @@ import { request } from 'keq'
 
 
 interface ResponseMap {
-  200: unknown
-  400: {
+  "200": unknown
+  "400": {
   "statusCode": number
   "message": string
   "error"?: string
 }
-  500: unknown
+  "500": unknown
 }
 
 
@@ -17,11 +17,11 @@ interface QueryArg {
 }
 
 interface ParamArg {
-    id: string
+    "id": string
 }
 
 interface HeaderArg {
-    Authorization: string
+    "Authorization": string
 }
 
 

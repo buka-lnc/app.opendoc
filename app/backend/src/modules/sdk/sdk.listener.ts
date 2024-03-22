@@ -8,6 +8,7 @@ import { EntityRepository } from '@mikro-orm/mysql'
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino'
 import { API_DOCUMENT_TYPE } from '../api-document/constants/api-document-type.enum'
 import { Sdk } from './entity/sdk.entity'
+import { SdkStatus } from './constant/sdk-status'
 
 
 @Injectable()
@@ -56,7 +57,7 @@ export class SdkListener {
       name: apiDocument.code,
       version: apiDocumentFile.version,
       tag: apiDocumentFile.tag,
-      isPublished: false,
+      status: SdkStatus.pending,
       apiDocumentFile,
       apiDocument,
     })

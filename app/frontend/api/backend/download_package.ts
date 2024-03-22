@@ -3,8 +3,8 @@ import { request } from 'keq'
 
 
 interface ResponseMap {
-  200: unknown
-  400: {
+  "200": unknown
+  "400": {
   "statusCode": number
   "message": string
   "error"?: string
@@ -16,8 +16,8 @@ interface QueryArg {
 }
 
 interface ParamArg {
-    packageName: string
-    packageTag: string
+    "packageName": string
+    "packageTag": string
 }
 
 interface HeaderArg {

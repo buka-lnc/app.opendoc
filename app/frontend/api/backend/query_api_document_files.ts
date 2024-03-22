@@ -4,13 +4,13 @@ import { ApiDocumentFile } from "./components/schemas/api_document_file"
 
 
 interface ResponseMap {
-  200: (ApiDocumentFile)[]
+  "200": (ApiDocumentFile)[]
 }
 
 
 interface QueryArg {
-    tags?: (string)[]
-    apiDocumentIds: (string)[]
+    "tags"?: (string)[]
+    "apiDocumentIds": (string)[]
 }
 
 interface ParamArg {

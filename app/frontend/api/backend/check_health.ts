@@ -3,7 +3,7 @@ import { request } from 'keq'
 
 
 interface ResponseMap {
-  200: {
+  "200": {
   "status"?: string
   "info"?: {
     [key: string]: undefined | {
@@ -24,7 +24,7 @@ interface ResponseMap {
     }
   }
 }
-  503: {
+  "503": {
   "status"?: string
   "info"?: {
     [key: string]: undefined | {

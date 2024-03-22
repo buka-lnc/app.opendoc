@@ -4,7 +4,7 @@ import { PackageMetadataDTO } from "./components/schemas/package_metadata_dto"
 
 
 interface ResponseMap {
-  200: PackageMetadataDTO
+  "200": PackageMetadataDTO
 }
 
 
@@ -12,7 +12,7 @@ interface QueryArg {
 }
 
 interface ParamArg {
-    packageName: string
+    "packageName": string
 }
 
 interface HeaderArg {

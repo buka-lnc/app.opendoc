@@ -4,8 +4,8 @@ import { Application } from "./components/schemas/application"
 
 
 interface ResponseMap {
-  200: Application
-  500: unknown
+  "200": Application
+  "500": unknown
 }
 
 
@@ -13,7 +13,7 @@ interface QueryArg {
 }
 
 interface ParamArg {
-    applicationIdOrCode: string
+    "applicationIdOrCode": string
 }
 
 interface HeaderArg {

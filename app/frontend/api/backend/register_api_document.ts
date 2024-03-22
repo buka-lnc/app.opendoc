@@ -4,8 +4,8 @@ import { RegisterApiDocumentDTO } from "./components/schemas/register_api_docume
 
 
 interface ResponseMap {
-  200: unknown
-  500: unknown
+  "200": unknown
+  "500": unknown
 }
 
 

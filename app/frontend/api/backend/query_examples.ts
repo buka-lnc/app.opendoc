@@ -3,13 +3,13 @@ import { request } from 'keq'
 
 
 interface ResponseMap {
-  200: unknown
-  500: unknown
+  "200": unknown
+  "500": unknown
 }
 
 
 interface QueryArg {
-    name?: string
+    "name"?: string
 }
 
 interface ParamArg {

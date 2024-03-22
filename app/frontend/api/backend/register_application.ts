@@ -4,8 +4,8 @@ import { RegisterApplicationDTO } from "./components/schemas/register_applicatio
 
 
 interface ResponseMap {
-  200: unknown
-  500: unknown
+  "200": unknown
+  "500": unknown
 }
 
 

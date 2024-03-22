@@ -1,6 +1,6 @@
 export * from "./register_api_document_dto"
 export * from "./application"
-export * from "./sdk_task"
+export * from "./sdk_publish_lock"
 export * from "./sdk"
 export * from "./api_document_file"
 export * from "./api_document"
