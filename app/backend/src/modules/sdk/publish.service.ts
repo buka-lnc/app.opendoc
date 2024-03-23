@@ -96,11 +96,13 @@ export class PublishService {
     const lock = this.sdkPublishLockRepo.create({
       sdk: sdk.id,
     })
-
     this.publishLockId = lock.id
+    sdk.status = SdkStatus.compiling
+    this.em.persist(sdk)
+    this.em.persist(lock)
 
     try {
-      await this.em.persistAndFlush(lock)
+      await this.em.flush()
 
       const apiDocumentFile = sdk.apiDocumentFile.get()
 

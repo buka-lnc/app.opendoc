@@ -39,9 +39,18 @@ const { pending, data: apiDocumentFiles } = useAsyncData(
             SDK 已发布
           </div>
 
-          <div v-else class="d-badge d-badge-outline d-badge-warning">
+          <div v-else-if="apiDocumentFile.sdk?.status === 'compiling'" class="d-badge d-badge-outline d-badge-warning">
+            SDK 构建中
+          </div>
+
+          <div v-else-if="apiDocumentFile.sdk?.status === 'pending'" class="d-badge d-badge-outline d-badge-warning">
             SDK 待构建
           </div>
+
+          <div v-else class="d-badge d-badge-outline d-badge-error">
+            SDK 缺失
+          </div>
+
         </div>
 
         <div class="d-card-actions">
