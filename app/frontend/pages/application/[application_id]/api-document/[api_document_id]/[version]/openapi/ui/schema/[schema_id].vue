@@ -9,7 +9,7 @@ const schema = computed(() => toValue(schemas).find(schema => schema.id === rout
 
 <template>
   <div class="size-full bg-base-300 text-base-content">
-    <div class="p-10 size-full ">
+    <div class="p-10 size-full overflow-y-auto">
       <div class="mb-4 text-xl text-base-content/70">{{ schema?.title }}</div>
 
       <flexible-div class="bg-base-100/20 rounded-sm">
