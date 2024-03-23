@@ -16,13 +16,13 @@ const { pending, data: sdk } = useAsyncData(
 </script>
 
 <template>
-  <div class="size-full flex items-stretch overflow-y-auto">
+  <div class="size-full flex justify-around items-stretch overflow-y-auto">
     <stuffed-loading :pending="pending" />
 
     <div
-      v-if="sdk"
+      v-if="sdk && !pending"
       :class="[
-        'container mx-auto py-8 h-fit overflow-hidden',
+        'py-8 h-fit overflow-hidden',
         'prose prose-invert lg:prose-xl',
         'prose-pre:shadow-none prose-pre:!bg-transparent prose-pre:p-0 prose-pre:m-0',
       ]"

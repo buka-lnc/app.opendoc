@@ -27,7 +27,7 @@ const { pending, data: apiDocumentFiles } = useAsyncData(
     <div
       v-for="apiDocumentFile in apiDocumentFiles"
       :key="apiDocumentFile.id"
-      class="d-card bg-base-300"
+      class="d-card bg-base-300 rounded-sm"
     >
       <div class="d-card-body py-2 flex flex-row items-center justify-between">
         <div class="flex items-center space-x-2">
