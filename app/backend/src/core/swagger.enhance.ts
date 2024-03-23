@@ -1,15 +1,18 @@
 import { INestApplication } from '@nestjs/common'
 import { DocumentBuilder, OpenAPIObject, SwaggerDocumentOptions, SwaggerModule } from '@nestjs/swagger'
+import { AppConfig } from '~/config/app.config'
 import * as packageJson from '~~/package.json'
 
 
 export function swaggerEnhance(app: INestApplication): OpenAPIObject {
+  const appConfig = app.get(AppConfig)
+
   const config = new DocumentBuilder()
     .setTitle(packageJson.name)
     .setDescription(packageJson.description)
     .setVersion(packageJson.version)
     .addServer('/', '本地')
-    .addServer('http://backend-svc.aladdin', '内网')
+    .addServer(new URL(appConfig.registry).origin, 'Registry')
     .build()
 
   const docOptions: SwaggerDocumentOptions = {
