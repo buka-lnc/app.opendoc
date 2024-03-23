@@ -8,15 +8,6 @@ const props = defineProps<{
   response: OpenAPIV3.ResponseObject
 }>()
 
-// 高度动画
-const panel = ref()
-const panelContent = ref()
-const panelContentSize = useElementSize(panelContent)
-watchEffect(() => {
-  if (!panel.value || !panelContentSize.height.value) return
-  panel.value.style.height = `${panelContentSize.height.value}px`
-})
-
 const route = useRoute()
 const activeQueryKey = computed(() => `response${props.code}Active`)
 const active = computed(() => route.query[activeQueryKey.value] as string || 'headers')
@@ -68,29 +59,26 @@ const headersSchema = useOpenapiParametersToJsonSchema(headers)
         </NuxtLink>
       </div>
 
-      <div
-        ref="panel"
+      <FlexibleDiv
         role="tabpanel"
-        class="d-tab-content block bg-base-100/20 border-base-300 rounded-box transition-[height]"
+        class="d-tab-content block bg-base-100/20 border-base-300 rounded-box"
         :class="{
           'rounded-tl-none': active === 'headers',
           'rounded-tr-none': active === 'body',
         }"
       >
-        <div ref="panelContent" class="overflow-hidden">
-          <div class="p-6">
-            <div v-if="active=== 'headers'">
-              <json-schema-lang-ts v-if="headersSchema" :schema="headersSchema" />
-              <empty-placeholder v-else class="flex-1 py-8" />
-            </div>
+        <div class="p-6">
+          <div v-if="active=== 'headers'">
+            <json-schema-lang-ts v-if="headersSchema" :schema="headersSchema" />
+            <empty-placeholder v-else class="flex-1 py-8" />
+          </div>
 
-            <div v-if="active=== 'body'">
-              <openapi-operation-body v-if="response.content" :body="response.content" />
-              <empty-placeholder v-else class="flex-1 py-8" />
-            </div>
+          <div v-if="active=== 'body'">
+            <openapi-operation-body v-if="response.content" :body="response.content" />
+            <empty-placeholder v-else class="flex-1 py-8" />
           </div>
         </div>
-      </div>
+      </FlexibleDiv>
     </div>
   </div>
 </template>

@@ -52,12 +52,7 @@ const { filter, data: filteredSchemas } = useFilter(schemas, (schema) => schema.
   <div class="size-full flex items-stretch ">
     <div class="h-full overflow-y-auto overflow-x-hidden">
       <div class="p-2">
-        <input
-          type="text"
-          placeholder="Search"
-          class="d-input d-input-bordered d-input-xs w-full"
-          v-model="filter"
-        />
+        <search v-model="filter" />
       </div>
 
       <ul class="flex-0 flex-nowrap d-menu d-menu-sm bg-base-200 p-0 w-fit h-full">
