@@ -36,13 +36,7 @@ const { pending, data: sdk } = useAsyncData(
           版本 {{ version }}
         </div>
 
-        <div v-if="sdk.status === 'published'" class="d-badge d-badge-outline d-badge-success">
-          已发布
-        </div>
-
-        <div v-else class="d-badge d-badge-outline d-badge-warning">
-          待构建
-        </div>
+        <sdk-status-badge :status="sdk.status" />
       </div>
 
       <p>{{ sdk.fullName }} 是从接口文档中自动生成的、具备完善类型提示的 Npm 请求库。</p>

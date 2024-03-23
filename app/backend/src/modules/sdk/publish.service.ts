@@ -103,6 +103,7 @@ export class PublishService {
 
     try {
       await this.em.flush()
+      this.logger.debug('PUBLISHING')
 
       const apiDocumentFile = sdk.apiDocumentFile.get()
 
