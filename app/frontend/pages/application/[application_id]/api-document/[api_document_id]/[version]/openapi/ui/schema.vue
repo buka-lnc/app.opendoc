@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { OpenAPIV3 } from 'openapi-types'
+import * as R from 'ramda'
 import md5 from 'md5'
 import { inject } from 'vue'
 import { useRouteParams } from '@vueuse/router'
@@ -43,13 +44,24 @@ watch(
     immediate: true,
   },
 )
+
+const { filter, data: filteredSchemas } = useFilter(schemas, (schema) => schema.title)
 </script>
 
 <template>
   <div class="size-full flex items-stretch ">
     <div class="h-full overflow-y-auto overflow-x-hidden">
+      <div class="p-2">
+        <input
+          type="text"
+          placeholder="Search"
+          class="d-input d-input-bordered d-input-xs w-full"
+          v-model="filter"
+        />
+      </div>
+
       <ul class="flex-0 flex-nowrap d-menu d-menu-sm bg-base-200 p-0 w-fit h-full">
-        <li v-for="schema in schemas" :key="schema.title">
+        <li v-for="schema in filteredSchemas" :key="schema.title">
           <NuxtLink
             class="rounded-none"
             :to="`${prefix}/${schema.id}`"
