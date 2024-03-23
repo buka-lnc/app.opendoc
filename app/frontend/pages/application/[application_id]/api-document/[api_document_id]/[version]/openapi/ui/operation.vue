@@ -84,6 +84,13 @@ const groups = computed(() => {
   return groups
 })
 
+const counter = computed(() => ({
+  get: operations.value.filter(o => o.method.toLowerCase() === 'get').length,
+  post: operations.value.filter(o => o.method.toLowerCase() === 'post').length,
+  put: operations.value.filter(o => o.method.toLowerCase() === 'put').length,
+  delete: operations.value.filter(o => o.method.toLowerCase() === 'delete').length,
+}))
+
 </script>
 
 <template>
@@ -91,6 +98,13 @@ const groups = computed(() => {
     <div class="bg-base-200 flex-0 overflow-y-auto overflow-x-hidden h-full">
       <div class="p-2">
         <search v-model="filter" />
+
+        <div class="w-full px-1 text-xs text-base-content/50 font-bold inline-flex justify-between">
+          <span>GET: {{ counter.get }}</span>
+          <span>POS: {{ counter.post }}</span>
+          <span>PUT: {{ counter.put }}</span>
+          <span>DEL: {{ counter.delete }}</span>
+        </div>
       </div>
 
 
