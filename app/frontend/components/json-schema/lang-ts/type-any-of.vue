@@ -11,7 +11,7 @@ defineProps<{
 </script>
 
 <template>
-  <template v-if="'anyOf' in schema">
+  <template v-if="schema.anyOf && schema.anyOf.length > 1">
     <json-schema-lang-ts-block :schema="schema">
       <template #head>
         <slot name="head" />
@@ -32,6 +32,16 @@ defineProps<{
         <slot name="tail" />
       </template>
     </json-schema-lang-ts-block>
+  </template>
+  <template v-else-if="schema.anyOf && schema.anyOf.length === 1">
+    <json-schema-lang-ts-type v-bind="$attrs" :schema="schema.anyOf[0]">
+      <template #head>
+        <slot name="head" />
+      </template>
+      <template #tail>
+        <slot name="tail" />
+      </template>
+    </json-schema-lang-ts-type>
   </template>
 </template>
 

@@ -20,6 +20,7 @@ export function useDereferenceFn (): (<T>(v: Object | undefined) => [T | undefin
       if (!$ref.startsWith('#')) break
 
       const result = R.path($ref.split('/').slice(1), s) as any
+
       if (!result || !('$ref' in result) || typeof result.$ref !== 'string') {
         return [result as (T | undefined), paths]
       }
