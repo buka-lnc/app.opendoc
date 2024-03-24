@@ -15,12 +15,20 @@ const [resolvedSchema, referencePath] = useDereference<OpenAPIV3.SchemaObject>(s
 </script>
 
 <template>
-  <json-schema-lang-ts-type-object v-bind="$attrs" v-if="resolvedSchema?.type === 'object'" :schema="schema as any">
+  <json-schema-lang-ts-type-object
+    v-bind="$attrs"
+    v-if="resolvedSchema?.type === 'object'"
+    :schema="schema as any"
+  >
     <template #head><slot name="head" /></template>
     <template #tail><slot name="tail" /></template>
   </json-schema-lang-ts-type-object>
 
-  <json-schema-lang-ts-type-array v-bind="$attrs" v-if="resolvedSchema?.type === 'array'" :schema="schema as any">
+  <json-schema-lang-ts-type-array
+    v-bind="$attrs"
+    v-if="resolvedSchema?.type === 'array'"
+    :schema="schema as any"
+  >
     <template #head><slot name="head" /></template>
     <template #tail><slot name="tail" /></template>
   </json-schema-lang-ts-type-array>

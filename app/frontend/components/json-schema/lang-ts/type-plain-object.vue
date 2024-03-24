@@ -37,7 +37,7 @@ const schema = toRef(props, 'schema')
     <span v-else class="schema-punctuation">{</span>
   </json-schema-lang-ts-line>
 
-  <div class="pl-6 schema-block">
+  <div v-if="!$props.foldable || !fold" class="pl-6 schema-block">
     <json-schema-lang-ts-properties
       v-if="schema.properties"
       :properties="schema.properties"
@@ -46,7 +46,7 @@ const schema = toRef(props, 'schema')
   </div>
 
   <json-schema-lang-ts-line
-    v-if="!fold || !props.foldable"
+    v-if="!fold || !$props.foldable"
     class="schema-line schema-block-end"
   >
     <span class="schema-punctuation">}</span>

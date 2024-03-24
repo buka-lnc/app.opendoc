@@ -14,8 +14,8 @@ const fold  = ref(true)
   <json-schema-lang-ts-type-plain-object
     v-if="resolvedSchema"
     :foldable="referencePath.length > 0"
-    :schema="resolvedSchema"
     v-model:fold="fold"
+    :schema="resolvedSchema"
   >
     <template #head>
       <slot name="head" />

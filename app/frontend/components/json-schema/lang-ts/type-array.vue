@@ -50,8 +50,6 @@ watch(
   },
 )
 
-const isObject = computed(() => resolvedSchema.value?.type === 'object')
-
 const fold = ref(true)
 </script>
 

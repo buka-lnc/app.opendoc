@@ -8,16 +8,12 @@ const props = defineProps<{
 const schema = toRef(props, 'schema')
 
 const [resolvedSchema, referencePath] = useDereference<OpenAPIV3.SchemaObject>(schema)
-// const [showPopover, toggleShowPopover] = useToggle(false)
-
-const isObject = computed(() => !!resolvedSchema.value && 'type' in resolvedSchema.value && resolvedSchema.value.type === 'object')
-const isArray = computed(() => !!resolvedSchema.value && 'type' in resolvedSchema.value && resolvedSchema.value.type === 'array')
 </script>
 
 <template>
   <json-schema-lang-ts-type-plain-object
     v-if="resolvedSchema?.type === 'object'"
-    :schema="schema as OpenAPIV3.NonArraySchemaObject"
+    :schema="resolvedSchema as OpenAPIV3.NonArraySchemaObject"
   >
     <template #head>
       <span

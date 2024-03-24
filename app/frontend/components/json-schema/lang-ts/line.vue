@@ -11,6 +11,8 @@ const [showPopover, toggleShowPopover] = useToggle(false)
 <template>
   <div
     class="relative schema-line"
+    @mouseenter="toggleShowPopover(true)"
+    @mouseleave="toggleShowPopover(false)"
   >
     <json-schema-lang-ts-popover
       v-if="$props.schema"

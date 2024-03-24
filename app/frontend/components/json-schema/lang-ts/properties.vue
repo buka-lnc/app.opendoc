@@ -1,10 +1,16 @@
 <script setup lang="ts">
 import { OpenAPIV3 } from 'openapi-types'
 
-defineProps<{
-  properties: OpenAPIV3.NonArraySchemaObject['properties']
-  required: OpenAPIV3.NonArraySchemaObject['required']
-}>()
+withDefaults(
+  defineProps<{
+    properties: OpenAPIV3.NonArraySchemaObject['properties']
+    required: string[]
+  }>(),
+  {
+    required: () => ([]),
+    properties: () => ({}),
+  }
+)
 </script>
 
 <template>
