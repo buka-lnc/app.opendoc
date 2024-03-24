@@ -1,13 +1,17 @@
 .schema-line {
-  @apply cursor-default transition
+  @apply cursor-default transition pl-1
 }
 .schema-line:hover {
   @apply bg-neutral cursor-default
 }
 
-.schema-block-start:hover + .schema-block,
-.schema-block-start:hover + .schema-block +.schema-block-end {
+.schema-block-head:hover + .schema-block,
+.schema-block-head:hover + .schema-block +.schema-block-tail {
   @apply bg-neutral
+}
+
+.schema-block {
+  @apply pl-6
 }
 
 
