@@ -61,9 +61,9 @@ watch(
 
 const { filter, data: filteredOperations } = useFilter(
   operations,
-  (operation) => [operation.pathname, operation.value.summary]
-  .filter(R.isNotNil)
-  .join(' ')
+  operation => [operation.pathname, operation.value.summary]
+    .filter(R.isNotNil)
+    .join(' '),
 )
 
 const groups = computed(() => {
@@ -88,6 +88,7 @@ const counter = computed(() => ({
   post: operations.value.filter(o => o.method.toLowerCase() === 'post').length,
   put: operations.value.filter(o => o.method.toLowerCase() === 'put').length,
   delete: operations.value.filter(o => o.method.toLowerCase() === 'delete').length,
+  patch: operations.value.filter(o => o.method.toLowerCase() === 'patch').length,
 }))
 
 </script>
@@ -102,10 +103,10 @@ const counter = computed(() => ({
           <span>GET: {{ counter.get }}</span>
           <span>POS: {{ counter.post }}</span>
           <span>PUT: {{ counter.put }}</span>
+          <span>PAT: {{ counter.patch }}</span>
           <span>DEL: {{ counter.delete }}</span>
         </div>
       </div>
-
 
       <ul class="flex-nowrap d-menu d-menu-sm bg-base-200 p-0 w-72 h-full">
         <template v-for="group in groups" :key="group.key">
