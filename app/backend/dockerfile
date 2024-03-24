@@ -1,6 +1,20 @@
 FROM ghcr.io/buka-lnc/nodejs-slim:18 as builder
 
+ARG HOST='0.0.0.0'
 ARG PORT=80
+ARG STORAGE='./storage'
+ARG REGISTRY='http://127.0.0.1:8080/api/registry'
+
+ARG MYSQL__DB_NAME='opendoc'
+ARG MYSQL__DB_HOST
+ARG MYSQL__DB_PORT
+ARG MYSQL__DB_USER
+ARG MYSQL__DB_PASSWORD
+ARG MYSQL__DB_TIMEZONE='+08:00'
+
+ARG PINO__PRETTY
+ARG PINO__LEVEL='info'
+
 
 COPY . /repo
 WORKDIR /repo

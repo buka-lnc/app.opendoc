@@ -1,0 +1,35 @@
+name: Release
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  buildBackendApplication:
+    name: "Build Backend Application"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: buka-lnc/github.actions/build-docker-image@main
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          dockerfile: ./app/backend/dockerfile
+          tags: ghcr.io/buka-lnc/blog-backend:latest
+  buildFrontendApplication:
+    name: "Build Frontend Application"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: buka-lnc/github.actions/build-docker-image@main
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          dockerfile: ./app/frontend/dockerfile
+          tags: ghcr.io/buka-lnc/blog-frontend:latest

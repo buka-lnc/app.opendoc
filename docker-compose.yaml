@@ -1,0 +1,23 @@
+version: "3"
+services:
+  frontend:
+    image: ghcr.io/buka-lnc/opendoc-frontend:latest
+    ports:
+      - "3000:3000"
+  backend:
+    image: ghcr.io/buka-lnc/opendoc-backend:latest
+    ports:
+      - "8080:8080"
+    environment:
+      MYSQL__DB_HOST: mysql
+      MYSQL__DB_PORT: 3306
+      MYSQL__DB_USER: opendoc
+      MYSQL__DB_PASSWORD: opendoc
+      MYSQL__DB_NAME: opendoc
+  mysql:
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: opendoc
+      MYSQL_USER: opendoc
+      MYSQL_PASSWORD: opendoc
