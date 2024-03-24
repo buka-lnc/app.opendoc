@@ -8,7 +8,7 @@ const props = defineProps<{
   schema: OpenAPIV3.NonArraySchemaObject | OpenAPIV3.ReferenceObject
 }>()
 
-const [resolvedSchema, referencePath] = useDereference<OpenAPIV3.NonArraySchemaObject>(props.schema)
+const [resolvedSchema] = useDereference<OpenAPIV3.NonArraySchemaObject>(props.schema)
 </script>
 
 <template>

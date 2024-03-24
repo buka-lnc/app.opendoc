@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { OpenAPIV3 } from 'openapi-types';
+import { OpenAPIV3 } from 'openapi-types'
 
 const props = defineProps<{
   schema: OpenAPIV3.NonArraySchemaObject | OpenAPIV3.ReferenceObject
@@ -7,14 +7,14 @@ const props = defineProps<{
 
 const [resolvedSchema, referencePath] = useDereference<OpenAPIV3.NonArraySchemaObject>(props.schema)
 
-const fold  = ref(true)
+const fold = ref(true)
 </script>
 
 <template>
   <json-schema-lang-ts-type-plain-object
     v-if="resolvedSchema"
-    :foldable="referencePath.length > 0"
     v-model:fold="fold"
+    :foldable="referencePath.length > 0"
     :schema="resolvedSchema"
   >
     <template #head>

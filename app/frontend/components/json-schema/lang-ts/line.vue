@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { OpenAPIV3 } from 'openapi-types';
+import { OpenAPIV3 } from 'openapi-types'
 
 defineProps<{
   schema?: OpenAPIV3.SchemaObject

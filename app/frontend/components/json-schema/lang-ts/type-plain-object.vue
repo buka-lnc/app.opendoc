@@ -12,10 +12,10 @@ const props = withDefaults(
   }>(),
   {
     foldable: false,
-  }
+  },
 )
 
-const fold = defineModel('fold')
+const fold = defineModel<boolean>('fold')
 const schema = toRef(props, 'schema')
 </script>
 

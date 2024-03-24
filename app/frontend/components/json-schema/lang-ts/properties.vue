@@ -9,7 +9,7 @@ withDefaults(
   {
     required: () => ([]),
     properties: () => ({}),
-  }
+  },
 )
 </script>
 
