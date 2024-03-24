@@ -15,7 +15,7 @@ defineProps<{
     <json-schema-lang-ts-property
       v-bind="$attrs"
       :name="value[0]"
-      :value="value[1]"
+      :schema="value[1]"
       :required="$props.required?.includes(value[0]) || false"
     />
   </template>

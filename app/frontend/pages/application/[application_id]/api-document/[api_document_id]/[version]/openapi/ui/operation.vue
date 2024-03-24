@@ -6,7 +6,6 @@ import { useRouteParams } from '@vueuse/router'
 import { OPENDOC_OPERATIONS_INJECT_KEY } from '~/constants/opendoc-operations-inject-key'
 import { SCHEMA_INJECT_KEY } from '~/constants/schema-inject-key.js'
 import { OpendocOperation } from '~/types/opendoc-operation.js'
-import { IconSearch } from '@tabler/icons-vue'
 
 const openapi = inject<Ref<OpenAPIV3.Document>>(SCHEMA_INJECT_KEY)
 const methods = ['get', 'post', 'put', 'delete', 'patch', 'options', 'head', 'trace']

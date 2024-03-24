@@ -7,46 +7,36 @@ const props = defineProps<{
 
 const schema = toRef(props, 'schema')
 
-const [resolvedSchema] = useDereference<OpenAPIV3.SchemaObject>(schema)
-const [showPopover, toggleShowPopover] = useToggle(false)
+const [resolvedSchema, referencePath] = useDereference<OpenAPIV3.SchemaObject>(schema)
+// const [showPopover, toggleShowPopover] = useToggle(false)
 
-const isBasicType = computed(() => {
-  if (!resolvedSchema.value) return false
-  if (!('type' in resolvedSchema.value)) return false
-  if (!resolvedSchema.value.type) return false
-
-  return resolvedSchema.value.type !== 'object' && resolvedSchema.value.type !== 'array'
-})
 const isObject = computed(() => !!resolvedSchema.value && 'type' in resolvedSchema.value && resolvedSchema.value.type === 'object')
 const isArray = computed(() => !!resolvedSchema.value && 'type' in resolvedSchema.value && resolvedSchema.value.type === 'array')
 </script>
 
 <template>
-  <json-schema-lang-ts-object
-    v-if="isObject"
+  <json-schema-lang-ts-type-plain-object
+    v-if="resolvedSchema?.type === 'object'"
+    :schema="schema as OpenAPIV3.NonArraySchemaObject"
+  >
+    <template #head>
+      <span
+        v-if="referencePath.length > 0"
+        class="bg-base-200 text-base-content/70 px-1 rounded-sm mr-2"
+      >
+        <span>&lt;</span>
+        <json-schema-lang-ts-ref
+          :reference="referencePath[referencePath.length - 1]"
+        />
+        <span>&gt;</span>
+      </span>
+    </template>
+  </json-schema-lang-ts-type-plain-object>
+
+  <json-schema-lang-ts-type
+    v-else
     :schema="schema as OpenAPIV3.NonArraySchemaObject"
   />
-
-  <json-schema-lang-ts-array
-    v-else-if="isArray && resolvedSchema"
-    :schema="resolvedSchema as OpenAPIV3.ArraySchemaObject"
-  />
-
-  <div
-    v-else-if="isBasicType && resolvedSchema"
-    class="relative pl-6 schema-line schema-block-start"
-    @mouseover="toggleShowPopover(true)"
-    @mouseleave="toggleShowPopover(false)"
-  >
-    <span>
-      <json-schema-lang-ts-popover
-        :show="showPopover"
-        :schema="resolvedSchema"
-      />
-
-      <json-schema-lang-ts-base-type :schema="resolvedSchema" />
-    </span>
-  </div>
 </template>
 
 <style scoped lang="postcss">

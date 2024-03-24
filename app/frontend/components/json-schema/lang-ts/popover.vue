@@ -3,14 +3,14 @@ import { OpenAPIV3 } from 'openapi-types'
 
 const props = defineProps<{
   show: boolean
-  schema?: OpenAPIV3.SchemaObject
+  schema: OpenAPIV3.SchemaObject
 }>()
 
 </script>
 
 <template>
   <mouse-popover
-    v-if="props.schema?.description || props.schema?.example"
+    v-if="props.schema.description || props.schema.example"
     :show="props.show"
   >
     <div class="px-4 py-2 text-sm font-sans max-w-64">

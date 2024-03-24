@@ -50,60 +50,52 @@ watch(
   },
 )
 
-const isBasicType = computed(() => {
-  if (!resolvedSchema.value) return false
-  if (!('type' in resolvedSchema.value)) return false
-  if (!resolvedSchema.value.type) return false
+const isObject = computed(() => resolvedSchema.value?.type === 'object')
 
-  return resolvedSchema.value.type !== 'object' && resolvedSchema.value.type !== 'array'
-})
-const isObject = computed(() => !!resolvedSchema.value && 'type' in resolvedSchema.value && resolvedSchema.value.type === 'object')
-
-const [showPopover, toggleShowPopover] = useToggle(false)
+const fold = ref(true)
 </script>
 
 <template>
-  <div v-if="isObject" class="schema-line schema-punctuation">
-    <span
-      v-if="referencePath.length > 0"
-      class="bg-base-200 text-base-content/70 px-1 rounded-sm"
-    >
-      <span>&lt;</span>
-      <json-schema-lang-ts-ref :reference="referencePath[referencePath.length - 1]" />
-      <json-schema-lang-ts-array-dimension :dimension="arrayDimension" />
-      <span>&gt;</span>
-    </span>
-    {
-  </div>
-
-  <div v-if="isObject && resolvedSchema">
-    <json-schema-lang-ts-properties
-      v-if="resolvedSchema.properties"
-      :properties="resolvedSchema.properties"
-      :required="resolvedSchema.required"
-    />
-  </div>
-
-  <div
-    class="relative pl-6 schema-line schema-block-start"
-    @mouseover="toggleShowPopover(true)"
-    @mouseleave="toggleShowPopover(false)"
+  <json-schema-lang-ts-type-plain-object
+    v-if="resolvedSchema && resolvedSchema.type === 'object'"
+    :schema="resolvedSchema"
+    :foldable="referencePath.length > 0"
+    v-model:fold="fold"
   >
-    <span v-if="isBasicType && resolvedSchema">
-      <json-schema-lang-ts-popover
-        :show="showPopover"
-        :schema="resolvedSchema"
-      />
+    <template #head>
+      <slot name="head" />
 
-      <json-schema-lang-ts-base-type :schema="resolvedSchema" />
+      <span
+        v-if="referencePath.length > 0"
+        :class="!fold && 'bg-base-200 text-base-content/70 px-1 rounded-sm mr-2'"
+      >
+        <span v-if="!fold">&lt;</span>
+        <json-schema-lang-ts-ref
+          :class="fold && 'schema-constant'"
+          :reference="referencePath[referencePath.length - 1]"
+        />
+        <json-schema-lang-ts-array-dimension :dimension="arrayDimension" />
+        <span v-if="!fold">&gt;</span>
+      </span>
+    </template>
+
+    <template #tail>
+      <slot name="tail" />
+    </template>
+  </json-schema-lang-ts-type-plain-object>
+
+  <json-schema-lang-ts-type
+    v-else-if="resolvedSchema && resolvedSchema.type !== 'array'"
+    :schema="resolvedSchema"
+  >
+    <template #head>
+      <slot name="head" />
+    </template>
+
+    <template #tail>
       <json-schema-lang-ts-array-dimension :dimension="arrayDimension" />
-    </span>
-  </div>
-
-  <div v-if="isObject" class="schema-line">
-    <span class="schema-punctuation">}</span>
-    <json-schema-lang-ts-array-dimension :dimension="arrayDimension" />
-  </div>
+    </template>
+  </json-schema-lang-ts-type>
 </template>
 
 <style scoped lang="postcss">

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { IconSearch } from '@tabler/icons-vue';
 const model = defineModel({ required: true })
 </script>
 
