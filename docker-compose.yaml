@@ -5,19 +5,26 @@ services:
     ports:
       - "3000:3000"
     environment:
-      BACKEND_HOST: backend:8080
+      NUXT_API_BASE_ORIGIN: http://backend:8080
   backend:
     image: ghcr.io/buka-lnc/opendoc-backend:latest
     ports:
       - "8080:8080"
     environment:
-      MYSQL__DB_HOST: mysql
-      MYSQL__DB_PORT: 3306
-      MYSQL__DB_USER: opendoc
-      MYSQL__DB_PASSWORD: opendoc
+      MYSQL__HOST: mysql
+      MYSQL__PORT: 3306
+      MYSQL__USER: opendoc
+      MYSQL__PASSWORD: opendoc
       MYSQL__DB_NAME: opendoc
+    depends_on:
+      mysql:
+        condition: service_healthy
   mysql:
     image: mysql:8
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: opendoc

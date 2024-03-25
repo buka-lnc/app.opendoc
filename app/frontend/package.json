@@ -51,6 +51,7 @@
     "@vueuse/nuxt": "^10.9.0",
     "@vueuse/router": "^10.9.0",
     "copy-to-clipboard": "^3.3.3",
+    "http-proxy": "^1.18.1",
     "keq": "^2.3.0",
     "keq-debug": "^2.0.3",
     "md5": "^2.3.0",
