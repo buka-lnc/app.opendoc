@@ -2,6 +2,7 @@ FROM ghcr.io/buka-lnc/nodejs-slim:18 as builder
 
 ARG PORT=80
 ARG API_BASE_ORIGIN=http://backend-svc
+ARG BACKEND_HOST=localhost:8080
 
 COPY . /repo
 WORKDIR /repo

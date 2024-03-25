@@ -3,6 +3,8 @@ import plugin from 'tailwindcss/plugin'
 import themes from 'daisyui/src/theming/themes'
 import colors from 'tailwindcss/colors'
 
+const backendHost = process.env.BACKEND_HOST || 'localhost:8080'
+
 export default defineNuxtConfig({
   devtools: { enabled: false },
   app: {},
@@ -23,10 +25,9 @@ export default defineNuxtConfig({
   ],
 
   nitro: {
-    devProxy: {
-      '/api': {
-        target: 'http://localhost:8080/api',
-        changeOrigin: false,
+    routeRules: {
+      '/api/**': {
+        proxy: `http://${backendHost}/api/**`,
       },
     },
   },

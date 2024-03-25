@@ -4,6 +4,8 @@ services:
     image: ghcr.io/buka-lnc/opendoc-frontend:latest
     ports:
       - "3000:3000"
+    environment:
+      BACKEND_HOST: backend:8080
   backend:
     image: ghcr.io/buka-lnc/opendoc-backend:latest
     ports:
