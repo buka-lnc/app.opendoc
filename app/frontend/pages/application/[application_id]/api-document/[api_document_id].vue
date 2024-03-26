@@ -14,11 +14,11 @@ const apiDocumentFiles = ref<ApiDocumentFile[]>([])
 const { pending } = useAsyncData(
   async () => {
     const [apiDocumentRes, apiDocumentFilesRes] = await Promise.all([
-      queryApiDocumentById<200>({
+      queryApiDocumentById<'200'>({
         apiDocumentId: apiDocumentId.value,
       }),
 
-      queryApiDocumentFilesByApiDocumentId<200>({
+      queryApiDocumentFilesByApiDocumentId<'200'>({
         apiDocumentId: apiDocumentId.value,
       }),
     ])

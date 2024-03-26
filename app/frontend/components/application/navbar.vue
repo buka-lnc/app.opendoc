@@ -8,6 +8,8 @@ const props = defineProps<{
 </script>
 
 <template>
+  <ApplicationSettings />
+
   <div class="d-navbar bg-base-100">
     <div class="d-navbar-start space-x-2">
       <button

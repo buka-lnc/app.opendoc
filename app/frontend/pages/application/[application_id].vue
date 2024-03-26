@@ -6,7 +6,7 @@ const applicationId = computed(() => String(route.params.application_id))
 
 const { data: application, pending } = useAsyncData(
   async () => {
-    const body = await queryApplication<200>({
+    const body = await queryApplication<'200'>({
       applicationIdOrCode: applicationId.value,
     })
 

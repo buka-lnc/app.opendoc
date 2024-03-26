@@ -16,7 +16,7 @@ const pagination = reactive({
 
 const { pending } = useAsyncData(
   async () => {
-    const body = await queryApplications({
+    const body = await queryApplications<'200'>({
       limit: pagination.limit,
       offset: pagination.offset,
     })
