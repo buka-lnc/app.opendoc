@@ -29,7 +29,7 @@ const [resolvedSchema] = useDereference<OpenAPIV3.SchemaObject>(schema)
   </json-schema-lang-ts-type-all-of>
 
   <json-schema-lang-ts-type-one-of
-    v-if="Array.isArray(resolvedSchema?.oneOf)"
+    v-else-if="Array.isArray(resolvedSchema?.oneOf)"
     v-bind="$attrs"
     :schema="(schema as any)"
   >
@@ -42,7 +42,7 @@ const [resolvedSchema] = useDereference<OpenAPIV3.SchemaObject>(schema)
   </json-schema-lang-ts-type-one-of>
 
   <json-schema-lang-ts-type-any-of
-    v-if="Array.isArray(resolvedSchema?.anyOf)"
+    v-else-if="Array.isArray(resolvedSchema?.anyOf)"
     v-bind="$attrs"
     :schema="(schema as any)"
   >
