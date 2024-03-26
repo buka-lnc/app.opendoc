@@ -7,7 +7,7 @@ export interface RegisterOpendocOptions {
   }
 
   apiDocuments: {
-    type: 'opendoc' | 'openapi' | 'markdown'
+    type: 'asyncapi' | 'openapi' | 'markdown'
     title?: string
     code: string
     order?: number

@@ -2,6 +2,7 @@
   <!-- eslint-disable-next-line vue/no-v-html -->
   <div
     :class="[
+      'font-sans',
       'prose prose-invert lg:prose-xl',
       'prose-pre:shadow-lg',
       'markdown',
