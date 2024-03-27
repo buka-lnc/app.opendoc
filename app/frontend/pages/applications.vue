@@ -14,7 +14,7 @@ const pagination = reactive({
   offset: 0,
 })
 
-const { pending } = useAsyncData(
+const { pending, refresh } = useAsyncData(
   async () => {
     const body = await queryApplications<'200'>({
       limit: pagination.limit,
@@ -26,49 +26,60 @@ const { pending } = useAsyncData(
   },
 )
 
+const showCreateModal = ref(false)
 </script>
 
 <template>
   <NuxtLoadingIndicator v-if="pending" />
 
-  <div class="container mx-auto flex flex-col font-mono">
-    <div class="flex-0 py-4 flex items-center justify-between">
-      <h1 class="select-none text-5xl font-bold text-gray-600">
-        Applications
-      </h1>
+  <ApplicationCreateModal
+    v-model:show="showCreateModal"
+    @created:application="() => refresh()"
+  />
 
-      <button class="d-btn d-btn-square d-btn-lg d-btn-ghost">
-        <IconSettings class="w-8 h-8" />
-      </button>
-    </div>
+  <div class="flex flex-col font-mono relative overflow-y-auto size-full">
+    <div class="z-10 bg-base-100 sticky top-0 container m-auto flex-0 pb-4">
+      <div class="flex items-center justify-between py-4">
+        <h1 class="select-none text-5xl font-bold text-gray-600">
+          Applications
+        </h1>
 
-    <div class="flex-0 flex items-center justify-between">
-      <div class="d-join  w-1/2 flex">
-        <SelectBox>
-          <SelectButton
-            class="d-join-item d-select-lg d-select-bordered"
-          >
-            Title
-          </SelectButton>
-
-          <template #options>
-            <SelectOption class="d-btn-lg" selected>
-              Title
-            </SelectOption>
-            <SelectOption class="d-btn-lg">
-              Tag
-            </SelectOption>
-          </template>
-        </SelectBox>
-        <input class="d-join-item flex-auto d-input d-input-bordered d-input-lg" type="text" placeholder="Search">
+        <button class="d-btn d-btn-square d-btn-lg d-btn-ghost">
+          <IconSettings class="w-8 h-8" />
+        </button>
       </div>
 
-      <button class="d-btn d-btn-lg d-btn-primary">
-        Create Application
-      </button>
+      <div class="flex items-center justify-between">
+        <div class="d-join  w-1/2 flex">
+          <SelectBox value="title">
+            <SelectButton
+              class="d-join-item d-select-lg d-select-bordered"
+            >
+              Title
+            </SelectButton>
+
+            <template #options>
+              <SelectOption class="d-btn-lg" value="title">
+                Title
+              </SelectOption>
+              <SelectOption class="d-btn-lg" value="tag">
+                Tag
+              </SelectOption>
+            </template>
+          </SelectBox>
+          <input class="d-join-item flex-auto d-input d-input-bordered d-input-lg" type="text" placeholder="Search">
+        </div>
+
+        <button
+          class="d-btn d-btn-lg d-btn-primary"
+          @click="showCreateModal = true"
+        >
+          Create Application
+        </button>
+      </div>
     </div>
 
-    <div class="flex-auto pt-6">
+    <div class="container m-auto flex-auto pt-6">
       <div v-for="application in applications" :key="application.id">
         <application-preview-card :application="application" />
       </div>

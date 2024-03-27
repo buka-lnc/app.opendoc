@@ -1,6 +1,5 @@
 import { ApiDocument } from "./api_document"
 import { ApiDocumentFile } from "./api_document_file"
-import { SdkPublishLock } from "./sdk_publish_lock"
 
 
 /**
@@ -20,7 +19,6 @@ export interface Sdk {
    * 关联的文档文件
    */
   "apiDocumentFile": ApiDocumentFile
-  "sdkPublishLock"?: SdkPublishLock
   "scope": string
   /**
    * Npm包名

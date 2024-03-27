@@ -1,11 +1,12 @@
 import { QueryApplicationsResponseDTO } from './dto/query-applications-response.dto'
-import { Body, Controller, Delete, Get, Param, Put, Query } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common'
 import { ApplicationService } from './application.service'
 import { RegisterApplicationDTO } from './dto/register-application.dto'
 import { QueryApplicationsDTO } from './dto/query-applications.dto'
 import { Application } from './entity/application.entity'
 import { ApiInternalServerErrorResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { EntityManager } from '@mikro-orm/core'
+import { CreateApplicationDTO } from './dto/create-application.dto'
 
 
 @ApiTags('Application')
@@ -23,6 +24,14 @@ export class ApplicationController {
     @Body() dto: RegisterApplicationDTO
   ): Promise<void> {
     await this.applicationService.register(dto)
+  }
+
+  @Post()
+  @ApiOperation({ summary: '创建应用' })
+  async createApplication(
+    @Body() dto: CreateApplicationDTO,
+  ): Promise<Application> {
+    return await this.applicationService.create(dto)
   }
 
   @Get()

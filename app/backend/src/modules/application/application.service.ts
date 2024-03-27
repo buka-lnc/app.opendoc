@@ -6,6 +6,7 @@ import { InjectRepository } from '@mikro-orm/nestjs'
 import { QueryApplicationsDTO } from './dto/query-applications.dto'
 import { QueryApplicationsResponseDTO } from './dto/query-applications-response.dto'
 import { EntityRepository } from '@mikro-orm/mysql'
+import { CreateApplicationDTO } from './dto/create-application.dto'
 
 
 @Injectable()
@@ -36,6 +37,16 @@ export class ApplicationService {
     })
 
     await this.em.persistAndFlush(application)
+  }
+
+  async create(dto: CreateApplicationDTO): Promise<Application> {
+    const application = this.applicationRepo.create({
+      code: dto.code,
+      title: dto.title || dto.code,
+    })
+    await this.em.persistAndFlush(application)
+
+    return application
   }
 
   async queryApplicationByIdOrCode(idOrCode: string): Promise<Application> {
