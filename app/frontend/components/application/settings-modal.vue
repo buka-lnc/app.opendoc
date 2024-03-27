@@ -22,8 +22,8 @@ const activeApiDocument = computed(() => application.value.apiDocuments.find(ite
 <template>
   <Teleport to="body">
     <dialog class="d-modal" :class="show && 'd-modal-open'">
-      <div class="d-modal-box size-2/3 max-w-5xl p-0 font-sans !border-[#5b6078]">
-        <div class="flex-auto flex flex-row size-full">
+      <div class="d-modal-box size-2/3 max-w-5xl max-h-[32rem] p-0 font-sans !border-[#5b6078]">
+        <div class="flex-auto flex flex-row size-full overflow-hidden">
           <div class="flex-0 bg-base-200 w-40">
             <ul class="d-menu">
               <li>
@@ -35,7 +35,7 @@ const activeApiDocument = computed(() => application.value.apiDocuments.find(ite
                 </button>
               </li>
 
-              <li class="d-menu-title">
+              <li class="d-menu-title select-none">
                 文档
               </li>
 
@@ -50,8 +50,8 @@ const activeApiDocument = computed(() => application.value.apiDocuments.find(ite
             </ul>
           </div>
 
-          <div class="flex-auto flex flex-col px-8 py-4 bg-base-100">
-            <div class="flex-auto">
+          <div class="flex-auto flex flex-col px-8 py-4 bg-base-100 size-full overflow-hidden">
+            <div class="flex-auto overflow-auto">
               <application-settings-modal-application-settings
                 v-if="active === '0'"
                 :application="application"
