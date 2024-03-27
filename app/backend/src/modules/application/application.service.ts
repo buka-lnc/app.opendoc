@@ -23,7 +23,12 @@ export class ApplicationService {
       code: dto.code,
     })
 
-    if (application) return
+    if (application) {
+      if (dto.title) application.title = dto.title
+
+      await this.em.persistAndFlush(application)
+      return
+    }
 
     application = this.applicationRepo.create({
       code: dto.code,

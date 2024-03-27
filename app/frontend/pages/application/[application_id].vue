@@ -4,12 +4,14 @@ import { queryApplication } from '~/api/backend'
 const route = useRoute()
 const applicationId = computed(() => String(route.params.application_id))
 
-const { data: application, pending } = useAsyncData(
+const pending = ref(true)
+const { data: application, refresh } = useAsyncData(
   async () => {
     const body = await queryApplication<'200'>({
       applicationIdOrCode: applicationId.value,
     })
 
+    pending.value = false
     return body
   },
   {
@@ -45,6 +47,7 @@ watch(
         <ApplicationNavbar
           class="sticky z-10 top-0"
           :application="application"
+          @changed:application="() => refresh()"
         />
 
         <div class="flex-1 py overflow-hidden bg-base-200">

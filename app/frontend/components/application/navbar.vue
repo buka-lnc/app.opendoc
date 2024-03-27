@@ -5,12 +5,22 @@ import { Application } from '~/api/backend/components/schemas'
 const props = defineProps<{
   application: Application
 }>()
+
+defineEmits<{
+  'changed:application': [code: string]
+}>()
+
+const showApplicationSettings = ref(false)
 </script>
 
 <template>
-  <ApplicationSettings />
-
   <div class="d-navbar bg-base-100">
+    <ApplicationSettingsModal
+      v-model:show="showApplicationSettings"
+      :application="props.application"
+      @changed:application="$emit('changed:application', $event)"
+    />
+
     <div class="d-navbar-start space-x-2">
       <button
         class="d-btn d-btn-square d-btn-ghost"
@@ -59,7 +69,7 @@ const props = defineProps<{
     </div>
 
     <div class="d-navbar-end">
-      <button class="d-btn d-btn-square d-btn-ghost">
+      <button class="d-btn d-btn-square d-btn-ghost" @click="showApplicationSettings = true">
         <IconSettings class="w-6 h-6" />
       </button>
     </div>
