@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { IconCheck } from '@tabler/icons-vue'
-import { SELECT_VISIBLE_INJECT_KEY } from './constants'
+import { SELECT_VALUE_INJECT_KEY, SELECT_VISIBLE_INJECT_KEY } from './constants'
 
 const props = defineProps<{
-  selected?: boolean
+  value: string
 }>()
+
+const selectedValue = inject(SELECT_VALUE_INJECT_KEY, toRef(''))
+const selected = computed(() => props.value === selectedValue.value)
 
 const { toggleVisible } = inject(SELECT_VISIBLE_INJECT_KEY, {
   visible: toRef(false),
@@ -16,11 +19,14 @@ const { toggleVisible } = inject(SELECT_VISIBLE_INJECT_KEY, {
 <template>
   <li
     class="d-join-item d-btn relative w-44"
-    @click="toggleVisible(false)"
+    @click="() => {
+      toggleVisible(false)
+      selectedValue = props.value
+    }"
   >
     <div class="absolute top-0 left-7 w-6 h-full flex items-center">
       <IconCheck
-        v-if="props.selected"
+        v-if="selected"
         class="text-primary w-6 h-6"
         aria-hidden="true"
       />

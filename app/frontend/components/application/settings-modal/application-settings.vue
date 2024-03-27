@@ -10,7 +10,8 @@ const emit = defineEmits<{
   'changed:application': [code: string]
 }>()
 
-const title = ref(props.application.title)
+const title = ref('')
+syncRef(title, toRef(() => props.application.title), { direction: 'rtl' })
 
 watchDebounced(
   [title],

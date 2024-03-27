@@ -16,6 +16,7 @@ defineEmits<{
 }>()
 
 const active = ref('0')
+const activeApiDocument = computed(() => application.value.apiDocuments.find(item => item.id === active.value))
 </script>
 
 <template>
@@ -55,6 +56,11 @@ const active = ref('0')
                 v-if="active === '0'"
                 :application="application"
                 @changed:application="$emit('changed:application', $event)"
+              />
+
+              <application-settings-modal-api-document-settings
+                v-else-if="activeApiDocument"
+                :api-document="activeApiDocument"
               />
             </div>
 

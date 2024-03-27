@@ -8,8 +8,6 @@ const { visible, toggleVisible } = inject(SELECT_VISIBLE_INJECT_KEY, {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   toggleVisible: (visible: boolean) => {},
 })
-
-defineEmits(['click'])
 </script>
 
 <template>

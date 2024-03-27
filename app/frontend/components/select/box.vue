@@ -1,5 +1,9 @@
 <script setup lang="ts">
-import { SELECT_VISIBLE_INJECT_KEY } from './constants'
+import { SELECT_VISIBLE_INJECT_KEY, SELECT_VALUE_INJECT_KEY } from './constants'
+
+const model = defineModel<string>()
+provide(SELECT_VALUE_INJECT_KEY, model)
+
 const optionsVisible = ref(false)
 
 function toggleOptionsVisible (visible?: boolean) {
