@@ -12,6 +12,7 @@ import { QueryApiDocumentsResponseDTO } from './dto/query-api-documents-response
 import { ApiDocumentFile } from '../api-document-file/entities/api-document-file.entity'
 import { Sdk } from '../sdk/entity/sdk.entity'
 import { SdkService } from '../sdk/sdk.service'
+import { CreateApiDocumentDTO } from './dto/create-api-document.dto'
 
 @ApiTags('API 文档')
 @Controller('api-document')
@@ -39,6 +40,14 @@ export class ApiDocumentController {
       ...dto,
       apiDocumentFile: apiDocumentFile.buffer,
     })
+  }
+
+  @Post()
+  @ApiOperation({ summary: '创建 API 文档' })
+  async createApiDocument(
+    @Body() dto: CreateApiDocumentDTO,
+  ): Promise<ApiDocument> {
+    return this.apiDocumentService.create(dto)
   }
 
   @Post('sync')

@@ -13,6 +13,7 @@ import { EntityRepository } from '@mikro-orm/mysql'
 import { QueryApiDocumentsResponseDTO } from './dto/query-api-documents-response.dto'
 import { ApiDocumentFileService } from '../api-document-file/api-document-file.service'
 import { Sdk } from '../sdk/entity/sdk.entity'
+import { CreateApiDocumentDTO } from './dto/create-api-document.dto'
 
 
 @Injectable()
@@ -36,6 +37,20 @@ export class ApiDocumentService {
 
   @EnsureRequestContext()
   async register(dto: RegisterApiDocumentDTO): Promise<ApiDocument> {
+    const document = await this.create(dto)
+
+    if (dto.apiDocumentFile) {
+      await this.apiDocumentFileService.create({
+        apiDocumentId: document.id,
+        file: dto.apiDocumentFile,
+        tag: dto.apiDocumentFileTag,
+      })
+    }
+
+    return document
+  }
+
+  async create(dto: CreateApiDocumentDTO): Promise<ApiDocument> {
     const application = await this.applicationRepo.findOneOrFail({
       code: dto.applicationCode,
     })
@@ -57,14 +72,6 @@ export class ApiDocumentService {
     if (dto.apiDocumentTitle) document.title = dto.apiDocumentTitle
     if (dto.apiDocumentOrder) document.order = dto.apiDocumentOrder
     await this.em.persistAndFlush(document)
-
-    if (dto.apiDocumentFile) {
-      await this.apiDocumentFileService.create({
-        apiDocumentId: document.id,
-        file: dto.apiDocumentFile,
-        tag: dto.apiDocumentFileTag,
-      })
-    }
 
     return document
   }

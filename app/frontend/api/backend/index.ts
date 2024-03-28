@@ -1,5 +1,6 @@
 export * from "./check_health"
 export * from "./register_api_document"
+export * from "./create_api_document"
 export * from "./query_api_documents"
 export * from "./sync_api_documents"
 export * from "./query_api_document_by_id"

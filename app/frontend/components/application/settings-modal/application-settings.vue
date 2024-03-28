@@ -52,7 +52,7 @@ watchDebounced(
         :value="props.application.code"
         disabled
         class="d-input d-input-bordered w-full"
-        placeholder="大小写字母、下划线或中线"
+        placeholder="http/https url"
       >
     </div>
   </div>

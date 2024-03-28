@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ApiDocument } from '~/api/backend/components/schemas'
+import { ApiDocumentTypeDescription } from '~/constants/api-document-type-description'
 
 const props = defineProps<{
   apiDocument: ApiDocument
@@ -20,12 +21,6 @@ syncRef(
 const type = ref<ApiDocument['type']>('openapi')
 syncRef(type, toRef(() => props.apiDocument.type), { direction: 'rtl' })
 
-const typeDescription: Record<ApiDocument['type'], string> = {
-  openapi: 'OpenAPI',
-  asyncapi: 'AsyncAPI',
-  markdown: 'Markdown',
-}
-
 watch(
   () => props.apiDocument.id,
   () => {
@@ -45,7 +40,7 @@ watch(
         <SelectButton
           class="d-join-item d-select-bordered"
         >
-          {{ typeDescription[type] }}
+          {{ ApiDocumentTypeDescription[type] }}
         </SelectButton>
 
         <template #options>

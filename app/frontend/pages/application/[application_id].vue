@@ -49,6 +49,7 @@ watch(
           class="sticky z-10 top-0"
           :application="application"
           @changed:application="() => refresh()"
+          @changed:api-document="() => refresh()"
         />
 
         <div class="flex-1 py overflow-hidden bg-base-200">

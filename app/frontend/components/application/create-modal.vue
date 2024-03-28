@@ -34,6 +34,9 @@ async function create (): Promise<void> {
   <Teleport to="body">
     <dialog class="d-modal" :class="show && 'd-modal-open'">
       <div class="d-modal-box font-sans !border-[#5b6078]">
+        <h3 class="font-bold text-lg">
+          创建应用
+        </h3>
         <div class="flex flex-col space-y-4">
           <div class="form-control w-full max-w-md">
             <div class="d-label">

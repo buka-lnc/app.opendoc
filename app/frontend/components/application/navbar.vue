@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { IconSettings, IconArrowBackUp } from '@tabler/icons-vue'
+import { IconSettings, IconPlus, IconArrowBackUp } from '@tabler/icons-vue'
 import { Application } from '~/api/backend/components/schemas'
 
 const props = defineProps<{
@@ -8,9 +8,11 @@ const props = defineProps<{
 
 defineEmits<{
   'changed:application': [code: string]
+  'changed:apiDocument': [code: string]
 }>()
 
 const showApplicationSettings = ref(false)
+const showApiDocumentCreateModal = ref(false)
 </script>
 
 <template>
@@ -19,6 +21,12 @@ const showApplicationSettings = ref(false)
       v-model:show="showApplicationSettings"
       :application="props.application"
       @changed:application="$emit('changed:application', $event)"
+    />
+
+    <ApiDocumentCreateModal
+      v-model:show="showApiDocumentCreateModal"
+      :application="props.application"
+      @changed:api-document="$emit('changed:apiDocument', $event)"
     />
 
     <div class="d-navbar-start space-x-2">
@@ -69,6 +77,10 @@ const showApplicationSettings = ref(false)
     </div>
 
     <div class="d-navbar-end">
+      <button class="d-btn d-btn-square d-btn-ghost" @click="showApiDocumentCreateModal = true">
+        <IconPlus class="w-6 h-6" />
+      </button>
+
       <button class="d-btn d-btn-square d-btn-ghost" @click="showApplicationSettings = true">
         <IconSettings class="w-6 h-6" />
       </button>
