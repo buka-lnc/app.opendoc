@@ -27,6 +27,13 @@ const { pending, refresh } = useAsyncData(
 )
 
 const showCreateModal = ref(false)
+
+const filterType = ref<'title' | 'tag'>('title')
+
+const filterTypeDescription = {
+  title: 'Title',
+  tag: 'Tag',
+}
 </script>
 
 <template>
@@ -51,11 +58,11 @@ const showCreateModal = ref(false)
 
       <div class="flex items-center justify-between">
         <div class="d-join  w-1/2 flex">
-          <SelectBox value="title">
+          <SelectBox v-model="filterType" class="w-32">
             <SelectButton
               class="d-join-item d-select-lg d-select-bordered"
             >
-              Title
+              {{ filterTypeDescription[filterType] }}
             </SelectButton>
 
             <template #options>
