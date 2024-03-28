@@ -24,6 +24,7 @@ const { pending, refresh } = useAsyncData(
     applications.value = body.results
     pagination.total = body.page.total
   },
+  { immediate: true },
 )
 
 const showCreateModal = ref(false)

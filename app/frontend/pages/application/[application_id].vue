@@ -15,6 +15,7 @@ const { data: application, refresh } = useAsyncData(
     return body
   },
   {
+    immediate: true,
     default: () => null,
   },
 )

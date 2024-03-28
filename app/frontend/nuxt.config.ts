@@ -4,8 +4,6 @@ import themes from 'daisyui/src/theming/themes'
 import colors from 'tailwindcss/colors'
 
 export default defineNuxtConfig({
-  // ssr: false,
-
   modules: [
     '@pinia/nuxt',
     '@nuxtjs/tailwindcss',
@@ -109,4 +107,8 @@ export default defineNuxtConfig({
       devtools: true,
     },
   },
+  devtools: {
+    enabled: false,
+  },
+  ssr: false,
 })

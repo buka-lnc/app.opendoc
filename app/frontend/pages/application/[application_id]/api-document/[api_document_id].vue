@@ -26,6 +26,9 @@ const { pending } = useAsyncData(
     apiDocument.value = apiDocumentRes
     apiDocumentFiles.value = apiDocumentFilesRes
   },
+  {
+    immediate: true,
+  },
 )
 
 provide(API_DOCUMENT_INJECT_KEY, {
