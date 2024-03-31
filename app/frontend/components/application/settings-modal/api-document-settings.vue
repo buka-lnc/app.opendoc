@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { deleteApiDocument } from '~/api/backend'
 import { ApiDocument } from '~/api/backend/components/schemas'
 import { ApiDocumentTypeDescription } from '~/constants/api-document-type-description'
 
@@ -27,10 +28,37 @@ watch(
     title.value = props.apiDocument.title
   },
 )
+
+const {
+  pending: removing,
+  error: removeError,
+  execute: remove,
+} = useAsyncFn(
+  async () => {
+    await deleteApiDocument({
+      apiDocumentId: props.apiDocument.id,
+    })
+  },
+)
+const [alertVisible, toggleAlertVisible] = useToggle(false)
+const { start: delayCloseAlert } = useTimeoutFn(() => {
+  toggleAlertVisible(false)
+}, 10000)
+watchEffect(() => {
+  if (!removeError.value) return
+  alertVisible.value = true
+  delayCloseAlert()
+})
 </script>
 
 <template>
   <div class="flex flex-col space-y-4">
+    <alert-error
+      v-model:show="alertVisible"
+    >
+      {{ removeError?.message }}
+    </alert-error>
+
     <div class="form-control w-full max-w-md">
       <div class="d-label">
         <span class="d-label-text">类型/Type</span>
@@ -93,6 +121,20 @@ watch(
       >
     </div>
   </div>
+
+  <danger-operation
+    :pending="removing"
+    @click="remove"
+  >
+    <template #title>
+      删除应用
+    </template>
+    <template #description>
+      一旦删除，应用将无法恢复，请慎重操作。
+    </template>
+
+    删除
+  </danger-operation>
 </template>
 
 <style scoped lang="postcss">

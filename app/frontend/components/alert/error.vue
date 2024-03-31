@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { IconCircleCheck } from '@tabler/icons-vue'
+import { IconAlertCircle } from '@tabler/icons-vue'
 
 defineProps<{
   show: boolean
@@ -21,10 +21,10 @@ defineProps<{
         <div
           v-if="show"
           role="alert"
-          class="d-alert d-alert-success w-fit"
+          class="d-alert w-fit bg-red-500"
         >
-          <IconCircleCheck class="size-5 text-green-950 stroke-2" />
-          <span class="text-green-950">
+          <IconAlertCircle class="size-5 text-red-950 stroke-2" />
+          <span class="text-red-950">
             <slot />
           </span>
         </div>

@@ -13,6 +13,7 @@ import { ApiDocument } from '../api-document/entities/api-document.entity'
 import { AppConfig } from '~/config/app.config'
 import { EventEmitter2 } from '@nestjs/event-emitter'
 import { ApiDocumentFileCreatedEvent } from './events/api-document-file-created.event'
+import { ApiDocumentFileDeletedEvent } from './events/api-document-file-deleted.event'
 
 
 @Injectable()
@@ -64,7 +65,7 @@ export class ApiDocumentFileService {
     return '0.0.1'
   }
 
-  private getFilepath(file: ApiDocumentFile): string {
+  getFilepath(file: ApiDocumentFile): string {
     return path.join(path.resolve(this.appConfig.storage), 'api-document-file', file.apiDocument.id, file.version)
   }
 
@@ -113,7 +114,7 @@ export class ApiDocumentFileService {
 
     this.eventEmitter.emit(
       'api-document-file.created',
-      new ApiDocumentFileCreatedEvent(newFile.id)
+      new ApiDocumentFileCreatedEvent(newFile)
     )
 
     return newFile
@@ -175,5 +176,18 @@ export class ApiDocumentFileService {
     )
 
     return documentFile
+  }
+
+  async deleteApiDocumentFile(apiDocumentId: string): Promise<void> {
+    const documentFile = await this.apiDocumentFileRepo.findOne(apiDocumentId)
+    if (!documentFile) return
+
+    const filepath = this.getFilepath(documentFile)
+    await fs.remove(filepath)
+    this.em.remove(documentFile)
+    this.eventEmitter.emit(
+      'api-document-file.deleted',
+      new ApiDocumentFileDeletedEvent(documentFile)
+    )
   }
 }

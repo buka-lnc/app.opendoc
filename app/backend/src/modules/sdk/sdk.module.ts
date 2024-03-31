@@ -8,6 +8,7 @@ import { SdkListener } from './sdk.listener'
 import { PublishService } from './publish.service'
 import { ApiDocumentFileModule } from '../api-document-file/api-document-file.module'
 import { SdkPublishLock } from './entity/sdk-publish-lock.entity'
+import { SdkSubscriber } from './sdk.subscriber'
 
 
 @Module({
@@ -20,7 +21,7 @@ import { SdkPublishLock } from './entity/sdk-publish-lock.entity'
     ]),
   ],
   controllers: [SdkController],
-  providers: [SdkService, SdkListener, PublishService],
+  providers: [SdkService, SdkListener, PublishService, SdkSubscriber],
   exports: [SdkService],
 })
 export class SdkModule {}

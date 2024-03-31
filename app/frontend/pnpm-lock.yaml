@@ -50,6 +50,9 @@ dependencies:
   keq-debug:
     specifier: ^2.0.3
     version: 2.0.3
+  keq-exception:
+    specifier: ^2.0.0
+    version: 2.0.0(keq@2.3.0)
   md5:
     specifier: ^2.3.0
     version: 2.3.0
@@ -6036,6 +6039,15 @@ packages:
       ramda: 0.29.1
       url: 0.11.3
       whatwg-url: 13.0.0
+    dev: false
+
+  /keq-exception@2.0.0(keq@2.3.0):
+    resolution: {integrity: sha512-wC6XM+XRPmOeI0FxJ6OxNhkJQlTp2i672PAuLoJmkApiXkltrtSsTLKIG2+HehgRDP2IMVXN67qVIMtP8GFKIg==}
+    peerDependencies:
+      keq: ^2
+    dependencies:
+      keq: 2.3.0
+      ts-custom-error: 3.3.1
     dev: false
 
   /keq@2.3.0:

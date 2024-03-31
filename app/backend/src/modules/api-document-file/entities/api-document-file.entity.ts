@@ -61,6 +61,7 @@ export class ApiDocumentFile extends BaseEntity {
     comment: 'Npm 包',
     mappedBy: 'apiDocumentFile',
     ref: true,
+    mapToPk: false,
     cascade: [Cascade.ALL],
   })
   sdk?: Ref<Sdk>

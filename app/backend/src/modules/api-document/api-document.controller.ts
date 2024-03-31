@@ -1,6 +1,6 @@
 import { ApiDocumentFileService } from '~/modules/api-document-file/api-document-file.service'
 import { EntityManager } from '@mikro-orm/core'
-import { Body, Controller, Get, Param, Post, Put, Query, StreamableFile, UploadedFile, UseInterceptors } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, StreamableFile, UploadedFile, UseInterceptors } from '@nestjs/common'
 import { Express } from 'express'
 import { FileInterceptor } from '@nestjs/platform-express'
 import { ApiConsumes, ApiInternalServerErrorResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
@@ -48,6 +48,14 @@ export class ApiDocumentController {
     @Body() dto: CreateApiDocumentDTO,
   ): Promise<ApiDocument> {
     return this.apiDocumentService.create(dto)
+  }
+
+  @Delete(':apiDocumentId')
+  @ApiOperation({ summary: '删除 API 文档' })
+  async deleteApiDocument(
+    @Param('apiDocumentId') id: string,
+  ): Promise<void> {
+    await this.apiDocumentService.deleteApiDocument(id)
   }
 
   @Post('sync')

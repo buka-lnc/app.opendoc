@@ -109,6 +109,7 @@ export class ApplicationService {
 
     if (!application) return
 
-    await this.em.removeAndFlush(application)
+    this.em.remove(application)
+    await this.em.flush()
   }
 }

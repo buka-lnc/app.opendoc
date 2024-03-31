@@ -30,19 +30,38 @@ watchDebounced(
 )
 
 const router = useRouter()
-const removing = ref(false)
-async function removeApplication (): Promise<void> {
-  removing.value = true
-  await deleteApplication({
-    applicationIdOrCode: props.application.id,
-  })
-  removing.value = false
-  await router.push('/applications')
-}
+const {
+  pending: removing,
+  error: removeError,
+  execute: remove,
+} = useAsyncFn(
+  async () => {
+    await deleteApplication({
+      applicationIdOrCode: props.application.id,
+    })
+    await router.push('/applications')
+  },
+)
+
+const [alertVisible, toggleAlertVisible] = useToggle(false)
+const { start: delayCloseAlert } = useTimeoutFn(() => {
+  toggleAlertVisible(false)
+}, 10000)
+watchEffect(() => {
+  if (!removeError.value) return
+  alertVisible.value = true
+  delayCloseAlert()
+})
 </script>
 
 <template>
   <div class="flex flex-col space-y-4">
+    <alert-error
+      v-model:show="alertVisible"
+    >
+      {{ removeError?.message }}
+    </alert-error>
+
     <div class="form-control w-full max-w-md">
       <div class="d-label">
         <span class="d-label-text">应用名/Title</span>
@@ -70,7 +89,7 @@ async function removeApplication (): Promise<void> {
 
   <danger-operation
     :pending="removing"
-    @click="removeApplication"
+    @click="remove"
   >
     <template #title>
       删除应用

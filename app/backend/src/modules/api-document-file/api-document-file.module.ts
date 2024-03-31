@@ -4,6 +4,7 @@ import { ApiDocumentFileService } from './api-document-file.service'
 import { MikroOrmModule } from '@mikro-orm/nestjs'
 import { ApiDocument } from '~/modules/api-document/entities/api-document.entity'
 import { ApiDocumentFile } from './entities/api-document-file.entity'
+import { ApiDocumentFileSubscriber } from './api-document-file.subscriber'
 
 
 @Module({
@@ -14,7 +15,7 @@ import { ApiDocumentFile } from './entities/api-document-file.entity'
     ]),
   ],
   controllers: [ApiDocumentFileController],
-  providers: [ApiDocumentFileService],
+  providers: [ApiDocumentFileService, ApiDocumentFileSubscriber],
   exports: [ApiDocumentFileService],
 })
 export class ApiDocumentFileModule {}

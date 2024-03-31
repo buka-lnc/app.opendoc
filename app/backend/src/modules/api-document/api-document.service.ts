@@ -76,6 +76,22 @@ export class ApiDocumentService {
     return document
   }
 
+  async deleteApiDocument(apiDocumentId: string) {
+    const apiDocument = await this.apiDocumentRepo.find(
+      { id: apiDocumentId },
+      {
+        populate: [
+          'apiDocumentFiles',
+          'apiDocumentFiles.sdk',
+          'apiDocumentFiles.sdk.sdkPublishLock',
+        ],
+      }
+    )
+
+    if (!apiDocument) return
+    await this.em.removeAndFlush(apiDocument)
+  }
+
 
   @Cron('0 */10 * * * *')
   @EnsureRequestContext()

@@ -31,13 +31,13 @@ export class SdkListener {
   @OnEvent('api-document-file.created')
   async createSdk(event: ApiDocumentFileCreatedEvent) {
     const apiDocumentFile = await this.apiDocumentFileRepo.findOne({
-      id: event.apiDocumentFileId,
+      id: event.apiDocumentFile.id,
     }, {
       populate: ['apiDocument', 'apiDocument.application'],
     })
 
     if (!apiDocumentFile) {
-      this.logger.error(`apiDocumentFile(id: ${event.apiDocumentFileId}) not found`)
+      this.logger.error(`apiDocumentFile(id: ${event.apiDocumentFile.id}) not found`)
       return
     }
 

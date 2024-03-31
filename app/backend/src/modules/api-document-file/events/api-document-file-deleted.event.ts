@@ -1,6 +1,6 @@
 import { ApiDocumentFile } from '../entities/api-document-file.entity'
 
-export class ApiDocumentFileCreatedEvent {
+export class ApiDocumentFileDeletedEvent {
   constructor(
     public apiDocumentFile: ApiDocumentFile
   ) {

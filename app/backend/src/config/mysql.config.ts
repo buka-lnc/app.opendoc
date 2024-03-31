@@ -6,7 +6,7 @@ import { IsNumber, IsString } from 'class-validator'
 @Configuration('mysql')
 export class MysqlConfig {
   @IsString()
-  dbName = 'openapi'
+  dbName = 'opendoc'
 
   @IsString()
   host!: string
