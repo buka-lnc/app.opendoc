@@ -51,6 +51,7 @@ watch(
           @changed:application="() => refresh()"
           @created:api-document="() => refresh()"
           @deleted:api-document="() => refresh()"
+          @changed:api-document="() => refresh()"
         />
 
         <div class="flex-1 py overflow-hidden bg-base-200">

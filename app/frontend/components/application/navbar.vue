@@ -10,6 +10,7 @@ defineEmits<{
   'changed:application': [code: string]
   'created:apiDocument': [code: string]
   'deleted:apiDocument': [code: string]
+  'changed:apiDocument': [code: string]
 }>()
 
 const showApplicationSettings = ref(false)
@@ -23,6 +24,7 @@ const showApiDocumentCreateModal = ref(false)
       :application="props.application"
       @changed:application="$emit('changed:application', $event)"
       @deleted:api-document="$emit('deleted:apiDocument', $event)"
+      @changed:api-document="$emit('changed:apiDocument', $event)"
     />
 
     <ApiDocumentCreateModal

@@ -102,7 +102,7 @@ async function create (): Promise<void> {
             </div>
 
             <input
-              :value="cronSyncUrl"
+              v-model="cronSyncUrl"
               class="d-input d-input-bordered w-full"
               placeholder="http/https url"
             >

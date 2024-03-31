@@ -34,11 +34,11 @@ export class ApiDocumentController {
   @UseInterceptors(FileInterceptor('apiDocumentFile'))
   async registerApiDocument(
     @Body() dto: RegisterApiDocumentDTO,
-    @UploadedFile() apiDocumentFile: Express.Multer.File,
+    @UploadedFile() apiDocumentFile?: Express.Multer.File,
   ): Promise<void> {
     await this.apiDocumentService.register({
       ...dto,
-      apiDocumentFile: apiDocumentFile.buffer,
+      apiDocumentFile: apiDocumentFile?.buffer,
     })
   }
 

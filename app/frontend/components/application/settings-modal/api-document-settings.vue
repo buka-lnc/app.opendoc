@@ -1,12 +1,15 @@
 <script setup lang="ts">
+import { request } from 'keq'
 import { deleteApiDocument } from '~/api/backend'
-import { ApiDocument } from '~/api/backend/components/schemas'
+import { ApiDocument, Application } from '~/api/backend/components/schemas'
 import { ApiDocumentTypeDescription } from '~/constants/api-document-type-description'
 
 const props = defineProps<{
+  application: Application
   apiDocument: ApiDocument
 }>()
 const emit = defineEmits<{
+  'changed:apiDocument': [code: string]
   'deleted:apiDocument': [code: string]
 }>()
 
@@ -25,11 +28,19 @@ syncRef(
 const type = ref<ApiDocument['type']>('openapi')
 syncRef(type, toRef(() => props.apiDocument.type), { direction: 'rtl' })
 
-watch(
-  () => props.apiDocument.id,
-  () => {
-    title.value = props.apiDocument.title
+watchDebounced(
+  [title, cronSyncUrl],
+  async () => {
+    await request
+      .put('/api/api-document')
+      .field('applicationCode', props.application.code)
+      .field('apiDocumentType', type.value)
+      .field('apiDocumentCode', code.value)
+      .field('apiDocumentTitle', title.value || code.value)
+
+    emit('changed:apiDocument', code.value)
   },
+  { debounce: 500, maxWait: 1000 },
 )
 
 const alert = useAlert()
@@ -113,7 +124,7 @@ const {
       </div>
 
       <input
-        :value="cronSyncUrl"
+        v-model="cronSyncUrl"
         class="d-input d-input-bordered w-full"
         placeholder="大小写字母、下划线或中线"
       >
