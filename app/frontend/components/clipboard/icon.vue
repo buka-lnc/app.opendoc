@@ -10,24 +10,14 @@ const props = defineProps<{
   text: string
 }>()
 
-const [alertVisible, toggleAlertVisible] = useToggle(false)
-
+const alert = useAlert()
 function copyToClipboard () {
   copy(props.text)
-  toggleAlertVisible(true)
-  delayCloseAlert()
+  alert.success('已复制到剪切板')
 }
-
-const { start: delayCloseAlert } = useTimeoutFn(() => {
-  toggleAlertVisible(false)
-}, 2000)
 </script>
 
 <template>
-  <alert-success :show="alertVisible">
-    已复制到剪切板
-  </alert-success>
-
   <button
     v-bind="$attrs"
     class="d-btn d-btn-xs d-btn-square d-btn-ghost"

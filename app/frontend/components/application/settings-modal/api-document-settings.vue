@@ -29,36 +29,31 @@ watch(
   },
 )
 
+const alert = useAlert()
 const {
   pending: removing,
-  error: removeError,
   execute: remove,
 } = useAsyncFn(
   async () => {
-    await deleteApiDocument({
-      apiDocumentId: props.apiDocument.id,
-    })
+    try {
+      await deleteApiDocument({
+        apiDocumentId: props.apiDocument.id,
+      })
+      throw new Error('删除成功')
+    } catch (err) {
+      if (err instanceof Error) {
+        alert.error(err.message, 10000000)
+      } else {
+        console.error(err)
+        throw err
+      }
+    }
   },
 )
-const [alertVisible, toggleAlertVisible] = useToggle(false)
-const { start: delayCloseAlert } = useTimeoutFn(() => {
-  toggleAlertVisible(false)
-}, 10000)
-watchEffect(() => {
-  if (!removeError.value) return
-  alertVisible.value = true
-  delayCloseAlert()
-})
 </script>
 
 <template>
   <div class="flex flex-col space-y-4">
-    <alert-error
-      v-model:show="alertVisible"
-    >
-      {{ removeError?.message }}
-    </alert-error>
-
     <div class="form-control w-full max-w-md">
       <div class="d-label">
         <span class="d-label-text">类型/Type</span>
