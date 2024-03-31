@@ -8,7 +8,7 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  'changed:apiDocument': [code: string]
+  'created:apiDocument': [code: string]
 }>()
 
 const title = ref('')
@@ -28,7 +28,7 @@ async function create (): Promise<void> {
   })
 
   show.value = false
-  emit('changed:apiDocument', code.value)
+  emit('created:apiDocument', code.value)
 
   type.value = 'openapi'
   code.value = ''

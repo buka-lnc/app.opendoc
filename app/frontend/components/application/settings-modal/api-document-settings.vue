@@ -6,6 +6,9 @@ import { ApiDocumentTypeDescription } from '~/constants/api-document-type-descri
 const props = defineProps<{
   apiDocument: ApiDocument
 }>()
+const emit = defineEmits<{
+  'deleted:apiDocument': [code: string]
+}>()
 
 const code = toRef(() => props.apiDocument.code)
 const title = ref('')
@@ -39,7 +42,7 @@ const {
       await deleteApiDocument({
         apiDocumentId: props.apiDocument.id,
       })
-      throw new Error('删除成功')
+      emit('deleted:apiDocument', props.apiDocument.id)
     } catch (err) {
       if (err instanceof Error) {
         alert.error(err.message, 10000000)

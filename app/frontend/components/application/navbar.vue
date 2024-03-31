@@ -8,7 +8,8 @@ const props = defineProps<{
 
 defineEmits<{
   'changed:application': [code: string]
-  'changed:apiDocument': [code: string]
+  'created:apiDocument': [code: string]
+  'deleted:apiDocument': [code: string]
 }>()
 
 const showApplicationSettings = ref(false)
@@ -21,12 +22,13 @@ const showApiDocumentCreateModal = ref(false)
       v-model:show="showApplicationSettings"
       :application="props.application"
       @changed:application="$emit('changed:application', $event)"
+      @deleted:api-document="$emit('deleted:apiDocument', $event)"
     />
 
     <ApiDocumentCreateModal
       v-model:show="showApiDocumentCreateModal"
       :application="props.application"
-      @changed:api-document="$emit('changed:apiDocument', $event)"
+      @created:api-document="$emit('created:apiDocument', $event)"
     />
 
     <div class="d-navbar-start space-x-2">

@@ -13,6 +13,7 @@ const show = defineModel<boolean>('show', {
 
 defineEmits<{
   'changed:application': [code: string]
+  'deleted:apiDocument': [code: string]
 }>()
 
 const active = ref('0')
@@ -61,6 +62,7 @@ const activeApiDocument = computed(() => application.value.apiDocuments.find(ite
               <application-settings-modal-api-document-settings
                 v-else-if="activeApiDocument"
                 :api-document="activeApiDocument"
+                @deleted:api-document="$emit('deleted:apiDocument', $event)"
               />
             </div>
 
