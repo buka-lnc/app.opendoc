@@ -1,4 +1,4 @@
-import { Entity, ManyToOne, OneToOne, Property, Ref, Unique } from '@mikro-orm/core'
+import { Cascade, Entity, ManyToOne, OneToOne, Property, Ref, Unique } from '@mikro-orm/core'
 import { IsString, MaxLength } from 'class-validator'
 import { ApiDocument } from '../../api-document/entities/api-document.entity'
 import { BaseEntity } from '~/entities/base.entity'
@@ -61,6 +61,7 @@ export class ApiDocumentFile extends BaseEntity {
     comment: 'Npm 包',
     mappedBy: 'apiDocumentFile',
     ref: true,
+    cascade: [Cascade.ALL],
   })
   sdk?: Ref<Sdk>
 }

@@ -29,7 +29,6 @@ export default defineNuxtConfig({
   runtimeConfig: {
     apiBaseOrigin: process.env.API_BASE_ORIGIN,
   },
-
   svgo: {
     defaultImport: 'component',
   },

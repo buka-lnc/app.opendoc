@@ -1,4 +1,4 @@
-import { Collection, Entity, OneToMany, Property } from '@mikro-orm/core'
+import { Cascade, Collection, Entity, OneToMany, Property } from '@mikro-orm/core'
 import { ApiProperty } from '@nestjs/swagger'
 import { Matches, MaxLength } from 'class-validator'
 import { BaseEntity } from '~/entities/base.entity'
@@ -34,6 +34,7 @@ export class Application extends BaseEntity {
   @OneToMany({
     entity: () => ApiDocument,
     mappedBy: 'application',
+    cascade: [Cascade.ALL],
   })
   apiDocuments!: Collection<ApiDocument>
 }

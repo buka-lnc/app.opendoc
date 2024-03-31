@@ -1,4 +1,4 @@
-import { Collection, Entity, Enum, ManyToOne, OneToMany, Property, Ref, Unique, t } from '@mikro-orm/core'
+import { Cascade, Collection, Entity, Enum, ManyToOne, OneToMany, Property, Ref, Unique, t } from '@mikro-orm/core'
 import { IsEnum, IsOptional, IsString, Matches, MaxLength } from 'class-validator'
 import { BaseEntity } from '~/entities/base.entity'
 import { API_DOCUMENT_TYPE } from '../constants/api-document-type.enum'
@@ -91,6 +91,7 @@ export class ApiDocument extends BaseEntity {
     entity: () => ApiDocumentFile,
     mappedBy: 'apiDocument',
     comment: '文档文件',
+    cascade: [Cascade.ALL],
   })
   apiDocumentFiles!: Collection<ApiDocumentFile>
 

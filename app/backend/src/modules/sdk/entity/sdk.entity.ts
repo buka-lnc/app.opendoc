@@ -1,4 +1,4 @@
-import { Entity, ManyToOne, OneToOne, Opt, Property, Ref, t } from '@mikro-orm/core'
+import { Cascade, Entity, ManyToOne, OneToOne, Opt, Property, Ref, t } from '@mikro-orm/core'
 import { BaseEntity } from '~/entities/base.entity'
 import { ApiDocumentFile } from '~/modules/api-document-file/entities/api-document-file.entity'
 import { SdkPublishLock } from './sdk-publish-lock.entity'
@@ -118,6 +118,7 @@ export class Sdk extends BaseEntity {
     mappedBy: 'sdk',
     nullable: true,
     hidden: true,
+    cascade: [Cascade.ALL],
   })
   sdkPublishLock?: Ref<SdkPublishLock>
 }

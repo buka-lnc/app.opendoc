@@ -90,12 +90,24 @@ export class ApplicationService {
   }
 
   async deleteApplication(idOrCode: string): Promise<void> {
-    const application = this.applicationRepo.find({
-      $or: [
-        { id: idOrCode },
-        { code: idOrCode },
-      ],
-    })
+    const application = await this.applicationRepo.find(
+      {
+        $or: [
+          { id: idOrCode },
+          { code: idOrCode },
+        ],
+      },
+      {
+        populate: [
+          'apiDocuments',
+          'apiDocuments.apiDocumentFiles',
+          'apiDocuments.apiDocumentFiles.sdk',
+          'apiDocuments.apiDocumentFiles.sdk.sdkPublishLock',
+        ],
+      }
+    )
+
+    if (!application) return
 
     await this.em.removeAndFlush(application)
   }

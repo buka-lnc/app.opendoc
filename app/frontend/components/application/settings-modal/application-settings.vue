@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { registerApplication } from '~/api/backend'
+import { deleteApplication, registerApplication } from '~/api/backend'
 import { Application } from '~/api/backend/components/schemas'
 
 const props = defineProps<{
@@ -28,6 +28,17 @@ watchDebounced(
   },
   { debounce: 500, maxWait: 1000 },
 )
+
+const router = useRouter()
+const removing = ref(false)
+async function removeApplication (): Promise<void> {
+  removing.value = true
+  await deleteApplication({
+    applicationIdOrCode: props.application.id,
+  })
+  removing.value = false
+  await router.push('/applications')
+}
 </script>
 
 <template>
@@ -56,6 +67,20 @@ watchDebounced(
       >
     </div>
   </div>
+
+  <danger-operation
+    :pending="removing"
+    @click="removeApplication"
+  >
+    <template #title>
+      删除应用
+    </template>
+    <template #description>
+      一旦删除，应用将无法恢复，请慎重操作。
+    </template>
+
+    删除
+  </danger-operation>
 </template>
 
 <style scoped lang="postcss">
