@@ -2,6 +2,7 @@
 import { createApiDocument } from '~/api/backend'
 import { ApiDocument, Application } from '~/api/backend/components/schemas'
 import { ApiDocumentTypeDescription } from '~/constants/api-document-type-description'
+import { ApiDocumentModeDescription } from '~/constants/api-document-mode-description'
 
 const props = defineProps<{
   application: Application
@@ -14,6 +15,7 @@ const emit = defineEmits<{
 const title = ref('')
 const code = ref('')
 const type = ref<ApiDocument['type']>('openapi')
+const mode = ref<ApiDocument['mode']>('push')
 const cronSyncUrl = ref('')
 
 const show = defineModel<boolean>('show')
@@ -23,7 +25,8 @@ async function create (): Promise<void> {
     applicationCode: props.application.code,
     apiDocumentTitle: title.value,
     apiDocumentCode: code.value,
-    apiDocumentCronSyncUrl: cronSyncUrl.value,
+    apiDocumentCronSyncUrl: mode.value === 'pull' ? cronSyncUrl.value : undefined,
+    apiDocumentMode: mode.value,
     apiDocumentType: type.value,
   })
 
@@ -60,13 +63,13 @@ async function create (): Promise<void> {
 
               <template #options>
                 <SelectOption value="openapi">
-                  OpenAPI
+                  {{ ApiDocumentTypeDescription.openapi }}
                 </SelectOption>
                 <SelectOption value="asyncapi">
-                  AsyncAPI
+                  {{ ApiDocumentTypeDescription.asyncapi }}
                 </SelectOption>
                 <SelectOption value="markdown">
-                  Markdown
+                  {{ ApiDocumentTypeDescription.markdown }}
                 </SelectOption>
               </template>
             </SelectBox>
@@ -98,11 +101,38 @@ async function create (): Promise<void> {
 
           <div class="form-control w-full max-w-md">
             <div class="d-label">
-              <span class="d-label-text">同步地址</span>
+              <span class="d-label-text">同步模式/Mode</span>
+            </div>
+
+            <SelectBox v-model="mode">
+              <SelectButton
+                class="d-join-item d-select-bordered"
+              >
+                {{ ApiDocumentModeDescription[mode] }}
+              </SelectButton>
+
+              <template #options>
+                <SelectOption value="pull">
+                  {{ ApiDocumentModeDescription.pull }}
+                </SelectOption>
+                <SelectOption value="push">
+                  {{ ApiDocumentModeDescription.push }}
+                </SelectOption>
+              </template>
+            </SelectBox>
+          </div>
+
+          <div class="form-control w-full max-w-md">
+            <div class="d-label">
+              <span
+                class="d-label-text"
+                :class="mode !== 'pull' && 'text-base-content/40'"
+              >同步地址</span>
             </div>
 
             <input
               v-model="cronSyncUrl"
+              :disabled="mode !== 'pull'"
               class="d-input d-input-bordered w-full"
               placeholder="http/https url"
             >

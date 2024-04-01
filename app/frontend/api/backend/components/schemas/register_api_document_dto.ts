@@ -41,4 +41,10 @@ export interface RegisterApiDocumentDTO {
    * 文档标签
    */
   "apiDocumentFileTag"?: string
+  /**
+   * 文档同步模式
+   * 
+   * @default ApiDocumentMode.PUSH
+   */
+  "apiDocumentMode"?: "pull" | "push"
 }

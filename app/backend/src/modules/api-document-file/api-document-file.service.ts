@@ -148,7 +148,6 @@ export class ApiDocumentFileService {
       apiDocument,
       version: version === 'latest' ? null : version,
     })
-    console.log('🚀 ~ ApiDocumentFileService ~ queryRawDocumentFileByVersion ~ documentFile:', documentFile)
     const filepath = this.getFilepath(documentFile)
     return fs.createReadStream(filepath)
   }

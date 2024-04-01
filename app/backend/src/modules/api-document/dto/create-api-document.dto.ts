@@ -1,6 +1,7 @@
 import { IsEnum, IsInt, IsOptional, IsString, MaxLength } from 'class-validator'
 import { API_DOCUMENT_TYPE } from '../constants/api-document-type.enum'
 import { ToNumber } from '@buka/class-transformer-extra'
+import { ApiDocumentMode } from '../constants/api-document-mode.enum'
 
 export class CreateApiDocumentDTO {
   /**
@@ -58,4 +59,13 @@ export class CreateApiDocumentDTO {
   @IsOptional()
   @MaxLength(24)
   apiDocumentFileTag?: string
+
+  /**
+   * 文档同步模式
+   *
+   * @default ApiDocumentMode.PUSH
+   */
+  @IsEnum(ApiDocumentMode)
+  @IsOptional()
+  apiDocumentMode?: ApiDocumentMode = ApiDocumentMode.PUSH
 }

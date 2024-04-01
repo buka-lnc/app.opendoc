@@ -35,6 +35,7 @@ export function createApiDocument<STATUS extends keyof ResponseMap>(arg?: QueryA
   if (arg && "apiDocumentCronSyncUrl" in arg) req.send({ "apiDocumentCronSyncUrl": arg["apiDocumentCronSyncUrl"] })
   if (arg && "apiDocumentOrder" in arg) req.send({ "apiDocumentOrder": arg["apiDocumentOrder"] })
   if (arg && "apiDocumentFileTag" in arg) req.send({ "apiDocumentFileTag": arg["apiDocumentFileTag"] })
+  if (arg && "apiDocumentMode" in arg) req.send({ "apiDocumentMode": arg["apiDocumentMode"] })
 
   return req
 }

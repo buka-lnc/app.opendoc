@@ -13,6 +13,7 @@ module.exports = {
   },
   ignorePatterns: ['api/**'],
   rules: {
+    'no-void': 'off',
     'vue/no-multiple-template-root': 'off',
     'comma-dangle': ['error', 'always-multiline'],
     'vue/multi-word-component-names': 'off',

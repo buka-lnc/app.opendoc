@@ -2,6 +2,7 @@
 import { request } from 'keq'
 import { deleteApiDocument } from '~/api/backend'
 import { ApiDocument, Application } from '~/api/backend/components/schemas'
+import { ApiDocumentModeDescription } from '~/constants/api-document-mode-description'
 import { ApiDocumentTypeDescription } from '~/constants/api-document-type-description'
 
 const props = defineProps<{
@@ -25,18 +26,27 @@ syncRef(
     transform: { rtl: r => r || '' },
   },
 )
+const mode = ref<ApiDocument['mode']>('push')
+syncRef(mode, toRef(() => props.apiDocument.mode), { direction: 'rtl' })
 const type = ref<ApiDocument['type']>('openapi')
 syncRef(type, toRef(() => props.apiDocument.type), { direction: 'rtl' })
 
 watchDebounced(
   [title, cronSyncUrl],
   async () => {
-    await request
+    const req = request
       .put('/api/api-document')
       .field('applicationCode', props.application.code)
       .field('apiDocumentType', type.value)
       .field('apiDocumentCode', code.value)
       .field('apiDocumentTitle', title.value || code.value)
+      .field('apiDocumentMode', mode.value)
+
+    if (mode.value === 'pull') {
+      void req.field('apiDocumentCronSyncUrl', cronSyncUrl.value)
+    }
+
+    await req.end()
 
     emit('changed:apiDocument', code.value)
   },
@@ -120,12 +130,39 @@ const {
 
     <div class="form-control w-full max-w-md">
       <div class="d-label">
-        <span class="d-label-text">同步地址</span>
+        <span class="d-label-text">同步模式/Mode</span>
+      </div>
+
+      <SelectBox v-model="mode">
+        <SelectButton
+          class="d-join-item d-select-bordered"
+        >
+          {{ ApiDocumentModeDescription[mode] }}
+        </SelectButton>
+
+        <template #options>
+          <SelectOption value="pull">
+            {{ ApiDocumentModeDescription.pull }}
+          </SelectOption>
+          <SelectOption value="push">
+            {{ ApiDocumentModeDescription.push }}
+          </SelectOption>
+        </template>
+      </SelectBox>
+    </div>
+
+    <div class="form-control w-full max-w-md">
+      <div class="d-label">
+        <span
+          class="d-label-text"
+          :class="mode !== 'pull' && 'text-base-content/40'"
+        >同步地址</span>
       </div>
 
       <input
         v-model="cronSyncUrl"
         class="d-input d-input-bordered w-full"
+        :disabled="mode !== 'pull'"
         placeholder="大小写字母、下划线或中线"
       >
     </div>

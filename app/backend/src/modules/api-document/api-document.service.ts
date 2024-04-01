@@ -14,6 +14,7 @@ import { QueryApiDocumentsResponseDTO } from './dto/query-api-documents-response
 import { ApiDocumentFileService } from '../api-document-file/api-document-file.service'
 import { Sdk } from '../sdk/entity/sdk.entity'
 import { CreateApiDocumentDTO } from './dto/create-api-document.dto'
+import { ApiDocumentMode } from './constants/api-document-mode.enum'
 
 
 @Injectable()
@@ -66,12 +67,16 @@ export class ApiDocumentService {
       document.type = dto.apiDocumentType
       document.code = dto.apiDocumentCode
       document.application = wrap(application).toReference()
+      document.mode = dto.apiDocumentMode || ApiDocumentMode.PUSH
     }
 
     if (dto.apiDocumentCronSyncUrl) document.cronSyncUrl = dto.apiDocumentCronSyncUrl
     if (dto.apiDocumentTitle) document.title = dto.apiDocumentTitle
     if (dto.apiDocumentOrder) document.order = dto.apiDocumentOrder
     await this.em.persistAndFlush(document)
+
+    console.log(document)
+    await this.syncDocument(document)
 
     return document
   }
@@ -99,6 +104,7 @@ export class ApiDocumentService {
     const documents = await this.em.find(
       ApiDocument,
       {
+        mode: ApiDocumentMode.PULL,
         cronSyncUrl: { $ne: null },
       },
       {
@@ -114,6 +120,9 @@ export class ApiDocumentService {
   }
 
   async syncDocument(document: ApiDocument): Promise<void> {
+    if (document.mode !== ApiDocumentMode.PULL) return
+    if (!document.cronSyncUrl) return
+
     const res = await request
       .get(document.cronSyncUrl)
       .option('resolveWithFullResponse')

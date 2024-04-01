@@ -6,6 +6,7 @@ import { Application } from '~/modules/application/entity/application.entity'
 import { ApiDocumentFile } from '../../api-document-file/entities/api-document-file.entity'
 import { ApiProperty } from '@nestjs/swagger'
 import { Sdk } from '~/modules/sdk/entity/sdk.entity'
+import { ApiDocumentMode } from '../constants/api-document-mode.enum'
 
 
 @Entity()
@@ -57,6 +58,14 @@ export class ApiDocument extends BaseEntity {
     comment: '文档名称',
   })
   title: string = ''
+
+  @IsEnum(ApiDocumentMode)
+  @IsOptional()
+  @Property({
+    columnType: 'varchar(31)',
+    comment: '文档同步模式',
+  })
+  mode: ApiDocumentMode = ApiDocumentMode.PUSH
 
   /**
    * 文档文件的定时同步地址

@@ -30,6 +30,7 @@ export interface ApiDocument {
    * 文档名称
    */
   "title": string
+  "mode": "pull" | "push"
   /**
    * 文档文件的定时同步地址
    */
