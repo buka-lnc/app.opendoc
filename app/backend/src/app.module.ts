@@ -17,7 +17,7 @@ import { ApplicationModule } from './modules/application/application.module'
 import { ExampleModule } from './modules/example/example.module'
 import { RegistryModule } from './modules/registry/registry.module'
 import { ApiDocumentFileModule } from './modules/api-document-file/api-document-file.module'
-// import { Migrator } from '@mikro-orm/migrations'
+import { Migrator } from '@mikro-orm/migrations'
 
 
 @Module({
@@ -39,7 +39,7 @@ import { ApiDocumentFileModule } from './modules/api-document-file/api-document-
     ConfigModule.inject(MysqlConfig, MikroOrmModule, (config) => ({
       ...config,
       entities: ['dist/**/*.entity.js'],
-      // extensions: [Migrator],
+      extensions: [Migrator],
       driver: MySqlDriver,
       findOneOrFailHandler: (entityName, where) => new BadRequestException(`Failed: ${entityName} in ${util.inspect(where)}`),
     })),
