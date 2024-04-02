@@ -2,10 +2,9 @@
   "include": ["env.d.ts", "src/**/*", ".eslintrc.cjs", "test/**/*"],
   "compilerOptions": {
     "strict": true,
-    "module": "Node16",
+    "module": "NodeNext",
     "target": "ESNext",
     "declaration": true,
-    "moduleResolution": "Node16",
     "resolveJsonModule": true,
     "removeComments": true,
     "emitDecoratorMetadata": true,

@@ -1,6 +1,6 @@
 import { EnsureRequestContext, EntityManager, MikroORM } from '@mikro-orm/core'
 import * as fs from 'fs-extra'
-import { Injectable, OnModuleInit } from '@nestjs/common'
+import { Injectable } from '@nestjs/common'
 import { HealthCheckResult, HealthCheckService } from '@nestjs/terminus'
 import { API_DOCUMENT_TYPE } from './modules/api-document/constants/api-document-type.enum'
 import { ApiDocumentService } from './modules/api-document/api-document.service'
@@ -9,7 +9,7 @@ import { OpenAPIObject } from '@nestjs/swagger'
 import { ApplicationService } from './modules/application/application.service'
 
 @Injectable()
-export class AppService implements OnModuleInit {
+export class AppService {
   constructor(
     private readonly appConfig: AppConfig,
 
@@ -23,11 +23,6 @@ export class AppService implements OnModuleInit {
 
   checkHealth(): Promise<HealthCheckResult> {
     return this.health.check([])
-  }
-
-  async onModuleInit() {
-    await this.orm.schema.refreshDatabase()
-    await this.registerApplication()
   }
 
   @EnsureRequestContext()
@@ -57,7 +52,6 @@ export class AppService implements OnModuleInit {
       apiDocumentCode: 'openapi',
       apiDocumentTitle: 'OpenAPI',
       apiDocumentOrder: 2,
-      apiDocumentCronSyncUrl: `http://${this.appConfig.host}:${this.appConfig.port}/swagger`,
       apiDocumentFile: Buffer.from(JSON.stringify(openapi), 'utf-8'),
     })
   }

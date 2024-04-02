@@ -1,0 +1,680 @@
+{
+  "namespaces": [],
+  "tables": [
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "bigint",
+          "unsigned": true,
+          "autoincrement": true,
+          "primary": true,
+          "nullable": false,
+          "comment": "主键",
+          "mappedType": "bigint"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "datetime",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 0,
+          "default": "CURRENT_TIMESTAMP",
+          "comment": "创建时间",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "datetime",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 0,
+          "default": "CURRENT_TIMESTAMP",
+          "comment": "更新时间",
+          "mappedType": "datetime"
+        },
+        "code": {
+          "name": "code",
+          "type": "varchar(63)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "comment": "唯一应用编码",
+          "mappedType": "string"
+        },
+        "title": {
+          "name": "title",
+          "type": "varchar(127)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "comment": "应用名称",
+          "mappedType": "string"
+        }
+      },
+      "name": "application",
+      "indexes": [
+        {
+          "columnNames": [
+            "code"
+          ],
+          "composite": false,
+          "keyName": "application_code_unique",
+          "constraint": true,
+          "primary": false,
+          "unique": true
+        },
+        {
+          "keyName": "PRIMARY",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "constraint": true,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {},
+      "nativeEnums": {}
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "bigint",
+          "unsigned": true,
+          "autoincrement": true,
+          "primary": true,
+          "nullable": false,
+          "comment": "主键",
+          "mappedType": "bigint"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "datetime",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 0,
+          "default": "CURRENT_TIMESTAMP",
+          "comment": "创建时间",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "datetime",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 0,
+          "default": "CURRENT_TIMESTAMP",
+          "comment": "更新时间",
+          "mappedType": "datetime"
+        },
+        "type": {
+          "name": "type",
+          "type": "enum('markdown','openapi','asyncapi')",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "enumItems": [
+            "markdown",
+            "openapi",
+            "asyncapi"
+          ],
+          "comment": "文档类型",
+          "mappedType": "enum"
+        },
+        "code": {
+          "name": "code",
+          "type": "varchar(63)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "comment": "易于阅读的文档编码(Folder下唯一)",
+          "mappedType": "string"
+        },
+        "order": {
+          "name": "order",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "1",
+          "comment": "文档排序",
+          "mappedType": "integer"
+        },
+        "title": {
+          "name": "title",
+          "type": "varchar(127)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "''",
+          "comment": "文档名称",
+          "mappedType": "string"
+        },
+        "mode": {
+          "name": "mode",
+          "type": "varchar(31)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "'push'",
+          "comment": "文档同步模式",
+          "mappedType": "string"
+        },
+        "cron_sync_url": {
+          "name": "cron_sync_url",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "comment": "文档文件的定时同步地址",
+          "mappedType": "string"
+        },
+        "application_id": {
+          "name": "application_id",
+          "type": "bigint",
+          "unsigned": true,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "comment": "文档所属的应用",
+          "mappedType": "bigint"
+        }
+      },
+      "name": "api_document",
+      "indexes": [
+        {
+          "columnNames": [
+            "code"
+          ],
+          "composite": false,
+          "keyName": "api_document_code_index",
+          "constraint": false,
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "application_id"
+          ],
+          "composite": false,
+          "keyName": "api_document_application_id_index",
+          "constraint": false,
+          "primary": false,
+          "unique": false
+        },
+        {
+          "keyName": "api_document_application_id_code_unique",
+          "columnNames": [
+            "application_id",
+            "code"
+          ],
+          "composite": true,
+          "constraint": true,
+          "primary": false,
+          "unique": true
+        },
+        {
+          "keyName": "PRIMARY",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "constraint": true,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "api_document_application_id_foreign": {
+          "constraintName": "api_document_application_id_foreign",
+          "columnNames": [
+            "application_id"
+          ],
+          "localTableName": "api_document",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "application",
+          "updateRule": "cascade"
+        }
+      },
+      "nativeEnums": {}
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "bigint",
+          "unsigned": true,
+          "autoincrement": true,
+          "primary": true,
+          "nullable": false,
+          "comment": "主键",
+          "mappedType": "bigint"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "datetime",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 0,
+          "default": "CURRENT_TIMESTAMP",
+          "comment": "创建时间",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "datetime",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 0,
+          "default": "CURRENT_TIMESTAMP",
+          "comment": "更新时间",
+          "mappedType": "datetime"
+        },
+        "hash": {
+          "name": "hash",
+          "type": "varchar(10)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "''",
+          "comment": "文档文件的指纹",
+          "mappedType": "string"
+        },
+        "tag": {
+          "name": "tag",
+          "type": "varchar(24)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "comment": "文档文件的标签",
+          "mappedType": "string"
+        },
+        "version": {
+          "name": "version",
+          "type": "varchar(63)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "'1.0.0'",
+          "comment": "文档文件的版本",
+          "mappedType": "string"
+        },
+        "api_document_id": {
+          "name": "api_document_id",
+          "type": "bigint",
+          "unsigned": true,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "comment": "文档",
+          "mappedType": "bigint"
+        }
+      },
+      "name": "api_document_file",
+      "indexes": [
+        {
+          "columnNames": [
+            "api_document_id"
+          ],
+          "composite": false,
+          "keyName": "api_document_file_api_document_id_index",
+          "constraint": false,
+          "primary": false,
+          "unique": false
+        },
+        {
+          "keyName": "api_document_file_api_document_id_version_unique",
+          "columnNames": [
+            "api_document_id",
+            "version"
+          ],
+          "composite": true,
+          "constraint": true,
+          "primary": false,
+          "unique": true
+        },
+        {
+          "keyName": "PRIMARY",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "constraint": true,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "api_document_file_api_document_id_foreign": {
+          "constraintName": "api_document_file_api_document_id_foreign",
+          "columnNames": [
+            "api_document_id"
+          ],
+          "localTableName": "api_document_file",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "api_document",
+          "updateRule": "cascade"
+        }
+      },
+      "nativeEnums": {}
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "bigint",
+          "unsigned": true,
+          "autoincrement": true,
+          "primary": true,
+          "nullable": false,
+          "comment": "主键",
+          "mappedType": "bigint"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "datetime",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 0,
+          "default": "CURRENT_TIMESTAMP",
+          "comment": "创建时间",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "datetime",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 0,
+          "default": "CURRENT_TIMESTAMP",
+          "comment": "更新时间",
+          "mappedType": "datetime"
+        },
+        "scope": {
+          "name": "scope",
+          "type": "varchar(63)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "comment": "organization",
+          "mappedType": "string"
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(63)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "comment": "Npm包名",
+          "mappedType": "string"
+        },
+        "version": {
+          "name": "version",
+          "type": "varchar(63)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "comment": "版本",
+          "mappedType": "string"
+        },
+        "tag": {
+          "name": "tag",
+          "type": "varchar(24)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "comment": "标签",
+          "mappedType": "string"
+        },
+        "status": {
+          "name": "status",
+          "type": "varchar(10)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "string"
+        },
+        "published_at": {
+          "name": "published_at",
+          "type": "datetime",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 0,
+          "mappedType": "datetime"
+        },
+        "tarball": {
+          "name": "tarball",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "comment": "Npm 压缩包",
+          "mappedType": "string"
+        },
+        "integrity": {
+          "name": "integrity",
+          "type": "varchar(100)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "comment": "Npm压缩包的sha512",
+          "mappedType": "string"
+        },
+        "api_document_id": {
+          "name": "api_document_id",
+          "type": "bigint",
+          "unsigned": true,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "comment": "所属文档",
+          "mappedType": "bigint"
+        },
+        "api_document_file_id": {
+          "name": "api_document_file_id",
+          "type": "bigint",
+          "unsigned": true,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "comment": "关联的文档文件",
+          "mappedType": "bigint"
+        }
+      },
+      "name": "sdk",
+      "indexes": [
+        {
+          "columnNames": [
+            "api_document_id"
+          ],
+          "composite": false,
+          "keyName": "sdk_api_document_id_index",
+          "constraint": false,
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "api_document_file_id"
+          ],
+          "composite": false,
+          "keyName": "sdk_api_document_file_id_unique",
+          "constraint": true,
+          "primary": false,
+          "unique": true
+        },
+        {
+          "keyName": "PRIMARY",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "constraint": true,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "sdk_api_document_id_foreign": {
+          "constraintName": "sdk_api_document_id_foreign",
+          "columnNames": [
+            "api_document_id"
+          ],
+          "localTableName": "sdk",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "api_document",
+          "updateRule": "cascade"
+        },
+        "sdk_api_document_file_id_foreign": {
+          "constraintName": "sdk_api_document_file_id_foreign",
+          "columnNames": [
+            "api_document_file_id"
+          ],
+          "localTableName": "sdk",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "api_document_file",
+          "updateRule": "cascade"
+        }
+      },
+      "nativeEnums": {}
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "bigint",
+          "unsigned": true,
+          "autoincrement": true,
+          "primary": true,
+          "nullable": false,
+          "comment": "主键",
+          "mappedType": "bigint"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "datetime",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 0,
+          "default": "CURRENT_TIMESTAMP",
+          "comment": "创建时间",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "datetime",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 0,
+          "default": "CURRENT_TIMESTAMP",
+          "comment": "更新时间",
+          "mappedType": "datetime"
+        },
+        "sdk_id": {
+          "name": "sdk_id",
+          "type": "bigint",
+          "unsigned": true,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
+        }
+      },
+      "name": "sdk_publish_lock",
+      "indexes": [
+        {
+          "columnNames": [
+            "sdk_id"
+          ],
+          "composite": false,
+          "keyName": "sdk_publish_lock_sdk_id_unique",
+          "constraint": true,
+          "primary": false,
+          "unique": true
+        },
+        {
+          "keyName": "PRIMARY",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "constraint": true,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "sdk_publish_lock_sdk_id_foreign": {
+          "constraintName": "sdk_publish_lock_sdk_id_foreign",
+          "columnNames": [
+            "sdk_id"
+          ],
+          "localTableName": "sdk_publish_lock",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "sdk",
+          "updateRule": "cascade"
+        }
+      },
+      "nativeEnums": {}
+    }
+  ],
+  "nativeEnums": {}
+}

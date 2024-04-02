@@ -6,6 +6,7 @@ import { AppConfig } from './config/app.config.js'
 import { swaggerEnhance } from './core/swagger.enhance'
 import { AppService } from './app.service'
 import { FormDataEnhance } from './core/form-data.enhance'
+import { MikroORM } from '@mikro-orm/core'
 
 
 async function bootstrap() {
@@ -25,10 +26,17 @@ async function bootstrap() {
   app.enableShutdownHooks()
 
   FormDataEnhance(app)
-  const openapiDocument = swaggerEnhance(app)
 
+  if (appConfig.migration) {
+    const orm = app.get(MikroORM)
+    const migrator = orm.getMigrator()
+    await migrator.up()
+  }
+
+  const openapiDocument = swaggerEnhance(app)
   await app.init()
   const appService = app.get(AppService)
+  await appService.registerApplication()
   await appService.registerOpenDocDocuments(openapiDocument)
 
   await app.listen(appConfig.port)

@@ -12,8 +12,8 @@ dependencies:
     specifier: ^1.1.1
     version: 1.1.1(class-transformer@0.5.1)
   '@buka/nestjs-config':
-    specifier: ^1.2.0
-    version: 1.2.0(@nestjs/common@10.3.7)(class-transformer@0.5.1)(class-validator@0.14.1)
+    specifier: file:///home/admin/workdir/@buka/npm.nestjs-config
+    version: file:../../../npm.nestjs-config(@nestjs/common@10.3.7)(class-transformer@0.5.1)(class-validator@0.14.1)
   '@miaooo/nestjs-take-type':
     specifier: ^1.2.0
     version: 1.2.0(@nestjs/common@10.3.7)(@nestjs/core@10.3.7)(@nestjs/swagger@7.3.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
@@ -653,23 +653,6 @@ packages:
       '@typescript-eslint/parser': 7.4.0(eslint@8.57.0)(typescript@5.4.3)
       eslint-plugin-require-extensions: 0.1.3(eslint@8.57.0)
     dev: true
-
-  /@buka/nestjs-config@1.2.0(@nestjs/common@10.3.7)(class-transformer@0.5.1)(class-validator@0.14.1):
-    resolution: {integrity: sha512-4lYwXZDtk6OcxVJBuEu/Rx8TVj0GFMhv+kUKoODF5k8FOpsEDl54+wzNuFddVjyiwSd6rb9teZLjugwEJcsi7g==}
-    peerDependencies:
-      '@nestjs/common': ^10
-      class-transformer: '*'
-      class-validator: '*'
-    dependencies:
-      '@nestjs/common': 10.3.7(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
-      change-case-all: 2.1.0
-      class-transformer: 0.5.1
-      class-validator: 0.14.1
-      dotenv: 16.4.5
-      object-path: 0.11.8
-      ramda: 0.29.1
-      type-fest: 4.14.0
-    dev: false
 
   /@colors/colors@1.5.0:
     resolution: {integrity: sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==}
@@ -7041,4 +7024,23 @@ packages:
       validator: 13.11.0
     optionalDependencies:
       commander: 9.5.0
+    dev: false
+
+  file:../../../npm.nestjs-config(@nestjs/common@10.3.7)(class-transformer@0.5.1)(class-validator@0.14.1):
+    resolution: {directory: ../../../npm.nestjs-config, type: directory}
+    id: file:../../../npm.nestjs-config
+    name: '@buka/nestjs-config'
+    peerDependencies:
+      '@nestjs/common': ^10
+      class-transformer: '*'
+      class-validator: '*'
+    dependencies:
+      '@nestjs/common': 10.3.7(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1)
+      change-case-all: 2.1.0
+      class-transformer: 0.5.1
+      class-validator: 0.14.1
+      dotenv: 16.4.5
+      object-path: 0.11.8
+      ramda: 0.29.1
+      type-fest: 4.14.0
     dev: false
