@@ -75,7 +75,6 @@ export class ApiDocumentService {
     if (dto.apiDocumentOrder) document.order = dto.apiDocumentOrder
     await this.em.persistAndFlush(document)
 
-    console.log(document)
     await this.syncDocument(document)
 
     return document
