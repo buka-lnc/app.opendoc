@@ -160,7 +160,7 @@ export class PublishService {
 
     this.logger.debug(`${sdk.fullName} building`)
     try {
-      await exec('npm install && npm run build', { cwd: compileDir })
+      await exec('npm install --production=false && npm run build', { cwd: compileDir })
     } catch (e) {
       if (e instanceof Error) {
         if ('stdout' in e) {
