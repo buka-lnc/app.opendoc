@@ -1,4 +1,5 @@
 import { OptionalProps, PrimaryKey, Property } from '@mikro-orm/core'
+import { ApiProperty } from '@nestjs/swagger'
 
 export abstract class BaseEntity<Optional = never> {
   [OptionalProps]?: 'createdAt' | 'updatedAt' | Optional
@@ -14,12 +15,13 @@ export abstract class BaseEntity<Optional = never> {
     defaultRaw: 'CURRENT_TIMESTAMP',
     comment: '创建时间',
   })
-  createdAt: Date = new Date()
+  createdAt!: Date
 
   @Property({
+    onCreate: () => new Date(),
     onUpdate: () => new Date(),
     defaultRaw: 'CURRENT_TIMESTAMP',
     comment: '更新时间',
   })
-  updatedAt: Date = new Date()
+  updatedAt!: Date
 }

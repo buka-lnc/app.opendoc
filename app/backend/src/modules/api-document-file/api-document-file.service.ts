@@ -85,7 +85,7 @@ export class ApiDocumentFileService {
       return lastVersionFile
     }
 
-    this.logger.info('document file hash is different, persisting')
+    this.logger.info(`document file hash is different(${lastVersionFile?.hash} => ${hash}), persisting`)
 
     const latestVersionFile = await this.apiDocumentFileRepo.findOne(
       { apiDocument: dto.apiDocumentId, tag: null },
