@@ -133,7 +133,8 @@ export class ApiDocumentFileService {
       void qb.andWhere({ tags: { $in: dto.tags } })
     }
 
-    return qb.getResultList()
+    const files = await qb.getResultList()
+    return files.sort((f1, f2) => semver.rcompare(f1.version, f2.version))
   }
 
   async queryRawDocumentFileById(documentFileId: string): Promise<fs.ReadStream> {

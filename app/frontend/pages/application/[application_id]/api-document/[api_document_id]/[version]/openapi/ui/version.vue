@@ -2,10 +2,10 @@
 import { useRouteParams } from '@vueuse/router'
 import { queryApiDocumentFilesByApiDocumentId } from '~/api/backend/query_api_document_files_by_api_document_id.js'
 
-const applicationId = useRouteParams<string>('application_id')
+// const applicationId = useRouteParams<string>('application_id')
 const apiDocumentId = useRouteParams<string>('api_document_id')
 const version = useRouteParams<string>('version')
-const prefix = computed(() => `/application/${applicationId.value}/api-document/${apiDocumentId.value}/${version.value}/openapi/ui/version`)
+// const prefix = computed(() => `/application/${applicationId.value}/api-document/${apiDocumentId.value}/${version.value}/openapi/ui/version`)
 
 const { pending, data: apiDocumentFiles } = useAsyncData(
   async () => {
@@ -40,7 +40,7 @@ const { pending, data: apiDocumentFiles } = useAsyncData(
 
         <div class="d-card-actions">
           <NuxtLink
-            :to="prefix"
+            :to="{ params: { ...$route.params, version: apiDocumentFile.version }}"
             class="d-btn d-btn-sm font-sans"
             :aria-disabled="version === apiDocumentFile.version"
             :class="version === apiDocumentFile.version && 'd-btn-disabled'"

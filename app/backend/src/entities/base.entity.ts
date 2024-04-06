@@ -1,5 +1,4 @@
 import { OptionalProps, PrimaryKey, Property } from '@mikro-orm/core'
-import { ApiProperty } from '@nestjs/swagger'
 
 export abstract class BaseEntity<Optional = never> {
   [OptionalProps]?: 'createdAt' | 'updatedAt' | Optional
