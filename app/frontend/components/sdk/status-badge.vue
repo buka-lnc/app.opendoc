@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { Sdk } from '~/api/backend/components/schemas';
+import { Sdk } from '~/api/backend/components/schemas'
 
 defineProps<{
-  status: Sdk['status']  | undefined
+  status: Sdk['status'] | undefined
 }>()
 </script>
 

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useRouteParams } from '@vueuse/router'
 import * as R from 'ramda'
-import { ApiDocumentFile } from '~/api/backend/components/schemas'
 import { queryApiDocumentFilesByApiDocumentId } from '~/api/backend/query_api_document_files_by_api_document_id.js'
 
 // const applicationId = useRouteParams<string>('application_id')
