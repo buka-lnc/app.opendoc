@@ -16,7 +16,7 @@ const { pending, data: sdk } = useAsyncData(
 </script>
 
 <template>
-  <div class="size-full flex justify-around items-stretch overflow-y-auto">
+  <div class="size-full flex justify-around items-stretch overflow-y-auto font-sans">
     <stuffed-loading :pending="pending" />
 
     <div
@@ -31,7 +31,7 @@ const { pending, data: sdk } = useAsyncData(
         {{ sdk.fullName }}
       </h1>
 
-      <div class="space-x-2 pb-8">
+      <div class="space-x-2 pb-8 font-mono">
         <div class="d-badge d-badge-outline d-badge-success">
           版本 {{ version }}
         </div>
