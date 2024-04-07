@@ -87,7 +87,7 @@ const filterTypeDescription = {
       </div>
     </div>
 
-    <div class="container m-auto flex-auto pt-6">
+    <div class="container m-auto flex-auto pt-6 space-y-4">
       <div v-for="application in applications" :key="application.id">
         <application-preview-card :application="application" />
       </div>
