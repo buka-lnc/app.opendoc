@@ -15,6 +15,8 @@ import { ApiDocumentFileService } from '../api-document-file/api-document-file.s
 import { Sdk } from '../sdk/entity/sdk.entity'
 import { CreateApiDocumentDTO } from './dto/create-api-document.dto'
 import { ApiDocumentMode } from './constants/api-document-mode.enum'
+import { EventEmitter2 } from '@nestjs/event-emitter'
+import { ApiDocumentCreatedEvent } from './events/api-document-created.event'
 
 
 @Injectable()
@@ -28,6 +30,7 @@ export class ApiDocumentService {
     private readonly orm: MikroORM,
 
     private readonly apiDocumentFileService: ApiDocumentFileService,
+    private eventEmitter: EventEmitter2,
 
     @InjectRepository(ApiDocument)
     private readonly apiDocumentRepo: EntityRepository<ApiDocument>,
@@ -74,6 +77,11 @@ export class ApiDocumentService {
     if (dto.apiDocumentTitle) document.title = dto.apiDocumentTitle
     if (dto.apiDocumentOrder) document.order = dto.apiDocumentOrder
     await this.em.persistAndFlush(document)
+
+    this.eventEmitter.emit(
+      'api-document.created',
+      new ApiDocumentCreatedEvent(document)
+    )
 
     await this.syncDocument(document)
 

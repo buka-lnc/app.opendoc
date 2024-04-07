@@ -23,7 +23,7 @@ const templates = {
   t_hook: readAndCompileTemplate('openapi/hook'),
   t_type: readAndCompileTemplate('openapi/type'),
 
-  t_operation_exports: readAndCompileTemplate('openapi/exports'),
+  t_operation_exports: readAndCompileTemplate('openapi/operation-exports'),
 }
 
 

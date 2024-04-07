@@ -3,29 +3,31 @@
   "description": "{{ name }}",
   "version": "{{ version}}",
 
-  "main": "dist/umd/operations/index.js",
-  "module": "dist/esm/operations/index.js",
-  "types": "dist/esm/operations/index.d.ts",
   "exports": {
-    "./": {
-      "import": "./dist/esm/",
-      "require": "./dist/umd/"
+    "./request": {
+      "types": "./dist/esm/request.d.ts",
+      "import": "./dist/esm/request.js",
+      "require": "./dist/umd/request.js"
     },
-    "./schemas/": {
-      "import": "./dist/esm/schemas/",
-      "require": "./dist/umd/schemas/"
+    "./schemas": {
+      "types": "./dist/esm/schemas/index.d.ts",
+      "import": "./dist/esm/schemas/index.js",
+      "require": "./dist/umd/schemas/index.js"
     },
-    "./operations/": {
-      "import": "./dist/esm/operations/",
-      "require": "./dist/umd/operations/"
+    "./operations": {
+      "types": "./dist/esm/operations/index.d.ts",
+      "import": "./dist/esm/operations/index.js",
+      "require": "./dist/umd/operations/index.js"
     },
-    "./hooks/": {
-      "import": "./dist/esm/hooks/",
-      "require": "./dist/umd/hooks/"
+    "./hooks": {
+      "types": "./dist/esm/hooks/index.d.ts",
+      "import": "./dist/esm/hooks/index.js",
+      "require": "./dist/umd/hooks/index.js"
     },
-    "./composables/": {
-      "import": "./dist/esm/composables/",
-      "require": "./dist/umd/composables/"
+    "./composables": {
+      "types": "./dist/esm/composables/index.d.ts",
+      "import": "./dist/esm/composables/index.js",
+      "require": "./dist/umd/composables/index.js"
     }
   },
 
