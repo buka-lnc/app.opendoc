@@ -9,6 +9,7 @@ import { InjectPinoLogger, PinoLogger } from 'nestjs-pino'
 import { API_DOCUMENT_TYPE } from '../api-document/constants/api-document-type.enum'
 import { Sdk } from './entity/sdk.entity'
 import { SdkStatus } from './constant/sdk-status'
+import { SdkCompiler } from './constant/sdk-compiler'
 
 
 @Injectable()
@@ -52,16 +53,42 @@ export class SdkListener {
       return
     }
 
-    const sdk = this.sdkRepo.create({
+    const core = this.sdkRepo.create({
       scope: application.code,
       name: apiDocument.code,
+      compiler: SdkCompiler.openapiCore,
       version: apiDocumentFile.version,
       tag: apiDocumentFile.tag,
       status: SdkStatus.pending,
-      apiDocumentFile,
-      apiDocument,
+      apiDocumentFile: apiDocumentFile.id,
+      apiDocument: apiDocument.id,
     })
+    this.em.persist(core)
 
-    await this.em.persistAndFlush(sdk)
+    const react = this.sdkRepo.create({
+      scope: application.code,
+      name: `${apiDocument.code}.react`,
+      compiler: SdkCompiler.openapiReact,
+      version: apiDocumentFile.version,
+      tag: apiDocumentFile.tag,
+      status: SdkStatus.pending,
+      apiDocumentFile: apiDocumentFile.id,
+      apiDocument: apiDocument.id,
+    })
+    this.em.persist(react)
+
+    // const vue = this.sdkRepo.create({
+    //   scope: application.code,
+    //   name: `${apiDocument.code}.vue`,
+    //   compiler: SdkCompiler.openapiVue,
+    //   version: apiDocumentFile.version,
+    //   tag: apiDocumentFile.tag,
+    //   status: SdkStatus.pending,
+    //   apiDocumentFile: apiDocumentFile.id,
+    //   apiDocument: apiDocument.id,
+    // })
+    // this.em.persist(vue)
+
+    await this.em.flush()
   }
 }

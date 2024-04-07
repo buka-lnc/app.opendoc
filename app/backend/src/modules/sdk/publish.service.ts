@@ -1,26 +1,16 @@
 import { ApiDocumentFileService } from '~/modules/api-document-file/api-document-file.service'
-import * as fs from 'fs-extra'
-import * as crypto from 'crypto'
-import * as childProcess from 'child_process'
-import * as path from 'path'
 import { EnsureRequestContext, EntityManager, MikroORM } from '@mikro-orm/core'
 import { EntityRepository } from '@mikro-orm/mysql'
 import { InjectRepository } from '@mikro-orm/nestjs'
 import { Injectable } from '@nestjs/common'
 import { Cron } from '@nestjs/schedule'
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino'
-import { buffer } from 'stream/consumers'
-import { API_DOCUMENT_TYPE } from '../api-document/constants/api-document-type.enum'
 import { AppConfig } from '~/config/app.config'
-import { FileNamingStyle, Filetype, compile } from '@opendoc/sdk'
-import compressing from 'compressing'
 import { Sdk } from './entity/sdk.entity'
 import { SdkPublishLock } from './entity/sdk-publish-lock.entity'
-import { SdkService } from './sdk.service'
-import { promisify } from 'util'
 import { SdkStatus } from './constant/sdk-status'
+import { CompilerService } from './compiler.service'
 
-const exec = promisify(childProcess.exec)
 
 @Injectable()
 export class PublishService {
@@ -35,7 +25,7 @@ export class PublishService {
     private readonly orm: MikroORM,
 
     private readonly apiDocumentFileService: ApiDocumentFileService,
-    private readonly sdkService: SdkService,
+    private readonly compilerService: CompilerService,
 
     @InjectRepository(Sdk)
     private readonly sdkRepo: EntityRepository<Sdk>,
@@ -107,15 +97,7 @@ export class PublishService {
       await this.em.flush()
       this.logger.debug('PUBLISHING')
 
-      const apiDocumentFile = sdk.apiDocumentFile.get()
-
-      const stream = await this.apiDocumentFileService.queryRawDocumentFileById(apiDocumentFile.id)
-      const buf = await buffer(stream)
-      const str = buf.toString('utf8')
-
-      if (apiDocumentFile.apiDocument.$.type === API_DOCUMENT_TYPE.OPEN_API) {
-        await this.buildOpenapi(sdk, str)
-      }
+      await this.compilerService.compile(sdk)
 
       sdk.status = SdkStatus.published
       sdk.publishedAt = new Date()
@@ -129,64 +111,5 @@ export class PublishService {
       this.logger.error(err)
       throw err
     }
-  }
-
-  private getCompileDir(sdk: Sdk): string {
-    return path.join(path.resolve(this.appConfig.storage), 'compiling', sdk.scope, sdk.name, `${sdk.version}`)
-  }
-
-  async buildOpenapi(sdk: Sdk, swagger: string) {
-    const compileDir = this.getCompileDir(sdk)
-    await fs.ensureDir(compileDir)
-    await fs.emptyDir(compileDir)
-
-    this.logger.debug(`${sdk.fullName} compiling`)
-
-    await compile({
-      strict: true,
-      outdir: compileDir,
-      document: JSON.parse(swagger),
-      moduleName: sdk.fullName,
-      fileNamingStyle: FileNamingStyle.snakeCase,
-      filetype: Filetype.openapi,
-      project: {
-        name: sdk.fullName,
-        version: sdk.version,
-      },
-    })
-
-    const tarballFilepath = this.sdkService.getTarballFilepath(sdk)
-    await fs.ensureDir(path.dirname(tarballFilepath))
-
-    this.logger.debug(`${sdk.fullName} building`)
-    try {
-      await exec('npm install --production=false && npm run build', { cwd: compileDir })
-    } catch (e) {
-      if (e instanceof Error) {
-        if ('stdout' in e) {
-          console.log(e.stdout)
-        }
-        if ('stderr' in e) {
-          console.log(e.stderr)
-        }
-      }
-
-      throw e
-    }
-
-    this.logger.debug(`${sdk.fullName} compressing`)
-    await compressing.tgz.compressDir(compileDir, tarballFilepath)
-
-    const buf = await fs.readFile(tarballFilepath)
-    const integrity = crypto
-      .createHash('sha512')
-      .update(buf)
-      .digest('base64')
-
-    sdk.tarball = `/@${sdk.scope}/${sdk.name}/-/${sdk.name}-${sdk.version}.tgz`
-    sdk.integrity = `sha512-${integrity}`
-    this.logger.info(`${sdk.fullName} published`)
-
-    this.em.persist(sdk)
   }
 }

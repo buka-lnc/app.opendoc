@@ -18,12 +18,13 @@ const templates = {
   t_schema: readAndCompileTemplate('json-schema/file'),
   t_schema_exports: readAndCompileTemplate('json-schema/exports'),
 
-  t_request: readAndCompileTemplate('openapi/request'),
-  t_operation: readAndCompileTemplate('openapi/operation'),
-  t_hook: readAndCompileTemplate('openapi/hook'),
-  t_type: readAndCompileTemplate('openapi/type'),
+  t_request: readAndCompileTemplate('openapi-core/request'),
+  t_operation: readAndCompileTemplate('openapi-core/operation'),
+  t_type: readAndCompileTemplate('openapi-core/type'),
 
-  t_operation_exports: readAndCompileTemplate('openapi/operation-exports'),
+  t_operation_exports: readAndCompileTemplate('openapi-core/operation-exports'),
+
+  t_package_json: readAndCompileTemplate('openapi-core/package_json'),
 }
 
 
@@ -36,6 +37,16 @@ function compile(options: CompileOpenapiOptions): CompileResult[] {
   const outdir = options?.outdir || `${process.cwd()}/api`
   const output = path.join(outdir)
 
+  let packageContext: Record<string, any> | undefined = undefined
+  if (options.project) {
+    packageContext = {
+      name: options.project.name,
+      outdir: options.outdir,
+      version: options.project.version,
+    }
+  }
+
+
   const results: CompileResult[] = []
   if (document.components?.schemas && !R.isEmpty(document.components.schemas)) {
     for (const [name, jsonSchema] of R.toPairs(document.components.schemas)) {
@@ -44,6 +55,7 @@ function compile(options: CompileOpenapiOptions): CompileResult[] {
         jsonSchema,
 
         document,
+        package: packageContext,
         fileNamingStyle,
       })
 
@@ -61,6 +73,7 @@ function compile(options: CompileOpenapiOptions): CompileResult[] {
     const schemaExportsFileContent = templates.t_schema_exports({
       jsonSchemas: document.components.schemas,
 
+      package: packageContext,
       fileNamingStyle,
     })
 
@@ -82,8 +95,9 @@ function compile(options: CompileOpenapiOptions): CompileResult[] {
             method,
             operation,
 
-            document,
             moduleName,
+            document,
+            package: packageContext,
             fileNamingStyle,
           }
 
@@ -110,18 +124,6 @@ function compile(options: CompileOpenapiOptions): CompileResult[] {
               content: fileContent,
             })
           }
-
-          {
-            const fileContent = templates.t_hook({ ...context })
-            const filename = formatFilename(getSafeOperationName(pathname, method, operation))
-            const filepath = path.join(output, 'hooks', `${filename}.ts`)
-
-            results.push({
-              name: filename,
-              path: filepath,
-              content: fileContent,
-            })
-          }
         } else {
           console.warn(chalk.yellow(`Operation ${String(method)} on path ${String(pathname)} cannot compiled, skipping`))
         }
@@ -133,18 +135,11 @@ function compile(options: CompileOpenapiOptions): CompileResult[] {
       fileNamingStyle,
     })
 
-    results.push(
-      {
-        name: 'index.ts',
-        path: path.join(output, 'operations', 'index.ts'),
-        content: operationExportsFileContent,
-      },
-      {
-        name: 'index.ts',
-        path: path.join(output, 'hooks', 'index.ts'),
-        content: operationExportsFileContent,
-      },
-    )
+    results.push({
+      name: 'index.ts',
+      path: path.join(output, 'operations', 'index.ts'),
+      content: operationExportsFileContent,
+    })
 
     const requestFileContent = templates.t_request({
       document,
@@ -158,10 +153,21 @@ function compile(options: CompileOpenapiOptions): CompileResult[] {
     })
   }
 
+  if (packageContext) {
+    const packageJsonFileContent = templates.t_package_json({
+      package: packageContext,
+    })
+    results.push({
+      name: 'package.json',
+      path: path.join(outdir, 'package.json'),
+      content: packageJsonFileContent,
+    })
+  }
+
   return results
 }
 
-export async function compileOpenapi(options: CompileOpenapiOptions): Promise<void> {
+export async function compileOpenapiCore(options: CompileOpenapiOptions): Promise<void> {
   const swaggerParser = new SwaggerParser()
   await swaggerParser.bundle(options.document)
   if (!('openapi' in swaggerParser.api && swaggerParser.api.openapi.startsWith('3'))) {

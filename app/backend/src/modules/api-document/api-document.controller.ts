@@ -127,11 +127,11 @@ export class ApiDocumentController {
   }
 
   @Get(':apiDocumentId/version/:version/sdk')
-  @ApiOperation({ summary: '查询 API 文档的某一版本的 SDK' })
-  async querySdkByVersion(
+  @ApiOperation({ summary: '查询 API 文档的某一版本的 SDK 列表' })
+  async querySdksByVersion(
     @Param('version') version: string,
     @Param('apiDocumentId') id: string,
-  ): Promise<Sdk> {
-    return this.sdkService.querySdkByVersion(id, version)
+  ): Promise<Sdk[]> {
+    return this.sdkService.querySdksByVersion(id, version)
   }
 }

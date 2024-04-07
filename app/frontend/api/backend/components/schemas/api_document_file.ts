@@ -8,7 +8,7 @@ import { Sdk } from "./sdk"
  */
 export interface ApiDocumentFile {
   "apiDocument": ApiDocument
-  "sdk"?: Sdk
+  "sdks"?: (Sdk)[]
   /**
    * 文档文件的指纹
    */

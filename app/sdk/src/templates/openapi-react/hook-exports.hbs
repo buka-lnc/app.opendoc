@@ -1,0 +1,5 @@
+{{#each document.paths as |pathItem pathname|}}
+{{#each pathItem as |operation method|}}
+export * from "./{{h__change-case @root.fileNamingStyle (h__get-safe-operation-name pathname method operation)}}.js"
+{{/each}}
+{{/each}}

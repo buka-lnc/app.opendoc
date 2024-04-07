@@ -1,4 +1,4 @@
 import { CompileOptions } from './compile-options'
 
 
-export type CompileOpenapiOptions = Omit<CompileOptions, 'filetype' | 'project'>
+export type CompileOpenapiOptions = Omit<CompileOptions, 'filetype'>

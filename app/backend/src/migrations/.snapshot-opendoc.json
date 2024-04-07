@@ -447,6 +447,16 @@
           "comment": "Npm包名",
           "mappedType": "string"
         },
+        "compiler": {
+          "name": "compiler",
+          "type": "varchar(24)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "comment": "编译器",
+          "mappedType": "string"
+        },
         "version": {
           "name": "version",
           "type": "varchar(63)",
@@ -544,10 +554,10 @@
             "api_document_file_id"
           ],
           "composite": false,
-          "keyName": "sdk_api_document_file_id_unique",
-          "constraint": true,
+          "keyName": "sdk_api_document_file_id_index",
+          "constraint": false,
           "primary": false,
-          "unique": true
+          "unique": false
         },
         {
           "keyName": "PRIMARY",

@@ -101,8 +101,8 @@ export class ApplicationService {
         populate: [
           'apiDocuments',
           'apiDocuments.apiDocumentFiles',
-          'apiDocuments.apiDocumentFiles.sdk',
-          'apiDocuments.apiDocumentFiles.sdk.sdkPublishLock',
+          'apiDocuments.apiDocumentFiles.sdks',
+          'apiDocuments.apiDocumentFiles.sdks.sdkPublishLock',
         ],
       }
     )

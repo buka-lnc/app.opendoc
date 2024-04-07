@@ -6,6 +6,7 @@ import { ApiHideProperty, ApiProperty } from '@nestjs/swagger'
 import { ApiDocument } from '~/modules/api-document/entities/api-document.entity'
 import { SdkStatus } from '../constant/sdk-status'
 import { IsEnum } from 'class-validator'
+import { SdkCompiler } from '../constant/sdk-compiler'
 
 @Entity()
 export class Sdk extends BaseEntity {
@@ -32,6 +33,12 @@ export class Sdk extends BaseEntity {
   get fullName(): Opt<string> {
     return `@${this.scope}/${this.name}`
   }
+
+  @Property({
+    columnType: 'varchar(24)',
+    comment: '编译器',
+  })
+  compiler!: SdkCompiler
 
   /**
    * 版本
@@ -105,7 +112,7 @@ export class Sdk extends BaseEntity {
     type: () => ApiDocumentFile,
     description: '关联的文档文件',
   })
-  @OneToOne({
+  @ManyToOne({
     entity: () => ApiDocumentFile,
     comment: '关联的文档文件',
     ref: true,

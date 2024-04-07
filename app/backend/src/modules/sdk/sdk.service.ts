@@ -25,13 +25,19 @@ export class SdkService {
     return path.join(path.resolve(this.appConfig.storage), 'registry', npmPackage.scope, npmPackage.name, `${npmPackage.version}.tgz`)
   }
 
-  async querySdkByVersion(documentId: string, version: string): Promise<Sdk> {
-    const sdk = await this.sdkRepo.findOneOrFail(
+  async querySdksByVersion(documentId: string, version: string): Promise<Sdk[]> {
+    const sdks = await this.sdkRepo.find(
       {
         version,
         apiDocument: documentId,
       },
     )
+
+    return sdks
+  }
+
+  async querySdkById(sdkId: string): Promise<Sdk> {
+    const sdk = await this.sdkRepo.findOneOrFail(sdkId)
 
     return sdk
   }

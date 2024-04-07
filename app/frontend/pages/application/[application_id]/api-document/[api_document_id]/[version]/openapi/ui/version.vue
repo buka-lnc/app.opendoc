@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useRouteParams } from '@vueuse/router'
 import * as R from 'ramda'
+import { Sdk, ApiDocumentFile } from '~/api/backend/components/schemas'
 import { queryApiDocumentFilesByApiDocumentId } from '~/api/backend/query_api_document_files_by_api_document_id.js'
 
 // const applicationId = useRouteParams<string>('application_id')
@@ -37,6 +38,14 @@ const tagVersionMap = computed(() => {
 
   return tagMap
 })
+
+function composeSdkStatus (apiDocumentFile: ApiDocumentFile): Sdk['status'] | undefined {
+  const sdks = apiDocumentFile.sdks || []
+
+  if (sdks.some(sdk => sdk.status === 'compiling')) return 'compiling'
+  else if (sdks.every(sdk => sdk.status === 'published')) return 'published'
+  else if (sdks.every(sdk => sdk.status === 'pending')) return 'pending'
+}
 </script>
 
 <template>
@@ -53,7 +62,7 @@ const tagVersionMap = computed(() => {
             v{{ apiDocumentFile.version }}
           </h2>
 
-          <sdk-status-badge :status="apiDocumentFile.sdk?.status" />
+          <sdk-status-badge :status="composeSdkStatus(apiDocumentFile)" />
 
           <span
             v-if="tagVersionMap[apiDocumentFile.tag || 'latest'] === apiDocumentFile.version"

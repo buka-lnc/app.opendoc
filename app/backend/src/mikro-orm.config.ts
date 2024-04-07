@@ -11,7 +11,7 @@ export default (async function loadConfig() {
     providers: [MysqlConfig],
   })
 
-  const config = ConfigModule.get(MysqlConfig)
+  const config = await ConfigModule.get(MysqlConfig)
 
   return defineConfig({
     ...config,

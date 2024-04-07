@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { OpenAPIV3 } from 'openapi-types'
-import * as R from 'ramda'
 import md5 from 'md5'
 import { inject } from 'vue'
 import { useRouteParams } from '@vueuse/router'
@@ -45,7 +44,7 @@ watch(
   },
 )
 
-const { filter, data: filteredSchemas } = useFilter(schemas, (schema) => schema.title)
+const { filter, data: filteredSchemas } = useFilter(schemas, schema => schema.title)
 </script>
 
 <template>

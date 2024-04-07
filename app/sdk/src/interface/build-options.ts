@@ -1,7 +1,7 @@
 import { Type, type Static } from '@sinclair/typebox'
 import { FileNamingStyle } from './file-naming-style'
-import { Filetype } from './filetype'
 import { CompileProjectOptions } from './compile-project-options'
+import { Compiler } from './compiler'
 
 
 export const BuildOptions = Type.Object({
@@ -10,12 +10,13 @@ export const BuildOptions = Type.Object({
   fileNamingStyle: Type.Enum(FileNamingStyle, { default: FileNamingStyle.snakeCase }),
   moduleName: Type.String(),
   filepath: Type.String(),
-  filetype: Type.Enum(Filetype),
+
+  compiler: Type.Enum(Compiler),
 
   project: Type.Optional(Type.Union([
-    Type.Boolean(),
+    Type.Const<false>(false),
     Type.Omit(CompileProjectOptions, ['outdir']),
-  ])),
+  ], { default: false })),
 })
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare

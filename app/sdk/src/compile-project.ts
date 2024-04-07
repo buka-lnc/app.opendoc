@@ -9,7 +9,6 @@ import { Value } from '@sinclair/typebox/value'
 
 
 const templates = {
-  t_package_json: readAndCompileTemplate('project/package_json'),
   t_tsconfig_json: readAndCompileTemplate('project/tsconfig_json'),
   t_tsconfig_es_json: readAndCompileTemplate('project/tsconfig_es_json'),
   t_tsconfig_umd_json: readAndCompileTemplate('project/tsconfig_umd_json'),
@@ -28,9 +27,6 @@ export async function compileProject(options: CompileProjectOptions): Promise<vo
   const { outdir, name, version } = Value.Default(CompileProjectOptions, Value.Clone(options)) as Required<CompileProjectOptions>
   const context = { name, version }
 
-
-  const packageJsonFilepath = path.join(outdir, 'package.json')
-  const packageJsonFileContent = templates.t_package_json(context)
 
   const tsconfigFilepath = path.join(outdir, 'tsconfig.json')
   const tsconfigFileContent = templates.t_tsconfig_json(context)
@@ -51,7 +47,6 @@ export async function compileProject(options: CompileProjectOptions): Promise<vo
   const npmignoreFileContent = templates.t__npmignore(context)
 
   await Promise.allSettled([
-    fs.outputFile(packageJsonFilepath, packageJsonFileContent),
     fs.outputFile(tsconfigFilepath, tsconfigFileContent),
     fs.outputFile(tsconfigEsFilepath, tsconfigEsFileContent),
     fs.outputFile(tsconfigUmdFilepath, tsconfigUmdFileContent),

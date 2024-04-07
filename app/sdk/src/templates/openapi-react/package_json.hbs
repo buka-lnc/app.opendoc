@@ -1,0 +1,34 @@
+{
+  "name": "{{package.name}}",
+  "description": "{{package.name}}",
+  "version": "{{package.version}}",
+
+  "exports": {
+    "./hooks": {
+      "types": "./dist/esm/hooks/index.d.ts",
+      "import": "./dist/esm/hooks/index.js",
+      "require": "./dist/umd/hooks/index.js"
+    }
+  },
+
+  "keywords": ["opendoc", "request", "hook", "hooks"],
+
+  "scripts": {
+    "build": "npm run clean && ./build.sh",
+    "clean": "rm -rf ./dist/*",
+    "prepublishOnly": "npm run build"
+  },
+
+  "devDependencies": {
+    "@types/node": "^20.11.5",
+    "typescript": "^5.3.3"
+  },
+
+  "dependencies": {
+  },
+
+  "peerDependencies": {
+    "{{package.dependencies.core}}": "{{package.version}}",
+    "react": ">= 16"
+  }
+}
