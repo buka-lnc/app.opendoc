@@ -54,10 +54,10 @@ const { filter, data: filteredSchemas } = useFilter(schemas, schema => schema.ti
         <search v-model="filter" />
       </div>
 
-      <ul class="flex-0 flex-nowrap d-menu d-menu-sm bg-base-200 p-0 w-fit h-full">
+      <ul class="flex-0 flex-nowrap d-menu d-menu-sm bg-base-200 p-0 w-72 h-full">
         <li v-for="schema in filteredSchemas" :key="schema.title">
           <NuxtLink
-            class="rounded-none"
+            class="rounded-none w-full truncate"
             :to="`${prefix}/${schema.id}`"
             active-class="d-active"
           >

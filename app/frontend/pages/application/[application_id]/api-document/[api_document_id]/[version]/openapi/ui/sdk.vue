@@ -20,10 +20,10 @@ const { pending, data: sdks } = useAsyncData(
     <stuffed-loading :pending="pending" />
 
     <div class="h-full overflow-y-auto overflow-x-hidden">
-      <ul class="flex-0 flex-nowrap d-menu d-menu-sm bg-base-200 p-0 w-fit h-full">
+      <ul class="flex-0 flex-nowrap d-menu d-menu-sm bg-base-200 p-0 h-full w-72">
         <li v-for="sdk in sdks" :key="sdk.id">
           <NuxtLink
-            class="rounded-none"
+            class="rounded-none w-full truncate"
             :to="`${prefix}/${sdk.id}`"
             active-class="d-active"
           >
