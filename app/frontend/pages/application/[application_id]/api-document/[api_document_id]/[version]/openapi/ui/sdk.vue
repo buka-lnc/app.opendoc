@@ -23,11 +23,16 @@ const { pending, data: sdks } = useAsyncData(
       <ul class="flex-0 flex-nowrap d-menu d-menu-sm bg-base-200 p-0 h-full w-72">
         <li v-for="sdk in sdks" :key="sdk.id">
           <NuxtLink
-            class="rounded-none w-full truncate"
+            class="rounded-none w-full inline-flex justify-between"
             :to="`${prefix}/${sdk.id}`"
             active-class="d-active"
           >
-            {{ sdk.name }}
+            <span class="truncate">{{ sdk.name }}@{{ sdk.version }}</span>
+
+            <span v-if="sdk.status === 'pending'" class="text-warn">待构建</span>
+            <span v-else-if="sdk.status === 'compiling'" class="text-warn">构建中</span>
+            <span v-else-if="sdk.status === 'published'" class="text-success">已发布</span>
+            <span v-else class="text-error">缺失</span>
           </NuxtLink>
         </li>
       </ul>
