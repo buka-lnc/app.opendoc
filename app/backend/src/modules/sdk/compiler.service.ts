@@ -111,10 +111,10 @@ export class CompilerService {
     this.logger.info(`${sdk.fullName} published`)
 
     this.em.persist(sdk)
+    await fs.remove(compileDir)
   }
 
   async compileOpenapiReact(sdk: Sdk) {
-    console.log('🚀 ~ CompilerService ~ compileOpenapiReact ~ sdk:', sdk)
     // sleep 5s
     await new Promise((resolve) => setTimeout(resolve, 5000))
 
@@ -177,6 +177,9 @@ export class CompilerService {
     this.logger.info(`${sdk.fullName} published`)
 
     this.em.persist(sdk)
+
+    this.logger.debug(`${sdk.fullName} clean up`)
+    await fs.remove(compileDir)
   }
 
   // async compileOpenapiVue(sdk: Sdk) {
