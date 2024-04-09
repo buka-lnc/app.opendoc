@@ -173,7 +173,7 @@ const {
     @click="remove"
   >
     <template #title>
-      删除应用
+      删除文档
     </template>
     <template #description>
       一旦删除，应用将无法恢复，请慎重操作。
