@@ -6,12 +6,84 @@ on:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
 
 jobs:
+  pullRequest:
+    name: pullRequest
+    runs-on: ubuntu-latest
+    outputs:
+      released: ${{ steps.result.outputs.released }}
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install Dependencies
+        run: corepack pnpm install -w
+      - name: Create Release Pull Request
+        id: changesets
+        uses: changesets/action@v1
+        with:
+          title: "Release"
+          commit: "Release"
+          createGithubReleases: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - id: result
+        run: |
+          RELEASED=$([ "${{ steps.changesets.outputs.hasChangesets }}" = 'false' ] && [ "${{ github.event.head_commit.message }}" = 'Release' ] && echo true || echo false)
+          echo "released=$RELEASED" >> $GITHUB_OUTPUT
+
+  createTags:
+    name: Create Tags
+    needs: pullRequest
+    runs-on: ubuntu-latest
+    if: ${{ needs.pullRequest.outputs.released == 'true' }}
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install Dependencies
+        run: corepack pnpm install -w
+      - name: Set Git User
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@github.com"
+      - name: Create Tag
+        run: corepack pnpm changeset tag
+      - name: Push Tag
+        run: |
+          REMOTE_TAGS=$(git ls-remote --refs -t | awk '{print $2}' | awk -F '/' '{print $3}')
+          LOCAL_TAGS=$(git tag -l)
+          TAGS="$REMOTE_TAGS $REMOTE_TAGS $LOCAL_TAGS"
+          echo $TAGS | xargs -n1 | sort | uniq -u | xargs -n1
+          echo $TAGS | xargs -n1 | sort | uniq -u | xargs -n1 git push origin
+
+  publishToNpm:
+    runs-on: ubuntu-latest
+    needs: pullRequest
+    if: ${{ needs.pullRequest.outputs.released == 'true' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          registry-url: https://registry.npmjs.org/
+      - run: corepack pnpm install
+      - run: pnpm -r publish --provenance
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
+
   buildBackendApplication:
     name: "Build Backend Application"
     runs-on: ubuntu-latest
+    needs: pullRequest
+    if: ${{ needs.pullRequest.outputs.released == 'true' }}
     steps:
       - uses: actions/checkout@v4
       - uses: buka-lnc/github.actions/build-docker-image@main
@@ -21,9 +93,12 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
           dockerfile: ./app/backend/dockerfile
           tags: ghcr.io/buka-lnc/opendoc-backend:latest
+
   buildFrontendApplication:
     name: "Build Frontend Application"
     runs-on: ubuntu-latest
+    needs: pullRequest
+    if: ${{ needs.pullRequest.outputs.released == 'true' }}
     steps:
       - uses: actions/checkout@v4
       - uses: buka-lnc/github.actions/build-docker-image@main

@@ -2,9 +2,7 @@
   "name": "backend",
   "version": "1.3.0",
   "private": true,
-  "description": "",
-  "author": "",
-  "license": "UNLICENSED",
+  "description": "The backend service of Opendoc",
   "scripts": {
     "dev": "nest start --watch --preserveWatchOutput",
     "build": "nest build",

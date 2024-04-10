@@ -29,7 +29,7 @@
     "build": "npm run clean && ./build/build.sh",
     "clean": "rm -rf ./dist/*",
     "dev": "npm run clean && ./build/dev.sh",
-    "prepare": "ts-patch install -s",
+    "prepare": "ts-patch install -s && npm run build",
     "prepublishOnly": "npm run build",
     "release": "standard-version",
     "release:alpha": "standard-version --prerelease alpha",
