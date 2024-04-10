@@ -51,9 +51,9 @@ watch(
 </script>
 
 <template>
-  <div class="size-full flex">
-    <ul class="bg-base-100 flex-0 d-menu d-menu-lg flex-nowrap w-fit h-full p-0 overflow-y-auto">
-      <li>
+  <div class="size-full flex overflow-hidden">
+    <ul class="flex-shrink-0 bg-base-100 flex-0 d-menu d-menu-lg flex-nowrap w-fit h-full p-0 overflow-y-auto overflow-x-hidden">
+      <li class="w-fit">
         <openapi-menu-button
           :to="`${prefix}/version`"
           tip="版本"
@@ -62,7 +62,7 @@ watch(
         </openapi-menu-button>
       </li>
 
-      <li>
+      <li class="w-fit">
         <openapi-menu-button
           :to="`${prefix}/operation`"
           tip="接口文档/OpenAPI"
@@ -71,7 +71,7 @@ watch(
         </openapi-menu-button>
       </li>
 
-      <li>
+      <li class="w-fit">
         <openapi-menu-button
           tip="数据结构/Schema"
           :to="`${prefix}/schema`"
@@ -80,7 +80,7 @@ watch(
         </openapi-menu-button>
       </li>
 
-      <li>
+      <li class="w-fit">
         <openapi-menu-button
           tip="服务器/Server"
           :to="`${prefix}/server`"
@@ -89,7 +89,7 @@ watch(
         </openapi-menu-button>
       </li>
 
-      <li>
+      <li class="w-fit">
         <openapi-menu-button
           tip="SDK"
           :to="`${prefix}/sdk`"
@@ -99,7 +99,7 @@ watch(
       </li>
     </ul>
 
-    <div class="flex-1">
+    <div class="flex-auto">
       <NuxtPage />
     </div>
   </div>
