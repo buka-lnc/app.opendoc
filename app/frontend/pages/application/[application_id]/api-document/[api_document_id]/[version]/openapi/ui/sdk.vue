@@ -29,10 +29,10 @@ const { pending, data: sdks } = useAsyncData(
           >
             <span class="truncate">{{ sdk.name }}@{{ sdk.version }}</span>
 
-            <span v-if="sdk.status === 'pending'" class="text-warn">待构建</span>
-            <span v-else-if="sdk.status === 'compiling'" class="text-warn">构建中</span>
-            <span v-else-if="sdk.status === 'published'" class="text-success">已发布</span>
-            <span v-else class="text-error">缺失</span>
+            <span v-if="sdk.status === 'pending'" class="text-warn font-sans">待构建</span>
+            <span v-else-if="sdk.status === 'compiling'" class="text-warn font-sans">构建中</span>
+            <span v-else-if="sdk.status === 'published'" class="text-success font-sans">已发布</span>
+            <span v-else class="text-error font-sans">缺失</span>
           </NuxtLink>
         </li>
       </ul>
