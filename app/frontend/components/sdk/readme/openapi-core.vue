@@ -80,12 +80,6 @@ const sdk = toRef(props, 'sdk')
     <sdk-schema-usage-code :sdk="sdk" />
 
     <h2>
-      React Hooks
-    </h2>
-
-    <sdk-hook-usage-code :sdk="sdk" />
-
-    <h2>
       高阶应用
     </h2>
 
@@ -119,16 +113,6 @@ const sdk = toRef(props, 'sdk')
       的链式调用特性，我们可以非常优雅的添加/修改请求参数，或是调整默认的请求行为。
     </p>
     <sdk-inject-args-code :sdk="sdk" />
-
-    <p>
-      React 的 Hooks 会受
-      <a href="https://github.com/keq-request/keq">Keq</a>
-      的中间件控制。但是 Hooks 无法通过链式调用的方式调整请求行为。
-      如果 SDK 默认的Hooks无法满足需求，
-      请考虑配合使用
-      <a href="https://github.com/streamich/react-use/blob/master/docs/useAsync.md">react-use 的 useAsync</a>
-      和 <code>${sdk.fullName}/operations</code>。不过我保证你会很少遇到这种情况。
-    </p>
 
     <p>
       <a href="https://github.com/keq-request/keq">Keq</a>

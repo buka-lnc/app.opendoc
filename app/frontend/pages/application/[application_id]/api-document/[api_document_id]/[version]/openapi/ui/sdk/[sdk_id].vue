@@ -14,7 +14,11 @@ const { pending, data: sdk } = useAsyncData(
 <template>
   <div class="size-full flex justify-around items-stretch overflow-y-auto font-sans">
     <stuffed-loading :pending="pending" />
-    <sdk-readme-openapi-core v-if="sdk && !pending && sdk.compiler === 'openapi-core'" :sdk="sdk" />
+
+    <template v-if="sdk && !pending">
+      <sdk-readme-openapi-core v-if="sdk.compiler === 'openapi-core'" :sdk="sdk" />
+      <sdk-readme-openapi-react v-else-if="sdk.compiler === 'openapi-react'" :sdk="sdk" />
+    </template>
   </div>
 </template>
 
