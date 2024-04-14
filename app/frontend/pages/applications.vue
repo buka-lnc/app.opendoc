@@ -14,17 +14,23 @@ const pagination = reactive({
   offset: 0,
 })
 
+const search = ref('')
+
 const { pending, refresh } = useAsyncData(
   async () => {
     const body = await queryApplications<'200'>({
       limit: pagination.limit,
       offset: pagination.offset,
+      title: search.value.trim(),
     })
 
     applications.value = body.results
     pagination.total = body.page.total
   },
-  { immediate: true },
+  {
+    immediate: true,
+    watch: [search],
+  },
 )
 
 const showCreateModal = ref(false)
@@ -75,7 +81,12 @@ const filterTypeDescription = {
               </SelectOption>
             </template>
           </SelectBox>
-          <input class="d-join-item flex-auto d-input d-input-bordered d-input-lg" type="text" placeholder="Search">
+          <input
+            v-model="search"
+            class="d-join-item flex-auto d-input d-input-bordered d-input-lg"
+            type="text"
+            placeholder="Search"
+          >
         </div>
 
         <button

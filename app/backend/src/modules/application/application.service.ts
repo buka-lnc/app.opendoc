@@ -70,7 +70,9 @@ export class ApplicationService {
       .select('*')
 
     if (dto.title) {
-      void qb.andWhere({ $like: { title: `%${dto.title}%` } })
+      console.log('🚀 ~ ApplicationService ~ queryApplications ~ dto.title:', dto.title)
+      void qb.andWhere({ title: { $like: `%${dto.title}%` } })
+      // void qb.andWhere({ $like: { title: `%${dto.title}%` } })
     }
 
     if (dto.limit || dto.offset) {
