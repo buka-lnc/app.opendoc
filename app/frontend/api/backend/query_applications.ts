@@ -11,6 +11,7 @@ interface ResponseMap {
 
 interface QueryArg {
     "title"?: string
+    "code"?: string
     "limit": number
     "offset": number
 }
@@ -33,6 +34,7 @@ export function queryApplications<STATUS extends keyof ResponseMap>(arg?: QueryA
   const queryWrap = (value: any) => typeof value === 'boolean' ? String(value) : value
 
   if (arg && "title" in arg) req.query("title", queryWrap(arg["title"]))
+  if (arg && "code" in arg) req.query("code", queryWrap(arg["code"]))
   if (arg && "limit" in arg) req.query("limit", queryWrap(arg["limit"]))
   if (arg && "offset" in arg) req.query("offset", queryWrap(arg["offset"]))
 

@@ -6,4 +6,8 @@ export class QueryApplicationsDTO extends PaginationDTO {
   @IsString()
   @IsOptional()
   title?: string
+
+  @IsString()
+  @IsOptional()
+  code?: string
 }

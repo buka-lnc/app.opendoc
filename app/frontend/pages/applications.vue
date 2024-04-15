@@ -14,6 +14,7 @@ const pagination = reactive({
   offset: 0,
 })
 
+const filterType = ref<'title' | 'code'>('title')
 const search = ref('')
 
 const { pending, refresh } = useAsyncData(
@@ -21,7 +22,8 @@ const { pending, refresh } = useAsyncData(
     const body = await queryApplications<'200'>({
       limit: pagination.limit,
       offset: pagination.offset,
-      title: search.value.trim(),
+      title: filterType.value === 'title' ? search.value.trim() : undefined,
+      code: filterType.value === 'code' ? search.value.trim() : undefined,
     })
 
     applications.value = body.results
@@ -35,11 +37,9 @@ const { pending, refresh } = useAsyncData(
 
 const showCreateModal = ref(false)
 
-const filterType = ref<'title' | 'tag'>('title')
-
 const filterTypeDescription = {
   title: 'Title',
-  tag: 'Tag',
+  code: 'Code',
 }
 </script>
 
@@ -74,10 +74,10 @@ const filterTypeDescription = {
 
             <template #options>
               <SelectOption class="d-btn-lg" value="title">
-                Title
+                {{ filterTypeDescription.title }}
               </SelectOption>
-              <SelectOption class="d-btn-lg" value="tag">
-                Tag
+              <SelectOption class="d-btn-lg" value="code">
+                {{ filterTypeDescription.code }}
               </SelectOption>
             </template>
           </SelectBox>
