@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { IconSettings, IconPlus, IconArrowBackUp } from '@tabler/icons-vue'
+import * as R from 'ramda'
 import { Application } from '~/api/backend/components/schemas'
 
 const props = defineProps<{
@@ -15,6 +16,8 @@ defineEmits<{
 
 const showApplicationSettings = ref(false)
 const showApiDocumentCreateModal = ref(false)
+
+const apiDocuments = computed(() => R.sort(R.ascend(R.prop('order')), props.application.apiDocuments))
 </script>
 
 <template>
@@ -52,7 +55,7 @@ const showApiDocumentCreateModal = ref(false)
     <div role="tablist" class="d-navbar-center">
       <div class="d-tabs d-tabs-boxed d-tabs">
         <template
-          v-for="apiDocument of props.application.apiDocuments"
+          v-for="apiDocument of apiDocuments"
           :key="apiDocument.id"
         >
           <NuxtLink
@@ -68,6 +71,17 @@ const showApiDocumentCreateModal = ref(false)
 
           <NuxtLink
             v-if="apiDocument.type === 'markdown'"
+            :to="`/application/${$route.params.application_id}/api-document/${apiDocument.id}`"
+            class="d-tab"
+            :class="{
+              'd-tab-active': $route.params.api_document_id === apiDocument.id,
+            }"
+          >
+            {{ apiDocument.title }}
+          </NuxtLink>
+
+          <NuxtLink
+            v-if="apiDocument.type === 'asyncapi'"
             :to="`/application/${$route.params.application_id}/api-document/${apiDocument.id}`"
             class="d-tab"
             :class="{

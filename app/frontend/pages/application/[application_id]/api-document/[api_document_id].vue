@@ -49,6 +49,8 @@ watch(
         await router.replace(`${prefix.value}/${version}/markdown`)
       } else if (apiDocument.value.type === 'openapi') {
         await router.replace(`${prefix.value}/${version}/openapi/ui/operation`)
+      } else if (apiDocument.value.type === 'asyncapi') {
+        await router.replace(`${prefix.value}/${version}/asyncapi/ui/schema`)
       }
     }
   },
