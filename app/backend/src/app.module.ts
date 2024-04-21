@@ -14,6 +14,9 @@ import { ExampleModule } from './modules/example/example.module'
 import { RegistryModule } from './modules/registry/registry.module'
 import { ApiDocumentFileModule } from './modules/api-document-file/api-document-file.module'
 import { ScheduleModule } from '@nestjs/schedule'
+import { StorageConfig } from './config/storage.config'
+import { MysqlConfig } from './config/mysql.config'
+import { StorageModule } from './modules/storage/storage.module'
 
 
 @Module({
@@ -21,7 +24,7 @@ import { ScheduleModule } from '@nestjs/schedule'
     ScheduleModule.forRoot(),
     ConfigModule.register({
       isGlobal: true,
-      providers: [AppConfig],
+      providers: [AppConfig, PinoConfig, StorageConfig, MysqlConfig],
     }),
 
     ConfigModule.inject(PinoConfig, LoggerModule, (config) => ({
@@ -37,6 +40,8 @@ import { ScheduleModule } from '@nestjs/schedule'
     EventEmitterModule.forRoot(),
 
     TerminusModule,
+
+    StorageModule,
     ApiDocumentModule,
     ApplicationModule,
     ApiDocumentFileModule,

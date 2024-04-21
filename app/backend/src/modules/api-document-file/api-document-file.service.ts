@@ -1,7 +1,6 @@
 import { EntityManager, MikroORM } from '@mikro-orm/core'
 import semver from 'semver'
 import * as path from 'path'
-import * as fs from 'fs-extra'
 import { InjectRepository } from '@mikro-orm/nestjs'
 import { Injectable } from '@nestjs/common'
 import { ApiDocumentFile } from './entities/api-document-file.entity'
@@ -14,6 +13,8 @@ import { AppConfig } from '~/config/app.config'
 import { EventEmitter2 } from '@nestjs/event-emitter'
 import { ApiDocumentFileCreatedEvent } from './events/api-document-file-created.event'
 import { ApiDocumentFileDeletedEvent } from './events/api-document-file-deleted.event'
+import { StorageService } from '../storage/storage.service'
+import { Readable } from 'stream'
 
 
 @Injectable()
@@ -27,6 +28,7 @@ export class ApiDocumentFileService {
     private readonly em: EntityManager,
     private readonly orm: MikroORM,
 
+    private readonly storageService: StorageService,
 
     @InjectRepository(ApiDocument)
     private readonly apiDocumentRepo: EntityRepository<ApiDocumentFile>,
@@ -66,7 +68,7 @@ export class ApiDocumentFileService {
   }
 
   getFilepath(file: ApiDocumentFile): string {
-    return path.join(path.resolve(this.appConfig.storage), 'api-document-file', file.apiDocument.id, file.version)
+    return path.join('api-document-file', file.apiDocument.id, file.version)
   }
 
   async create(dto: CreateApiDocumentFileDTO): Promise<ApiDocumentFile> {
@@ -105,10 +107,7 @@ export class ApiDocumentFileService {
     })
 
     const filepath = this.getFilepath(newFile)
-    const dir = path.dirname(filepath)
-
-    await fs.ensureDir(dir)
-    await fs.writeFile(filepath, dto.file)
+    await this.storageService.writeFile(filepath, dto.file)
 
     await this.em.persistAndFlush(newFile)
 
@@ -137,20 +136,23 @@ export class ApiDocumentFileService {
     return files.sort((f1, f2) => semver.rcompare(f1.version, f2.version))
   }
 
-  async queryRawDocumentFileById(documentFileId: string): Promise<fs.ReadStream> {
+  async queryRawDocumentFileById(documentFileId: string): Promise<Readable> {
     const documentFile = await this.em.findOneOrFail(ApiDocumentFile, documentFileId)
     const filepath = this.getFilepath(documentFile)
-    return fs.createReadStream(filepath)
+    const stream: Readable = await this.storageService.createStream(filepath)
+    return stream
+    // return fs.createReadStream(filepath)
   }
 
-  async queryRawDocumentFileByVersion(apiDocumentId: string, version: string): Promise<fs.ReadStream> {
+  async queryRawDocumentFileByVersion(apiDocumentId: string, version: string): Promise<Readable> {
     const apiDocument = this.apiDocumentRepo.getReference(apiDocumentId)
     const documentFile = await this.em.findOneOrFail(ApiDocumentFile, {
       apiDocument,
       version: version === 'latest' ? null : version,
     })
     const filepath = this.getFilepath(documentFile)
-    return fs.createReadStream(filepath)
+    const stream: Readable = await this.storageService.createStream(filepath)
+    return stream
   }
 
   async queryDocumentFileByVersion(apiDocumentId: string, version: string): Promise<ApiDocumentFile> {
@@ -182,12 +184,13 @@ export class ApiDocumentFileService {
     const documentFile = await this.apiDocumentFileRepo.findOne(apiDocumentId)
     if (!documentFile) return
 
-    const filepath = this.getFilepath(documentFile)
-    await fs.remove(filepath)
     this.em.remove(documentFile)
     this.eventEmitter.emit(
       'api-document-file.deleted',
       new ApiDocumentFileDeletedEvent(documentFile)
     )
+
+    const filepath = this.getFilepath(documentFile)
+    await this.storageService.removeFile(filepath)
   }
 }

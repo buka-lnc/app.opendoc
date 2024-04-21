@@ -14,6 +14,7 @@ import { Compiler, FileNamingStyle, compile } from '@opendoc/sdk'
 import { ApiDocumentFileService } from '../api-document-file/api-document-file.service'
 import { SdkService } from './sdk.service'
 import { SdkCompiler } from './constant/sdk-compiler'
+import { StorageService } from '../storage/storage.service'
 
 
 const exec = promisify(childProcess.exec)
@@ -28,6 +29,7 @@ export class CompilerService {
     private readonly em: EntityManager,
     private readonly orm: MikroORM,
 
+    private readonly storageService: StorageService,
     private readonly apiDocumentFileService: ApiDocumentFileService,
     private readonly sdkService: SdkService,
   ) {}

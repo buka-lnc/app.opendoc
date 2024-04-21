@@ -10,11 +10,13 @@ import { ApiDocumentFileModule } from '../api-document-file/api-document-file.mo
 import { SdkPublishLock } from './entity/sdk-publish-lock.entity'
 import { SdkSubscriber } from './sdk.subscriber'
 import { CompilerService } from './compiler.service'
+import { StorageModule } from '../storage/storage.module'
 
 
 @Module({
   imports: [
     ApiDocumentFileModule,
+    StorageModule,
     MikroOrmModule.forFeature([
       ApiDocumentFile,
       Sdk,
