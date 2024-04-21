@@ -1,4 +1,3 @@
-import * as fs from 'fs-extra'
 import * as R from 'ramda'
 import * as semver from 'semver'
 import { EntityManager, MikroORM } from '@mikro-orm/core'
@@ -13,6 +12,7 @@ import { PackageMetadataVersionDTO } from './dto/package-metadata-version.dto'
 import { AppConfig } from '~/config/app.config'
 import { SdkService } from '~/modules/sdk/sdk.service'
 import { SdkStatus } from '../sdk/constant/sdk-status'
+import { Readable } from 'stream'
 
 
 @Injectable()
@@ -89,15 +89,14 @@ export class RegistryService {
     }
   }
 
-  async downloadPackage(packageScope: string | undefined, packageName: string, version: string): Promise<fs.ReadStream> {
-    const npmPackage = await this.sdkRepo.findOneOrFail({
+  async downloadPackage(packageScope: string | undefined, packageName: string, version: string): Promise<Readable> {
+    const sdk = await this.sdkRepo.findOneOrFail({
       scope: packageScope,
       name: packageName,
       version: version,
       status: SdkStatus.published,
     })
 
-    const tarballFilepath = this.sdkService.getTarballFilepath(npmPackage)
-    return fs.createReadStream(tarballFilepath)
+    return this.sdkService.downloadTarball(sdk)
   }
 }

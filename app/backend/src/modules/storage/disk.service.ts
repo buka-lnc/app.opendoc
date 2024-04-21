@@ -15,23 +15,27 @@ export class DiskService implements StandardStorageService {
     private readonly storageConfig: StorageConfig,
   ){}
 
-  async writeFile(filepath: string, content: Buffer): Promise<void> {
+  async writeFile(relativePath: string, content: Buffer): Promise<void> {
+    const filepath = path.join(this.storageConfig.directory, relativePath)
     const dir = path.dirname(filepath)
     await fs.ensureDir(dir)
     await fs.writeFile(filepath, content)
   }
 
-  async readFile(filepath: string): Promise<Buffer> {
+  async readFile(relativePath: string): Promise<Buffer> {
+    const filepath = path.join(this.storageConfig.directory, relativePath)
     return await fs.readFile(filepath)
   }
 
-  async createStream(filepath: string): Promise<Readable> {
+  async createStream(relativePath: string): Promise<Readable> {
+    const filepath = path.join(this.storageConfig.directory, relativePath)
     const intoStream = (await import('into-stream')).default
     const stream = fs.createReadStream(filepath)
     return intoStream(stream)
   }
 
-  async removeFile(filepath: string): Promise<void> {
+  async removeFile(relativePath: string): Promise<void> {
+    const filepath = path.join(this.storageConfig.directory, relativePath)
     await fs.remove(filepath)
   }
 }

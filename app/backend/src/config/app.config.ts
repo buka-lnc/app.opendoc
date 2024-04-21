@@ -10,9 +10,6 @@ export class AppConfig {
   @IsNumberString()
   port: string = '8080'
 
-  @IsString()
-  storage: string = './storage'
-
   /**
    * Registry 的域名
    * @example https://example.com/registry

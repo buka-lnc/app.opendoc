@@ -1,10 +1,11 @@
+import { StorageService } from './../storage/storage.service'
 import * as path from 'path'
 import { EntityManager, EntityRepository, MikroORM } from '@mikro-orm/core'
 import { Injectable } from '@nestjs/common'
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino'
-import { AppConfig } from '~/config/app.config'
 import { Sdk } from './entity/sdk.entity'
 import { InjectRepository } from '@mikro-orm/nestjs'
+import { Readable } from 'stream'
 
 
 @Injectable()
@@ -13,16 +14,32 @@ export class SdkService {
     @InjectPinoLogger(SdkService.name)
     private readonly logger: PinoLogger,
 
-    private readonly appConfig: AppConfig,
     private readonly em: EntityManager,
     private readonly orm: MikroORM,
+
+    private readonly storageService: StorageService,
 
     @InjectRepository(Sdk)
     private readonly sdkRepo: EntityRepository<Sdk>,
   ) {}
 
-  getTarballFilepath(npmPackage: Sdk): string {
-    return path.join(path.resolve(this.appConfig.storage), 'registry', npmPackage.scope, npmPackage.name, `${npmPackage.version}.tgz`)
+  private getTarballFilepath(npmPackage: Sdk): string {
+    return path.join('registry', npmPackage.scope, npmPackage.name, `${npmPackage.version}.tgz`)
+  }
+
+  async uploadTarball(sdk: Sdk, content: Buffer): Promise<void> {
+    const filepath = this.getTarballFilepath(sdk)
+    await this.storageService.writeFile(filepath, content)
+  }
+
+  async downloadTarball(sdk: Sdk): Promise<Readable> {
+    const filepath = this.getTarballFilepath(sdk)
+    return await this.storageService.createStream(filepath)
+  }
+
+  async removeTarball(sdk: Sdk): Promise<void> {
+    const filepath = this.getTarballFilepath(sdk)
+    await this.storageService.removeFile(filepath)
   }
 
   async querySdksByVersion(documentId: string, version: string): Promise<Sdk[]> {

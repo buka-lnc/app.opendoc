@@ -1,5 +1,4 @@
 import { EntityManager, EntityName, EventArgs, EventSubscriber, MikroORM } from '@mikro-orm/core'
-import * as fs from 'fs-extra'
 import { Sdk } from './entity/sdk.entity'
 import { SdkService } from './sdk.service'
 import { Injectable } from '@nestjs/common'
@@ -22,10 +21,6 @@ export class SdkSubscriber implements EventSubscriber<Sdk> {
 
   async afterDelete(args: EventArgs<Sdk>): Promise<void> {
     const entity = args.entity
-
-    const filepath = this.sdkService.getTarballFilepath(entity)
-    if (await fs.exists(filepath)) {
-      await fs.remove(filepath)
-    }
+    await this.sdkService.removeTarball(entity)
   }
 }

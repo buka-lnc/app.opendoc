@@ -15,19 +15,24 @@ import { ApiDocumentFileService } from '../api-document-file/api-document-file.s
 import { SdkService } from './sdk.service'
 import { SdkCompiler } from './constant/sdk-compiler'
 import { StorageService } from '../storage/storage.service'
+import { StorageConfig } from '~/config/storage.config'
 
 
 const exec = promisify(childProcess.exec)
 
 @Injectable()
 export class CompilerService {
+  readonly tempDir = path.resolve('./temp')
+
   constructor(
     @InjectPinoLogger(CompilerService.name)
     private readonly logger: PinoLogger,
 
     private readonly appConfig: AppConfig,
+    private readonly storageConfig: StorageConfig,
     private readonly em: EntityManager,
     private readonly orm: MikroORM,
+
 
     private readonly storageService: StorageService,
     private readonly apiDocumentFileService: ApiDocumentFileService,
@@ -46,8 +51,8 @@ export class CompilerService {
     }
   }
 
-  private getCompileDir(sdk: Sdk): string {
-    return path.join(path.resolve(this.appConfig.storage), 'compiling', sdk.scope, sdk.name, `${sdk.version}`)
+  private getTempDir(sdk: Sdk): string {
+    return path.join(this.tempDir, sdk.scope, sdk.name, `${sdk.version}`)
   }
 
   private async getSdkRawDocumentFile(sdk: Sdk): Promise<string> {
@@ -61,7 +66,8 @@ export class CompilerService {
   async compileOpenapiCore(sdk: Sdk) {
     const swagger = await this.getSdkRawDocumentFile(sdk)
 
-    const compileDir = this.getCompileDir(sdk)
+    const tempDir = this.getTempDir(sdk)
+    const compileDir = path.join(tempDir, 'compiling')
     await fs.ensureDir(compileDir)
     await fs.emptyDir(compileDir)
 
@@ -80,8 +86,6 @@ export class CompilerService {
       },
     })
 
-    const tarballFilepath = this.sdkService.getTarballFilepath(sdk)
-    await fs.ensureDir(path.dirname(tarballFilepath))
 
     this.logger.debug(`${sdk.fullName} building`)
     try {
@@ -100,6 +104,8 @@ export class CompilerService {
     }
 
     this.logger.debug(`${sdk.fullName} compressing`)
+    const tarballFilepath = path.join(tempDir, 'tarball.tgz')
+    await fs.ensureDir(path.dirname(tarballFilepath))
     await compressing.tgz.compressDir(compileDir, tarballFilepath)
 
     const buf = await fs.readFile(tarballFilepath)
@@ -107,13 +113,14 @@ export class CompilerService {
       .createHash('sha512')
       .update(buf)
       .digest('base64')
+    await this.sdkService.uploadTarball(sdk, buf)
 
     sdk.tarball = `/@${sdk.scope}/${sdk.name}/-/${sdk.name}-${sdk.version}.tgz`
     sdk.integrity = `sha512-${integrity}`
     this.logger.info(`${sdk.fullName} published`)
 
     this.em.persist(sdk)
-    await fs.remove(compileDir)
+    await fs.remove(tempDir)
   }
 
   async compileOpenapiReact(sdk: Sdk) {
@@ -122,7 +129,8 @@ export class CompilerService {
 
     const swagger = await this.getSdkRawDocumentFile(sdk)
 
-    const compileDir = this.getCompileDir(sdk)
+    const tempDir = this.getTempDir(sdk)
+    const compileDir = path.join(tempDir, 'compiling')
     await fs.ensureDir(compileDir)
     await fs.emptyDir(compileDir)
 
@@ -146,8 +154,6 @@ export class CompilerService {
       },
     })
 
-    const tarballFilepath = this.sdkService.getTarballFilepath(sdk)
-    await fs.ensureDir(path.dirname(tarballFilepath))
 
     this.logger.debug(`${sdk.fullName} building`)
     try {
@@ -166,6 +172,8 @@ export class CompilerService {
     }
 
     this.logger.debug(`${sdk.fullName} compressing`)
+    const tarballFilepath = path.join(this.tempDir, 'tarball.tgz')
+    await fs.ensureDir(path.dirname(tarballFilepath))
     await compressing.tgz.compressDir(compileDir, tarballFilepath)
 
     const buf = await fs.readFile(tarballFilepath)
@@ -173,6 +181,7 @@ export class CompilerService {
       .createHash('sha512')
       .update(buf)
       .digest('base64')
+    await this.sdkService.uploadTarball(sdk, buf)
 
     sdk.tarball = `/@${sdk.scope}/${sdk.name}/-/${sdk.name}-${sdk.version}.tgz`
     sdk.integrity = `sha512-${integrity}`
@@ -181,7 +190,7 @@ export class CompilerService {
     this.em.persist(sdk)
 
     this.logger.debug(`${sdk.fullName} clean up`)
-    await fs.remove(compileDir)
+    await fs.remove(tempDir)
   }
 
   // async compileOpenapiVue(sdk: Sdk) {
