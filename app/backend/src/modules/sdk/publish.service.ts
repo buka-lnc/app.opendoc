@@ -1,4 +1,3 @@
-import { ApiDocumentFileService } from '~/modules/api-document-file/api-document-file.service'
 import { EnsureRequestContext, EntityManager, MikroORM } from '@mikro-orm/core'
 import { EntityRepository } from '@mikro-orm/mysql'
 import { InjectRepository } from '@mikro-orm/nestjs'
@@ -24,7 +23,6 @@ export class PublishService {
     private readonly em: EntityManager,
     private readonly orm: MikroORM,
 
-    private readonly apiDocumentFileService: ApiDocumentFileService,
     private readonly compilerService: CompilerService,
 
     @InjectRepository(Sdk)

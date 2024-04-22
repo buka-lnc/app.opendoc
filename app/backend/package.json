@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@apidevtools/swagger-parser": "^10.1.0",
+    "@aws-sdk/client-s3": "^3.556.0",
     "@buka/class-transformer-extra": "^1.1.1",
     "@buka/nestjs-config": "^1.5.2",
     "@miaooo/nestjs-take-type": "^1.2.0",
