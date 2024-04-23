@@ -5,7 +5,7 @@ import { querySdksByVersion } from '~/api/backend'
 const applicationId = useRouteParams<string>('application_id')
 const apiDocumentId = useRouteParams<string>('api_document_id')
 const version = useRouteParams<string>('version')
-const prefix = computed(() => `/application/${applicationId.value}/api-document/${apiDocumentId.value}/${version.value}/openapi/ui/sdk`)
+const prefix = computed(() => `/application/${applicationId.value}/api-document/${apiDocumentId.value}/${version.value}/asyncapi/ui/sdk`)
 
 const { pending, data: sdks } = useAsyncData(
   async () => await querySdksByVersion<'200'>({

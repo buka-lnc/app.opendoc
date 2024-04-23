@@ -1,7 +1,7 @@
 export * from './build'
 export * from './compile'
 export * from './compile-openapi-core'
-export * from './compile-asyncapi'
+export * from './compile-asyncapi-core'
 
 
 export * from './interface/build-options'

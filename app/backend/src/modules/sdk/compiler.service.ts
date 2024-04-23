@@ -39,20 +39,72 @@ export class CompilerService {
     private readonly sdkService: SdkService,
   ) {}
 
+  private getTempDir(sdk: Sdk): string {
+    return path.join(this.tempDir, sdk.scope, sdk.name, `${sdk.version}`)
+  }
+
   async compile(sdk: Sdk): Promise<void> {
+    const dir = this.getTempDir(sdk)
+
     if (sdk.compiler === SdkCompiler.openapiCore) {
-      await this.compileOpenapiCore(sdk)
+      await this.compileOpenapiCore(sdk, dir)
     } else if (sdk.compiler === SdkCompiler.openapiReact) {
-      await this.compileOpenapiReact(sdk)
+      await this.compileOpenapiReact(sdk, dir)
     // } else if (sdk.compiler === SdkCompiler.openapiVue) {
     //   await this.compileOpenapiVue(sdk)
+    } else if (sdk.compiler === SdkCompiler.asyncapiCore) {
+      await this.compileAsyncapiCore(sdk, dir)
     } else {
       throw new BadRequestException(`Unsupported compiler: ${sdk.compiler}`)
     }
+
+    await this.build(sdk, dir)
+    await this.compress(sdk, dir)
+    // await fs.remove(dir)
+
+    await this.em.flush()
+    this.logger.info(`${sdk.fullName} published`)
   }
 
-  private getTempDir(sdk: Sdk): string {
-    return path.join(this.tempDir, sdk.scope, sdk.name, `${sdk.version}`)
+  async build(sdk: Sdk, dir: string): Promise<void> {
+    this.logger.debug(`${sdk.fullName} building`)
+    const compileDir = path.join(dir, 'compiling')
+
+    try {
+      await exec('npm install --production=false && npm run build', { cwd: compileDir })
+    } catch (e) {
+      if (e instanceof Error) {
+        if ('stdout' in e) {
+          console.log(e.stdout)
+        }
+        if ('stderr' in e) {
+          console.log(e.stderr)
+        }
+      }
+
+      throw e
+    }
+  }
+
+  async compress(sdk: Sdk, dir: string): Promise<void> {
+    this.logger.debug(`${sdk.fullName} compressing`)
+    // const tempDir = this.getTempDir(sdk)
+    const compileDir = path.join(dir, 'compiling')
+
+    const tarballFilepath = path.join(dir, 'tarball.tgz')
+    await fs.ensureDir(path.dirname(tarballFilepath))
+    await compressing.tgz.compressDir(compileDir, tarballFilepath)
+
+    const buf = await fs.readFile(tarballFilepath)
+    const integrity = crypto
+      .createHash('sha512')
+      .update(buf)
+      .digest('base64')
+    await this.sdkService.uploadTarball(sdk, buf)
+
+    sdk.tarball = `/@${sdk.scope}/${sdk.name}/-/${sdk.name}-${sdk.version}.tgz`
+    sdk.integrity = `sha512-${integrity}`
+    this.em.persist(sdk)
   }
 
   private async getSdkRawDocumentFile(sdk: Sdk): Promise<string> {
@@ -63,11 +115,10 @@ export class CompilerService {
     return buf.toString('utf8')
   }
 
-  async compileOpenapiCore(sdk: Sdk) {
+  async compileOpenapiCore(sdk: Sdk, dir: string) {
     const swagger = await this.getSdkRawDocumentFile(sdk)
 
-    const tempDir = this.getTempDir(sdk)
-    const compileDir = path.join(tempDir, 'compiling')
+    const compileDir = path.join(dir, 'compiling')
     await fs.ensureDir(compileDir)
     await fs.emptyDir(compileDir)
 
@@ -85,52 +136,12 @@ export class CompilerService {
         version: sdk.version,
       },
     })
-
-
-    this.logger.debug(`${sdk.fullName} building`)
-    try {
-      await exec('npm install --production=false && npm run build', { cwd: compileDir })
-    } catch (e) {
-      if (e instanceof Error) {
-        if ('stdout' in e) {
-          console.log(e.stdout)
-        }
-        if ('stderr' in e) {
-          console.log(e.stderr)
-        }
-      }
-
-      throw e
-    }
-
-    this.logger.debug(`${sdk.fullName} compressing`)
-    const tarballFilepath = path.join(tempDir, 'tarball.tgz')
-    await fs.ensureDir(path.dirname(tarballFilepath))
-    await compressing.tgz.compressDir(compileDir, tarballFilepath)
-
-    const buf = await fs.readFile(tarballFilepath)
-    const integrity = crypto
-      .createHash('sha512')
-      .update(buf)
-      .digest('base64')
-    await this.sdkService.uploadTarball(sdk, buf)
-
-    sdk.tarball = `/@${sdk.scope}/${sdk.name}/-/${sdk.name}-${sdk.version}.tgz`
-    sdk.integrity = `sha512-${integrity}`
-    this.logger.info(`${sdk.fullName} published`)
-
-    this.em.persist(sdk)
-    await fs.remove(tempDir)
   }
 
-  async compileOpenapiReact(sdk: Sdk) {
-    // sleep 5s
-    await new Promise((resolve) => setTimeout(resolve, 5000))
-
+  async compileOpenapiReact(sdk: Sdk, dir: string) {
     const swagger = await this.getSdkRawDocumentFile(sdk)
 
-    const tempDir = this.getTempDir(sdk)
-    const compileDir = path.join(tempDir, 'compiling')
+    const compileDir = path.join(dir, 'compiling')
     await fs.ensureDir(compileDir)
     await fs.emptyDir(compileDir)
 
@@ -153,44 +164,6 @@ export class CompilerService {
         },
       },
     })
-
-
-    this.logger.debug(`${sdk.fullName} building`)
-    try {
-      await exec('npm install --production=false --legacy-peer-deps && npm run build', { cwd: compileDir })
-    } catch (e) {
-      if (e instanceof Error) {
-        if ('stdout' in e) {
-          console.log(e.stdout)
-        }
-        if ('stderr' in e) {
-          console.log(e.stderr)
-        }
-      }
-
-      throw e
-    }
-
-    this.logger.debug(`${sdk.fullName} compressing`)
-    const tarballFilepath = path.join(this.tempDir, 'tarball.tgz')
-    await fs.ensureDir(path.dirname(tarballFilepath))
-    await compressing.tgz.compressDir(compileDir, tarballFilepath)
-
-    const buf = await fs.readFile(tarballFilepath)
-    const integrity = crypto
-      .createHash('sha512')
-      .update(buf)
-      .digest('base64')
-    await this.sdkService.uploadTarball(sdk, buf)
-
-    sdk.tarball = `/@${sdk.scope}/${sdk.name}/-/${sdk.name}-${sdk.version}.tgz`
-    sdk.integrity = `sha512-${integrity}`
-    this.logger.info(`${sdk.fullName} published`)
-
-    this.em.persist(sdk)
-
-    this.logger.debug(`${sdk.fullName} clean up`)
-    await fs.remove(tempDir)
   }
 
   // async compileOpenapiVue(sdk: Sdk) {
@@ -198,4 +171,32 @@ export class CompilerService {
   //   // sleep 5s
   //   await new Promise((resolve) => setTimeout(resolve, 5000))
   // }
+
+  async compileAsyncapiCore(sdk: Sdk, dir: string) {
+    const file = await this.getSdkRawDocumentFile(sdk)
+
+    const compileDir = path.join(dir, 'compiling')
+    await fs.ensureDir(compileDir)
+    await fs.emptyDir(compileDir)
+
+    this.logger.debug(`${sdk.fullName} compiling`)
+
+    const apiDocument = await sdk.apiDocument.loadOrFail()
+
+    await compile({
+      strict: true,
+      outdir: compileDir,
+      document: JSON.parse(file),
+      moduleName: sdk.fullName,
+      fileNamingStyle: FileNamingStyle.snakeCase,
+      compiler: Compiler.asyncapiCore,
+      project: {
+        name: sdk.fullName,
+        version: sdk.version,
+        dependencies: {
+          core: `@${sdk.scope}/${apiDocument.code}`,
+        },
+      },
+    })
+  }
 }

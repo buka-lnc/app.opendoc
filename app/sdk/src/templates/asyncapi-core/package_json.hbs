@@ -1,0 +1,29 @@
+{
+  "name": "{{ package.name }}",
+  "description": "{{ package.name }}",
+  "version": "{{ package.version}}",
+
+  "exports": {
+    "./schemas": {
+      "types": "./dist/esm/schemas/index.d.ts",
+      "import": "./dist/esm/schemas/index.js",
+      "require": "./dist/umd/schemas/index.js"
+    }
+  },
+
+  "keywords": ["opendoc", "asyncapi"],
+
+  "scripts": {
+    "build": "npm run clean && ./build.sh",
+    "clean": "rm -rf ./dist/*",
+    "prepublishOnly": "npm run build"
+  },
+
+  "devDependencies": {
+    "@types/node": "^20.11.5",
+    "typescript": "^5.3.3"
+  },
+
+  "dependencies": {
+  }
+}

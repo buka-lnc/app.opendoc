@@ -45,49 +45,58 @@ export class SdkListener {
     const apiDocument = apiDocumentFile.apiDocument.get()
     const application = apiDocument.application.get()
 
-    if (
-      apiDocument.type !== API_DOCUMENT_TYPE.OPEN_API &&
-      apiDocument.type !== API_DOCUMENT_TYPE.ASYNC_API
-    ) {
-      // 其他类型不支持发布到 npm
-      return
+    if (apiDocument.type === API_DOCUMENT_TYPE.OPEN_API) {
+      const core = this.sdkRepo.create({
+        scope: application.code,
+        name: apiDocument.code,
+        compiler: SdkCompiler.openapiCore,
+        version: apiDocumentFile.version,
+        tag: apiDocumentFile.tag,
+        status: SdkStatus.pending,
+        apiDocumentFile: apiDocumentFile.id,
+        apiDocument: apiDocument.id,
+      })
+      this.em.persist(core)
+
+      const react = this.sdkRepo.create({
+        scope: application.code,
+        name: `${apiDocument.code}.react`,
+        compiler: SdkCompiler.openapiReact,
+        version: apiDocumentFile.version,
+        tag: apiDocumentFile.tag,
+        status: SdkStatus.pending,
+        apiDocumentFile: apiDocumentFile.id,
+        apiDocument: apiDocument.id,
+      })
+      this.em.persist(react)
+
+      // const vue = this.sdkRepo.create({
+      //   scope: application.code,
+      //   name: `${apiDocument.code}.vue`,
+      //   compiler: SdkCompiler.openapiVue,
+      //   version: apiDocumentFile.version,
+      //   tag: apiDocumentFile.tag,
+      //   status: SdkStatus.pending,
+      //   apiDocumentFile: apiDocumentFile.id,
+      //   apiDocument: apiDocument.id,
+      // })
+      // this.em.persist(vue)
     }
 
-    const core = this.sdkRepo.create({
-      scope: application.code,
-      name: apiDocument.code,
-      compiler: SdkCompiler.openapiCore,
-      version: apiDocumentFile.version,
-      tag: apiDocumentFile.tag,
-      status: SdkStatus.pending,
-      apiDocumentFile: apiDocumentFile.id,
-      apiDocument: apiDocument.id,
-    })
-    this.em.persist(core)
+    if (apiDocument.type === API_DOCUMENT_TYPE.ASYNC_API) {
+      const core = this.sdkRepo.create({
+        scope: application.code,
+        name: apiDocument.code,
+        compiler: SdkCompiler.asyncapiCore,
+        version: apiDocumentFile.version,
+        tag: apiDocumentFile.tag,
+        status: SdkStatus.pending,
+        apiDocumentFile: apiDocumentFile.id,
+        apiDocument: apiDocument.id,
+      })
+      this.em.persist(core)
+    }
 
-    const react = this.sdkRepo.create({
-      scope: application.code,
-      name: `${apiDocument.code}.react`,
-      compiler: SdkCompiler.openapiReact,
-      version: apiDocumentFile.version,
-      tag: apiDocumentFile.tag,
-      status: SdkStatus.pending,
-      apiDocumentFile: apiDocumentFile.id,
-      apiDocument: apiDocument.id,
-    })
-    this.em.persist(react)
-
-    // const vue = this.sdkRepo.create({
-    //   scope: application.code,
-    //   name: `${apiDocument.code}.vue`,
-    //   compiler: SdkCompiler.openapiVue,
-    //   version: apiDocumentFile.version,
-    //   tag: apiDocumentFile.tag,
-    //   status: SdkStatus.pending,
-    //   apiDocumentFile: apiDocumentFile.id,
-    //   apiDocument: apiDocument.id,
-    // })
-    // this.em.persist(vue)
 
     await this.em.flush()
   }

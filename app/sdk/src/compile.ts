@@ -1,3 +1,4 @@
+import { compileAsyncapiCore } from './compile-asyncapi-core'
 import { compileOpenapiCore } from './compile-openapi-core'
 import { compileOpenapiReact } from './compile-openapi-react'
 import { compileProject } from './compile-project'
@@ -10,6 +11,8 @@ export async function compile(options: CompileOptions): Promise<void> {
     await compileOpenapiCore(options)
   } else if (options.compiler === Compiler.openapiReact) {
     await compileOpenapiReact(options)
+  } else if (options.compiler === Compiler.asyncapiCore) {
+    await compileAsyncapiCore(options)
   } else {
     throw new Error('Unsupported file type')
   }
