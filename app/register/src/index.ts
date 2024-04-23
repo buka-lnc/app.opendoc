@@ -1,4 +1,4 @@
-import { request } from 'keq'
+import { request } from './request'
 import * as path from 'path'
 import { RegisterOpendocOptions } from './interface/register-opendoc-options'
 
@@ -6,15 +6,15 @@ import { RegisterOpendocOptions } from './interface/register-opendoc-options'
 export async function registerToOpendoc(options: RegisterOpendocOptions) {
   const { server, application, apiDocuments } = options
 
-  const res = await request
-    .put(path.join(server, '/api/application'))
-    .send({
-      code: application.code,
-      title: application.title || application.code,
-    })
-    .resolveWith('response')
-
-  if (res.status !== 200) {
+  try {
+    await request
+      .put(path.join(server, '/api/application'))
+      .send({
+        code: application.code,
+        title: application.title || application.code,
+      })
+      .retry(3, 100)
+  } catch (e) {
     throw new Error('register application failed')
   }
 
@@ -32,18 +32,18 @@ export async function registerToOpendoc(options: RegisterOpendocOptions) {
       throw new TypeError('file type not supported')
     }
 
-    const res = await request
-      .put(path.join(server, '/api/api-document'))
-      .field('applicationCode', application.code)
-      .field('apiDocumentType', type)
-      .field('apiDocumentCode', code)
-      .field('apiDocumentTitle', title || code)
-      .field('apiDocumentOrder', String(order || 1))
-      .attach('apiDocumentFile', apiDocumentFile)
-      .resolveWith('response')
-
-    if (res.status !== 200) {
-      throw new Error(`register api document failed: ${await res.text()}`)
+    try {
+      await request
+        .put(path.join(server, '/api/api-document'))
+        .field('applicationCode', application.code)
+        .field('apiDocumentType', type)
+        .field('apiDocumentCode', code)
+        .field('apiDocumentTitle', title || code)
+        .field('apiDocumentOrder', String(order || 1))
+        .attach('apiDocumentFile', apiDocumentFile)
+        .retry(3, 100)
+    } catch (e) {
+      throw new Error(`register api document failed`)
     }
   })
 

@@ -52,6 +52,7 @@
     "typescript-transform-paths": "^3.4.7"
   },
   "dependencies": {
-    "keq": "^2.3.0"
+    "keq": "^2.3.2",
+    "keq-exception": "^2.1.0"
   }
 }

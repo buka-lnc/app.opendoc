@@ -96,14 +96,14 @@ importers:
         specifier: ^8.0.1
         version: 8.0.1
       keq:
-        specifier: ^2.3.1
-        version: 2.3.1
+        specifier: ^2.3.2
+        version: 2.3.2
       keq-debug:
         specifier: ^2.0.3
         version: 2.0.3
       keq-headers:
         specifier: ^2.0.1
-        version: 2.0.1(keq@2.3.1)
+        version: 2.0.1(keq@2.3.2)
       mime:
         specifier: ^4.0.1
         version: 4.0.1
@@ -2934,8 +2934,8 @@ packages:
     peerDependencies:
       keq: ^2
 
-  keq@2.3.1:
-    resolution: {integrity: sha512-t9UO4yjmXxjq03K6WMHB02+JKOLCQXNOQHHZ1cgFS6l0ILvKeNaumLXjm+2rMzQy7B/BAstFC33NYQqsbUGL/A==}
+  keq@2.3.2:
+    resolution: {integrity: sha512-L6RW7s1kok0+dw5aplkYhEzhLZldsa/qSK30Yc/uzm/4/4odTBvpuGj3DRRGAjvXlqcOXfga+3IcSkej4Y9nrQ==}
     engines: {node: '>=18.0.0'}
 
   keyv@4.5.4:
@@ -3367,6 +3367,9 @@ packages:
   pino-abstract-transport@1.1.0:
     resolution: {integrity: sha512-lsleG3/2a/JIWUtf9Q5gUNErBqwIu1tUKTT3dUzaf5DySw9ra1wcqKjJjLX1VTY64Wk1eEOYsVGSaGfCK85ekA==}
 
+  pino-abstract-transport@1.2.0:
+    resolution: {integrity: sha512-Guhh8EZfPCfH+PMXAb6rKOjGQEoy0xlAIn+irODG5kgfYV+BQ0rGYYWTIel3P5mmyXqkYkPmdIkywsn6QKUR1Q==}
+
   pino-http@9.0.0:
     resolution: {integrity: sha512-Q9QDNEz0vQmbJtMFjOVr2c9yL92vHudjmr3s3m6J1hbw3DBGFZJm3TIj9TWyynZ4GEsEA9SOtni4heRUr6lNOg==}
 
@@ -3377,8 +3380,8 @@ packages:
   pino-std-serializers@6.2.2:
     resolution: {integrity: sha512-cHjPPsE+vhj/tnhCy/wiMh3M3z3h/j15zHQX+S9GkTBgqJuTuJzYJ4gUyACLhDaJ7kk9ba9iRDmbH2tJU03OiA==}
 
-  pino@8.19.0:
-    resolution: {integrity: sha512-oswmokxkav9bADfJ2ifrvfHUwad6MLp73Uat0IkQWY3iAw5xTRoznXbXksZs8oaOUMpmhVWD+PZogNzllWpJaA==}
+  pino@8.20.0:
+    resolution: {integrity: sha512-uhIfMj5TVp+WynVASaVEJFTncTUe4dHBq6CWplu/vBgvGHhvBvQfxz+vcOrnnBQdORH3izaGEurLfNlq3YxdFQ==}
     hasBin: true
 
   pirates@4.0.6:
@@ -3677,6 +3680,9 @@ packages:
   sonic-boom@3.8.0:
     resolution: {integrity: sha512-ybz6OYOUjoQQCQ/i4LU8kaToD8ACtYP+Cj5qd2AO36bwbdewxWJ3ArmJ2cr6AvxlL2o0PqnCcPGUgkILbfkaCA==}
 
+  sonic-boom@3.8.1:
+    resolution: {integrity: sha512-y4Z8LCDBuum+PBP3lSV7RHrXscqksve/bi0as7mhwVnBW+/wUqKT/2Kb7um8yqcFy0duYbbPxzt89Zy2nOCaxg==}
+
   source-map-support@0.5.13:
     resolution: {integrity: sha512-SHSKFHadjVA5oR4PPqhtAVdcBWwRYVd6g6cAXnIbRiIwc2EhPrTuKUBdSLvlEKyIP3GCf89fltvcZiP9MMFA1w==}
 
@@ -3855,8 +3861,8 @@ packages:
   text-table@0.2.0:
     resolution: {integrity: sha512-N+8UisAXDGk8PFXP4HAzVR9nbfmVJ3zYLAWiTIoqC5v5isinhr+r5uaO8+7r3BMfuNIufIsA7RdpVgacC2cSpw==}
 
-  thread-stream@2.4.1:
-    resolution: {integrity: sha512-d/Ex2iWd1whipbT681JmTINKw0ZwOUBZm7+Gjs64DHuX34mmw8vJL2bFAaNacaW72zYiTJxSHi5abUuOi5nsfg==}
+  thread-stream@2.6.0:
+    resolution: {integrity: sha512-t4eNiKdGwd1EV6tx76mRbrOqwvkxz+ssOiQXEXw88m4p/Xp6679vg16sf39BAstRjHOiWIqp5+J2ylHk3pU30g==}
 
   through@2.3.8:
     resolution: {integrity: sha512-w89qg7PI8wAdvX60bMDP+bFoD5Dvhm9oLheFp5O4a2QF0cSBGsBX4qZmadPMvVqlLJBBci+WqGGOAPvcDeNSVg==}
@@ -8011,11 +8017,11 @@ snapshots:
       url: 0.11.3
       whatwg-url: 13.0.0
 
-  keq-headers@2.0.1(keq@2.3.1):
+  keq-headers@2.0.1(keq@2.3.2):
     dependencies:
-      keq: 2.3.1
+      keq: 2.3.2
 
-  keq@2.3.1:
+  keq@2.3.2:
     dependencies:
       clone: 2.1.2
       fastq: 1.17.1
@@ -8382,10 +8388,15 @@ snapshots:
       readable-stream: 4.5.2
       split2: 4.2.0
 
+  pino-abstract-transport@1.2.0:
+    dependencies:
+      readable-stream: 4.5.2
+      split2: 4.2.0
+
   pino-http@9.0.0:
     dependencies:
       get-caller-file: 2.0.5
-      pino: 8.19.0
+      pino: 8.20.0
       pino-std-serializers: 6.2.2
       process-warning: 3.0.0
 
@@ -8408,19 +8419,19 @@ snapshots:
 
   pino-std-serializers@6.2.2: {}
 
-  pino@8.19.0:
+  pino@8.20.0:
     dependencies:
       atomic-sleep: 1.0.0
       fast-redact: 3.5.0
       on-exit-leak-free: 2.1.2
-      pino-abstract-transport: 1.1.0
+      pino-abstract-transport: 1.2.0
       pino-std-serializers: 6.2.2
       process-warning: 3.0.0
       quick-format-unescaped: 4.0.4
       real-require: 0.2.0
       safe-stable-stringify: 2.4.3
-      sonic-boom: 3.8.0
-      thread-stream: 2.4.1
+      sonic-boom: 3.8.1
+      thread-stream: 2.6.0
 
   pirates@4.0.6: {}
 
@@ -8719,6 +8730,10 @@ snapshots:
     dependencies:
       atomic-sleep: 1.0.0
 
+  sonic-boom@3.8.1:
+    dependencies:
+      atomic-sleep: 1.0.0
+
   source-map-support@0.5.13:
     dependencies:
       buffer-from: 1.1.2
@@ -8895,7 +8910,7 @@ snapshots:
 
   text-table@0.2.0: {}
 
-  thread-stream@2.4.1:
+  thread-stream@2.6.0:
     dependencies:
       real-require: 0.2.0
 
