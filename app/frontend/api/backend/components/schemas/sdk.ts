@@ -24,7 +24,7 @@ export interface Sdk {
    * Npm包名
    */
   "name": string
-  "compiler": "openapi-core" | "openapi-react" | "openapi-vue"
+  "compiler": "openapi-core" | "openapi-react" | "openapi-vue" | "asyncapi-core"
   /**
    * 版本
    */

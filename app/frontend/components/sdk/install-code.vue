@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { codeToHtml } from 'shiki'
 import { Sdk } from '~/api/backend/components/schemas'
 
 const props = defineProps<{
@@ -8,31 +7,14 @@ const props = defineProps<{
 
 const sdk = toRef(props, 'sdk')
 
-const { data } = useAsyncData(
-  async () => {
-    if (!sdk.value) return ''
-    const fullName = sdk.value.fullName
-
-    return await codeToHtml(`
+const code = computed(() => `
 echo "@${sdk.value.scope}:registry=${window.location.origin}/api/registry" >> .npmrc
-npm install ${fullName}@${sdk.value.version}
-  `, {
-      lang: 'bash',
-      theme: 'nord',
-    })
-  },
-  {
-    default: () => '',
-    watch: [sdk],
-  },
-)
+npm install ${sdk.value.fullName}@${sdk.value.version}
+`)
 </script>
 
 <template>
-  <div
-    class="d-mockup-code [&_code]:inline-block"
-    v-html="data"
-  />
+  <sdk-code language="bash" :code="code" />
 </template>
 
 <style scoped lang="postcss">

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { codeToHtml } from 'shiki'
 import { Sdk } from '~/api/backend/components/schemas'
 
 const props = defineProps<{
@@ -8,34 +7,19 @@ const props = defineProps<{
 
 const sdk = toRef(props, 'sdk')
 
-const { data } = useAsyncData(
-  async () => {
-    if (!sdk.value) return ''
-    const fullName = sdk.value.fullName
-
-    return await codeToHtml(`
-import type { SchemaName } from '${fullName}/schemas'
+const code = computed(() => `import type { SchemaName } from '${sdk.value.fullName}/schemas'
 
 const schema: SchemaName = {
   // data
 }
-  `, {
-      lang: 'typescript',
-      theme: 'nord',
-    })
-  },
-  {
-    default: () => '',
-    watch: [sdk],
-  },
-)
+`)
 
 </script>
 
 <template>
-  <div
-    class="d-mockup-code [&_code]:inline-block"
-    v-html="data"
+  <sdk-code
+    language="typescript"
+    :code="code"
   />
 </template>
 
