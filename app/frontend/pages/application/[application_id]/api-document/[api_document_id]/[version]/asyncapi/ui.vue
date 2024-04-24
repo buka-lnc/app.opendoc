@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { IconVersions, IconSchema, IconSdk } from '@tabler/icons-vue'
+import { IconVersions, IconSchema, IconSdk, IconMessage2, IconLine, IconServer } from '@tabler/icons-vue'
 import { inject } from 'vue'
 import { useRouteParams } from '@vueuse/router'
+import { convert } from '@asyncapi/converter'
+import * as semver from 'semver'
 import { API_DOCUMENT_FILE_INJECT_KEY } from '~/constants/api-document-file-inject-key'
-import { OPENDOC_SERVERS_INJECT_KEY } from '~/constants/opendoc-servers-inject-key'
 import { SCHEMA_INJECT_KEY } from '~/constants/schema-inject-key'
 
 const applicationId = useRouteParams<string>('application_id')
@@ -13,12 +14,12 @@ const prefix = computed(() => `/application/${applicationId.value}/api-document/
 
 const { apiDocumentFile } = inject(API_DOCUMENT_FILE_INJECT_KEY, { apiDocumentFile: null })
 
-const openapi = computed((): any => {
+const asyncapi = computed((): any => {
   const str = toValue(apiDocumentFile)
 
   if (!str) {
     return {
-      asyncapi: '2.5.0',
+      asyncapi: '3.0.0',
       info: {
         title: 'Untitled',
         version: '1.0.0',
@@ -30,20 +31,26 @@ const openapi = computed((): any => {
     }
   }
 
-  return JSON.parse(str) as any
-})
-provide(SCHEMA_INJECT_KEY, openapi)
+  const doc = JSON.parse(str) as any
 
-const servers = computed(() => openapi.value.servers || [])
-provide(OPENDOC_SERVERS_INJECT_KEY, { servers })
+  if (semver.lt(doc.asyncapi, '3.0.0')) {
+    return convert(doc, '3.0.0')
+  }
+
+  return doc
+})
+provide(SCHEMA_INJECT_KEY, asyncapi)
+
+// const servers = computed(() => openapi.value.servers || [])
+// provide(OPENDOC_SERVERS_INJECT_KEY, { servers })
 
 const route = useRoute()
 const router = useRouter()
 watch(
-  () => toValue(openapi),
+  () => toValue(asyncapi),
   async () => {
     if (route.path === prefix.value) {
-      await router.replace(`${prefix.value}/operation`)
+      await router.replace(`${prefix.value}/schema`)
     }
   },
   {
@@ -66,6 +73,24 @@ watch(
 
       <li class="w-fit">
         <openapi-menu-button
+          tip="通道/Channel"
+          :to="`${prefix}/channel`"
+        >
+          <IconLine class="size-8" />
+        </openapi-menu-button>
+      </li>
+
+      <li class="w-fit">
+        <openapi-menu-button
+          tip="消息/Message"
+          :to="`${prefix}/message`"
+        >
+          <IconMessage2 class="size-8" />
+        </openapi-menu-button>
+      </li>
+
+      <li class="w-fit">
+        <openapi-menu-button
           tip="数据结构/Schema"
           :to="`${prefix}/schema`"
         >
@@ -73,14 +98,14 @@ watch(
         </openapi-menu-button>
       </li>
 
-      <!-- <li class="w-fit">
+      <li class="w-fit">
         <openapi-menu-button
           tip="服务器/Server"
           :to="`${prefix}/server`"
         >
           <IconServer class="size-8" />
         </openapi-menu-button>
-      </li> -->
+      </li>
 
       <li class="w-fit">
         <openapi-menu-button

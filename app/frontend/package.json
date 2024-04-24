@@ -39,6 +39,7 @@
     "vue-eslint-parser": "^9.4.2"
   },
   "dependencies": {
+    "@asyncapi/converter": "^1.4.19",
     "@jongwooo/prism-theme-github": "^1.14.0",
     "@nuxtjs/tailwindcss": "^6.11.4",
     "@pinia/nuxt": "^0.5.1",
@@ -46,6 +47,7 @@
     "@tabler/icons-vue": "^3.1.0",
     "@types/md5": "^2.3.5",
     "@types/ramda": "^0.29.11",
+    "@types/semver": "^7.5.8",
     "@types/unist": "^3.0.2",
     "@vueuse/core": "^10.9.0",
     "@vueuse/nuxt": "^10.9.0",
@@ -71,6 +73,7 @@
     "remark-math": "^6.0.0",
     "remark-parse": "^11.0.0",
     "remark-rehype": "^11.1.0",
+    "semver": "^7.6.0",
     "shiki": "^1.2.0",
     "simple-icons": "^11.10.0",
     "unified": "^11.0.4",
