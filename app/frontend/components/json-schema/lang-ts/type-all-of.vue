@@ -7,6 +7,7 @@ defineOptions({
 
 defineProps<{
   schema: OpenAPIV3.SchemaObject
+  toReference:(referenceId: string, reference: string) => string
 }>()
 </script>
 
@@ -21,6 +22,7 @@ defineProps<{
         <json-schema-lang-ts-type
           v-bind="$attrs"
           :schema="value"
+          :to-reference="$props.toReference"
         >
           <template #head>
             <span class="schema-operator"> & </span>
@@ -34,7 +36,11 @@ defineProps<{
     </json-schema-lang-ts-block>
   </template>
   <template v-else-if="schema.allOf && schema.allOf.length === 1">
-    <json-schema-lang-ts-type v-bind="$attrs" :schema="schema.allOf[0]">
+    <json-schema-lang-ts-type
+      v-bind="$attrs"
+      :schema="schema.allOf[0]"
+      :to-reference="$props.toReference"
+    >
       <template #head>
         <slot name="head" />
       </template>

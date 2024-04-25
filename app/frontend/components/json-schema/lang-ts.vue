@@ -3,6 +3,7 @@ import { OpenAPIV3 } from 'openapi-types'
 
 const props = defineProps<{
   schema: OpenAPIV3.SchemaObject | OpenAPIV3.ReferenceObject
+  toReference:(referenceId: string, reference: string) => string
 }>()
 
 const schema = toRef(props, 'schema')
@@ -14,6 +15,7 @@ const [resolvedSchema, referencePath] = useDereference<OpenAPIV3.SchemaObject>(s
   <json-schema-lang-ts-type-plain-object
     v-if="resolvedSchema?.type === 'object'"
     :schema="resolvedSchema as OpenAPIV3.NonArraySchemaObject"
+    :to-reference="props.toReference"
   >
     <template #head>
       <span
@@ -23,6 +25,7 @@ const [resolvedSchema, referencePath] = useDereference<OpenAPIV3.SchemaObject>(s
         <span>&lt;</span>
         <json-schema-lang-ts-ref
           :reference="referencePath[referencePath.length - 1]"
+          :to-reference="props.toReference"
         />
         <span>&gt;</span>
       </span>
@@ -32,6 +35,7 @@ const [resolvedSchema, referencePath] = useDereference<OpenAPIV3.SchemaObject>(s
   <json-schema-lang-ts-type
     v-else
     :schema="schema as OpenAPIV3.NonArraySchemaObject"
+    :to-reference="props.toReference"
   />
 </template>
 

@@ -5,6 +5,7 @@ import * as R from 'ramda'
 
 const props = defineProps<{
   operation: OpenAPIV3.OperationObject
+  toReference:(referenceId: string, reference: string) => string
 }>()
 
 const route = useRoute()
@@ -96,22 +97,38 @@ const requestBody = computed(() => dereference<OpenAPIV3.RequestBodyObject>(prop
     >
       <div class="p-6">
         <div v-if="active=== 'headers'">
-          <json-schema-lang-ts v-if="headersSchema" :schema="headersSchema" />
+          <json-schema-lang-ts
+            v-if="headersSchema"
+            :schema="headersSchema"
+            to-reference="toReference"
+          />
           <empty-placeholder v-else class="flex-1 py-8" />
         </div>
 
         <div v-if="active=== 'query'">
-          <json-schema-lang-ts v-if="querySchema" :schema="querySchema" />
+          <json-schema-lang-ts
+            v-if="querySchema"
+            :schema="querySchema"
+            to-reference="toReference"
+          />
           <empty-placeholder v-else class="flex-1 py-8" />
         </div>
 
         <div v-if="active=== 'params'">
-          <json-schema-lang-ts v-if="paramsSchema" :schema="paramsSchema" />
+          <json-schema-lang-ts
+            v-if="paramsSchema"
+            :schema="paramsSchema"
+            to-reference="toReference"
+          />
           <empty-placeholder v-else class="flex-1 py-8" />
         </div>
 
         <div v-if="active=== 'body'">
-          <openapi-operation-body v-if="requestBody?.content" :body="requestBody?.content" />
+          <openapi-operation-body
+            v-if="requestBody?.content"
+            :body="requestBody?.content"
+            to-reference="toReference"
+          />
           <empty-placeholder v-else class="flex-1 py-8" />
         </div>
       </div>

@@ -4,7 +4,6 @@ import { SCHEMA_INJECT_KEY } from '~/constants/schema-inject-key'
 
 const filter = ref('')
 
-// const route = useRoute()
 const applicationId = useRouteParams<string>('application_id')
 const apiDocumentId = useRouteParams<string>('api_document_id')
 const version = useRouteParams<string>('version')
@@ -12,6 +11,21 @@ const prefix = computed(() => `/application/${applicationId.value}/api-document/
 
 const asyncapi = inject(SCHEMA_INJECT_KEY)
 const channels = computed<Object>(() => asyncapi?.value.channels || {})
+
+const route = useRoute()
+const router = useRouter()
+watch(
+  () => toValue(asyncapi),
+  async () => {
+    const topics = Object.keys(channels.value)
+    if (route.path === prefix.value && topics.length > 0) {
+      await router.replace(`${prefix.value}/${topics[0]}`)
+    }
+  },
+  {
+    immediate: true,
+  },
+)
 </script>
 
 <template>

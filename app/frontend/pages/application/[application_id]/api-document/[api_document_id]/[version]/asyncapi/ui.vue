@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { IconVersions, IconSchema, IconSdk, IconMessage2, IconLine, IconServer } from '@tabler/icons-vue'
+import { IconVersions, IconSchema, IconSdk, IconMessage2, IconServer } from '@tabler/icons-vue'
 import { inject } from 'vue'
 import { useRouteParams } from '@vueuse/router'
 import { convert } from '@asyncapi/converter'
@@ -75,15 +75,6 @@ watch(
         <openapi-menu-button
           tip="通道/Channel"
           :to="`${prefix}/channel`"
-        >
-          <IconLine class="size-8" />
-        </openapi-menu-button>
-      </li>
-
-      <li class="w-fit">
-        <openapi-menu-button
-          tip="消息/Message"
-          :to="`${prefix}/message`"
         >
           <IconMessage2 class="size-8" />
         </openapi-menu-button>

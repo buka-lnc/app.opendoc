@@ -3,6 +3,7 @@ import { OpenAPIV3 } from 'openapi-types'
 
 const props = defineProps<{
   schema: OpenAPIV3.ArraySchemaObject | OpenAPIV3.ReferenceObject
+  toReference:(referenceId: string, reference: string) => string
 }>()
 
 const dereference = useDereferenceFn()
@@ -56,9 +57,10 @@ const fold = ref(true)
 <template>
   <json-schema-lang-ts-type-plain-object
     v-if="resolvedSchema && resolvedSchema.type === 'object'"
+    v-model:fold="fold"
     :schema="resolvedSchema"
     :foldable="referencePath.length > 0"
-    v-model:fold="fold"
+    :to-reference="props.toReference"
   >
     <template #head>
       <slot name="head" />
@@ -71,6 +73,7 @@ const fold = ref(true)
         <json-schema-lang-ts-ref
           :class="fold && 'schema-constant'"
           :reference="referencePath[referencePath.length - 1]"
+          :to-reference="props.toReference"
         />
         <json-schema-lang-ts-array-dimension :dimension="arrayDimension" />
         <span v-if="!fold">&gt;</span>
@@ -85,6 +88,7 @@ const fold = ref(true)
   <json-schema-lang-ts-type
     v-else-if="resolvedSchema && resolvedSchema.type !== 'array'"
     :schema="resolvedSchema"
+    :to-reference="props.toReference"
   >
     <template #head>
       <slot name="head" />

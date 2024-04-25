@@ -9,6 +9,7 @@ const props = withDefaults(
   defineProps<{
     schema: OpenAPIV3.NonArraySchemaObject
     foldable?: boolean
+    toReference:(referenceId: string, reference: string) => string
   }>(),
   {
     foldable: false,
@@ -43,6 +44,7 @@ const schema = toRef(props, 'schema')
       v-if="schema.properties"
       :properties="schema.properties"
       :required="schema.required"
+      :to-reference="props.toReference"
     />
 
     <template #tail>

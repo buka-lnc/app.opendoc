@@ -3,6 +3,7 @@ import { OpenAPIV3 } from 'openapi-types'
 
 const props = defineProps<{
   body: Record<string, OpenAPIV3.MediaTypeObject>
+  toReference:(referenceId: string, reference: string) => string
 }>()
 
 const active = ref<string>()
@@ -44,6 +45,7 @@ const content = computed(() => {
       <json-schema-lang-ts
         v-if="content?.schema"
         :schema="content?.schema"
+        :to-reference="toReference"
       />
     </div>
   </div>

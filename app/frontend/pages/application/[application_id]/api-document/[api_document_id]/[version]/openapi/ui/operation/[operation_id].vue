@@ -23,6 +23,8 @@ const responses = computed(
     operation.value?.value.responses || {},
   ),
 )
+
+const toReference = useOpenapiToReference()
 </script>
 
 <template>
@@ -44,24 +46,23 @@ const responses = computed(
       <span class="font-sans text-base-content/90">{{ description }}</span>
     </div>
 
-    <openapi-operation-section>
-      <!-- <template #title>
-        Info
-      </template> -->
-
+    <section-block>
       <openapi-operation-info :operation="operation.value" />
-    </openapi-operation-section>
+    </section-block>
 
-    <openapi-operation-section>
+    <section-block>
       <template #title>
         Request
       </template>
 
-      <openapi-operation-request :operation="operation.value" />
-    </openapi-operation-section>
+      <openapi-operation-request
+        :operation="operation.value"
+        :to-reference="toReference"
+      />
+    </section-block>
 
     <template v-for="(response, code) in responses" :key="code">
-      <openapi-operation-section v-if="response">
+      <section-block v-if="response">
         <template #title>
           Response {{ code }}
         </template>
@@ -74,9 +75,10 @@ const responses = computed(
           <openapi-operation-response
             :code="<string>code"
             :response="response"
+            :to-reference="toReference"
           />
         </template>
-      </openapi-operation-section>
+      </section-block>
     </template>
   </div>
 </template>

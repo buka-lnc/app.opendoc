@@ -6,6 +6,7 @@ import * as R from 'ramda'
 const props = defineProps<{
   code: string
   response: OpenAPIV3.ResponseObject
+  toReference:(referenceId: string, reference: string) => string
 }>()
 
 const route = useRoute()
@@ -69,12 +70,20 @@ const headersSchema = useOpenapiParametersToJsonSchema(headers)
       >
         <div class="p-6">
           <div v-if="active=== 'headers'">
-            <json-schema-lang-ts v-if="headersSchema" :schema="headersSchema" />
+            <json-schema-lang-ts
+              v-if="headersSchema"
+              :schema="headersSchema"
+              :to-reference="toReference"
+            />
             <empty-placeholder v-else class="flex-1 py-8" />
           </div>
 
           <div v-if="active=== 'body'">
-            <openapi-operation-body v-if="response.content" :body="response.content" />
+            <openapi-operation-body
+            v-if="response.content"
+            :body="response.content"
+              :to-reference="toReference"
+            />
             <empty-placeholder v-else class="flex-1 py-8" />
           </div>
         </div>

@@ -7,6 +7,7 @@ defineOptions({
 
 const props = defineProps<{
   schema: OpenAPIV3.SchemaObject | OpenAPIV3.ReferenceObject
+  toReference:(referenceId: string, reference: string) => string
 }>()
 
 const schema = computed(() => props.schema)
@@ -19,6 +20,7 @@ const [resolvedSchema] = useDereference<OpenAPIV3.SchemaObject>(schema)
     v-if="Array.isArray(resolvedSchema?.allOf)"
     v-bind="$attrs"
     :schema="(schema as any)"
+    :to-reference="props.toReference"
   >
     <template #head>
       <slot name="head" />
@@ -32,6 +34,7 @@ const [resolvedSchema] = useDereference<OpenAPIV3.SchemaObject>(schema)
     v-else-if="Array.isArray(resolvedSchema?.oneOf)"
     v-bind="$attrs"
     :schema="(schema as any)"
+    :to-reference="props.toReference"
   >
     <template #head>
       <slot name="head" />
@@ -45,6 +48,7 @@ const [resolvedSchema] = useDereference<OpenAPIV3.SchemaObject>(schema)
     v-else-if="Array.isArray(resolvedSchema?.anyOf)"
     v-bind="$attrs"
     :schema="(schema as any)"
+    :to-reference="props.toReference"
   >
     <template #head>
       <slot name="head" />
@@ -58,6 +62,7 @@ const [resolvedSchema] = useDereference<OpenAPIV3.SchemaObject>(schema)
     v-else-if="resolvedSchema?.type === 'object'"
     v-bind="$attrs"
     :schema="(schema as any)"
+    :to-reference="props.toReference"
   >
     <template #head>
       <slot name="head" />
@@ -71,6 +76,7 @@ const [resolvedSchema] = useDereference<OpenAPIV3.SchemaObject>(schema)
     v-else-if="resolvedSchema?.type === 'array'"
     v-bind="$attrs"
     :schema="(schema as any)"
+    :to-reference="props.toReference"
   >
     <template #head>
       <slot name="head" />
