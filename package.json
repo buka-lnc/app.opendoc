@@ -16,6 +16,6 @@
   "devDependencies": {
     "@changesets/cli": "^2.27.1",
     "@nestjs/cli": "^10.3.2",
-    "turbo": "^1.13.0"
+    "turbo": "^1.13.3"
   }
 }
