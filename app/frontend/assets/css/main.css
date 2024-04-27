@@ -1,6 +1,11 @@
 @tailwind base;
 
 @layer base {
+  /* 修复Modal打开时强制展示Html滚动条的问题 */
+  :root:has(:is(.d-modal-open, .d-modal:target, .d-modal-toggle:checked + .d-modal, .d-modal[open])) {
+    scrollbar-gutter: auto;
+  }
+
   body {
     overflow: hidden;
   }
