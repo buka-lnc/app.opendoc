@@ -13,6 +13,20 @@ const { pending, data: sdks } = useAsyncData(
     version: version.value,
   }),
 )
+
+const route = useRoute()
+const router = useRouter()
+watch(
+  () => toValue(sdks),
+  async () => {
+    if (route.path === prefix.value && sdks.value && sdks.value.length > 0) {
+      await router.replace(`${prefix.value}/${sdks.value[0].id}`)
+    }
+  },
+  {
+    immediate: true,
+  },
+)
 </script>
 
 <template>
@@ -29,8 +43,8 @@ const { pending, data: sdks } = useAsyncData(
           >
             <span class="truncate">{{ sdk.name }}@{{ sdk.version }}</span>
 
-            <span v-if="sdk.status === 'pending'" class="text-warn font-sans">待构建</span>
-            <span v-else-if="sdk.status === 'compiling'" class="text-warn font-sans">构建中</span>
+            <span v-if="sdk.status === 'pending'" class="text-warning font-sans">待构建</span>
+            <span v-else-if="sdk.status === 'compiling'" class="text-warning font-sans">构建中</span>
             <span v-else-if="sdk.status === 'published'" class="text-success font-sans">已发布</span>
             <span v-else class="text-error font-sans">缺失</span>
           </NuxtLink>

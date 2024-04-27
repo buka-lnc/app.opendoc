@@ -21,7 +21,7 @@ const security = computed(() => {
 <template>
   <div>
     <div class="flex justify-stretch">
-      <openapi-operation-field class="flex-1">
+      <section-field class="flex-1">
         <template #label>
           概要/Summary
         </template>
@@ -29,9 +29,9 @@ const security = computed(() => {
         <template #default>
           {{ summary }}
         </template>
-      </openapi-operation-field>
+      </section-field>
 
-      <openapi-operation-field class="flex-1">
+      <section-field class="flex-1">
         <template #label>
           OperationId
         </template>
@@ -39,9 +39,9 @@ const security = computed(() => {
           <clipboard-span v-if="operationId" :text="operationId" />
           <span v-else>-</span>
         </template>
-      </openapi-operation-field>
+      </section-field>
 
-      <openapi-operation-field class="flex-1">
+      <section-field class="flex-1">
         <template #label>
           Security
         </template>
@@ -51,17 +51,17 @@ const security = computed(() => {
           </span>
           <span v-if="!security.length">-</span>
         </template>
-      </openapi-operation-field>
+      </section-field>
     </div>
 
-    <!-- <openapi-operation-field>
+    <!-- <section-field>
       <template #label>
         描述/Description
       </template>
       <template #default>
         {{ description }}
       </template>
-    </openapi-operation-field> -->
+    </section-field> -->
   </div>
 </template>
 

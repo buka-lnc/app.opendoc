@@ -1,0 +1,38 @@
+<script setup lang="ts">
+import { useRouteParams } from '@vueuse/router'
+import { SCHEMA_INJECT_KEY } from '~/constants/schema-inject-key'
+
+const asyncapi = inject(SCHEMA_INJECT_KEY)
+const serverKey = useRouteParams<string>('server_key')
+
+const server = computed(() => asyncapi?.value.servers[serverKey.value])
+</script>
+
+<template>
+  <div v-if="server" class="p-10 bg-base-300 space-y-10 overflow-y-auto size-full">
+    <div>
+      <div class="text-2xl space-x-2 flex">
+        <clipboard-span :text="server.host" />
+      </div>
+
+      <span class="font-sans text-base-content/90">{{ server.description }}</span>
+    </div>
+
+    <section-block>
+      <div class="flex justify-stretch">
+        <section-field class="flex-1">
+          <template #label>
+            协议/Protocol
+          </template>
+
+          <template #default>
+            {{ server.protocol }}
+          </template>
+        </section-field>
+      </div>
+    </section-block>
+  </div>
+</template>
+
+<style scoped lang="postcss">
+</style>
