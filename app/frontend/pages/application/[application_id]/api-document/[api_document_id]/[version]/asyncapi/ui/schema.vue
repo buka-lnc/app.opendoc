@@ -71,7 +71,7 @@ const { filter, data: filteredSchemas } = useFilter(schemas, schema => schema.ti
       </ul>
     </div>
 
-    <div class="flex-1">
+    <div class="flex-1 bg-base-300">
       <NuxtPage />
     </div>
   </div>

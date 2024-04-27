@@ -45,7 +45,7 @@ watch(
       </li>
     </ul>
 
-    <div class="flex-1">
+    <div class="flex-1 bg-base-300">
       <NuxtPage />
     </div>
   </div>
