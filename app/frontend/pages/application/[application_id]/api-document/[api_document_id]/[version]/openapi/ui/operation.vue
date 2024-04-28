@@ -97,7 +97,7 @@ const counter = computed(() => ({
   <div class="size-full flex items-stretch">
     <div class="bg-base-200 flex-0 overflow-y-auto overflow-x-hidden h-full">
       <div class="p-2">
-        <search v-model="filter" />
+        <search v-model="filter" class="d-input-xs" />
 
         <div class="w-full px-1 text-xs text-base-content/50 font-bold inline-flex justify-between">
           <span>GET: {{ counter.get }}</span>

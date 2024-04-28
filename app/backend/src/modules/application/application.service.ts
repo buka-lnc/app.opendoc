@@ -1,5 +1,6 @@
+import { ForbiddenApplicationCodeService } from './forbidden-application-code.service'
 import { EntityManager, MikroORM } from '@mikro-orm/core'
-import { Injectable } from '@nestjs/common'
+import { BadRequestException, Injectable } from '@nestjs/common'
 import { RegisterApplicationDTO } from './dto/register-application.dto'
 import { Application } from './entity/application.entity'
 import { InjectRepository } from '@mikro-orm/nestjs'
@@ -16,7 +17,9 @@ export class ApplicationService {
     private readonly orm: MikroORM,
 
     @InjectRepository(Application)
-    private readonly applicationRepo: EntityRepository<Application>
+    private readonly applicationRepo: EntityRepository<Application>,
+
+    private readonly forbiddenApplicationCodeService: ForbiddenApplicationCodeService
   ) {}
 
   async register(dto: RegisterApplicationDTO): Promise<void> {
@@ -40,6 +43,12 @@ export class ApplicationService {
   }
 
   async create(dto: CreateApplicationDTO): Promise<Application> {
+    const isForbidden = await this.forbiddenApplicationCodeService.isForbidden(dto.code)
+
+    if (isForbidden) {
+      throw new BadRequestException('应用编码已被禁用')
+    }
+
     const application = this.applicationRepo.create({
       code: dto.code,
       title: dto.title || dto.code,
@@ -49,7 +58,7 @@ export class ApplicationService {
     return application
   }
 
-  async queryApplicationByIdOrCode(idOrCode: string): Promise<Application> {
+  async queryByIdOrCode(idOrCode: string): Promise<Application> {
     const app = await this.applicationRepo.findOneOrFail(
       {
         $or: [
@@ -65,7 +74,7 @@ export class ApplicationService {
     return app
   }
 
-  async queryApplications(dto: QueryApplicationsDTO): Promise<QueryApplicationsResponseDTO> {
+  async queryAll(dto: QueryApplicationsDTO): Promise<QueryApplicationsResponseDTO> {
     const qb = this.applicationRepo.createQueryBuilder('app')
       .select('*')
 
@@ -93,7 +102,7 @@ export class ApplicationService {
     }
   }
 
-  async deleteApplication(idOrCode: string): Promise<void> {
+  async remove(idOrCode: string): Promise<void> {
     const application = await this.applicationRepo.find(
       {
         $or: [

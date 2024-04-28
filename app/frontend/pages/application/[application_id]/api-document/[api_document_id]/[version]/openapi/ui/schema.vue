@@ -51,7 +51,7 @@ const { filter, data: filteredSchemas } = useFilter(schemas, schema => schema.ti
   <div class="size-full flex items-stretch ">
     <div class="h-full overflow-y-auto overflow-x-hidden">
       <div class="p-2">
-        <search v-model="filter" />
+        <search v-model="filter" class="d-input-xs" />
       </div>
 
       <ul class="flex-0 flex-nowrap d-menu d-menu-sm bg-base-200 p-0 w-72 h-full">

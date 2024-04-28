@@ -39,7 +39,7 @@ export class ApplicationController {
   async queryApplications(
     @Query() dto: QueryApplicationsDTO
   ): Promise<QueryApplicationsResponseDTO> {
-    return this.applicationService.queryApplications(dto)
+    return this.applicationService.queryAll(dto)
   }
 
   @Get(':applicationIdOrCode')
@@ -47,7 +47,7 @@ export class ApplicationController {
   async queryApplication(
     @Param('applicationIdOrCode') applicationIdOrCode: string
   ): Promise<Application> {
-    return this.applicationService.queryApplicationByIdOrCode(applicationIdOrCode)
+    return this.applicationService.queryByIdOrCode(applicationIdOrCode)
   }
 
   @Delete(':applicationIdOrCode')
@@ -55,7 +55,7 @@ export class ApplicationController {
   async deleteApplication(
     @Param('applicationIdOrCode') applicationIdOrCode: string
   ): Promise<void> {
-    await this.applicationService.deleteApplication(applicationIdOrCode)
+    await this.applicationService.remove(applicationIdOrCode)
   }
 }
 

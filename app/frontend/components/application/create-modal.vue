@@ -12,22 +12,23 @@ const emit = defineEmits<{
 const title = ref('')
 const code = ref('')
 
-const creating = ref(false)
+const alert = useAlert()
 
-async function create (): Promise<void> {
-  creating.value = true
-  try {
-    const application = await createApplication<'201'>({
-      code: code.value,
-      title: title.value,
-    })
+const { pending: creating, execute: create } = useAsyncFn(
+  async () => {
+    try {
+      const application = await createApplication<'201'>({
+        code: code.value,
+        title: title.value,
+      })
 
-    show.value = false
-    emit('created:application', application.id)
-  } finally {
-    creating.value = false
-  }
-}
+      show.value = false
+      emit('created:application', application.id)
+    } catch (e) {
+      if (e instanceof Error) alert.error(e.message)
+    }
+  },
+)
 </script>
 
 <template>
@@ -68,8 +69,12 @@ async function create (): Promise<void> {
             取消
           </button>
 
-          <button class="d-btn d-btn-primary" @click="create">
-            创建
+          <button
+            class="d-btn d-btn-primary"
+            @click="create"
+          >
+            <span v-if="creating" class="loading loading-spinner" />
+            <span v-else>创建</span>
           </button>
         </div>
       </div>

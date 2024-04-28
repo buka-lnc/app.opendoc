@@ -32,7 +32,7 @@ watch(
   <div class="size-full flex items-stretch">
     <div class="bg-base-200 flex-0 overflow-y-auto overflow-x-hidden h-full">
       <div class="p-2">
-        <search v-model="filter" />
+        <search v-model="filter" class="d-input-xs" />
       </div>
 
       <ul class="flex-nowrap d-menu d-menu-sm bg-base-200 p-0 w-72 h-full">
