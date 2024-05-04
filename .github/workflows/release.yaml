@@ -75,7 +75,7 @@ jobs:
           node-version: 20
           registry-url: https://registry.npmjs.org/
       - run: corepack pnpm install
-      - run: pnpm -r publish --provenance
+      - run: corepack pnpm -r publish --provenance
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
 
