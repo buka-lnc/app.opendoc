@@ -1,23 +1,11 @@
-name: Auto Assign
+name: "Auto Assign"
 on:
-  issues:
-    types: [opened, edited, labeled, unlabeled]
-  pull_request:
-    types: [opened, edited, labeled, unlabeled]
+  pull_request_target:
+    types: [opened, ready_for_review]
 jobs:
-  run:
+  add-reviews:
     runs-on: ubuntu-latest
     steps:
-      - uses: wow-actions/auto-assign@v3
+      - uses: kentaro-m/auto-assign-action@v2.0.0
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # using the `org/team_slug` or `/team_slug` syntax to add git team as reviewers
-          # reviewers: |
-          #   reviewer1
-          #   reviewer2
-          #   reviewer3
-          #   org/teamReviewerA
-          #   org/teamReviewerB
-          #   /teamReviewerC
-          assignees: val-istar-guo
-          skipKeywords: wip, draft
+          configuration-path: ".github/auto-assign.yml"
