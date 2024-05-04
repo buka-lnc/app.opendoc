@@ -1,6 +1,6 @@
 ---
-"frontend": minor
-"backend": minor
+"@opendoc/frontend": minor
+"@opendoc/backend": minor
 "@opendoc/sdk": minor
 ---
 

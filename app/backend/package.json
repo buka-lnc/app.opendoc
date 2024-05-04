@@ -1,5 +1,5 @@
 {
-  "name": "backend",
+  "name": "@opendoc/backend",
   "version": "1.3.0",
   "private": true,
   "description": "The backend service of Opendoc",

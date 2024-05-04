@@ -1,5 +1,5 @@
 {
-  "name": "frontend",
+  "name": "@opendoc/frontend",
   "private": true,
   "version": "1.2.0",
   "scripts": {
