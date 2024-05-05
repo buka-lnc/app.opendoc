@@ -1,4 +1,4 @@
-import { Entity, Property } from '@mikro-orm/core'
+import { Entity, Opt, Property } from '@mikro-orm/core'
 import { IsString, MaxLength } from 'class-validator'
 import { BaseEntity } from '~/entities/base.entity'
 
@@ -15,4 +15,12 @@ export class ForbiddenApplicationCode extends BaseEntity {
     comment: '唯一应用编码',
   })
   code!: string
+
+  @IsString()
+  @MaxLength(255)
+  @Property({
+    type: 'varchar(255)',
+    comment: '描述',
+  })
+  description: string & Opt = ''
 }

@@ -436,6 +436,16 @@
           "nullable": false,
           "comment": "唯一应用编码",
           "mappedType": "string"
+        },
+        "description": {
+          "name": "description",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "comment": "描述",
+          "mappedType": "string"
         }
       },
       "name": "forbidden_application_code",

@@ -4,6 +4,8 @@
  */
 export interface ForbiddenApplicationCode {
   "code": string
+  "description": {
+  }
   "id": string
   /**
    * @type date-time

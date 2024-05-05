@@ -68,7 +68,8 @@ async function removeForbiddenApplicationCode (code: string) {
           <thead class="bg-base-100 sticky top-0">
             <tr>
               <th>应用编码</th>
-              <th>添加日期</th>
+              <th>描述</th>
+              <th class="text-center">添加日期</th>
               <th />
             </tr>
           </thead>
@@ -80,7 +81,10 @@ async function removeForbiddenApplicationCode (code: string) {
               class="bg-base-300"
             >
               <th>{{ forbiddenCode.code }}</th>
-              <th>{{ dayjs(forbiddenCode.updatedAt).format('YYYY-MM-DD HH:mm:ss') }}</th>
+              <th>{{ forbiddenCode.description }}</th>
+              <th class="w-48 text-center">
+                {{ dayjs(forbiddenCode.updatedAt).format('YYYY-MM-DD HH:mm:ss') }}
+              </th>
               <th class="w-10 text-center">
                 <button
                   class="d-btn d-btn-sm d-btn-ghost d-btn-square"
