@@ -39,53 +39,61 @@ async function removeForbiddenApplicationCode (code: string) {
 
 <template>
   <StuffedLoading :pending="pending && !forbiddenApplicationCodes">
-    <div class="flex w-full space-x-4 mb-6">
-      <input
-        v-model="applicationCode"
-        class="flex-auto d-input d-input-bordered"
-        placeholder="请输入需要添加的应用编号"
-      >
+    <div class="size-full flex flex-col overflow-hidden">
+      <div class="flex-grow-0 flex-shrink-0 w-full mb-6">
+        <h1 class="select-none text-2xl font-bold text-gray-600">
+          应用编码黑名单
+        </h1>
+      </div>
 
-      <button
-        class="flex-0 d-btn d-btn-primary d-btn-square"
-        :class="!applicationCode.length && 'd-btn-disabled'"
-        @click="() => !appending && appendForbiddenApplicationCode()"
-      >
-        <span v-if="appending" class="loading loading-spinner" />
-        <IconPlus v-else class="size-5" />
-      </button>
-    </div>
+      <div class="flex-grow-0 flex-shrink-0 flex w-full space-x-4 mb-4 overflow-hidden">
+        <input
+          v-model="applicationCode"
+          class="flex-auto d-input d-input-bordered"
+          placeholder="请输入需要添加的应用编号"
+        >
 
-    <div class="overflow-x-auto">
-      <table class="d-table">
-        <thead>
-          <tr>
-            <th>应用编码</th>
-            <th>更新日期</th>
-            <th />
-          </tr>
-        </thead>
+        <button
+          class="flex-0 d-btn d-btn-primary d-btn-square"
+          :class="!applicationCode.length && 'd-btn-disabled'"
+          @click="() => !appending && appendForbiddenApplicationCode()"
+        >
+          <span v-if="appending" class="loading loading-spinner" />
+          <IconPlus v-else class="size-5" />
+        </button>
+      </div>
 
-        <tbody>
-          <tr
-            v-for="forbiddenCode in forbiddenApplicationCodes"
-            :key="forbiddenCode.id"
-            class="bg-base-300"
-          >
-            <th>{{ forbiddenCode.code }}</th>
-            <th>{{ dayjs(forbiddenCode.updatedAt).format('YYYY-MM-DD HH:mm:ss') }}</th>
-            <th class="w-10 text-center">
-              <button
-                class="d-btn d-btn-ghost d-btn-square"
-                :class="removingForbiddenApplicationCode.includes(forbiddenCode.code) && 'd-btn-disabled'"
-                @click="() => !removingForbiddenApplicationCode.includes(forbiddenCode.code) && removeForbiddenApplicationCode(forbiddenCode.code)"
-              >
-                <IconTrash class="w-6" />
-              </button>
-            </th>
-          </tr>
-        </tbody>
-      </table>
+      <div class="flex-1 overflow-y-auto">
+        <table class="d-table d-table-sm">
+          <thead class="bg-base-100 sticky top-0">
+            <tr>
+              <th>应用编码</th>
+              <th>添加日期</th>
+              <th />
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr
+              v-for="forbiddenCode in forbiddenApplicationCodes"
+              :key="forbiddenCode.id"
+              class="bg-base-300"
+            >
+              <th>{{ forbiddenCode.code }}</th>
+              <th>{{ dayjs(forbiddenCode.updatedAt).format('YYYY-MM-DD HH:mm:ss') }}</th>
+              <th class="w-10 text-center">
+                <button
+                  class="d-btn d-btn-sm d-btn-ghost d-btn-square"
+                  :class="removingForbiddenApplicationCode.includes(forbiddenCode.code) && 'd-btn-disabled'"
+                  @click="() => !removingForbiddenApplicationCode.includes(forbiddenCode.code) && removeForbiddenApplicationCode(forbiddenCode.code)"
+                >
+                  <IconTrash class="w-6" />
+                </button>
+              </th>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </StuffedLoading>
 </template>
