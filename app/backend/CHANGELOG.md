@@ -1,5 +1,15 @@
 # @opendoc/backend
 
+## 1.5.0
+
+### Minor Changes
+
+- 325bca1: 应用编码黑名单添加描述
+
+### Patch Changes
+
+- 4c163d7: 迁移脚本将自动添加常见的需要禁用的应用编号
+
 ## 1.4.0
 
 ### Minor Changes

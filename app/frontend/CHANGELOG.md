@@ -1,5 +1,17 @@
 # @opendoc/frontend
 
+## 1.4.0
+
+### Minor Changes
+
+- 0f4541e: 应用编码黑名单页面增加页面标题
+- 325bca1: 应用编码黑名单添加描述
+- 0f4541e: 应用编码黑名单页面减少行间距
+
+### Patch Changes
+
+- 0f4541e: 修复应用编码黑名单列表无法滚动的问题
+
 ## 1.3.0
 
 ### Minor Changes
