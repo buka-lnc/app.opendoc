@@ -39,7 +39,7 @@ async function removeForbiddenApplicationCode (code: string) {
 
 <template>
   <StuffedLoading :pending="pending && !forbiddenApplicationCodes">
-    <div class="size-full flex flex-col overflow-hidden">
+    <div class="container h-full m-auto flex flex-col overflow-hidden">
       <div class="flex-grow-0 flex-shrink-0 w-full mb-6">
         <h1 class="select-none text-2xl font-bold text-gray-600">
           应用编码黑名单
@@ -69,7 +69,9 @@ async function removeForbiddenApplicationCode (code: string) {
             <tr>
               <th>应用编码</th>
               <th>描述</th>
-              <th class="text-center">添加日期</th>
+              <th class="text-center">
+                添加日期
+              </th>
               <th />
             </tr>
           </thead>
