@@ -4,6 +4,10 @@
   "sourceRoot": "src",
   "compilerOptions": {
     "deleteOutDir": true,
+    "assets": [
+      "**/*.json"
+    ],
+    "watchAssets": true,
     "plugins": [
       {
         "name": "@nestjs/swagger",

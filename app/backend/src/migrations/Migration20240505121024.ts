@@ -1,6 +1,9 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable @typescript-eslint/require-await */
 import { Migration } from '@mikro-orm/migrations'
-import * as forbiddenCodes from './forbidden-application-codes.json'
+
+const forbiddenCodes = require('./forbidden-application-codes.json')
+
 
 export class Migration20240505121024 extends Migration {
   async up(): Promise<void> {
