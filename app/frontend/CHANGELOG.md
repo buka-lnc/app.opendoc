@@ -1,5 +1,11 @@
 # @opendoc/frontend
 
+## 1.4.1
+
+### Patch Changes
+
+- f9858a7: 应用编码黑名单页面在宽屏上限值最大宽度，提升使用体验
+
 ## 1.4.0
 
 ### Minor Changes
