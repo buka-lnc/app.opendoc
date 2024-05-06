@@ -1,5 +1,11 @@
 # @opendoc/backend
 
+## 1.5.1
+
+### Patch Changes
+
+- b1cb526: 迁移脚本无法自动添加预设的应用编码黑名单
+
 ## 1.5.0
 
 ### Minor Changes
