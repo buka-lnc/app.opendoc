@@ -42,6 +42,7 @@ function compile(options: CompileOpenapiOptions): CompileResult[] {
       outdir: options.outdir,
       version: options.project.version,
       dependencies: options.project.dependencies,
+      registry: options.project.registry,
     }
   }
 
@@ -65,7 +66,7 @@ function compile(options: CompileOpenapiOptions): CompileResult[] {
           }
 
           {
-            const fileContent = templates.t_hook({ ...context })
+            const fileContent = templates.t_hook(R.clone(context))
             const filename = formatFilename(getSafeOperationName(pathname, method, operation))
             const filepath = path.join(output, 'hooks', `${filename}.ts`)
 

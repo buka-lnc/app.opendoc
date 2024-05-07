@@ -5,8 +5,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "pnpm -r exec rm -rf node_modules && rm -rf node_modules",
-    "build": "turbo build --filter @opendoc/*",
-    "dev": "turbo dev --filter @opendoc/*"
+    "build": "turbo build --filter=@opendoc/* --filter=!@opendoc/frontend --filter=!@opendoc/backend",
+    "dev": "turbo dev --filter=@opendoc/* --filter=!@opendoc/frontend --filter=!@opendoc/backend"
   },
   "keywords": [
     "opendoc"

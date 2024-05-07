@@ -71,7 +71,7 @@ export class CompilerService {
     const compileDir = path.join(dir, 'compiling')
 
     try {
-      await exec('npm install --production=false && npm run build', { cwd: compileDir })
+      await exec('npm install --production=false --legacy-peer-deps && npm run build', { cwd: compileDir })
     } catch (e) {
       if (e instanceof Error) {
         if ('stdout' in e) {
@@ -160,7 +160,10 @@ export class CompilerService {
         name: sdk.fullName,
         version: sdk.version,
         dependencies: {
-          core: `@${sdk.scope}/${apiDocument.code}`,
+          core: {
+            name: `@${sdk.scope}/${apiDocument.code}`,
+            version: sdk.version,
+          },
         },
       },
     })
@@ -194,7 +197,10 @@ export class CompilerService {
         name: sdk.fullName,
         version: sdk.version,
         dependencies: {
-          core: `@${sdk.scope}/${apiDocument.code}`,
+          core: {
+            name: `@${sdk.scope}/${apiDocument.code}`,
+            version: sdk.version,
+          },
         },
       },
     })

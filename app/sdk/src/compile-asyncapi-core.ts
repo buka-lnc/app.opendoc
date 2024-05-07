@@ -34,6 +34,8 @@ function compile(options: CompileAsyncapiOptions): CompileResult[] {
       name: options.project.name,
       outdir: options.outdir,
       version: options.project.version,
+      dependencies: options.project.dependencies,
+      registry: options.project.registry,
     }
   }
 

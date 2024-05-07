@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { useEffect, useState } from "react"
-import type { RequestParameters, ResponseMap } from "${{package.dependencies.core}}/types/{{h__change-case @root.fileNamingStyle (h__get-safe-operation-name pathname method operation)}}.js"
-import { {{h__get-safe-operation-name pathname method operation}} } from "{{package.dependencies.core}}/operations/{{h__change-case @root.fileNamingStyle (h__get-safe-operation-name pathname method operation)}}.js"
+import type { RequestParameters, ResponseMap } from "${{package.dependencies.core.name}}/types/{{h__change-case @root.fileNamingStyle (h__get-safe-operation-name pathname method operation)}}.js"
+import { {{h__get-safe-operation-name pathname method operation}} } from "{{package.dependencies.core.name}}/operations/{{h__change-case @root.fileNamingStyle (h__get-safe-operation-name pathname method operation)}}.js"
 
 
 export interface Use{{h__change-case "pascalCase" (h__get-safe-operation-name pathname method operation)}}<STATUS extends keyof ResponseMap> {
