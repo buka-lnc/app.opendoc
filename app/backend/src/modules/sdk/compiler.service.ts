@@ -44,6 +44,7 @@ export class CompilerService {
   }
 
   async compile(sdk: Sdk): Promise<void> {
+    this.logger.info(`🚀 ~ CompilerService ~ compile ~ sdk: ${JSON.stringify(sdk, null, 2)}`)
     const dir = this.getTempDir(sdk)
 
     if (sdk.compiler === SdkCompiler.openapiCore) {
@@ -110,13 +111,17 @@ export class CompilerService {
   private async getSdkRawDocumentFile(sdk: Sdk): Promise<string> {
     const apiDocumentFile = await sdk.apiDocumentFile.loadOrFail()
 
+    this.logger.debug('before create stream')
     const stream = await this.apiDocumentFileService.queryRawDocumentFileById(apiDocumentFile.id)
+    this.logger.debug('after create stream')
     const buf = await buffer(stream)
     return buf.toString('utf8')
   }
 
   async compileOpenapiCore(sdk: Sdk, dir: string) {
+    // this.logger.info()
     const swagger = await this.getSdkRawDocumentFile(sdk)
+    console.log('🚀 ~ CompilerService ~ compileOpenapiCore ~ swagger:', swagger)
 
     const compileDir = path.join(dir, 'compiling')
     await fs.ensureDir(compileDir)

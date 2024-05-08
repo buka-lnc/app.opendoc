@@ -33,7 +33,7 @@ export class OssService implements StandardStorageService {
   }
 
   async writeFile(filepath: string, content: Buffer): Promise<void> {
-    this.logger.debug('Writing file to OSS')
+    this.logger.debug(`Writing file to OSS: ${filepath}`)
     const command = new PutObjectCommand({
       Key: filepath,
       Bucket: this.storageConfig.ossBucket,
@@ -44,7 +44,7 @@ export class OssService implements StandardStorageService {
   }
 
   async readFile(filepath: string): Promise<Buffer> {
-    this.logger.debug('Reading file from OSS')
+    this.logger.debug(`Reading file from OSS: ${filepath}`)
     const reader = await this.createStream(filepath)
     const buf = await buffer(reader)
     return buf

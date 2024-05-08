@@ -1,5 +1,6 @@
 import { EnsureRequestContext, EntityManager, MikroORM } from '@mikro-orm/core'
 import * as fs from 'fs-extra'
+import compressing from 'compressing'
 import { Injectable } from '@nestjs/common'
 import { HealthCheckResult, HealthCheckService } from '@nestjs/terminus'
 import { API_DOCUMENT_TYPE } from './modules/api-document/constants/api-document-type.enum'
@@ -34,16 +35,24 @@ export class AppService {
     await this.em.flush()
   }
 
+  private async compress(buffer: Buffer): Promise<Buffer> {
+    const { temporaryFile } = await import('tempy')
+    const tempFile = temporaryFile({ extension: 'tgz' })
+    await compressing.tgz.compressFile(buffer, tempFile, { relativePath: '.root' })
+    return await fs.readFile(tempFile)
+  }
+
   @EnsureRequestContext()
   async registerOpenDocDocuments(openapi: OpenAPIObject) {
     const buf = await fs.readFile('README.md')
+
     await this.apiDocumentService.register({
       applicationCode: 'opendoc',
       apiDocumentType: API_DOCUMENT_TYPE.MARKDOWN,
       apiDocumentCode: 'readme',
       apiDocumentOrder: 1,
       apiDocumentTitle: 'README',
-      apiDocumentFile: buf,
+      apiDocumentFile: await this.compress(buf),
     })
 
     await this.apiDocumentService.register({
@@ -52,7 +61,7 @@ export class AppService {
       apiDocumentCode: 'openapi',
       apiDocumentTitle: 'OpenAPI',
       apiDocumentOrder: 2,
-      apiDocumentFile: Buffer.from(JSON.stringify(openapi), 'utf-8'),
+      apiDocumentFile: await this.compress(Buffer.from(JSON.stringify(openapi), 'utf-8')),
     })
   }
 }

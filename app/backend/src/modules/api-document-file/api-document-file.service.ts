@@ -1,5 +1,7 @@
 import { EntityManager, MikroORM } from '@mikro-orm/core'
 import semver from 'semver'
+import compressing from 'compressing'
+import * as fs from 'fs-extra'
 import * as path from 'path'
 import { InjectRepository } from '@mikro-orm/nestjs'
 import { Injectable } from '@nestjs/common'
@@ -15,6 +17,7 @@ import { ApiDocumentFileCreatedEvent } from './events/api-document-file-created.
 import { ApiDocumentFileDeletedEvent } from './events/api-document-file-deleted.event'
 import { StorageService } from '../storage/storage.service'
 import { Readable } from 'stream'
+import { CacheService } from '../storage/cache.service'
 
 
 @Injectable()
@@ -29,6 +32,7 @@ export class ApiDocumentFileService {
     private readonly orm: MikroORM,
 
     private readonly storageService: StorageService,
+    private readonly cacheService: CacheService,
 
     @InjectRepository(ApiDocument)
     private readonly apiDocumentRepo: EntityRepository<ApiDocumentFile>,
@@ -68,7 +72,7 @@ export class ApiDocumentFileService {
   }
 
   getFilepath(file: ApiDocumentFile): string {
-    return path.join('api-document-file', file.apiDocument.id, file.version)
+    return path.join('api-document-file', file.apiDocument.id, `${file.version}.tgz`)
   }
 
   async create(dto: CreateApiDocumentFileDTO): Promise<ApiDocumentFile> {
@@ -136,12 +140,32 @@ export class ApiDocumentFileService {
     return files.sort((f1, f2) => semver.rcompare(f1.version, f2.version))
   }
 
+  private async queryRawDocumentFile(documentFile: ApiDocumentFile): Promise<Readable> {
+    const filepath = this.getFilepath(documentFile)
+    const cacheFilepath = path.join(this.cacheService.directory, filepath)
+
+    this.logger.debug(`cacheFilepath: ${cacheFilepath}`)
+    const cacheExists = await fs.pathExists(cacheFilepath)
+    this.logger.debug(`cacheExists: ${cacheExists}`)
+    if (!cacheExists) {
+      this.logger.debug('cacheFilepath not exists, uncompressing')
+      const buf = await this.storageService.readFile(filepath)
+      await fs.ensureDir(path.dirname(cacheFilepath))
+      await fs.writeFile(cacheFilepath, buf)
+      this.logger.debug('readFile done')
+      throw new Error('123')
+      // await compressing.tgz.uncompress(buf, cacheFilepath)
+    }
+
+    this.logger.debug('cacheFilepath exists, creating stream')
+    const stream = fs.createReadStream(cacheFilepath)
+    const intoStream = (await import('into-stream')).default
+    return intoStream(stream)
+  }
+
   async queryRawDocumentFileById(documentFileId: string): Promise<Readable> {
     const documentFile = await this.em.findOneOrFail(ApiDocumentFile, documentFileId)
-    const filepath = this.getFilepath(documentFile)
-    const stream: Readable = await this.storageService.createStream(filepath)
-    return stream
-    // return fs.createReadStream(filepath)
+    return this.queryRawDocumentFile(documentFile)
   }
 
   async queryRawDocumentFileByVersion(apiDocumentId: string, version: string): Promise<Readable> {
@@ -150,9 +174,8 @@ export class ApiDocumentFileService {
       apiDocument,
       version: version === 'latest' ? null : version,
     })
-    const filepath = this.getFilepath(documentFile)
-    const stream: Readable = await this.storageService.createStream(filepath)
-    return stream
+
+    return this.queryRawDocumentFile(documentFile)
   }
 
   async queryDocumentFileByVersion(apiDocumentId: string, version: string): Promise<ApiDocumentFile> {

@@ -5,6 +5,7 @@ import { CreateApiDocumentDTO } from './create-api-document.dto'
 export class RegisterApiDocumentDTO extends CreateApiDocumentDTO {
   /**
    * 文档文件
+   * tgz 压缩文件
    */
   @ApiProperty({
     type: 'file',
