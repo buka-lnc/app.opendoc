@@ -25,8 +25,7 @@ interface HeaderArg {
  * @deprecated
  */
 export function deprecatedExample<STATUS extends keyof ResponseMap>(arg?: QueryArg & ParamArg & HeaderArg): Keq<ResponseMap[STATUS]> {
-  const req = request.post<ResponseMap[STATUS]>
-  ("/api/deprecated-example/:id")
+  const req = request.post<ResponseMap[STATUS]>("/api/deprecated-example/:id")
     .option('module', {
       name: "backend",
       pathname: "/api/deprecated-example/:id",

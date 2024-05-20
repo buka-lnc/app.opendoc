@@ -1,10 +1,10 @@
 import { Keq } from 'keq'
 import { request } from 'keq'
-import { QueryApplicationsResponseDTO } from "./components/schemas/query_applications_response_dto"
+import { ResponseOfQueryApplicationsDTO } from "./components/schemas/response_of_query_applications_dto"
 
 
 interface ResponseMap {
-  "200": QueryApplicationsResponseDTO
+  "200": ResponseOfQueryApplicationsDTO
   "500": unknown
 }
 
@@ -12,8 +12,8 @@ interface ResponseMap {
 interface QueryArg {
     "title"?: string
     "code"?: string
-    "limit": number
-    "offset": number
+    "limit"?: number
+    "offset"?: number
 }
 
 interface ParamArg {
@@ -24,8 +24,7 @@ interface HeaderArg {
 
 
 export function queryApplications<STATUS extends keyof ResponseMap>(arg?: QueryArg & ParamArg & HeaderArg): Keq<ResponseMap[STATUS]> {
-  const req = request.get<ResponseMap[STATUS]>
-  ("/api/application")
+  const req = request.get<ResponseMap[STATUS]>("/api/application")
     .option('module', {
       name: "backend",
       pathname: "/api/application",

@@ -1,5 +1,5 @@
 import { ToNumber } from '@buka/class-transformer-extra'
-import { IsInt } from 'class-validator'
+import { IsInt, Min } from 'class-validator'
 
 export class PaginationDTO {
   /**
@@ -7,6 +7,7 @@ export class PaginationDTO {
    */
   @ToNumber()
   @IsInt()
+  @Min(1)
   limit!: number
 
   /**
@@ -14,5 +15,6 @@ export class PaginationDTO {
    */
   @ToNumber()
   @IsInt()
+  @Min(0)
   offset!: number
 }

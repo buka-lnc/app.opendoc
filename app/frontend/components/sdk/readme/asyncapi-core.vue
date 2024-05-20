@@ -51,7 +51,7 @@ const sdk = toRef(props, 'sdk')
       替换为
 
       <nuxt-link
-        :to="`/application/${$route.params.application_id}/api-document/${$route.params.api_document_id}/${$route.params.version}/openapi/ui/operation`"
+        :to="`/application/${$route.params.application_id}/api-document/${$route.params.api_document_id}/${$route.params.version}/openapi/operation`"
       >
         <icon-schema class="inline-block w-8 h-8" />
       </nuxt-link>

@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { useElementHover } from '@vueuse/core'
-import { OpendocOperation } from '~/types/opendoc-operation.js'
+import { OpenapiOperation } from '~/types/openapi-operation'
 
 const props = defineProps<{
-  operation: OpendocOperation
+  operation: OpenapiOperation
 }>()
 
 const deprecated = computed(() => !!props.operation.deprecated)
-const description = computed(() => props.operation.value.description)
+const description = computed(() => props.operation.description)
 
 const card = ref()
 const isCardHover = useElementHover(card)
@@ -40,13 +40,13 @@ const isCardHover = useElementHover(card)
           class="leading-4 max-w-full truncate font-sans"
           :class="deprecated && 'text-base-content/40'"
         >
-          {{ props.operation.title }}
+          {{ operation.summary || operation.operationId }}
         </span>
         <span
           class="text-xs leading-4 text-gray-400 max-w-full truncate"
           :class="deprecated && '!text-base-content/40'"
         >
-          {{ props.operation.pathname }}
+          {{ operation.$pathname }}
         </span>
       </div>
     </div>

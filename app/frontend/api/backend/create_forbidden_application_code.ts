@@ -19,8 +19,7 @@ interface HeaderArg {
 
 
 export function createForbiddenApplicationCode<STATUS extends keyof ResponseMap>(arg?: QueryArg & ParamArg & HeaderArg & (CreateForbiddenApplicationCodeDTO)): Keq<ResponseMap[STATUS]> {
-  const req = request.post<ResponseMap[STATUS]>
-  ("/api/forbidden-application-code")
+  const req = request.post<ResponseMap[STATUS]>("/api/forbidden-application-code")
     .option('module', {
       name: "backend",
       pathname: "/api/forbidden-application-code",

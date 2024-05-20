@@ -1,8 +1,11 @@
 import * as R from 'ramda'
-import { SCHEMA_INJECT_KEY } from '~/constants/schema-inject-key'
+import { DEREFERENCE_SCHEMA_INJECT_KEY } from '~/constants/dereference-schema-inject-key'
 
+/**
+ * 将 $ref 属性解析为实际的引用值
+ */
 export function useDereferenceFn (): (<T>(v: Object | undefined) => [T | undefined, string[]]) {
-  const schema = inject(SCHEMA_INJECT_KEY)
+  const schema = inject(DEREFERENCE_SCHEMA_INJECT_KEY)
 
   return function dereference<T> (v: Object | undefined): [T | undefined, string[]] {
     const paths: string[] = []

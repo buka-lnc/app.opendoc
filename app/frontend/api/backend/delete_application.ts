@@ -20,8 +20,7 @@ interface HeaderArg {
 
 
 export function deleteApplication<STATUS extends keyof ResponseMap>(arg?: QueryArg & ParamArg & HeaderArg): Keq<ResponseMap[STATUS]> {
-  const req = request.delete<ResponseMap[STATUS]>
-  ("/api/application/:applicationIdOrCode")
+  const req = request.delete<ResponseMap[STATUS]>("/api/application/:applicationIdOrCode")
     .option('module', {
       name: "backend",
       pathname: "/api/application/:applicationIdOrCode",

@@ -23,8 +23,7 @@ interface HeaderArg {
  * 查询包的元数据
  */
 export function getPackageMetadata<STATUS extends keyof ResponseMap>(arg?: QueryArg & ParamArg & HeaderArg): Keq<ResponseMap[STATUS]> {
-  const req = request.get<ResponseMap[STATUS]>
-  ("/api/registry/:packageScope/:packageName")
+  const req = request.get<ResponseMap[STATUS]>("/api/registry/:packageScope/:packageName")
     .option('module', {
       name: "backend",
       pathname: "/api/registry/:packageScope/:packageName",

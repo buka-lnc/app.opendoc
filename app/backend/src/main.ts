@@ -36,8 +36,7 @@ async function bootstrap() {
   const openapiDocument = swaggerEnhance(app)
   await app.init()
   const appService = app.get(AppService)
-  await appService.registerApplication()
-  await appService.registerOpenDocDocuments(openapiDocument)
+  await appService.registerOpendoc(openapiDocument)
 
   await app.listen(appConfig.port)
   logger.log(`application listen on ${appConfig.host}:${appConfig.port}`)

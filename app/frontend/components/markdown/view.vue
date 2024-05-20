@@ -1,14 +1,17 @@
 <template>
-  <!-- eslint-disable-next-line vue/no-v-html -->
-  <div
-    :class="[
-      'font-sans',
-      'prose prose-invert lg:prose-xl',
-      'prose-pre:shadow-lg',
-      'markdown',
-    ]"
-    v-html="html"
-  />
+  <StuffedLoading :pending="pending">
+    <!-- eslint-disable-next-line vue/no-v-html -->
+    <div
+      v-bind="$attrs"
+      :class="[
+        'font-sans',
+        'prose prose-invert lg:prose-xl',
+        'prose-pre:shadow-lg',
+        'markdown',
+      ]"
+      v-html="html"
+    />
+  </StuffedLoading>
 </template>
 <script setup lang="ts">
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
@@ -24,6 +27,10 @@ import remark2rehype from 'remark-rehype'
 import rehypeShiki from '@shikijs/rehype'
 import { unified } from 'unified'
 import { remarkReplaceImageUrl } from '~/utils/remark-replace-image-url'
+
+defineOptions({
+  inheritAttrs: false,
+})
 
 const props = defineProps<{
   content: string
@@ -53,7 +60,8 @@ const processor = unified()
   })
   .use(rehypeStringify)
 
-const { data: html } = useAsyncData(
+// const html = ref<string>('')
+const { pending, data: html } = useAsyncData(
   async () => {
     const html = await processor.process(props.content)
     return html.value

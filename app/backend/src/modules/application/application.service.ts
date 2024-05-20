@@ -1,3 +1,4 @@
+import * as R from 'ramda'
 import { ForbiddenApplicationCodeService } from './forbidden-application-code.service'
 import { EntityManager, MikroORM } from '@mikro-orm/core'
 import { BadRequestException, Injectable } from '@nestjs/common'
@@ -5,7 +6,7 @@ import { RegisterApplicationDTO } from './dto/register-application.dto'
 import { Application } from './entity/application.entity'
 import { InjectRepository } from '@mikro-orm/nestjs'
 import { QueryApplicationsDTO } from './dto/query-applications.dto'
-import { QueryApplicationsResponseDTO } from './dto/query-applications-response.dto'
+import { ResponseOfQueryApplicationsDTO } from './dto/response-of-query-applications.dto'
 import { EntityRepository } from '@mikro-orm/mysql'
 import { CreateApplicationDTO } from './dto/create-application.dto'
 
@@ -59,22 +60,17 @@ export class ApplicationService {
   }
 
   async queryByIdOrCode(idOrCode: string): Promise<Application> {
-    const app = await this.applicationRepo.findOneOrFail(
-      {
-        $or: [
-          { id: idOrCode },
-          { code: idOrCode },
-        ],
-      },
-      {
-        populate: ['apiDocuments'],
-      }
-    )
+    const app = await this.applicationRepo.findOneOrFail({
+      $or: [
+        { id: idOrCode },
+        { code: idOrCode },
+      ],
+    })
 
     return app
   }
 
-  async queryAll(dto: QueryApplicationsDTO): Promise<QueryApplicationsResponseDTO> {
+  async queryAll(dto: QueryApplicationsDTO): Promise<ResponseOfQueryApplicationsDTO> {
     const qb = this.applicationRepo.createQueryBuilder('app')
       .select('*')
 
@@ -86,18 +82,20 @@ export class ApplicationService {
       void qb.andWhere({ code: { $like: `%${dto.code}%` } })
     }
 
-    if (dto.limit || dto.offset) {
-      void qb.limit(dto.limit || 10).offset(dto.offset || 0)
+    if (!R.isNil(dto.offset)) {
+      void qb
+        .limit(dto.limit || 10)
+        .offset(dto.offset || 0)
     }
 
     const [results, total] = await qb.getResultAndCount()
 
     return {
       results,
-      page: {
+      pagination: {
         total,
         limit: dto.limit || 10,
-        offset: dto.offset || 0,
+        offset: dto.offset || -1,
       },
     }
   }
@@ -112,10 +110,10 @@ export class ApplicationService {
       },
       {
         populate: [
-          'apiDocuments',
-          'apiDocuments.apiDocumentFiles',
-          'apiDocuments.apiDocumentFiles.sdks',
-          'apiDocuments.apiDocumentFiles.sdks.sdkPublishLock',
+          'sheets',
+          'sheets.apiFiles',
+          'sheets.apiFiles.sdks',
+          'sheets.apiFiles.sdks.sdkPublishLock',
         ],
       }
     )

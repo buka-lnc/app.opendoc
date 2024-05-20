@@ -8,14 +8,14 @@ import {
   IconHttpPatch,
   IconHttpOptions,
 } from '@tabler/icons-vue'
-import { OpendocOperation } from '~/types/opendoc-operation'
+import { OpenapiOperation } from '~/types/openapi-operation'
 
 const props = defineProps<{
-  operation: OpendocOperation
+  operation: OpenapiOperation
 }>()
 
 const deprecated = computed(() => !!props.operation.deprecated)
-const method = computed(() => props.operation.method)
+const method = computed(() => props.operation.$method)
 const textColor = useOpenapiMethodTextColor(method)
 const color = computed(() => (deprecated.value ? 'text-base-content/40' : textColor.value))
 </script>

@@ -7,7 +7,7 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{
-  'changed:application': [code: string]
+  'updated:application': [code: string]
 }>()
 
 const title = ref('')
@@ -24,7 +24,7 @@ watchDebounced(
       title: title.value,
     })
 
-    emit('changed:application', code)
+    emit('updated:application', code)
   },
   { debounce: 500, maxWait: 1000 },
 )

@@ -8,15 +8,16 @@ import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { AppConfig } from './config/app.config'
 import { PinoConfig } from './config/pino.config'
-import { ApiDocumentModule } from './modules/api-document/api-document.module'
 import { ApplicationModule } from './modules/application/application.module'
 import { ExampleModule } from './modules/example/example.module'
 import { RegistryModule } from './modules/registry/registry.module'
-import { ApiDocumentFileModule } from './modules/api-document-file/api-document-file.module'
 import { ScheduleModule } from '@nestjs/schedule'
 import { StorageConfig } from './config/storage.config'
 import { MysqlConfig } from './config/mysql.config'
 import { StorageModule } from './modules/storage/storage.module'
+import { SheetModule } from './modules/sheet/sheet.module'
+import { ApiFileModule } from './modules/api-file/api-file.module'
+import { SheetVersionModule } from './modules/sheet-version/sheet-version.module'
 
 
 @Module({
@@ -41,11 +42,12 @@ import { StorageModule } from './modules/storage/storage.module'
 
     TerminusModule,
 
-    StorageModule,
-    ApiDocumentModule,
-    ApplicationModule,
-    ApiDocumentFileModule,
     ExampleModule,
+    StorageModule,
+    ApplicationModule,
+    SheetModule,
+    SheetVersionModule,
+    ApiFileModule,
     RegistryModule,
   ],
   controllers: [AppController],

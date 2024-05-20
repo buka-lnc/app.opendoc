@@ -17,6 +17,9 @@ export default (async function loadConfig() {
     ...config,
     entities: ['dist/**/*.entity.js'],
     extensions: [Migrator],
+    serialization: {
+      forceObject: true,
+    },
     migrations: {
       path: 'dist/src/migrations',
       pathTs: 'src/migrations',

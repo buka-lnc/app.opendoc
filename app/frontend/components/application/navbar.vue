@@ -1,39 +1,38 @@
 <script setup lang="ts">
 import { IconSettings, IconPlus, IconArrowBackUp } from '@tabler/icons-vue'
-import * as R from 'ramda'
-import { Application } from '~/api/backend/components/schemas'
+import { useRouteParams } from '@vueuse/router'
+import { APPLICATION_INJECT_KEY } from '~/constants/application-inject-key'
 
-const props = defineProps<{
-  application: Application
-}>()
+const { application, sheets } = inject(APPLICATION_INJECT_KEY, { application: toRef(null), sheets: toRef([]) })
+const applicationId = useRouteParams<string>('application_id')
+const sheetId = useRouteParams<string>('sheet_id')
+const prefix = computed(() => `/application/${applicationId.value}`)
 
 defineEmits<{
-  'changed:application': [code: string]
-  'created:apiDocument': [code: string]
-  'deleted:apiDocument': [code: string]
-  'changed:apiDocument': [code: string]
+  'updated:application': [code: string]
+  'created:sheet': [code: string]
+  'deleted:sheet': [code: string]
+  'updated:sheet': [code: string]
 }>()
 
 const showApplicationSettings = ref(false)
 const showApiDocumentCreateModal = ref(false)
 
-const apiDocuments = computed(() => R.sort(R.ascend(R.prop('order')), props.application.apiDocuments))
 </script>
 
 <template>
-  <div class="d-navbar bg-base-100">
-    <ApplicationSettingsModal
+  <div v-if="application" class="d-navbar bg-base-100">
+    <application-settings-modal
       v-model:show="showApplicationSettings"
-      :application="props.application"
-      @changed:application="$emit('changed:application', $event)"
-      @deleted:api-document="$emit('deleted:apiDocument', $event)"
-      @changed:api-document="$emit('changed:apiDocument', $event)"
+      @updated:application="$emit('updated:application', $event)"
+      @deleted:sheet="$emit('deleted:sheet', $event)"
+      @updated:sheet="$emit('updated:sheet', $event)"
     />
 
-    <ApiDocumentCreateModal
+    <sheet-create-modal
       v-model:show="showApiDocumentCreateModal"
-      :application="props.application"
-      @created:api-document="$emit('created:apiDocument', $event)"
+      :application="application"
+      @created:sheet="$emit('created:sheet', $event)"
     />
 
     <div class="d-navbar-start space-x-2">
@@ -46,50 +45,50 @@ const apiDocuments = computed(() => R.sort(R.ascend(R.prop('order')), props.appl
 
       <div class="flex items-baseline space-x-1">
         <h1 class="text-xl">
-          {{ props.application.title }}
+          {{ application.title }}
         </h1>
-        <span class="text-gray-400">{{ props.application.code }}</span>
+        <span class="text-gray-400">{{ application.code }}</span>
       </div>
     </div>
 
     <div role="tablist" class="d-navbar-center">
       <div class="d-tabs d-tabs-boxed d-tabs">
         <template
-          v-for="apiDocument of apiDocuments"
-          :key="apiDocument.id"
+          v-for="sheet of sheets"
+          :key="sheet.id"
         >
-          <NuxtLink
-            v-if="apiDocument.type === 'openapi'"
-            :to="`/application/${$route.params.application_id}/api-document/${apiDocument.id}`"
+          <nuxt-link
+            v-if="sheet.type === 'openapi'"
+            :to="`${prefix}/sheet/${sheet.id}`"
             class="d-tab"
             :class="{
-              'd-tab-active': $route.params.api_document_id === apiDocument.id,
+              'd-tab-active': sheetId === sheet.id,
             }"
           >
-            {{ apiDocument.title }}
-          </NuxtLink>
+            {{ sheet.title }}
+          </nuxt-link>
 
-          <NuxtLink
-            v-if="apiDocument.type === 'markdown'"
-            :to="`/application/${$route.params.application_id}/api-document/${apiDocument.id}`"
+          <nuxt-link
+            v-if="sheet.type === 'markdown'"
+            :to="`${prefix}/sheet/${sheet.id}`"
             class="d-tab"
             :class="{
-              'd-tab-active': $route.params.api_document_id === apiDocument.id,
+              'd-tab-active': sheetId === sheet.id,
             }"
           >
-            {{ apiDocument.title }}
-          </NuxtLink>
+            {{ sheet.title }}
+          </nuxt-link>
 
-          <NuxtLink
-            v-if="apiDocument.type === 'asyncapi'"
-            :to="`/application/${$route.params.application_id}/api-document/${apiDocument.id}`"
+          <nuxt-link
+            v-if="sheet.type === 'asyncapi'"
+            :to="`${prefix}/sheet/${sheet.id}`"
             class="d-tab"
             :class="{
-              'd-tab-active': $route.params.api_document_id === apiDocument.id,
+              'd-tab-active': sheetId === sheet.id,
             }"
           >
-            {{ apiDocument.title }}
-          </NuxtLink>
+            {{ sheet.title }}
+          </nuxt-link>
         </template>
       </div>
     </div>

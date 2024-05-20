@@ -1,4 +1,4 @@
-import { QueryApplicationsResponseDTO } from './dto/query-applications-response.dto'
+import { ResponseOfQueryApplicationsDTO } from './dto/response-of-query-applications.dto'
 import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common'
 import { ApplicationService } from './application.service'
 import { RegisterApplicationDTO } from './dto/register-application.dto'
@@ -38,7 +38,7 @@ export class ApplicationController {
   @ApiOperation({ summary: '查询应用列表' })
   async queryApplications(
     @Query() dto: QueryApplicationsDTO
-  ): Promise<QueryApplicationsResponseDTO> {
+  ): Promise<ResponseOfQueryApplicationsDTO> {
     return this.applicationService.queryAll(dto)
   }
 

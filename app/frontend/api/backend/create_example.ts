@@ -29,8 +29,7 @@ interface HeaderArg {
  * 创建 Example
  */
 export function createExample<STATUS extends keyof ResponseMap>(arg?: QueryArg & ParamArg & HeaderArg & (ExampleDTO)): Keq<ResponseMap[STATUS]> {
-  const req = request.post<ResponseMap[STATUS]>
-  ("/api/example")
+  const req = request.post<ResponseMap[STATUS]>("/api/example")
     .option('module', {
       name: "backend",
       pathname: "/api/example",

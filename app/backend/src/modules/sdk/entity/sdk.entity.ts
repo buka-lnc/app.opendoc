@@ -1,12 +1,14 @@
 import { Cascade, Entity, ManyToOne, OneToOne, Opt, Property, Ref, t } from '@mikro-orm/core'
 import { BaseEntity } from '~/entities/base.entity'
-import { ApiDocumentFile } from '~/modules/api-document-file/entities/api-document-file.entity'
 import { SdkPublishLock } from './sdk-publish-lock.entity'
 import { ApiHideProperty, ApiProperty } from '@nestjs/swagger'
-import { ApiDocument } from '~/modules/api-document/entities/api-document.entity'
 import { SdkStatus } from '../constant/sdk-status'
 import { IsEnum } from 'class-validator'
 import { SdkCompiler } from '../constant/sdk-compiler'
+import { Sheet } from '~/modules/sheet/entity/sheet.entity'
+import { ApiFile } from '~/modules/api-file/entities/api-file.entity'
+import { SheetVersion } from '~/modules/sheet-version/entity/sheet-version.entity'
+import { ApiForeignKey } from '~/decorators/api-reference.decorator'
 
 @Entity()
 export class Sdk extends BaseEntity {
@@ -39,25 +41,6 @@ export class Sdk extends BaseEntity {
     comment: '编译器',
   })
   compiler!: SdkCompiler
-
-  /**
-   * 版本
-   */
-  @Property({
-    columnType: 'varchar(63)',
-    comment: '版本',
-  })
-  version!: string
-
-  /**
-   * 标签
-   */
-  @Property({
-    columnType: 'varchar(24)',
-    nullable: true,
-    comment: '标签',
-  })
-  tag?: string
 
   /**
    * sdk 可用状态
@@ -97,27 +80,42 @@ export class Sdk extends BaseEntity {
   })
   integrity?: string
 
+  /**
+   * 版本号
+   */
   @ApiProperty({
-    type: () => ApiDocument,
-    description: '所属文档',
+    type: () => SheetVersion,
   })
   @ManyToOne({
-    entity: () => ApiDocument,
+    entity: () => SheetVersion,
+    comment: '版本号',
+    nullable: false,
+    ref: true,
+    lazy: false,
+  })
+  version!: Ref<SheetVersion>
+
+  /**
+   * 所属文档
+   */
+  @ApiForeignKey()
+  @ManyToOne({
+    entity: () => Sheet,
     comment: '所属文档',
     ref: true,
   })
-  apiDocument!: Ref<ApiDocument>
+  sheet!: Ref<Sheet>
 
-  @ApiProperty({
-    type: () => ApiDocumentFile,
-    description: '关联的文档文件',
-  })
+  /**
+   * 关联的文档文件
+   */
+  @ApiForeignKey()
   @ManyToOne({
-    entity: () => ApiDocumentFile,
+    entity: () => ApiFile,
     comment: '关联的文档文件',
     ref: true,
   })
-  apiDocumentFile!: Ref<ApiDocumentFile>
+  apiFile!: Ref<ApiFile>
 
   @ApiHideProperty()
   @OneToOne({

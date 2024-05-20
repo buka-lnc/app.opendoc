@@ -34,8 +34,7 @@ interface HeaderArg {
  * 删除 Example
  */
 export function updateExample<STATUS extends keyof ResponseMap>(arg?: QueryArg & ParamArg & HeaderArg): Keq<ResponseMap[STATUS]> {
-  const req = request.post<ResponseMap[STATUS]>
-  ("/api/example/:id")
+  const req = request.post<ResponseMap[STATUS]>("/api/example/:id")
     .option('module', {
       name: "backend",
       pathname: "/api/example/:id",

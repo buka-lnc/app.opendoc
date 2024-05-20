@@ -121,20 +121,101 @@
           "comment": "更新时间",
           "mappedType": "datetime"
         },
-        "type": {
-          "name": "type",
-          "type": "enum('markdown','openapi','asyncapi')",
+        "code": {
+          "name": "code",
+          "type": "varchar(255)",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "enumItems": [
-            "markdown",
-            "openapi",
-            "asyncapi"
+          "comment": "唯一应用编码",
+          "mappedType": "string"
+        },
+        "description": {
+          "name": "description",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "''",
+          "comment": "描述",
+          "mappedType": "string"
+        }
+      },
+      "name": "forbidden_application_code",
+      "indexes": [
+        {
+          "columnNames": [
+            "code"
           ],
-          "comment": "文档类型",
-          "mappedType": "enum"
+          "composite": false,
+          "keyName": "forbidden_application_code_code_unique",
+          "constraint": true,
+          "primary": false,
+          "unique": true
+        },
+        {
+          "keyName": "PRIMARY",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "constraint": true,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {},
+      "nativeEnums": {}
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "bigint",
+          "unsigned": true,
+          "autoincrement": true,
+          "primary": true,
+          "nullable": false,
+          "comment": "主键",
+          "mappedType": "bigint"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "datetime",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 0,
+          "default": "CURRENT_TIMESTAMP",
+          "comment": "创建时间",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "datetime",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 0,
+          "default": "CURRENT_TIMESTAMP",
+          "comment": "更新时间",
+          "mappedType": "datetime"
+        },
+        "title": {
+          "name": "title",
+          "type": "varchar(127)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "''",
+          "comment": "文档名称",
+          "mappedType": "string"
         },
         "code": {
           "name": "code",
@@ -157,16 +238,20 @@
           "comment": "文档排序",
           "mappedType": "integer"
         },
-        "title": {
-          "name": "title",
-          "type": "varchar(127)",
+        "type": {
+          "name": "type",
+          "type": "enum('markdown','openapi','asyncapi')",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "default": "''",
-          "comment": "文档名称",
-          "mappedType": "string"
+          "enumItems": [
+            "markdown",
+            "openapi",
+            "asyncapi"
+          ],
+          "comment": "文档类型",
+          "mappedType": "enum"
         },
         "mode": {
           "name": "mode",
@@ -177,16 +262,6 @@
           "nullable": false,
           "default": "'push'",
           "comment": "文档同步模式",
-          "mappedType": "string"
-        },
-        "cron_sync_url": {
-          "name": "cron_sync_url",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "comment": "文档文件的定时同步地址",
           "mappedType": "string"
         },
         "application_id": {
@@ -200,14 +275,14 @@
           "mappedType": "bigint"
         }
       },
-      "name": "api_document",
+      "name": "sheet",
       "indexes": [
         {
           "columnNames": [
             "code"
           ],
           "composite": false,
-          "keyName": "api_document_code_index",
+          "keyName": "sheet_code_index",
           "constraint": false,
           "primary": false,
           "unique": false
@@ -217,21 +292,10 @@
             "application_id"
           ],
           "composite": false,
-          "keyName": "api_document_application_id_index",
+          "keyName": "sheet_application_id_index",
           "constraint": false,
           "primary": false,
           "unique": false
-        },
-        {
-          "keyName": "api_document_application_id_code_unique",
-          "columnNames": [
-            "application_id",
-            "code"
-          ],
-          "composite": true,
-          "constraint": true,
-          "primary": false,
-          "unique": true
         },
         {
           "keyName": "PRIMARY",
@@ -246,12 +310,12 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "api_document_application_id_foreign": {
-          "constraintName": "api_document_application_id_foreign",
+        "sheet_application_id_foreign": {
+          "constraintName": "sheet_application_id_foreign",
           "columnNames": [
             "application_id"
           ],
-          "localTableName": "api_document",
+          "localTableName": "sheet",
           "referencedColumnNames": [
             "id"
           ],
@@ -297,68 +361,34 @@
           "comment": "更新时间",
           "mappedType": "datetime"
         },
-        "hash": {
-          "name": "hash",
-          "type": "varchar(10)",
+        "url": {
+          "name": "url",
+          "type": "varchar(255)",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "default": "''",
-          "comment": "文档文件的指纹",
+          "comment": "接口地址",
           "mappedType": "string"
         },
-        "tag": {
-          "name": "tag",
-          "type": "varchar(24)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "comment": "文档文件的标签",
-          "mappedType": "string"
-        },
-        "version": {
-          "name": "version",
-          "type": "varchar(63)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "default": "'1.0.0'",
-          "comment": "文档文件的版本",
-          "mappedType": "string"
-        },
-        "api_document_id": {
-          "name": "api_document_id",
+        "sheet_id": {
+          "name": "sheet_id",
           "type": "bigint",
           "unsigned": true,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "comment": "文档",
           "mappedType": "bigint"
         }
       },
-      "name": "api_document_file",
+      "name": "sheet_pull_crontab",
       "indexes": [
         {
           "columnNames": [
-            "api_document_id"
+            "sheet_id"
           ],
           "composite": false,
-          "keyName": "api_document_file_api_document_id_index",
-          "constraint": false,
-          "primary": false,
-          "unique": false
-        },
-        {
-          "keyName": "api_document_file_api_document_id_version_unique",
-          "columnNames": [
-            "api_document_id",
-            "version"
-          ],
-          "composite": true,
+          "keyName": "sheet_pull_crontab_sheet_id_unique",
           "constraint": true,
           "primary": false,
           "unique": true
@@ -376,16 +406,16 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "api_document_file_api_document_id_foreign": {
-          "constraintName": "api_document_file_api_document_id_foreign",
+        "sheet_pull_crontab_sheet_id_foreign": {
+          "constraintName": "sheet_pull_crontab_sheet_id_foreign",
           "columnNames": [
-            "api_document_id"
+            "sheet_id"
           ],
-          "localTableName": "api_document_file",
+          "localTableName": "sheet_pull_crontab",
           "referencedColumnNames": [
             "id"
           ],
-          "referencedTableName": "api_document",
+          "referencedTableName": "sheet",
           "updateRule": "cascade"
         }
       },
@@ -427,35 +457,55 @@
           "comment": "更新时间",
           "mappedType": "datetime"
         },
-        "code": {
-          "name": "code",
-          "type": "varchar(255)",
+        "version": {
+          "name": "version",
+          "type": "varchar(63)",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "comment": "唯一应用编码",
+          "comment": "版本号",
           "mappedType": "string"
         },
-        "description": {
-          "name": "description",
-          "type": "varchar(255)",
+        "tag": {
+          "name": "tag",
+          "type": "varchar(24)",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
-          "nullable": false,
-          "comment": "描述",
+          "nullable": true,
+          "comment": "标签",
           "mappedType": "string"
+        },
+        "sheet_id": {
+          "name": "sheet_id",
+          "type": "bigint",
+          "unsigned": true,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "mappedType": "bigint"
         }
       },
-      "name": "forbidden_application_code",
+      "name": "sheet_version",
       "indexes": [
         {
           "columnNames": [
-            "code"
+            "sheet_id"
           ],
           "composite": false,
-          "keyName": "forbidden_application_code_code_unique",
+          "keyName": "sheet_version_sheet_id_index",
+          "constraint": false,
+          "primary": false,
+          "unique": false
+        },
+        {
+          "keyName": "sheet_version_sheet_id_version_unique",
+          "columnNames": [
+            "sheet_id",
+            "version"
+          ],
+          "composite": true,
           "constraint": true,
           "primary": false,
           "unique": true
@@ -472,7 +522,172 @@
         }
       ],
       "checks": [],
-      "foreignKeys": {},
+      "foreignKeys": {
+        "sheet_version_sheet_id_foreign": {
+          "constraintName": "sheet_version_sheet_id_foreign",
+          "columnNames": [
+            "sheet_id"
+          ],
+          "localTableName": "sheet_version",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "sheet",
+          "updateRule": "cascade"
+        }
+      },
+      "nativeEnums": {}
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "bigint",
+          "unsigned": true,
+          "autoincrement": true,
+          "primary": true,
+          "nullable": false,
+          "comment": "主键",
+          "mappedType": "bigint"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "datetime",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 0,
+          "default": "CURRENT_TIMESTAMP",
+          "comment": "创建时间",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "datetime",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 0,
+          "default": "CURRENT_TIMESTAMP",
+          "comment": "更新时间",
+          "mappedType": "datetime"
+        },
+        "path": {
+          "name": "path",
+          "type": "varchar(128)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "comment": "文件的路径",
+          "mappedType": "string"
+        },
+        "hash": {
+          "name": "hash",
+          "type": "varchar(10)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "default": "''",
+          "comment": "文件的指纹",
+          "mappedType": "string"
+        },
+        "version_id": {
+          "name": "version_id",
+          "type": "bigint",
+          "unsigned": true,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "comment": "版本号",
+          "mappedType": "bigint"
+        },
+        "sheet_id": {
+          "name": "sheet_id",
+          "type": "bigint",
+          "unsigned": true,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "comment": "Sheet",
+          "mappedType": "bigint"
+        }
+      },
+      "name": "api_file",
+      "indexes": [
+        {
+          "columnNames": [
+            "version_id"
+          ],
+          "composite": false,
+          "keyName": "api_file_version_id_index",
+          "constraint": false,
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "sheet_id"
+          ],
+          "composite": false,
+          "keyName": "api_file_sheet_id_index",
+          "constraint": false,
+          "primary": false,
+          "unique": false
+        },
+        {
+          "keyName": "api_file_sheet_id_version_id_path_unique",
+          "columnNames": [
+            "sheet_id",
+            "version_id",
+            "path"
+          ],
+          "composite": true,
+          "constraint": true,
+          "primary": false,
+          "unique": true
+        },
+        {
+          "keyName": "PRIMARY",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "constraint": true,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "api_file_version_id_foreign": {
+          "constraintName": "api_file_version_id_foreign",
+          "columnNames": [
+            "version_id"
+          ],
+          "localTableName": "api_file",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "sheet_version",
+          "updateRule": "cascade"
+        },
+        "api_file_sheet_id_foreign": {
+          "constraintName": "api_file_sheet_id_foreign",
+          "columnNames": [
+            "sheet_id"
+          ],
+          "localTableName": "api_file",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "sheet",
+          "updateRule": "cascade"
+        }
+      },
       "nativeEnums": {}
     },
     {
@@ -541,26 +756,6 @@
           "comment": "编译器",
           "mappedType": "string"
         },
-        "version": {
-          "name": "version",
-          "type": "varchar(63)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "comment": "版本",
-          "mappedType": "string"
-        },
-        "tag": {
-          "name": "tag",
-          "type": "varchar(24)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "comment": "标签",
-          "mappedType": "string"
-        },
         "status": {
           "name": "status",
           "type": "varchar(10)",
@@ -600,8 +795,18 @@
           "comment": "Npm压缩包的sha512",
           "mappedType": "string"
         },
-        "api_document_id": {
-          "name": "api_document_id",
+        "version_id": {
+          "name": "version_id",
+          "type": "bigint",
+          "unsigned": true,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "comment": "版本号",
+          "mappedType": "bigint"
+        },
+        "sheet_id": {
+          "name": "sheet_id",
           "type": "bigint",
           "unsigned": true,
           "autoincrement": false,
@@ -610,8 +815,8 @@
           "comment": "所属文档",
           "mappedType": "bigint"
         },
-        "api_document_file_id": {
-          "name": "api_document_file_id",
+        "api_file_id": {
+          "name": "api_file_id",
           "type": "bigint",
           "unsigned": true,
           "autoincrement": false,
@@ -625,20 +830,30 @@
       "indexes": [
         {
           "columnNames": [
-            "api_document_id"
+            "version_id"
           ],
           "composite": false,
-          "keyName": "sdk_api_document_id_index",
+          "keyName": "sdk_version_id_index",
           "constraint": false,
           "primary": false,
           "unique": false
         },
         {
           "columnNames": [
-            "api_document_file_id"
+            "sheet_id"
           ],
           "composite": false,
-          "keyName": "sdk_api_document_file_id_index",
+          "keyName": "sdk_sheet_id_index",
+          "constraint": false,
+          "primary": false,
+          "unique": false
+        },
+        {
+          "columnNames": [
+            "api_file_id"
+          ],
+          "composite": false,
+          "keyName": "sdk_api_file_id_index",
           "constraint": false,
           "primary": false,
           "unique": false
@@ -656,28 +871,40 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "sdk_api_document_id_foreign": {
-          "constraintName": "sdk_api_document_id_foreign",
+        "sdk_version_id_foreign": {
+          "constraintName": "sdk_version_id_foreign",
           "columnNames": [
-            "api_document_id"
+            "version_id"
           ],
           "localTableName": "sdk",
           "referencedColumnNames": [
             "id"
           ],
-          "referencedTableName": "api_document",
+          "referencedTableName": "sheet_version",
           "updateRule": "cascade"
         },
-        "sdk_api_document_file_id_foreign": {
-          "constraintName": "sdk_api_document_file_id_foreign",
+        "sdk_sheet_id_foreign": {
+          "constraintName": "sdk_sheet_id_foreign",
           "columnNames": [
-            "api_document_file_id"
+            "sheet_id"
           ],
           "localTableName": "sdk",
           "referencedColumnNames": [
             "id"
           ],
-          "referencedTableName": "api_document_file",
+          "referencedTableName": "sheet",
+          "updateRule": "cascade"
+        },
+        "sdk_api_file_id_foreign": {
+          "constraintName": "sdk_api_file_id_foreign",
+          "columnNames": [
+            "api_file_id"
+          ],
+          "localTableName": "sdk",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "api_file",
           "updateRule": "cascade"
         }
       },

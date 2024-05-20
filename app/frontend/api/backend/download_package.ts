@@ -28,8 +28,7 @@ interface HeaderArg {
  * 下载包
  */
 export function downloadPackage<STATUS extends keyof ResponseMap>(arg?: QueryArg & ParamArg & HeaderArg): Keq<ResponseMap[STATUS]> {
-  const req = request.get<ResponseMap[STATUS]>
-  ("/api/registry/:packageScope/:packageName/-/:packageTag.tgz")
+  const req = request.get<ResponseMap[STATUS]>("/api/registry/:packageScope/:packageName/-/:packageTag.tgz")
     .option('module', {
       name: "backend",
       pathname: "/api/registry/:packageScope/:packageName/-/:packageTag.tgz",

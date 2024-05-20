@@ -21,8 +21,7 @@ interface HeaderArg {
 
 
 export function createApplication<STATUS extends keyof ResponseMap>(arg?: QueryArg & ParamArg & HeaderArg & (CreateApplicationDTO)): Keq<ResponseMap[STATUS]> {
-  const req = request.post<ResponseMap[STATUS]>
-  ("/api/application")
+  const req = request.post<ResponseMap[STATUS]>("/api/application")
     .option('module', {
       name: "backend",
       pathname: "/api/application",

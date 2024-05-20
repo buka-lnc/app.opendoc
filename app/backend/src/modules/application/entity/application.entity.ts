@@ -1,8 +1,8 @@
 import { Cascade, Collection, Entity, OneToMany, Property } from '@mikro-orm/core'
-import { ApiProperty } from '@nestjs/swagger'
+import { ApiHideProperty } from '@nestjs/swagger'
 import { Matches, MaxLength } from 'class-validator'
 import { BaseEntity } from '~/entities/base.entity'
-import { ApiDocument } from '~/modules/api-document/entities/api-document.entity'
+import { Sheet } from '~/modules/sheet/entity/sheet.entity'
 
 @Entity()
 export class Application extends BaseEntity {
@@ -27,14 +27,11 @@ export class Application extends BaseEntity {
   })
   title!: string
 
-  @ApiProperty({
-    type: () => ApiDocument,
-    isArray: true,
-  })
+  @ApiHideProperty()
   @OneToMany({
-    entity: () => ApiDocument,
+    entity: () => Sheet,
     mappedBy: 'application',
     cascade: [Cascade.ALL],
   })
-  apiDocuments!: Collection<ApiDocument>
+  sheets!: Collection<Sheet>
 }

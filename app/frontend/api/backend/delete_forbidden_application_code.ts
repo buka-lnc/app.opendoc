@@ -19,8 +19,7 @@ interface HeaderArg {
 
 
 export function deleteForbiddenApplicationCode<STATUS extends keyof ResponseMap>(arg?: QueryArg & ParamArg & HeaderArg): Keq<ResponseMap[STATUS]> {
-  const req = request.delete<ResponseMap[STATUS]>
-  ("/api/forbidden-application-code/:code")
+  const req = request.delete<ResponseMap[STATUS]>("/api/forbidden-application-code/:code")
     .option('module', {
       name: "backend",
       pathname: "/api/forbidden-application-code/:code",

@@ -29,8 +29,7 @@ interface HeaderArg {
  * 更新 Example
  */
 export function patchExample<STATUS extends keyof ResponseMap>(arg?: QueryArg & ParamArg & HeaderArg): Keq<ResponseMap[STATUS]> {
-  const req = request.patch<ResponseMap[STATUS]>
-  ("/api/example/:id")
+  const req = request.patch<ResponseMap[STATUS]>("/api/example/:id")
     .option('module', {
       name: "backend",
       pathname: "/api/example/:id",

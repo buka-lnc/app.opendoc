@@ -100,7 +100,7 @@ const requestBody = computed(() => dereference<OpenAPIV3.RequestBodyObject>(prop
           <json-schema-lang-ts
             v-if="headersSchema"
             :schema="headersSchema"
-            to-reference="toReference"
+            :to-reference="toReference"
           />
           <empty-placeholder v-else class="flex-1 py-8" />
         </div>
@@ -109,7 +109,7 @@ const requestBody = computed(() => dereference<OpenAPIV3.RequestBodyObject>(prop
           <json-schema-lang-ts
             v-if="querySchema"
             :schema="querySchema"
-            to-reference="toReference"
+            :to-reference="toReference"
           />
           <empty-placeholder v-else class="flex-1 py-8" />
         </div>
@@ -118,7 +118,7 @@ const requestBody = computed(() => dereference<OpenAPIV3.RequestBodyObject>(prop
           <json-schema-lang-ts
             v-if="paramsSchema"
             :schema="paramsSchema"
-            to-reference="toReference"
+            :to-reference="toReference"
           />
           <empty-placeholder v-else class="flex-1 py-8" />
         </div>
@@ -127,7 +127,7 @@ const requestBody = computed(() => dereference<OpenAPIV3.RequestBodyObject>(prop
           <openapi-operation-body
             v-if="requestBody?.content"
             :body="requestBody?.content"
-            to-reference="toReference"
+            :to-reference="toReference"
           />
           <empty-placeholder v-else class="flex-1 py-8" />
         </div>

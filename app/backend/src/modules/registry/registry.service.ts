@@ -32,21 +32,26 @@ export class RegistryService {
   ) {}
 
   async getPackageMetadata(packageScope: string | undefined, packageName: string): Promise<PackageMetadataDTO> {
-    const npmPackages = await this.sdkRepo.find({
-      scope: packageScope,
-      name: packageName,
-      status: SdkStatus.published,
-    })
+    const npmPackages = await this.sdkRepo.find(
+      {
+        scope: packageScope,
+        name: packageName,
+        status: SdkStatus.published,
+      },
+      {
+        populate: ['version'],
+      }
+    )
 
     if (!npmPackages.length) {
       throw new NotFoundException()
     }
 
-    const taggedPackages = R.groupWith((p1, p2) => p1.tag === p2.tag, npmPackages)
+    const taggedPackages = R.groupWith((p1, p2) => p1.version.get().tag === p2.version.get().tag, npmPackages)
       .map((npmPackages) => {
         const npmPackage = npmPackages.reduce(
           (maxVersion, npmPackages) => {
-            if (semver.gt(npmPackages.version, maxVersion.version)) {
+            if (semver.gt(npmPackages.version.get().version, maxVersion.version.get().version)) {
               return npmPackages
             }
             return maxVersion
@@ -58,18 +63,18 @@ export class RegistryService {
       })
 
     const distTag = taggedPackages.reduce(
-      (tagMap, npmPackage) => R.assoc(npmPackage.tag || 'latest', npmPackage.version, tagMap),
+      (tagMap, npmPackage) => R.assoc(npmPackage.version.get().tag || 'latest', npmPackage.version.get().version, tagMap),
       <Record<string, string>>{}
     )
 
     const time = npmPackages.reduce(
-      (timeMap, npmPackage) => R.assoc(npmPackage.version, npmPackage.updatedAt.toISOString(), timeMap),
+      (timeMap, npmPackage) => R.assoc(npmPackage.version.get().version, npmPackage.updatedAt.toISOString(), timeMap),
         <Record<string, string>>{}
     )
 
 
     const versions = npmPackages.reduce(
-      (versionMap, npmPackage) => R.assoc(npmPackage.version, {
+      (versionMap, npmPackage) => R.assoc(npmPackage.version.get().version, {
         name: npmPackage.fullName,
         version: npmPackage.version,
         dist: <PackageMetadataVersionDistDTO>{

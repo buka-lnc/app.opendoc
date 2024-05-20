@@ -9,7 +9,7 @@ npm install @opendoc/register
 ## Usage
 
 ```typescript
-import { registerToOpendoc } from "@opendoc/register";
+import { register } from "@opendoc/register";
 
 // 准备好Swagger数据
 const doc = {
@@ -27,7 +27,7 @@ const doc = {
 };
 
 // 注册至Opendoc服务
-registerToOpendoc({
+register({
   server: "http://your_opendoc_host",
 
   application: {

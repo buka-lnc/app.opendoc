@@ -76,7 +76,7 @@ export class PublishService {
     const sdk = await this.sdkRepo.findOne(
       { status: SdkStatus.pending, sdkPublishLock: null },
       {
-        populate: ['apiDocumentFile', 'apiDocumentFile.apiDocument'],
+        populate: ['apiFile', 'apiFile.sheet'],
       }
     )
 

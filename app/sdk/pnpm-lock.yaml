@@ -88,8 +88,8 @@ importers:
         specifier: ^29.7.0
         version: 29.7.0
       keq:
-        specifier: ^2.3.2
-        version: 2.3.2
+        specifier: ^2.4.1
+        version: 2.4.1
       standard-version:
         specifier: ^9.5.0
         version: 9.5.0
@@ -543,6 +543,12 @@ packages:
 
   '@types/stack-utils@2.0.3':
     resolution: {integrity: sha512-9aEbYZ3TbYMznPdcdr3SmIrLXwC/AKZXQeCf9Pgao5CKb8CyHuEX5jzWPTkvregvhRJHcpRO6BFoGW9ycaOkYw==}
+
+  '@types/webidl-conversions@7.0.3':
+    resolution: {integrity: sha512-CiJJvcRtIgzadHCYXw7dqEnMNRjhGZlYK05Mj9OyktqV8uVT8fD2BFOB7S1uwBE3Kj2Z+4UyPmFw/Ixgw/LAlA==}
+
+  '@types/whatwg-url@11.0.4':
+    resolution: {integrity: sha512-lXCmTWSHJvf0TRSO58nm978b8HJ/EdsSsEKLd3ODHFjo+3VGAyyTp4v50nWvwtzBxSMQrVOK7tcuN0zGPLICMw==}
 
   '@types/yargs-parser@21.0.3':
     resolution: {integrity: sha512-I4q9QU9MQv4oEOz4tAHJtNz1cwuLxn2F3xcc2iV5WdqLPpUnj30aUuxt1mAxYTG+oe8CZMV/+6rU4S4gRDzqtQ==}
@@ -1338,8 +1344,8 @@ packages:
     resolution: {integrity: sha512-AhO5QUcj8llrbG09iWhPU2B204J1xnPeL8kQmVorSsy+Sjj1sk8gIyh6cUocGmH4L0UuhAJy+hJMRA4mgA4mFQ==}
     engines: {node: '>=8'}
 
-  globalthis@1.0.3:
-    resolution: {integrity: sha512-sFdI5LyBiNTHjRd7cGPWapiHWMOXKyuBNX/cWJ3NfzrZQVa8GI/8cofCl74AOVqq9W5kNmguTIzJ/1s2gyI9wA==}
+  globalthis@1.0.4:
+    resolution: {integrity: sha512-DpLKbNU4WylpxJykQujfCcwYWiV/Jhm50Goo0wrVILAv5jOr9d+H+UR3PhSCD2rCCEIg0uc+G+muBTwD54JhDQ==}
     engines: {node: '>= 0.4'}
 
   globby@11.1.0:
@@ -1770,8 +1776,8 @@ packages:
     engines: {node: '>=14.0.0'}
     hasBin: true
 
-  keq@2.3.2:
-    resolution: {integrity: sha512-L6RW7s1kok0+dw5aplkYhEzhLZldsa/qSK30Yc/uzm/4/4odTBvpuGj3DRRGAjvXlqcOXfga+3IcSkej4Y9nrQ==}
+  keq@2.4.1:
+    resolution: {integrity: sha512-YZGBDPlo7r2wi2pemUSIhdJk8tI/Wv48t+jTelyOYJj7S3Ypfw5G/c/XW+4Glj2cT4QqS1aHxBymabkmCKEFXA==}
     engines: {node: '>=18.0.0'}
 
   keyv@4.5.4:
@@ -3260,6 +3266,12 @@ snapshots:
 
   '@types/stack-utils@2.0.3': {}
 
+  '@types/webidl-conversions@7.0.3': {}
+
+  '@types/whatwg-url@11.0.4':
+    dependencies:
+      '@types/webidl-conversions': 7.0.3
+
   '@types/yargs-parser@21.0.3': {}
 
   '@types/yargs@17.0.32':
@@ -3922,7 +3934,7 @@ snapshots:
       function.prototype.name: 1.1.6
       get-intrinsic: 1.2.4
       get-symbol-description: 1.0.2
-      globalthis: 1.0.3
+      globalthis: 1.0.4
       gopd: 1.0.1
       has-property-descriptors: 1.0.2
       has-proto: 1.0.3
@@ -4265,9 +4277,10 @@ snapshots:
     dependencies:
       type-fest: 0.20.2
 
-  globalthis@1.0.3:
+  globalthis@1.0.4:
     dependencies:
       define-properties: 1.2.1
+      gopd: 1.0.1
 
   globby@11.1.0:
     dependencies:
@@ -4858,8 +4871,9 @@ snapshots:
 
   jsonpath-plus@8.1.0: {}
 
-  keq@2.3.2:
+  keq@2.4.1:
     dependencies:
+      '@types/whatwg-url': 11.0.4
       clone: 2.1.2
       fastq: 1.17.1
       minimatch: 9.0.4

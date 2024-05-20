@@ -1,43 +1,52 @@
 <script setup lang="ts">
-import { queryApplication } from '~/api/backend'
+import { useRouteParams } from '@vueuse/router'
+import { queryApplication, querySheets } from '~/api/backend'
+import { Application, Sheet } from '~/api/backend/components/schemas'
+import { APPLICATION_INJECT_KEY } from '~/constants/application-inject-key'
 
 const route = useRoute()
-const applicationId = computed(() => String(route.params.application_id))
+const applicationId = useRouteParams<string>('application_id')
 
 const pending = ref(true)
-const { data: application, refresh } = useAsyncData(
+const application = ref<Application | null>(null)
+const sheets = ref<Sheet[]>([])
+
+provide(APPLICATION_INJECT_KEY, { application, sheets })
+
+const { refresh } = useAsyncData(
   async () => {
-    const body = await queryApplication<'200'>({
-      applicationIdOrCode: applicationId.value,
-    })
+    const [applicationRes, sheetsRes] = await Promise.all([
+      queryApplication<'200'>({
+        applicationIdOrCode: applicationId.value,
+      }),
+      querySheets<'200'>({
+        applicationId: applicationId.value,
+      }),
+    ])
 
     pending.value = false
-    return body
+    application.value = applicationRes
+    sheets.value = sheetsRes.results
   },
-  {
-    immediate: true,
-    default: () => null,
-  },
+  { immediate: true },
 )
 
 const router = useRouter()
-const apiDocumentId = computed(() => String(route.params.api_document_id))
-watch(
-  () => application.value,
-  async () => {
-    const app = application.value
-    if (!app) return
+const sheetId = computed(() => route.params.sheet_id)
+watchEffect(async () => {
+  if (!application.value || !sheets.value.length) {
+    return
+  }
 
-    if (apiDocumentId && app.apiDocuments.some(d => d.id === apiDocumentId.value)) {
-      return
-    }
+  if (sheets.value.some(sheet => sheet.id === sheetId.value)) {
+    return
+  }
 
-    const firstApiDocument = app.apiDocuments[0]
-    if (firstApiDocument) {
-      await router.replace(`/application/${app.id}/api-document/${firstApiDocument.id}`)
-    }
-  },
-)
+  const firstSheet = sheets.value[0]
+  if (firstSheet) {
+    await router.replace(`/application/${application.value.id}/sheet/${firstSheet.id}`)
+  }
+})
 
 </script>
 
@@ -47,11 +56,10 @@ watch(
       <div v-if="application" class="flex flex-col size-full overflow-y-auto">
         <ApplicationNavbar
           class="sticky z-10 top-0"
-          :application="application"
-          @changed:application="() => refresh()"
-          @created:api-document="() => refresh()"
-          @deleted:api-document="() => refresh()"
-          @changed:api-document="() => refresh()"
+          @updated:application="() => refresh()"
+          @created:sheet="() => refresh()"
+          @deleted:sheet="() => refresh()"
+          @updated:sheet="() => refresh()"
         />
 
         <div class="flex-1 py overflow-hidden bg-base-200">

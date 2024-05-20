@@ -1,5 +1,5 @@
-import { ApiDocument } from "./api_document"
-import { ApiDocumentFile } from "./api_document_file"
+import { SheetVersion } from "./sheet_version"
+import { EntityReferenceDTO } from "./entity_reference_dto"
 
 
 /**
@@ -12,27 +12,23 @@ export interface Sdk {
    */
   "fullName": string
   /**
+   * 版本号
+   */
+  "version": SheetVersion
+  /**
    * 所属文档
    */
-  "apiDocument": ApiDocument
+  "sheet": EntityReferenceDTO
   /**
    * 关联的文档文件
    */
-  "apiDocumentFile": ApiDocumentFile
+  "apiFile": EntityReferenceDTO
   "scope": string
   /**
    * Npm包名
    */
   "name": string
   "compiler": "openapi-core" | "openapi-react" | "openapi-vue" | "asyncapi-core"
-  /**
-   * 版本
-   */
-  "version": string
-  /**
-   * 标签
-   */
-  "tag"?: string
   /**
    * sdk 可用状态
    */
@@ -50,13 +46,18 @@ export interface Sdk {
    * Npm 压缩包的sha512
    */
   "integrity"?: string
+  /**
+   * 主键
+   */
   "id": string
   /**
    * @type date-time
+   * 创建时间
    */
   "createdAt": string
   /**
    * @type date-time
+   * 更新时间
    */
   "updatedAt": string
 }

@@ -23,8 +23,7 @@ interface HeaderArg {
  * 查询 Example 列表
  */
 export function queryExamples<STATUS extends keyof ResponseMap>(arg?: QueryArg & ParamArg & HeaderArg): Keq<ResponseMap[STATUS]> {
-  const req = request.get<ResponseMap[STATUS]>
-  ("/api/example")
+  const req = request.get<ResponseMap[STATUS]>("/api/example")
     .option('module', {
       name: "backend",
       pathname: "/api/example",

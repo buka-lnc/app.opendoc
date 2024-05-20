@@ -59,8 +59,7 @@ interface HeaderArg {
 
 
 export function checkHealth<STATUS extends keyof ResponseMap>(arg?: QueryArg & ParamArg & HeaderArg): Keq<ResponseMap[STATUS]> {
-  const req = request.get<ResponseMap[STATUS]>
-  ("/api/health")
+  const req = request.get<ResponseMap[STATUS]>("/api/health")
     .option('module', {
       name: "backend",
       pathname: "/api/health",
