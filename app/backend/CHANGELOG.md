@@ -1,5 +1,19 @@
 # @opendoc/backend
 
+## 1.6.0
+
+### Minor Changes
+
+- a98ce3e: 应用的页签支持目录树
+
+### Patch Changes
+
+- 509e5a4: 修复 openapi 的 react sdk 无法构建的问题
+- Updated dependencies [a98ce3e]
+- Updated dependencies [77319c0]
+- Updated dependencies [509e5a4]
+  - @opendoc/sdk@1.2.0
+
 ## 1.5.2
 
 ### Patch Changes
