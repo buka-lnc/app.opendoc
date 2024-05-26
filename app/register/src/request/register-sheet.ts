@@ -18,7 +18,11 @@ export async function registerSheet (server: ServerOptions, application: Registe
       .attach('apiFileRaw', raw)
       .retry(3, 100)
   } catch (e) {
-    throw new Error(`register api document failed`)
+    let message = 'register api document failed'
+    if (e instanceof Error) {
+      message += `: ${e.message}`
+    }
+    throw new Error(message)
   }
 }
 

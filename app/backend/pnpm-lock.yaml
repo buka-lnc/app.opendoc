@@ -99,14 +99,14 @@ importers:
         specifier: ^8.0.1
         version: 8.0.1
       keq:
-        specifier: ^2.4.1
-        version: 2.4.1
+        specifier: ^2.5.2
+        version: 2.5.2
       keq-debug:
         specifier: ^2.0.3
         version: 2.0.3
       keq-headers:
         specifier: ^2.0.1
-        version: 2.0.1(keq@2.4.1)
+        version: 2.0.1(keq@2.5.2)
       mime:
         specifier: ^4.0.3
         version: 4.0.3
@@ -1372,8 +1372,8 @@ packages:
   '@types/webidl-conversions@7.0.3':
     resolution: {integrity: sha512-CiJJvcRtIgzadHCYXw7dqEnMNRjhGZlYK05Mj9OyktqV8uVT8fD2BFOB7S1uwBE3Kj2Z+4UyPmFw/Ixgw/LAlA==}
 
-  '@types/whatwg-url@11.0.4':
-    resolution: {integrity: sha512-lXCmTWSHJvf0TRSO58nm978b8HJ/EdsSsEKLd3ODHFjo+3VGAyyTp4v50nWvwtzBxSMQrVOK7tcuN0zGPLICMw==}
+  '@types/whatwg-url@11.0.5':
+    resolution: {integrity: sha512-coYR071JRaHa+xoEvvYqvnIHaVqaYrLPbsufM9BF63HkwI5Lgmy2QR8Q5K/lYDYo5AK82wOvSOS0UsLTpTG7uQ==}
 
   '@types/xml2js@0.4.14':
     resolution: {integrity: sha512-4YnrRemBShWRO2QjvUin8ESA41rH+9nQGLUGZV/1IDhi3SL9OhdpNC/MrulTWuptXKwhx/aDxE7toV0f/ypIXQ==}
@@ -2960,8 +2960,8 @@ packages:
     peerDependencies:
       keq: ^2
 
-  keq@2.4.1:
-    resolution: {integrity: sha512-YZGBDPlo7r2wi2pemUSIhdJk8tI/Wv48t+jTelyOYJj7S3Ypfw5G/c/XW+4Glj2cT4QqS1aHxBymabkmCKEFXA==}
+  keq@2.5.2:
+    resolution: {integrity: sha512-Zig8dJlmUCL75mVyG9vtBCAIJSYSZLRUjc0YutFi6+jw4u22yAW5q9KDEnhUsjsEogDRefZH8CRlVY65iElWeg==}
     engines: {node: '>=18.0.0'}
 
   keyv@4.5.4:
@@ -6107,7 +6107,7 @@ snapshots:
 
   '@types/webidl-conversions@7.0.3': {}
 
-  '@types/whatwg-url@11.0.4':
+  '@types/whatwg-url@11.0.5':
     dependencies:
       '@types/webidl-conversions': 7.0.3
 
@@ -8057,13 +8057,13 @@ snapshots:
       url: 0.11.3
       whatwg-url: 13.0.0
 
-  keq-headers@2.0.1(keq@2.4.1):
+  keq-headers@2.0.1(keq@2.5.2):
     dependencies:
-      keq: 2.4.1
+      keq: 2.5.2
 
-  keq@2.4.1:
+  keq@2.5.2:
     dependencies:
-      '@types/whatwg-url': 11.0.4
+      '@types/whatwg-url': 11.0.5
       clone: 2.1.2
       fastq: 1.17.1
       minimatch: 9.0.4

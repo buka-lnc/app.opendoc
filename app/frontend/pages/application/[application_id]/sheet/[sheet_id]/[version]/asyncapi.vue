@@ -25,7 +25,7 @@ const { data: asyncapiDocument } = useAsyncData(
     })
       .resolveWith('json')
 
-    if (semver.lt(doc.version, '3.0.0')) {
+    if (semver.lt(doc.asyncapi, '3.0.0')) {
       return convert(doc, '3.0.0')
     }
 

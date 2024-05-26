@@ -1,12 +1,12 @@
 import { createRequest } from "keq";
-import { RequestException } from 'keq-exception'
+import { RequestException, throwException } from 'keq-exception'
 
 export const request = createRequest()
 
 request
-  .use(async (ctx, next) => {
-    await next()
+  .use(throwException(async (ctx) => {
     if (ctx.response && ctx.response.status !== 200) {
-      throw new RequestException(ctx.response.status)
+      const body = await ctx.response.json()
+      throw new RequestException(body.message)
     }
-  })
+  }))

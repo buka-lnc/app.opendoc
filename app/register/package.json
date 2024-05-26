@@ -53,10 +53,10 @@
   },
   "dependencies": {
     "compressing": "^1.10.0",
-    "get-stream": "^9.0.1",
+    "get-stream": "^6.0.1",
     "glob": "^10.3.15",
-    "keq": "^2.4.1",
-    "keq-exception": "^2.1.0",
-    "tempy": "^3.1.0"
+    "keq": "^2.5.2",
+    "keq-exception": "^3.0.0",
+    "tempy": "^1.0.1"
   }
 }

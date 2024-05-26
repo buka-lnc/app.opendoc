@@ -28,9 +28,9 @@ const schemas = computed(
 provide(ASYNCAPI_SCHEMAS_INJECT_KEY, schemas)
 
 const applicationId = useRouteParams<string>('application_id')
-const apiDocumentId = useRouteParams<string>('api_document_id')
+const sheetId = useRouteParams<string>('sheet_id')
 const version = useRouteParams<string>('version')
-const prefix = computed(() => `/application/${applicationId.value}/api-document/${apiDocumentId.value}/${version.value}/asyncapi/schema`)
+const prefix = computed(() => `/application/${applicationId.value}/sheet/${sheetId.value}/${version.value}/asyncapi/schema`)
 
 const route = useRoute()
 const router = useRouter()
@@ -38,7 +38,7 @@ watch(
   () => toValue(schemas),
   async () => {
     if (route.path === prefix.value && schemas.value.length > 0) {
-      await router.replace(`${prefix.value}/${schemas.value[0].id}`)
+      await router.replace(`${prefix.value}/${schemas.value[0].$uid}`)
     }
   },
   {

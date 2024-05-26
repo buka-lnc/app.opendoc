@@ -1,10 +1,7 @@
 import * as compressing from 'compressing'
-import * as fs from 'fs-extra'
-import { temporaryFile } from 'tempy'
+import * as getStream from 'get-stream'
 
-export async function parseFile(file: string | object | Buffer): Promise<Buffer> {
-  const tempFile = temporaryFile({ extension: 'tgz' })
-
+export async function parseFile(filename: string, file: string | object | Buffer): Promise<Buffer> {
   let buf: Buffer
   if (typeof file === 'string') {
     buf = Buffer.from(file)
@@ -16,6 +13,8 @@ export async function parseFile(file: string | object | Buffer): Promise<Buffer>
     throw new TypeError('file must be a string, a Buffer or an object')
   }
 
-  await compressing.tgz.compressFile(buf, tempFile, { relativePath: 'openapi.json' })
-  return fs.readFile(tempFile)
+  const tgzStream = new compressing.tgz.Stream()
+  tgzStream.addEntry(buf, { relativePath: filename })
+
+  return await getStream.buffer(tgzStream)
 }

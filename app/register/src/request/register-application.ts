@@ -14,7 +14,10 @@ export async function registerApplication(server: ServerOptions, application: Re
       })
       .retry(3, 100)
   } catch (e) {
-    throw new Error('Register application failed')
+    let message = 'Register application failed'
+    if (e instanceof Error) {
+      message += `: ${e.message}`
+    }
+    throw new Error(message)
   }
-
 }

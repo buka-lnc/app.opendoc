@@ -1,12 +1,13 @@
 import * as fs from 'fs-extra'
 import { glob } from 'glob'
-import {  temporaryDirectory } from 'tempy'
 import * as compressing from 'compressing'
+import * as getStream from 'get-stream'
+import * as tempy from 'tempy'
 
 
 export async function parseGlob(pattern: string): Promise<Buffer> {
   const files = await glob(pattern)
-  const dir = temporaryDirectory()
+  const dir = tempy.directory()
 
   await Promise.all(files.map(file => fs.copy(file, dir)))
 
@@ -14,7 +15,5 @@ export async function parseGlob(pattern: string): Promise<Buffer> {
   const tgzStream = new compressing.tgz.Stream()
   tgzStream.addEntry(dir, { ignoreBase: true })
 
-  // @ts-ignore
-  const { getStreamAsBuffer } = (await import('get-stream'))
-  return await getStreamAsBuffer(tgzStream)
+  return await getStream.buffer(tgzStream)
 }

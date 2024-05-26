@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { useRouteParams } from '@vueuse/router'
-import { SCHEMA_INJECT_KEY } from '~/constants/schema-inject-key'
+import { ASYNCAPI_DOCUMENT_INJECT_KEY } from '~/constants/asyncapi-document-inject-key.js'
 
-const asyncapi = inject(SCHEMA_INJECT_KEY)
+const asyncapiDocument = inject(ASYNCAPI_DOCUMENT_INJECT_KEY)
 const serverKey = useRouteParams<string>('server_key')
 
-const server = computed(() => asyncapi?.value.servers[serverKey.value])
+const server = computed(() => asyncapiDocument?.value.servers[serverKey.value])
 </script>
 
 <template>

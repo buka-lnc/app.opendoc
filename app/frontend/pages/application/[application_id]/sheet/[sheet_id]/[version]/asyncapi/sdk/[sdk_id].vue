@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { useRouteParams } from '@vueuse/router'
-import { querySdkById } from '~/api/backend'
+import { querySdk } from '~/api/backend/query_sdk.js'
 
 const sdkId = useRouteParams<string>('sdk_id')
 
 const { pending, data: sdk } = useAsyncData(
-  async () => await querySdkById<'200'>({
+  async () => await querySdk<'200'>({
     sdkId: sdkId.value,
   }),
 )

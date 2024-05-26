@@ -45,7 +45,7 @@ watch(
             :to="`${prefix}/${sdk.id}`"
             active-class="d-active"
           >
-            <span class="truncate">{{ sdk.name }}@{{ sdk.version }}</span>
+            <span class="truncate">{{ sdk.name }}@{{ sdk.version.version }}</span>
 
             <span v-if="sdk.status === 'pending'" class="text-warning font-sans">待构建</span>
             <span v-else-if="sdk.status === 'compiling'" class="text-warning font-sans">构建中</span>

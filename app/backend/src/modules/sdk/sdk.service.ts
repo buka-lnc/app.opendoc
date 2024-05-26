@@ -49,13 +49,14 @@ export class SdkService {
 
   async querySdks(dto: QuerySdksDTO): Promise<ResponseOfQuerySdksDTO> {
     const qb = this.sdkRepo.createQueryBuilder('sdk')
+      .leftJoinAndSelect('sdk.version', 'version')
 
     if (dto.sheetId) {
       void qb.andWhere({ sheet: dto.sheetId })
     }
 
     if (dto.version) {
-      void qb.andWhere({ version: { version: dto.version } })
+      void qb.andWhere('version.version = ?', [dto.version])
     }
 
     if (!R.isNil(dto.offset)) {
@@ -77,7 +78,10 @@ export class SdkService {
   }
 
   async querySdk(sdkId: string): Promise<Sdk> {
-    const sdk = await this.sdkRepo.findOneOrFail(sdkId)
+    const sdk = await this.sdkRepo.findOneOrFail(
+      sdkId,
+      { populate: ['version'] },
+    )
 
     return sdk
   }
