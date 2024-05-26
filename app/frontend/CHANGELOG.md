@@ -1,5 +1,11 @@
 # @opendoc/frontend
 
+## 1.5.0
+
+### Minor Changes
+
+- a98ce3e: 应用的页签支持目录树
+
 ## 1.4.1
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 {
   "name": "@opendoc/register",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "",
   "main": "dist/umd/src/index.js",
   "module": "dist/esm/src/index.js",
