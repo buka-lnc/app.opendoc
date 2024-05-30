@@ -1,4 +1,3 @@
-import * as SwaggerParser from '@apidevtools/swagger-parser'
 import * as chalk from 'chalk'
 import * as changeCase from 'change-case'
 import * as fs from 'fs-extra'
@@ -12,6 +11,7 @@ import { readAndCompileTemplate } from './utils/read-and-compile-template'
 import './handlebar/register-helper.js'
 import './handlebar/register-partial.js'
 import { CompileOpenapiOptions } from './types/compile-openapi-options'
+import { formatOpenapiDocument } from './utils/format-openapi-document'
 
 
 const templates = {
@@ -170,13 +170,8 @@ function compile(options: CompileOpenapiOptions): CompileResult[] {
 }
 
 export async function compileOpenapiCore(options: CompileOpenapiOptions): Promise<void> {
-  const swaggerParser = new SwaggerParser()
-  await swaggerParser.bundle(options.document)
-  if (!('openapi' in swaggerParser.api && swaggerParser.api.openapi.startsWith('3'))) {
-    console.warn(chalk.yellow('Swagger file does not conform to the swagger@3.0 standard specifications or have grammatical errors, which may cause unexpected errors'))
-  }
-
-  const files = compile(options)
+  const document = formatOpenapiDocument(options.document)
+  const files = compile({ ...options, document })
 
   await Promise.allSettled(files.map(async (result) => {
     await fs.ensureFile(result.path)
