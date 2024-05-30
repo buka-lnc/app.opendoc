@@ -2,8 +2,8 @@ import { compileAsyncapiCore } from './compile-asyncapi-core'
 import { compileOpenapiCore } from './compile-openapi-core'
 import { compileOpenapiReact } from './compile-openapi-react'
 import { compileProject } from './compile-project'
-import { CompileOptions } from './interface/compile-options'
-import { Compiler } from './interface/compiler'
+import { CompileOptions } from './types/compile-options'
+import { Compiler } from './types/compiler'
 
 
 export async function compile(options: CompileOptions): Promise<void> {

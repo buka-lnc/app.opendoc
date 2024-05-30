@@ -5,7 +5,7 @@ import { readAndCompileTemplate } from './utils/read-and-compile-template'
 
 import './handlebar/register-helper.js'
 import './handlebar/register-partial.js'
-import { CompileProjectOptions } from './interface/compile-project-options'
+import { CompileProjectOptions } from './types/compile-project-options'
 import { Value } from '@sinclair/typebox/value'
 
 

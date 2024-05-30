@@ -6,12 +6,12 @@ import { OpenAPIV3 } from 'openapi-types'
 import * as path from 'path'
 import * as R from 'ramda'
 import { getSafeOperationName } from './utils/get-safe-operation-name.js'
-import { CompileResult } from './interface/compile-result.js'
+import { CompileResult } from './types/compile-result.js'
 import { readAndCompileTemplate } from './utils/read-and-compile-template.js'
 
 import './handlebar/register-helper.js'
 import './handlebar/register-partial.js'
-import { CompileOpenapiOptions } from './interface/compile-openapi-options.js'
+import { CompileOpenapiOptions } from './types/compile-openapi-options.js'
 
 
 const templates = {

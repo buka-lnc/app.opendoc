@@ -5,7 +5,7 @@ import { OpenAPIV3 } from 'openapi-types'
 import * as path from 'path'
 import * as validUrl from 'valid-url'
 
-async function readFromUrl(url: string): Promise<OpenAPIV3.Document> {
+async function fetchFromUrl(url: string): Promise<OpenAPIV3.Document> {
   let content: string
   try {
     content = await request
@@ -28,9 +28,9 @@ async function readFromUrl(url: string): Promise<OpenAPIV3.Document> {
 }
 
 
-export async function readOpenapiFile(filepath: string): Promise<OpenAPIV3.Document> {
+export async function fetchFile(filepath: string): Promise<OpenAPIV3.Document> {
   if (validUrl.isUri(filepath)) {
-    return readFromUrl(filepath)
+    return fetchFromUrl(filepath)
   }
 
   const fileExt = path.extname(filepath)

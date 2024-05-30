@@ -1,8 +1,8 @@
 import { compile } from './compile'
-import { BuildOptions } from './interface/build-options'
+import { BuildOptions } from './types/build-options'
 import { Value } from '@sinclair/typebox/value'
-import { readOpenapiFile } from './utils/read-openapi-file'
-import { CompileOptions } from './interface/compile-options'
+import { CompileOptions } from './types/compile-options'
+import { fetchFile } from './utils/fetch-file'
 
 
 export async function build(options: BuildOptions): Promise<void> {
@@ -12,7 +12,7 @@ export async function build(options: BuildOptions): Promise<void> {
     throw TypeError(message)
   }
 
-  const document = await readOpenapiFile(options.filepath)
+  const document = await fetchFile(options.filepath)
 
   const compileOptions: CompileOptions = {
     ...Value.Default(BuildOptions, Value.Clone(options)) as Required<BuildOptions>,
