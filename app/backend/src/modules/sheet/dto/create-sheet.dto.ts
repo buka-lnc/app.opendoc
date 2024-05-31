@@ -15,6 +15,9 @@ export class CreateSheetDTO extends TakeType(
   ['code', 'type', 'title', 'mode'],
   ['order'],
 ) {
+  @IsOptional()
+  order
+
   /**
    * 应用编码
    * 将文档创建到哪个应用下
