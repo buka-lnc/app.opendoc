@@ -1,5 +1,14 @@
 # @opendoc/backend
 
+## 1.6.1
+
+### Patch Changes
+
+- e4accce: 创建 sheet 接口未设置 order 时会报错
+- Updated dependencies [179bf1f]
+- Updated dependencies [07b5a11]
+  - @opendoc/sdk@1.3.0
+
 ## 1.6.0
 
 ### Minor Changes

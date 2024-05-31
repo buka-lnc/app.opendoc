@@ -1,5 +1,12 @@
 # @opendoc/sdk
 
+## 1.3.0
+
+### Minor Changes
+
+- 179bf1f: 支持 swagger2
+- 07b5a11: SDK 自动修复 swagger 特殊字符和中文
+
 ## 1.2.0
 
 ### Minor Changes
