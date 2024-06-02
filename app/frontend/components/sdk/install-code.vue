@@ -9,7 +9,7 @@ const sdk = toRef(props, 'sdk')
 
 const code = computed(() => `
 echo "@${sdk.value.scope}:registry=${window.location.origin}/api/registry" >> .npmrc
-npm install ${sdk.value.fullName}@${sdk.value.version}
+npm install ${sdk.value.fullName}@${sdk.value.version.version}
 `)
 </script>
 
