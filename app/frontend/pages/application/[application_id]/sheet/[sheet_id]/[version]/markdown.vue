@@ -46,7 +46,7 @@ watchEffect(() => {
       />
     </div>
 
-    <div class="flex-1 bg-base-300">
+    <div class="flex-1 bg-base-300 overflow-hidden">
       <nuxt-page />
     </div>
   </div>
