@@ -111,6 +111,8 @@ export class ApplicationService {
       {
         populate: [
           'sheets',
+          'sheets.versions',
+          'sheets.pullCrontab',
           'sheets.apiFiles',
           'sheets.apiFiles.sdks',
           'sheets.apiFiles.sdks.sdkPublishLock',

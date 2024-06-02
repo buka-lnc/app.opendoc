@@ -47,7 +47,7 @@ async function create (): Promise<void> {
     <div class="d-modal" :class="show && 'd-modal-open'">
       <div class="d-modal-box">
         <h3 class="font-bold text-lg">
-          创建文档
+          创建 Sheet
         </h3>
 
         <div class="flex flex-col space-y-4">
@@ -79,7 +79,7 @@ async function create (): Promise<void> {
 
           <div class="form-control w-full max-w-md">
             <div class="d-label">
-              <span class="d-label-text">文档名/Title</span>
+              <span class="d-label-text">名称/Title</span>
             </div>
 
             <input
@@ -90,7 +90,7 @@ async function create (): Promise<void> {
 
           <div class="form-control w-full max-w-md">
             <div class="d-label">
-              <span class="d-label-text">文档编码/Code</span>
+              <span class="d-label-text">编码/Code</span>
               <span class="d-label-alt text-base-content/40">创建后无法修改</span>
             </div>
 

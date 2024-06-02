@@ -34,7 +34,7 @@ const { refresh } = useAsyncData(
 const router = useRouter()
 const sheetId = computed(() => route.params.sheet_id)
 watchEffect(async () => {
-  if (!application.value || !sheets.value.length) {
+  if (!application.value) {
     return
   }
 
@@ -45,6 +45,8 @@ watchEffect(async () => {
   const firstSheet = sheets.value[0]
   if (firstSheet) {
     await router.replace(`/application/${application.value.id}/sheet/${firstSheet.id}`)
+  } else {
+    await router.replace(`/application/${application.value.id}/sheet/empty`)
   }
 })
 

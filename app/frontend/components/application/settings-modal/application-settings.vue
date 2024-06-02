@@ -58,7 +58,7 @@ const {
   <div class="flex flex-col space-y-4">
     <div class="form-control w-full max-w-md">
       <div class="d-label">
-        <span class="d-label-text">应用名/Title</span>
+        <span class="d-label-text">名称/Title</span>
       </div>
 
       <input
@@ -69,7 +69,7 @@ const {
 
     <div class="form-control w-full max-w-md">
       <div class="d-label">
-        <span class="d-label-text">应用编码/Code</span>
+        <span class="d-label-text">编码/Code</span>
       </div>
 
       <input

@@ -36,12 +36,12 @@ const { pending: creating, execute: create } = useAsyncFn(
     <dialog class="d-modal" :class="show && 'd-modal-open'">
       <div class="d-modal-box font-sans !border-[#5b6078]">
         <h3 class="font-bold text-lg">
-          创建应用
+          创建 Application
         </h3>
         <div class="flex flex-col space-y-4">
           <div class="form-control w-full max-w-md">
             <div class="d-label">
-              <span class="d-label-text">应用名/Title</span>
+              <span class="d-label-text">名称/Title</span>
             </div>
 
             <input
@@ -52,7 +52,7 @@ const { pending: creating, execute: create } = useAsyncFn(
 
           <div class="form-control w-full max-w-md">
             <div class="d-label">
-              <span class="d-label-text">应用编码/Code</span>
+              <span class="d-label-text">编码/Code</span>
               <span class="d-label-alt text-base-content/40">创建后无法修改</span>
             </div>
 
