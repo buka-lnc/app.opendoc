@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import * as R from 'ramda'
+import semver from 'semver'
 import { useRouteParams } from '@vueuse/router'
 import { querySheetVersions } from '~/api/backend/query_sheet_versions.js'
 
@@ -25,10 +26,11 @@ const versionTagMap = computed(() => {
 
   const mapping: Record<string, string> = {}
 
-  for (const [tag, versions] of Object.entries(tags)) {
-    if (versions?.length) {
-      const version = versions[0].version
-      mapping[version] = tag
+  for (const [tag, sheetVersions] of Object.entries(tags)) {
+    if (sheetVersions?.length) {
+      const versions = sheetVersions.map(R.prop('version'))
+      const maxVersion = R.sort(semver.rcompare, versions)[0]
+      mapping[maxVersion] = tag
     }
   }
 
