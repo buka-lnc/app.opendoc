@@ -76,7 +76,7 @@ export class RegistryService {
     const versions = npmPackages.reduce(
       (versionMap, npmPackage) => R.assoc(npmPackage.version.get().version, {
         name: npmPackage.fullName,
-        version: npmPackage.version,
+        version: npmPackage.version.get().version,
         dist: <PackageMetadataVersionDistDTO>{
           tarball: `${this.appConfig.registry}${npmPackage.tarball}`,
           integrity: npmPackage.integrity,
@@ -98,7 +98,7 @@ export class RegistryService {
     const sdk = await this.sdkRepo.findOneOrFail({
       scope: packageScope,
       name: packageName,
-      version: version,
+      version: { version },
       status: SdkStatus.published,
     })
 
