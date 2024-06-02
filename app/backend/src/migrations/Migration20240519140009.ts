@@ -13,6 +13,7 @@ export class Migration20240519140009 extends Migration {
     this.addSql('create table `sheet` (`id` bigint unsigned not null auto_increment primary key comment \'主键\', `created_at` datetime not null default CURRENT_TIMESTAMP comment \'创建时间\', `updated_at` datetime not null default CURRENT_TIMESTAMP comment \'更新时间\', `title` varchar(127) not null default \'\' comment \'文档名称\', `code` varchar(63) not null comment \'易于阅读的文档编码(Folder下唯一)\', `order` int not null default 1 comment \'文档排序\', `type` enum(\'markdown\', \'openapi\', \'asyncapi\') not null comment \'文档类型\', `mode` varchar(31) not null default \'push\' comment \'文档同步模式\', `application_id` bigint unsigned not null comment \'文档所属的应用\')')
     this.addSql('alter table `sheet` add index `sheet_code_index`(`code`);')
     this.addSql('alter table `sheet` add index `sheet_application_id_index`(`application_id`);')
+    this.addSql('alter table `sheet` add unique `sheet_code_application_id_unique`(`code`, `application_id`);')
 
     this.addSql('create table `sheet_pull_crontab` (`id` bigint unsigned not null auto_increment primary key comment \'主键\', `created_at` datetime not null default CURRENT_TIMESTAMP comment \'创建时间\', `updated_at` datetime not null default CURRENT_TIMESTAMP comment \'更新时间\', `url` varchar(255) not null comment \'接口地址\', `sheet_id` bigint unsigned not null)')
     this.addSql('alter table `sheet_pull_crontab` add unique `sheet_pull_crontab_sheet_id_unique`(`sheet_id`);')
@@ -56,6 +57,8 @@ export class Migration20240519140009 extends Migration {
 
   async down(): Promise<void> {
     this.addSql('alter table `sheet` drop foreign key `sheet_application_id_foreign`;')
+
+    this.addSql('alter table `sheet` drop index `sheet_code_application_id_unique`;')
 
     this.addSql('alter table `sheet_pull_crontab` drop foreign key `sheet_pull_crontab_sheet_id_foreign`;')
 

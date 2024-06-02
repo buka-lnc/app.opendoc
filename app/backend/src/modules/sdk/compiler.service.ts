@@ -45,7 +45,6 @@ export class CompilerService {
   }
 
   async compile(sdk: Sdk): Promise<void> {
-    this.logger.info(`🚀 ~ CompilerService ~ compile ~ sdk: ${JSON.stringify(sdk, null, 2)}`)
     const dir = await this.getTempDir(sdk)
 
     if (sdk.compiler === SdkCompiler.openapiCore) {

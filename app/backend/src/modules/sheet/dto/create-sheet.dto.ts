@@ -1,4 +1,4 @@
-import { IsOptional, ValidateNested } from 'class-validator'
+import { IsInt, IsOptional, ValidateNested } from 'class-validator'
 import { Type } from 'class-transformer'
 import { SheetPullCrontabDTO } from './sheet-pull-crontab.dto'
 import { Sheet } from '../entity/sheet.entity'
@@ -15,8 +15,9 @@ export class CreateSheetDTO extends TakeType(
   ['code', 'type', 'title', 'mode'],
   ['order'],
 ) {
+  @IsInt()
   @IsOptional()
-  order
+  order?: number
 
   /**
    * 应用编码

@@ -298,6 +298,17 @@
           "unique": false
         },
         {
+          "keyName": "sheet_code_application_id_unique",
+          "columnNames": [
+            "code",
+            "application_id"
+          ],
+          "composite": true,
+          "constraint": true,
+          "primary": false,
+          "unique": true
+        },
+        {
           "keyName": "PRIMARY",
           "columnNames": [
             "id"

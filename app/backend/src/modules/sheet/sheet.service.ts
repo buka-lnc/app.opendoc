@@ -67,17 +67,22 @@ export class SheetService {
       sheet.code = dto.sheetCode
       sheet.application = wrap(application).toReference()
       sheet.mode = dto.sheetMode || SheetMode.PUSH
+
+      if (dto.sheetTitle) sheet.title = dto.sheetTitle
+      if (dto.sheetOrder) sheet.order = dto.sheetOrder
+
+      await this.em.persistAndFlush(sheet)
+
+      this.eventEmitter.emit(
+        'sheet.created',
+        new SheetCreatedEvent(sheet)
+      )
+    } else {
+      if (dto.sheetTitle) sheet.title = dto.sheetTitle
+      if (dto.sheetOrder) sheet.order = dto.sheetOrder
+      await this.em.persistAndFlush(sheet)
     }
 
-    if (dto.sheetTitle) sheet.title = dto.sheetTitle
-    if (dto.sheetOrder) sheet.order = dto.sheetOrder
-
-    await this.em.persistAndFlush(sheet)
-
-    this.eventEmitter.emit(
-      'sheet.created',
-      new SheetCreatedEvent(sheet)
-    )
 
     if (dto.sheetPullCrontabUrl) {
       await this.sheetSynchronizeService.create({
@@ -113,16 +118,19 @@ export class SheetService {
       order: dto.order || 1,
     })
 
+    await this.em.persistAndFlush(sheet)
+
+    this.eventEmitter.emit(
+      'sheet.created',
+      new SheetCreatedEvent(sheet)
+    )
+
     if (dto.pullCrontab) {
-      const pullCrontab = this.sheetPullCrontabRepo.create({
+      await this.sheetSynchronizeService.create({
         url: dto.pullCrontab.url,
         sheet,
       })
-      this.em.persist(pullCrontab)
     }
-
-    this.em.persist(sheet)
-    await this.em.flush()
 
     return sheet
   }
