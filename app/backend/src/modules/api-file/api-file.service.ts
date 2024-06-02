@@ -114,7 +114,6 @@ export class ApiFileService {
     return apiFiles
   }
 
-
   async hasDiff(version: SheetVersion, files: FileRawDTO[]): Promise<boolean> {
     const revisionHash = (await import('rev-hash')).default
 

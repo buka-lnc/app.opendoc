@@ -40,6 +40,9 @@ export class AppService {
 
   async registerDocs() {
     const docsDir = path.join(process.cwd(), '../../docs')
+    console.log('==========================')
+    console.log(docsDir)
+    console.log('==========================')
 
     const tgzStream = new compressing.tgz.Stream()
     tgzStream.addEntry(docsDir, { ignoreBase: true })

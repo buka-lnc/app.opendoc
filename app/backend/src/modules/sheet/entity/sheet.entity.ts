@@ -76,7 +76,6 @@ export class Sheet extends BaseEntity {
   @ApiProperty({
     type: () => SheetPullCrontab,
   })
-  // @ApiHideProperty()
   @OneToOne({
     entity: () => SheetPullCrontab,
     ref: true,

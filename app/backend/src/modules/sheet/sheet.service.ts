@@ -181,6 +181,7 @@ export class SheetService {
   async querySheets(dto: QuerySheetsDTO): Promise<ResponseOfQuerySheetsDTO> {
     const qb = this.sheetRepo.createQueryBuilder('sheet')
       .select('*')
+      .leftJoinAndSelect('sheet.pullCrontab', 'pullCrontab')
 
     if (dto.title) {
       void qb.andWhere({ title: dto.title })
