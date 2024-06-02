@@ -1,5 +1,17 @@
 # @opendoc/backend
 
+## 1.6.2
+
+### Patch Changes
+
+- efb0a0a: 创建 pull 模式 sheet 后未自动拉取 api-file
+- c6a90aa: 修复应用配置的同步地址未展示的问题
+- d753511: 修复 sdk 无法安装的问题
+- b4806c0: 修复 sdk 构建异常后无法自动恢复
+- 8dcc264: 修复无法删除应用的问题
+- Updated dependencies [c27b265]
+  - @opendoc/sdk@1.3.1
+
 ## 1.6.1
 
 ### Patch Changes

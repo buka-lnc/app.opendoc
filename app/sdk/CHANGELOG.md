@@ -1,5 +1,11 @@
 # @opendoc/sdk
 
+## 1.3.1
+
+### Patch Changes
+
+- c27b265: 修复 sdk 构建异常
+
 ## 1.3.0
 
 ### Minor Changes
