@@ -1,5 +1,15 @@
 # @opendoc/frontend
 
+## 1.6.0
+
+### Minor Changes
+
+- 8dcc264: 优化无 sheet 页面展示效果
+
+### Patch Changes
+
+- 72d33da: sdk 的 readme 中的安装 package 代码中的版本号错误
+
 ## 1.5.0
 
 ### Minor Changes
