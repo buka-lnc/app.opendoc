@@ -1,5 +1,12 @@
 # @opendoc/frontend
 
+## 1.6.1
+
+### Patch Changes
+
+- eb21842: 修复 markdown 文档过长时被遮挡的问题
+- dfdafda: 前端版本标签展示错误
+
 ## 1.6.0
 
 ### Minor Changes
