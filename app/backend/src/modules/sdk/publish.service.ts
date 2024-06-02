@@ -83,16 +83,16 @@ export class PublishService {
     // 无待构建 SDK
     if (!sdk) return
 
-    const lock = this.sdkPublishLockRepo.create({
-      sdk: sdk.id,
-    })
-    this.publishLockId = lock.id
+    const lock = this.sdkPublishLockRepo.create({ sdk: sdk.id })
     sdk.status = SdkStatus.compiling
-    this.em.persist(sdk)
-    this.em.persist(lock)
 
     try {
+      this.em.persist(sdk)
+      this.em.persist(lock)
       await this.em.flush()
+
+      this.publishLockId = lock.id
+
       this.logger.debug('PUBLISHING')
 
       await this.compilerService.compile(sdk)
@@ -101,13 +101,12 @@ export class PublishService {
       sdk.publishedAt = new Date()
 
       await this.em.persistAndFlush(sdk)
-      await this.em.removeAndFlush(lock)
-      this.publishLockId = undefined
     } catch (err) {
-      this.publishLockId = undefined
-
       this.logger.error(err)
       throw err
+    } finally {
+      this.publishLockId = undefined
+      await this.em.removeAndFlush(lock)
     }
   }
 }
