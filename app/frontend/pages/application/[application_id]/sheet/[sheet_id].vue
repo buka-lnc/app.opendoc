@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import * as R from 'ramda'
+import semver from 'semver'
 import { useRouteParams } from '@vueuse/router'
 import { queryApiFiles, querySheetById, querySheetVersions } from '~/api/backend'
 import { ApiFile, Sheet, SheetVersion } from '~/api/backend/components/schemas'
@@ -47,14 +49,15 @@ watchEffect(async () => {
 
   if (route.path === prefix.value) {
     if (!apiFiles.value.length) return
-    const version = sheetVersions.value[0].version
+    const versions = R.sort(semver.rcompare, sheetVersions.value.map(R.prop('version')))
+    const maxVersion = versions[0]
 
     if (sheet.value.type === 'markdown') {
-      await router.replace(`${prefix.value}/${version}/markdown`)
+      await router.replace(`${prefix.value}/${maxVersion}/markdown`)
     } else if (sheet.value.type === 'openapi') {
-      await router.replace(`${prefix.value}/${version}/openapi/operation`)
+      await router.replace(`${prefix.value}/${maxVersion}/openapi/operation`)
     } else if (sheet.value.type === 'asyncapi') {
-      await router.replace(`${prefix.value}/${version}/asyncapi/schema`)
+      await router.replace(`${prefix.value}/${maxVersion}/asyncapi/schema`)
     }
   }
 })
