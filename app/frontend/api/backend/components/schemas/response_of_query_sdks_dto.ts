@@ -1,5 +1,5 @@
-import { Sdk } from "./sdk"
-import { ResponseOfPaginationDTO } from "./response_of_pagination_dto"
+import type { ResponseOfPaginationDTO } from "./response_of_pagination_dto.js"
+import type { Sdk } from "./sdk.js"
 
 
 /**

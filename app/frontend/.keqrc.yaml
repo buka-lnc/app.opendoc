@@ -1,4 +1,0 @@
-outdir: ./api
-fileNamingStyle: snakeCase
-modules:
-  backend: http://0.0.0.0:8080/swagger

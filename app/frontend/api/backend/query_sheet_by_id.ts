@@ -1,26 +1,10 @@
 import { Keq } from 'keq'
 import { request } from 'keq'
-import { Sheet } from "./components/schemas/sheet"
+import type { RequestParameters, ResponseMap, Operation } from "./types/query_sheet_by_id.js"
 
 
-interface ResponseMap {
-  "200": Sheet
-  "500": unknown
-}
 
-
-interface QueryArg {
-}
-
-interface ParamArg {
-    "sheetId": string
-}
-
-interface HeaderArg {
-}
-
-
-export function querySheetById<STATUS extends keyof ResponseMap>(arg?: QueryArg & ParamArg & HeaderArg): Keq<ResponseMap[STATUS]> {
+export function querySheetById<STATUS extends keyof ResponseMap>(arg?: RequestParameters): Keq<ResponseMap[STATUS], Operation<STATUS>> {
   const req = request.get<ResponseMap[STATUS]>("/api/sheet/:sheetId")
     .option('module', {
       name: "backend",

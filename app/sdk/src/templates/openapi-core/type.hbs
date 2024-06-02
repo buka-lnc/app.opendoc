@@ -54,12 +54,23 @@ export interface HeaderParameters {
   {{/if}}
 }
 
-
-export type RequestParameters = QueryParameters & RouteParameters & HeaderParameters
-{{~#unless (r__isNil operation.requestBody.content)}}
- & (
+export type BodyParameters = {{~#unless (r__isNil operation.requestBody.content)~}}
+(
 {{~#each (r__map (r__prop "schema") (r__values operation.requestBody.content))}}
 {{> t_json_schema_shape this}}{{#unless @last}} | {{/unless}}
 {{~/each~}}
 )
-{{~/unless~}}
+{{else}}
+{}
+{{~/unless}}
+
+export type RequestParameters = QueryParameters & RouteParameters & HeaderParameters & BodyParameters
+
+
+export interface Operation<STATUS extends keyof ResponseMap> extends KeqOperation {
+  requestParams: RouteParameters
+  requestQuery: QueryParameters
+  requestHeaders: HeaderParameters
+  requestBody: BodyParameters
+  responseBody: ResponseMap[STATUS]
+}

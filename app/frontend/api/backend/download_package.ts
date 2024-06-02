@@ -1,33 +1,13 @@
 import { Keq } from 'keq'
 import { request } from 'keq'
+import type { RequestParameters, ResponseMap, Operation } from "./types/download_package.js"
 
-
-interface ResponseMap {
-  "200": unknown
-  "400": {
-  "statusCode": number
-  "message": string
-  "error"?: string
-}
-}
-
-
-interface QueryArg {
-}
-
-interface ParamArg {
-    "packageName": string
-    "packageTag": string
-}
-
-interface HeaderArg {
-}
 
 
 /**
  * 下载包
  */
-export function downloadPackage<STATUS extends keyof ResponseMap>(arg?: QueryArg & ParamArg & HeaderArg): Keq<ResponseMap[STATUS]> {
+export function downloadPackage<STATUS extends keyof ResponseMap>(arg?: RequestParameters): Keq<ResponseMap[STATUS], Operation<STATUS>> {
   const req = request.get<ResponseMap[STATUS]>("/api/registry/:packageScope/:packageName/-/:packageTag.tgz")
     .option('module', {
       name: "backend",

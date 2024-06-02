@@ -1,29 +1,10 @@
 import { Keq } from 'keq'
 import { request } from 'keq'
-import { ResponseOfQueryApplicationsDTO } from "./components/schemas/response_of_query_applications_dto"
+import type { RequestParameters, ResponseMap, Operation } from "./types/query_applications.js"
 
 
-interface ResponseMap {
-  "200": ResponseOfQueryApplicationsDTO
-  "500": unknown
-}
 
-
-interface QueryArg {
-    "title"?: string
-    "code"?: string
-    "limit"?: number
-    "offset"?: number
-}
-
-interface ParamArg {
-}
-
-interface HeaderArg {
-}
-
-
-export function queryApplications<STATUS extends keyof ResponseMap>(arg?: QueryArg & ParamArg & HeaderArg): Keq<ResponseMap[STATUS]> {
+export function queryApplications<STATUS extends keyof ResponseMap>(arg?: RequestParameters): Keq<ResponseMap[STATUS], Operation<STATUS>> {
   const req = request.get<ResponseMap[STATUS]>("/api/application")
     .option('module', {
       name: "backend",

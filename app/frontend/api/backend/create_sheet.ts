@@ -1,26 +1,10 @@
 import { Keq } from 'keq'
 import { request } from 'keq'
-import { Sheet } from "./components/schemas/sheet"
-import { CreateSheetDTO } from "./components/schemas/create_sheet_dto"
+import type { RequestParameters, ResponseMap, Operation } from "./types/create_sheet.js"
 
 
-interface ResponseMap {
-  "201": Sheet
-  "500": unknown
-}
 
-
-interface QueryArg {
-}
-
-interface ParamArg {
-}
-
-interface HeaderArg {
-}
-
-
-export function createSheet<STATUS extends keyof ResponseMap>(arg?: QueryArg & ParamArg & HeaderArg & (CreateSheetDTO)): Keq<ResponseMap[STATUS]> {
+export function createSheet<STATUS extends keyof ResponseMap>(arg?: RequestParameters): Keq<ResponseMap[STATUS], Operation<STATUS>> {
   const req = request.post<ResponseMap[STATUS]>("/api/sheet")
     .option('module', {
       name: "backend",

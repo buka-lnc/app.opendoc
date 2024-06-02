@@ -1,22 +1,26 @@
 import { OmitType, PartialType } from '@nestjs/swagger'
 import { SheetPullCrontabDTO } from './sheet-pull-crontab.dto'
 import { Type } from 'class-transformer'
-import { IsOptional, ValidateNested } from 'class-validator'
+import { IsOptional, IsString, ValidateNested } from 'class-validator'
 import { CreateSheetDTO } from './create-sheet.dto'
+import { SheetType } from '../constants/sheet-type.enum'
+import { SheetMode } from '../constants/sheet-mode.enum'
 
 
 export class UpdateSheetDTO extends PartialType(OmitType(CreateSheetDTO, ['code', 'application'])) {
   @IsOptional()
-  order?
+  @IsString()
+  order?: number
 
   @IsOptional()
-  type?
+  type?: SheetType
 
   @IsOptional()
-  title?
+  @IsString()
+  title?: string
 
   @IsOptional()
-  mode?
+  mode?: SheetMode
 
   @IsOptional()
   @Type(() => SheetPullCrontabDTO)

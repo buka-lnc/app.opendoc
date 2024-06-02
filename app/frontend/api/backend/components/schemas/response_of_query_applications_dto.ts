@@ -1,5 +1,5 @@
-import { ApplicationDTO } from "./application_dto"
-import { ResponseOfPaginationDTO } from "./response_of_pagination_dto"
+import type { ResponseOfPaginationDTO } from "./response_of_pagination_dto.js"
+import type { ApplicationDTO } from "./application_dto.js"
 
 
 /**

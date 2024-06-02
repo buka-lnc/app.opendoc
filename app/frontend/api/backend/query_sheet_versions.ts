@@ -1,27 +1,10 @@
 import { Keq } from 'keq'
 import { request } from 'keq'
-import { QuerySheetVersionsResponseDTO } from "./components/schemas/query_sheet_versions_response_dto"
+import type { RequestParameters, ResponseMap, Operation } from "./types/query_sheet_versions.js"
 
 
-interface ResponseMap {
-  "200": QuerySheetVersionsResponseDTO
-}
 
-
-interface QueryArg {
-    "sheetId": string
-    "limit"?: number
-    "offset"?: number
-}
-
-interface ParamArg {
-}
-
-interface HeaderArg {
-}
-
-
-export function querySheetVersions<STATUS extends keyof ResponseMap>(arg?: QueryArg & ParamArg & HeaderArg): Keq<ResponseMap[STATUS]> {
+export function querySheetVersions<STATUS extends keyof ResponseMap>(arg?: RequestParameters): Keq<ResponseMap[STATUS], Operation<STATUS>> {
   const req = request.get<ResponseMap[STATUS]>("/api/sheet-version")
     .option('module', {
       name: "backend",

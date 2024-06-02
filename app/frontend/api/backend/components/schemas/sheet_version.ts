@@ -1,4 +1,4 @@
-import { EntityReferenceDTO } from "./entity_reference_dto"
+import type { EntityReferenceDTO } from "./entity_reference_dto.js"
 
 
 /**

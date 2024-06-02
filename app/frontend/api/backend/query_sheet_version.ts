@@ -1,25 +1,10 @@
 import { Keq } from 'keq'
 import { request } from 'keq'
-import { SheetVersion } from "./components/schemas/sheet_version"
+import type { RequestParameters, ResponseMap, Operation } from "./types/query_sheet_version.js"
 
 
-interface ResponseMap {
-  "200": SheetVersion
-}
 
-
-interface QueryArg {
-}
-
-interface ParamArg {
-    "sheetVersionId": string
-}
-
-interface HeaderArg {
-}
-
-
-export function querySheetVersion<STATUS extends keyof ResponseMap>(arg?: QueryArg & ParamArg & HeaderArg): Keq<ResponseMap[STATUS]> {
+export function querySheetVersion<STATUS extends keyof ResponseMap>(arg?: RequestParameters): Keq<ResponseMap[STATUS], Operation<STATUS>> {
   const req = request.get<ResponseMap[STATUS]>("/api/sheet-version/:sheetVersionId")
     .option('module', {
       name: "backend",

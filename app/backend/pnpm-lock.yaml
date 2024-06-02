@@ -99,14 +99,14 @@ importers:
         specifier: ^8.0.1
         version: 8.0.1
       keq:
-        specifier: ^2.5.2
-        version: 2.5.2
+        specifier: ^2.6.4
+        version: 2.6.4
       keq-debug:
         specifier: ^2.0.3
         version: 2.0.3
       keq-headers:
         specifier: ^2.0.1
-        version: 2.0.1(keq@2.5.2)
+        version: 2.0.1(keq@2.6.4)
       mime:
         specifier: ^4.0.3
         version: 4.0.3
@@ -2960,8 +2960,8 @@ packages:
     peerDependencies:
       keq: ^2
 
-  keq@2.5.2:
-    resolution: {integrity: sha512-Zig8dJlmUCL75mVyG9vtBCAIJSYSZLRUjc0YutFi6+jw4u22yAW5q9KDEnhUsjsEogDRefZH8CRlVY65iElWeg==}
+  keq@2.6.4:
+    resolution: {integrity: sha512-75K0GllfHF38qjJkf3jarQ4ZD9OMVYVg/Zhh+CiKN6GKUUIWSkoWY/SJz4gKHNl5yI7lygCqiKF+0PA8/TAw+w==}
     engines: {node: '>=18.0.0'}
 
   keyv@4.5.4:
@@ -3162,6 +3162,9 @@ packages:
   minipass@7.0.4:
     resolution: {integrity: sha512-jYofLM5Dam9279rdkWzqHozUo4ybjdZmCsDHePy5V/PbBcVMiSZR97gmAy45aqi8CK1lG2ECd356FU86avfwUQ==}
     engines: {node: '>=16 || 14 >=14.17'}
+
+  mitt@3.0.1:
+    resolution: {integrity: sha512-vKivATfr97l2/QBCYAkXYDbrIWPM2IIKEl7YPhjCvKlG3kE2gm+uBo6nEXK3M5/Ffh/FLpKExzOQ3JJoJGFKBw==}
 
   mkdirp@0.5.6:
     resolution: {integrity: sha512-FP+p8RB8OWpF3YZBCrP5gtADmtXApB5AMLn+vdyA+PyxCjrCs00mjyUozssO33cwDeT3wNGdLxJ5M//YqtHAJw==}
@@ -3880,8 +3883,8 @@ packages:
   text-table@0.2.0:
     resolution: {integrity: sha512-N+8UisAXDGk8PFXP4HAzVR9nbfmVJ3zYLAWiTIoqC5v5isinhr+r5uaO8+7r3BMfuNIufIsA7RdpVgacC2cSpw==}
 
-  thread-stream@3.0.0:
-    resolution: {integrity: sha512-oUIFjxaUT6knhPtWgDMc29zF1FcSl0yXpapkyrQrCGEfYA2HUZXCilUtKyYIv6HkCyqSPAMkY+EG0GbyIrNDQg==}
+  thread-stream@3.0.2:
+    resolution: {integrity: sha512-cBL4xF2A3lSINV4rD5tyqnKH4z/TgWPvT+NaVhJDSwK962oo/Ye7cHSMbDzwcu7tAE1SfU6Q4XtV6Hucmi6Hlw==}
 
   through@2.3.8:
     resolution: {integrity: sha512-w89qg7PI8wAdvX60bMDP+bFoD5Dvhm9oLheFp5O4a2QF0cSBGsBX4qZmadPMvVqlLJBBci+WqGGOAPvcDeNSVg==}
@@ -8057,16 +8060,17 @@ snapshots:
       url: 0.11.3
       whatwg-url: 13.0.0
 
-  keq-headers@2.0.1(keq@2.5.2):
+  keq-headers@2.0.1(keq@2.6.4):
     dependencies:
-      keq: 2.5.2
+      keq: 2.6.4
 
-  keq@2.5.2:
+  keq@2.6.4:
     dependencies:
       '@types/whatwg-url': 11.0.5
       clone: 2.1.2
       fastq: 1.17.1
       minimatch: 9.0.4
+      mitt: 3.0.1
       object.fromentries: 2.0.8
       ts-custom-error: 3.3.1
       whatwg-url: 14.0.0
@@ -8218,6 +8222,8 @@ snapshots:
   minipass@4.2.8: {}
 
   minipass@7.0.4: {}
+
+  mitt@3.0.1: {}
 
   mkdirp@0.5.6:
     dependencies:
@@ -8459,7 +8465,7 @@ snapshots:
       real-require: 0.2.0
       safe-stable-stringify: 2.4.3
       sonic-boom: 4.0.1
-      thread-stream: 3.0.0
+      thread-stream: 3.0.2
 
   pirates@4.0.6: {}
 
@@ -8945,7 +8951,7 @@ snapshots:
 
   text-table@0.2.0: {}
 
-  thread-stream@3.0.0:
+  thread-stream@3.0.2:
     dependencies:
       real-require: 0.2.0
 

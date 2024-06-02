@@ -1,25 +1,10 @@
 import { Keq } from 'keq'
 import { request } from 'keq'
+import type { RequestParameters, ResponseMap, Operation } from "./types/query_api_file_raw.js"
 
 
-interface ResponseMap {
-  "200": string
-  "500": unknown
-}
 
-
-interface QueryArg {
-}
-
-interface ParamArg {
-    "apiFileId": string
-}
-
-interface HeaderArg {
-}
-
-
-export function queryApiFileRaw<STATUS extends keyof ResponseMap>(arg?: QueryArg & ParamArg & HeaderArg): Keq<ResponseMap[STATUS]> {
+export function queryApiFileRaw<STATUS extends keyof ResponseMap>(arg?: RequestParameters): Keq<ResponseMap[STATUS], Operation<STATUS>> {
   const req = request.get<ResponseMap[STATUS]>("/api/api-file/:apiFileId/raw")
     .option('module', {
       name: "backend",

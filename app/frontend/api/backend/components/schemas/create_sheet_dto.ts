@@ -1,6 +1,6 @@
-import { ApplicationIdReferenceDTO } from "./application_id_reference_dto"
-import { ApplicationCodeReferenceDTO } from "./application_code_reference_dto"
-import { SheetPullCrontabDTO } from "./sheet_pull_crontab_dto"
+import type { ApplicationIdReferenceDTO } from "./application_id_reference_dto.js"
+import type { ApplicationCodeReferenceDTO } from "./application_code_reference_dto.js"
+import type { SheetPullCrontabDTO } from "./sheet_pull_crontab_dto.js"
 
 
 /**

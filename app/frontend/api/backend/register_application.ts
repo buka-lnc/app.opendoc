@@ -1,25 +1,10 @@
 import { Keq } from 'keq'
 import { request } from 'keq'
-import { RegisterApplicationDTO } from "./components/schemas/register_application_dto"
+import type { RequestParameters, ResponseMap, Operation } from "./types/register_application.js"
 
 
-interface ResponseMap {
-  "200": unknown
-  "500": unknown
-}
 
-
-interface QueryArg {
-}
-
-interface ParamArg {
-}
-
-interface HeaderArg {
-}
-
-
-export function registerApplication<STATUS extends keyof ResponseMap>(arg?: QueryArg & ParamArg & HeaderArg & (RegisterApplicationDTO)): Keq<ResponseMap[STATUS]> {
+export function registerApplication<STATUS extends keyof ResponseMap>(arg?: RequestParameters): Keq<ResponseMap[STATUS], Operation<STATUS>> {
   const req = request.put<ResponseMap[STATUS]>("/api/application")
     .option('module', {
       name: "backend",

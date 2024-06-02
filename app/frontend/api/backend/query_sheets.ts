@@ -1,30 +1,10 @@
 import { Keq } from 'keq'
 import { request } from 'keq'
-import { ResponseOfQuerySheetsDTO } from "./components/schemas/response_of_query_sheets_dto"
+import type { RequestParameters, ResponseMap, Operation } from "./types/query_sheets.js"
 
 
-interface ResponseMap {
-  "200": ResponseOfQuerySheetsDTO
-  "500": unknown
-}
 
-
-interface QueryArg {
-    "title"?: string
-    "type"?: string
-    "applicationId"?: string
-    "limit"?: number
-    "offset"?: number
-}
-
-interface ParamArg {
-}
-
-interface HeaderArg {
-}
-
-
-export function querySheets<STATUS extends keyof ResponseMap>(arg?: QueryArg & ParamArg & HeaderArg): Keq<ResponseMap[STATUS]> {
+export function querySheets<STATUS extends keyof ResponseMap>(arg?: RequestParameters): Keq<ResponseMap[STATUS], Operation<STATUS>> {
   const req = request.get<ResponseMap[STATUS]>("/api/sheet")
     .option('module', {
       name: "backend",

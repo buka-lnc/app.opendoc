@@ -1,24 +1,10 @@
 import { Keq } from 'keq'
 import { request } from 'keq'
-import { ForbiddenApplicationCode } from "./components/schemas/forbidden_application_code"
+import type { RequestParameters, ResponseMap, Operation } from "./types/query_forbidden_application_codes.js"
 
 
-interface ResponseMap {
-  "200": (ForbiddenApplicationCode)[]
-}
 
-
-interface QueryArg {
-}
-
-interface ParamArg {
-}
-
-interface HeaderArg {
-}
-
-
-export function queryForbiddenApplicationCodes<STATUS extends keyof ResponseMap>(arg?: QueryArg & ParamArg & HeaderArg): Keq<ResponseMap[STATUS]> {
+export function queryForbiddenApplicationCodes<STATUS extends keyof ResponseMap>(arg?: RequestParameters): Keq<ResponseMap[STATUS], Operation<STATUS>> {
   const req = request.get<ResponseMap[STATUS]>("/api/forbidden-application-code")
     .option('module', {
       name: "backend",

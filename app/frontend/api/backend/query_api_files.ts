@@ -1,29 +1,10 @@
 import { Keq } from 'keq'
 import { request } from 'keq'
-import { ResponseOfQueryApiFilesDTO } from "./components/schemas/response_of_query_api_files_dto"
+import type { RequestParameters, ResponseMap, Operation } from "./types/query_api_files.js"
 
 
-interface ResponseMap {
-  "200": ResponseOfQueryApiFilesDTO
-  "500": unknown
-}
 
-
-interface QueryArg {
-    "sheetId": string
-    "version"?: string
-    "limit"?: number
-    "offset"?: number
-}
-
-interface ParamArg {
-}
-
-interface HeaderArg {
-}
-
-
-export function queryApiFiles<STATUS extends keyof ResponseMap>(arg?: QueryArg & ParamArg & HeaderArg): Keq<ResponseMap[STATUS]> {
+export function queryApiFiles<STATUS extends keyof ResponseMap>(arg?: RequestParameters): Keq<ResponseMap[STATUS], Operation<STATUS>> {
   const req = request.get<ResponseMap[STATUS]>("/api/api-file")
     .option('module', {
       name: "backend",

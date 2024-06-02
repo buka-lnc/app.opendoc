@@ -1,26 +1,10 @@
 import { Keq } from 'keq'
 import { request } from 'keq'
-import { Application } from "./components/schemas/application"
+import type { RequestParameters, ResponseMap, Operation } from "./types/query_application.js"
 
 
-interface ResponseMap {
-  "200": Application
-  "500": unknown
-}
 
-
-interface QueryArg {
-}
-
-interface ParamArg {
-    "applicationIdOrCode": string
-}
-
-interface HeaderArg {
-}
-
-
-export function queryApplication<STATUS extends keyof ResponseMap>(arg?: QueryArg & ParamArg & HeaderArg): Keq<ResponseMap[STATUS]> {
+export function queryApplication<STATUS extends keyof ResponseMap>(arg?: RequestParameters): Keq<ResponseMap[STATUS], Operation<STATUS>> {
   const req = request.get<ResponseMap[STATUS]>("/api/application/:applicationIdOrCode")
     .option('module', {
       name: "backend",

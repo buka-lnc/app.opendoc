@@ -94,8 +94,8 @@ importers:
         specifier: ^29.7.0
         version: 29.7.0
       keq:
-        specifier: ^2.5.2
-        version: 2.5.2
+        specifier: ^2.6.4
+        version: 2.6.4
       standard-version:
         specifier: ^9.5.0
         version: 9.5.0
@@ -1794,8 +1794,8 @@ packages:
     engines: {node: '>=14.0.0'}
     hasBin: true
 
-  keq@2.5.2:
-    resolution: {integrity: sha512-Zig8dJlmUCL75mVyG9vtBCAIJSYSZLRUjc0YutFi6+jw4u22yAW5q9KDEnhUsjsEogDRefZH8CRlVY65iElWeg==}
+  keq@2.6.4:
+    resolution: {integrity: sha512-75K0GllfHF38qjJkf3jarQ4ZD9OMVYVg/Zhh+CiKN6GKUUIWSkoWY/SJz4gKHNl5yI7lygCqiKF+0PA8/TAw+w==}
     engines: {node: '>=18.0.0'}
 
   keyv@4.5.4:
@@ -1924,6 +1924,9 @@ packages:
   minipass@7.0.4:
     resolution: {integrity: sha512-jYofLM5Dam9279rdkWzqHozUo4ybjdZmCsDHePy5V/PbBcVMiSZR97gmAy45aqi8CK1lG2ECd356FU86avfwUQ==}
     engines: {node: '>=16 || 14 >=14.17'}
+
+  mitt@3.0.1:
+    resolution: {integrity: sha512-vKivATfr97l2/QBCYAkXYDbrIWPM2IIKEl7YPhjCvKlG3kE2gm+uBo6nEXK3M5/Ffh/FLpKExzOQ3JJoJGFKBw==}
 
   modify-values@1.0.1:
     resolution: {integrity: sha512-xV2bxeN6F7oYjZWTe/YPAy6MN2M+sL4u/Rlm2AHCIVGfo2p1yGmBHQ6vHehl4bRTZBdHu3TSkWdYgkwpYzAGSw==}
@@ -4976,12 +4979,13 @@ snapshots:
 
   jsonpath-plus@8.1.0: {}
 
-  keq@2.5.2:
+  keq@2.6.4:
     dependencies:
       '@types/whatwg-url': 11.0.5
       clone: 2.1.2
       fastq: 1.17.1
       minimatch: 9.0.4
+      mitt: 3.0.1
       object.fromentries: 2.0.8
       ts-custom-error: 3.3.1
       whatwg-url: 14.0.0
@@ -5108,6 +5112,8 @@ snapshots:
   minimist@1.2.8: {}
 
   minipass@7.0.4: {}
+
+  mitt@3.0.1: {}
 
   modify-values@1.0.1: {}
 

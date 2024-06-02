@@ -4,7 +4,7 @@
     (r__uniq (r__map (h__ref-name) (h__json-path "$..*['$ref']" jsonSchema)))
   )
 }}
-import type { {{this}} } from "./{{h__change-case @root.fileNamingStyle this}}"
+import type { {{this}} } from "./{{h__change-case @root.fileNamingStyle this}}.js"
 {{#if @last}}
 
 

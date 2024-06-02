@@ -48,7 +48,7 @@
     "fs-extra": "^11.2.0",
     "get-stream": "^9.0.1",
     "into-stream": "^8.0.1",
-    "keq": "^2.5.2",
+    "keq": "^2.6.4",
     "keq-debug": "^2.0.3",
     "keq-headers": "^2.0.1",
     "mime": "^4.0.3",

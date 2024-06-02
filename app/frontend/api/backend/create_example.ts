@@ -1,34 +1,13 @@
 import { Keq } from 'keq'
 import { request } from 'keq'
-import { ExampleDTO } from "./components/schemas/example_dto"
+import type { RequestParameters, ResponseMap, Operation } from "./types/create_example.js"
 
-
-interface ResponseMap {
-  "201": unknown
-  "400": {
-  "statusCode": number
-  "message": string
-  "error"?: string
-}
-  "500": unknown
-}
-
-
-interface QueryArg {
-}
-
-interface ParamArg {
-}
-
-interface HeaderArg {
-    "Authorization": string
-}
 
 
 /**
  * 创建 Example
  */
-export function createExample<STATUS extends keyof ResponseMap>(arg?: QueryArg & ParamArg & HeaderArg & (ExampleDTO)): Keq<ResponseMap[STATUS]> {
+export function createExample<STATUS extends keyof ResponseMap>(arg?: RequestParameters): Keq<ResponseMap[STATUS], Operation<STATUS>> {
   const req = request.post<ResponseMap[STATUS]>("/api/example")
     .option('module', {
       name: "backend",

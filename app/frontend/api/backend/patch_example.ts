@@ -1,34 +1,13 @@
 import { Keq } from 'keq'
 import { request } from 'keq'
+import type { RequestParameters, ResponseMap, Operation } from "./types/patch_example.js"
 
-
-interface ResponseMap {
-  "200": unknown
-  "400": {
-  "statusCode": number
-  "message": string
-  "error"?: string
-}
-  "500": unknown
-}
-
-
-interface QueryArg {
-}
-
-interface ParamArg {
-    "id": string
-}
-
-interface HeaderArg {
-    "Authorization": string
-}
 
 
 /**
  * 更新 Example
  */
-export function patchExample<STATUS extends keyof ResponseMap>(arg?: QueryArg & ParamArg & HeaderArg): Keq<ResponseMap[STATUS]> {
+export function patchExample<STATUS extends keyof ResponseMap>(arg?: RequestParameters): Keq<ResponseMap[STATUS], Operation<STATUS>> {
   const req = request.patch<ResponseMap[STATUS]>("/api/example/:id")
     .option('module', {
       name: "backend",

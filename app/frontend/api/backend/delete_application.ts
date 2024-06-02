@@ -1,25 +1,10 @@
 import { Keq } from 'keq'
 import { request } from 'keq'
+import type { RequestParameters, ResponseMap, Operation } from "./types/delete_application.js"
 
 
-interface ResponseMap {
-  "200": unknown
-  "500": unknown
-}
 
-
-interface QueryArg {
-}
-
-interface ParamArg {
-    "applicationIdOrCode": string
-}
-
-interface HeaderArg {
-}
-
-
-export function deleteApplication<STATUS extends keyof ResponseMap>(arg?: QueryArg & ParamArg & HeaderArg): Keq<ResponseMap[STATUS]> {
+export function deleteApplication<STATUS extends keyof ResponseMap>(arg?: RequestParameters): Keq<ResponseMap[STATUS], Operation<STATUS>> {
   const req = request.delete<ResponseMap[STATUS]>("/api/application/:applicationIdOrCode")
     .option('module', {
       name: "backend",

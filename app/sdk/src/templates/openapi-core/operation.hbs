@@ -1,11 +1,11 @@
 import { Keq } from 'keq'
 import { request } from '../request.js'
-import type { RequestParameters, ResponseMap } from "../types/{{h__change-case @root.fileNamingStyle (h__get-safe-operation-name pathname method operation)}}.js"
+import type { RequestParameters, ResponseMap, Operation } from "../types/{{h__change-case @root.fileNamingStyle (h__get-safe-operation-name pathname method operation)}}.js"
 
 
 
 {{> t_comments operation}}
-export function {{h__get-safe-operation-name pathname method operation}}<STATUS extends keyof ResponseMap>(arg?: RequestParameters): Keq<ResponseMap[STATUS]> {
+export function {{h__get-safe-operation-name pathname method operation}}<STATUS extends keyof ResponseMap>(arg?: RequestParameters): Keq<ResponseMap[STATUS], Operation<STATUS>> {
   const req = request.{{method}}<ResponseMap[STATUS]>("{{{r__replace (h__regexp "{(.*?)}" flags="g") ":$1" pathname}}}")
     .option('module', {
       name: "{{{moduleName}}}",

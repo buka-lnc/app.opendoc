@@ -1,5 +1,5 @@
 import { Cascade, Collection, Entity, Enum, ManyToOne, OneToMany, OneToOne, Opt, Property, Ref, Unique, t } from '@mikro-orm/core'
-import { IsEnum, IsOptional, IsString, Matches, MaxLength } from 'class-validator'
+import { IsEnum, IsInt, IsOptional, IsString, Matches, MaxLength } from 'class-validator'
 import { BaseEntity } from '~/entities/base.entity'
 import { SheetMode } from '../constants/sheet-mode.enum'
 import { ApiHideProperty, ApiProperty } from '@nestjs/swagger'
@@ -43,7 +43,7 @@ export class Sheet extends BaseEntity {
   /**
    * 文档排序
    */
-  @IsString()
+  @IsInt()
   @Property({
     type: t.integer,
     comment: '文档排序',

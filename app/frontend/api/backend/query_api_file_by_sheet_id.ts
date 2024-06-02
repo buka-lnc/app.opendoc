@@ -1,28 +1,10 @@
 import { Keq } from 'keq'
 import { request } from 'keq'
-import { ApiFile } from "./components/schemas/api_file"
+import type { RequestParameters, ResponseMap, Operation } from "./types/query_api_file_by_sheet_id.js"
 
 
-interface ResponseMap {
-  "200": ApiFile
-  "500": unknown
-}
 
-
-interface QueryArg {
-}
-
-interface ParamArg {
-    "sheetId": string
-    "version": string
-    "path": string
-}
-
-interface HeaderArg {
-}
-
-
-export function queryApiFileBySheetId<STATUS extends keyof ResponseMap>(arg?: QueryArg & ParamArg & HeaderArg): Keq<ResponseMap[STATUS]> {
+export function queryApiFileBySheetId<STATUS extends keyof ResponseMap>(arg?: RequestParameters): Keq<ResponseMap[STATUS], Operation<STATUS>> {
   const req = request.get<ResponseMap[STATUS]>("/api/sheet/:sheetId/version/:version/path/:path")
     .option('module', {
       name: "backend",

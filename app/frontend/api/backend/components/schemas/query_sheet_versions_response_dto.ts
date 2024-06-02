@@ -1,5 +1,5 @@
-import { SheetVersion } from "./sheet_version"
-import { ResponseOfPaginationDTO } from "./response_of_pagination_dto"
+import type { ResponseOfPaginationDTO } from "./response_of_pagination_dto.js"
+import type { SheetVersion } from "./sheet_version.js"
 
 
 /**

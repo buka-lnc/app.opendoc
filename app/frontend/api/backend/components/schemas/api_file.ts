@@ -1,5 +1,5 @@
-import { SheetVersion } from "./sheet_version"
-import { EntityReferenceDTO } from "./entity_reference_dto"
+import type { SheetVersion } from "./sheet_version.js"
+import type { EntityReferenceDTO } from "./entity_reference_dto.js"
 
 
 /**

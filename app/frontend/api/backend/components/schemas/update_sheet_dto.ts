@@ -1,4 +1,4 @@
-import { SheetPullCrontabDTO } from "./sheet_pull_crontab_dto"
+import type { SheetPullCrontabDTO } from "./sheet_pull_crontab_dto.js"
 
 
 /**
@@ -6,10 +6,6 @@ import { SheetPullCrontabDTO } from "./sheet_pull_crontab_dto"
  * @export
  */
 export interface UpdateSheetDTO {
-  /**
-   * 文档拉取定时任务(mode &#x3D; pull)
-   */
-  "pullCrontab"?: SheetPullCrontabDTO
   /**
    * 文档排序
    */
@@ -23,4 +19,8 @@ export interface UpdateSheetDTO {
    */
   "title"?: string
   "mode"?: "pull" | "push"
+  /**
+   * 文档拉取定时任务(mode &#x3D; pull)
+   */
+  "pullCrontab"?: SheetPullCrontabDTO
 }

@@ -1,33 +1,13 @@
 import { Keq } from 'keq'
 import { request } from 'keq'
+import type { RequestParameters, ResponseMap, Operation } from "./types/query_example_by_id.js"
 
-
-interface ResponseMap {
-  "200": unknown
-  "404": {
-  "statusCode": number
-  "message": string
-  "error"?: string
-}
-  "500": unknown
-}
-
-
-interface QueryArg {
-}
-
-interface ParamArg {
-    "id": string
-}
-
-interface HeaderArg {
-}
 
 
 /**
  * 查询 Example 详情
  */
-export function queryExampleById<STATUS extends keyof ResponseMap>(arg?: QueryArg & ParamArg & HeaderArg): Keq<ResponseMap[STATUS]> {
+export function queryExampleById<STATUS extends keyof ResponseMap>(arg?: RequestParameters): Keq<ResponseMap[STATUS], Operation<STATUS>> {
   const req = request.get<ResponseMap[STATUS]>("/api/example/:id")
     .option('module', {
       name: "backend",
