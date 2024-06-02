@@ -73,5 +73,5 @@ export function {{h__get-safe-operation-name pathname method operation}}<STATUS 
   {{~/if}}
   {{~/each}}
 
-  return req
+  return req as unknown as Keq<ResponseMap[STATUS], Operation<STATUS>>
 }

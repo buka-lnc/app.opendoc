@@ -111,7 +111,7 @@ function compile(options: CompileOpenapiOptions): CompileResult[] {
 }
 
 export async function compileOpenapiReact(options: CompileOpenapiOptions): Promise<void> {
-  const document = formatOpenapiDocument(options.document)
+  const document = await formatOpenapiDocument(options.document)
   const files = compile({ ...options, document })
 
   await Promise.allSettled(files.map(async (result) => {

@@ -1,3 +1,4 @@
+import { KeqOperation } from 'keq'
 {{#each
   (r__uniq
     (r__flatten
@@ -30,7 +31,7 @@ export interface ResponseMap {
   "{{name}}"{{#unless required}}?{{/unless}}: {{> t_json_schema_shape schema}}
 {{/inline}}
 
-export interface QueryParameters {
+export type QueryParameters = {
   {{#if operation.parameters}}
   {{#each (r__filter (r__propEq "in" "query") operation.parameters)}}
   {{> parameterProperty}}
@@ -38,7 +39,7 @@ export interface QueryParameters {
   {{/if}}
 }
 
-export interface RouteParameters {
+export type RouteParameters = {
   {{#if operation.parameters}}
   {{#each (r__filter (r__propEq "in" "path") operation.parameters)}}
   {{> parameterProperty}}
@@ -46,7 +47,7 @@ export interface RouteParameters {
   {{/if}}
 }
 
-export interface HeaderParameters {
+export type HeaderParameters = {
   {{#if operation.parameters}}
   {{#each (r__filter (r__propEq "in" "header") operation.parameters)}}
   {{> parameterProperty}}
