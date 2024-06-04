@@ -15,14 +15,6 @@ export default defineNuxtConfig({
     '~/assets/css/schema.css',
   ],
 
-  vite: {
-    server: {
-      fs: {
-        allow: ['/home/admin/workdir'],
-      },
-    },
-  },
-
   runtimeConfig: {
     apiBaseOrigin: process.env.API_BASE_ORIGIN,
   },
