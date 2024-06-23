@@ -1,6 +1,6 @@
 import type { KeqOperation } from 'keq'
-import type { Application } from "../components/schemas/application.js"
-import type { CreateApplicationDTO } from "../components/schemas/create_application_dto.js"
+import type { Application } from "../components/schemas/application"
+import type { CreateApplicationDTO } from "../components/schemas/create_application_dto"
 
 
 export interface ResponseMap {

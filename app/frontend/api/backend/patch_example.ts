@@ -1,6 +1,6 @@
 import { Keq } from 'keq'
 import { request } from 'keq'
-import type { RequestParameters, ResponseMap, Operation } from "./types/patch_example.js"
+import type { RequestParameters, ResponseMap, Operation } from "./types/patch_example"
 
 
 

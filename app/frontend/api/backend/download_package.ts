@@ -1,6 +1,6 @@
 import { Keq } from 'keq'
 import { request } from 'keq'
-import type { RequestParameters, ResponseMap, Operation } from "./types/download_package.js"
+import type { RequestParameters, ResponseMap, Operation } from "./types/download_package"
 
 
 

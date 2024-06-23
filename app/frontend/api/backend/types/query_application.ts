@@ -1,5 +1,5 @@
 import type { KeqOperation } from 'keq'
-import type { Application } from "../components/schemas/application.js"
+import type { Application } from "../components/schemas/application"
 
 
 export interface ResponseMap {

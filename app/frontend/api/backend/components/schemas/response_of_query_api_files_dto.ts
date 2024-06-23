@@ -1,5 +1,5 @@
-import type { ResponseOfPaginationDTO } from "./response_of_pagination_dto.js"
-import type { ApiFile } from "./api_file.js"
+import type { ResponseOfPaginationDTO } from "./response_of_pagination_dto"
+import type { ApiFile } from "./api_file"
 
 
 /**

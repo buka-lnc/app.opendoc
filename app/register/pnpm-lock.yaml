@@ -12,7 +12,7 @@ importers:
         specifier: ^1.10.1
         version: 1.10.1
       get-stream:
-        specifier: ^6.0.1
+        specifier: 6.0.1
         version: 6.0.1
       glob:
         specifier: ^10.4.1
@@ -24,7 +24,7 @@ importers:
         specifier: ^3.1.0
         version: 3.1.0(keq@2.6.4)
       tempy:
-        specifier: ^1.0.1
+        specifier: 1.0.1
         version: 1.0.1
     devDependencies:
       '@buka/eslint-config':

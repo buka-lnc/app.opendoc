@@ -1,5 +1,5 @@
 import type { KeqOperation } from 'keq'
-import type { ResponseOfQueryApiFilesDTO } from "../components/schemas/response_of_query_api_files_dto.js"
+import type { ResponseOfQueryApiFilesDTO } from "../components/schemas/response_of_query_api_files_dto"
 
 
 export interface ResponseMap {

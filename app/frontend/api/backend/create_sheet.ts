@@ -1,6 +1,6 @@
 import { Keq } from 'keq'
 import { request } from 'keq'
-import type { RequestParameters, ResponseMap, Operation } from "./types/create_sheet.js"
+import type { RequestParameters, ResponseMap, Operation } from "./types/create_sheet"
 
 
 
@@ -12,8 +12,8 @@ export function createSheet<STATUS extends keyof ResponseMap>(arg?: RequestParam
     })
 
   if (arg && "application" in arg) req.send({ "application": arg["application"] })
-  if (arg && "pullCrontab" in arg) req.send({ "pullCrontab": arg["pullCrontab"] })
   if (arg && "order" in arg) req.send({ "order": arg["order"] })
+  if (arg && "pullCrontab" in arg) req.send({ "pullCrontab": arg["pullCrontab"] })
   if (arg && "code" in arg) req.send({ "code": arg["code"] })
   if (arg && "type" in arg) req.send({ "type": arg["type"] })
   if (arg && "title" in arg) req.send({ "title": arg["title"] })

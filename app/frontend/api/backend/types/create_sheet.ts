@@ -1,6 +1,6 @@
 import type { KeqOperation } from 'keq'
-import type { Sheet } from "../components/schemas/sheet.js"
-import type { CreateSheetDTO } from "../components/schemas/create_sheet_dto.js"
+import type { Sheet } from "../components/schemas/sheet"
+import type { CreateSheetDTO } from "../components/schemas/create_sheet_dto"
 
 
 export interface ResponseMap {

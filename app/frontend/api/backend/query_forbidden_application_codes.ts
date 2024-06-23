@@ -1,6 +1,6 @@
 import { Keq } from 'keq'
 import { request } from 'keq'
-import type { RequestParameters, ResponseMap, Operation } from "./types/query_forbidden_application_codes.js"
+import type { RequestParameters, ResponseMap, Operation } from "./types/query_forbidden_application_codes"
 
 
 

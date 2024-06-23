@@ -1,5 +1,5 @@
 import type { KeqOperation } from 'keq'
-import type { CreateForbiddenApplicationCodeDTO } from "../components/schemas/create_forbidden_application_code_dto.js"
+import type { CreateForbiddenApplicationCodeDTO } from "../components/schemas/create_forbidden_application_code_dto"
 
 
 export interface ResponseMap {

@@ -1,5 +1,5 @@
 import type { KeqOperation } from 'keq'
-import type { RegisterApplicationDTO } from "../components/schemas/register_application_dto.js"
+import type { RegisterApplicationDTO } from "../components/schemas/register_application_dto"
 
 
 export interface ResponseMap {

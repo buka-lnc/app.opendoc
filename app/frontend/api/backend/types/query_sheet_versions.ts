@@ -1,5 +1,5 @@
 import type { KeqOperation } from 'keq'
-import type { QuerySheetVersionsResponseDTO } from "../components/schemas/query_sheet_versions_response_dto.js"
+import type { QuerySheetVersionsResponseDTO } from "../components/schemas/query_sheet_versions_response_dto"
 
 
 export interface ResponseMap {

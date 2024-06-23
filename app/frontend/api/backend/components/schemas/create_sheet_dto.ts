@@ -1,6 +1,6 @@
-import type { ApplicationIdReferenceDTO } from "./application_id_reference_dto.js"
-import type { ApplicationCodeReferenceDTO } from "./application_code_reference_dto.js"
-import type { SheetPullCrontabDTO } from "./sheet_pull_crontab_dto.js"
+import type { ApplicationIdReferenceDTO } from "./application_id_reference_dto"
+import type { ApplicationCodeReferenceDTO } from "./application_code_reference_dto"
+import type { SheetPullCrontabDTO } from "./sheet_pull_crontab_dto"
 
 
 /**
@@ -14,13 +14,13 @@ export interface CreateSheetDTO {
    */
   "application": ApplicationIdReferenceDTO | ApplicationCodeReferenceDTO
   /**
-   * 文档拉取定时任务(mode &#x3D; pull)
-   */
-  "pullCrontab"?: SheetPullCrontabDTO
-  /**
    * 文档排序
    */
   "order"?: number
+  /**
+   * 文档拉取定时任务(mode &#x3D; pull)
+   */
+  "pullCrontab"?: SheetPullCrontabDTO
   /**
    * 易于阅读的文档编码(Folder下唯一)
    */

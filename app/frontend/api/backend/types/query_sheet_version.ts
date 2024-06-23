@@ -1,5 +1,5 @@
 import type { KeqOperation } from 'keq'
-import type { SheetVersion } from "../components/schemas/sheet_version.js"
+import type { SheetVersion } from "../components/schemas/sheet_version"
 
 
 export interface ResponseMap {

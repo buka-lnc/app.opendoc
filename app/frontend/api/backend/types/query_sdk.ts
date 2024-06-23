@@ -1,5 +1,5 @@
 import type { KeqOperation } from 'keq'
-import type { Sdk } from "../components/schemas/sdk.js"
+import type { Sdk } from "../components/schemas/sdk"
 
 
 export interface ResponseMap {

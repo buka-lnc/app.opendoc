@@ -1,5 +1,5 @@
-import type { SheetPullCrontab } from "./sheet_pull_crontab.js"
-import type { EntityReferenceDTO } from "./entity_reference_dto.js"
+import type { SheetPullCrontab } from "./sheet_pull_crontab"
+import type { EntityReferenceDTO } from "./entity_reference_dto"
 
 
 /**

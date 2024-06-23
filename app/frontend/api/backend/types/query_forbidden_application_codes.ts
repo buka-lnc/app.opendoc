@@ -1,5 +1,5 @@
 import type { KeqOperation } from 'keq'
-import type { ForbiddenApplicationCode } from "../components/schemas/forbidden_application_code.js"
+import type { ForbiddenApplicationCode } from "../components/schemas/forbidden_application_code"
 
 
 export interface ResponseMap {

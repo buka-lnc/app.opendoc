@@ -1,5 +1,5 @@
 import type { KeqOperation } from 'keq'
-import type { ExampleDTO } from "../components/schemas/example_dto.js"
+import type { ExampleDTO } from "../components/schemas/example_dto"
 
 
 export interface ResponseMap {

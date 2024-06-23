@@ -1,4 +1,4 @@
-import type { SheetPullCrontabDTO } from "./sheet_pull_crontab_dto.js"
+import type { SheetPullCrontabDTO } from "./sheet_pull_crontab_dto"
 
 
 /**
@@ -6,9 +6,6 @@ import type { SheetPullCrontabDTO } from "./sheet_pull_crontab_dto.js"
  * @export
  */
 export interface UpdateSheetDTO {
-  /**
-   * 文档排序
-   */
   "order"?: number
   /**
    * 文档类型

@@ -1,5 +1,5 @@
 import type { KeqOperation } from 'keq'
-import type { ResponseOfQuerySdksDTO } from "../components/schemas/response_of_query_sdks_dto.js"
+import type { ResponseOfQuerySdksDTO } from "../components/schemas/response_of_query_sdks_dto"
 
 
 export interface ResponseMap {

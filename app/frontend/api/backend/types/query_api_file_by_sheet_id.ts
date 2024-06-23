@@ -1,5 +1,5 @@
 import type { KeqOperation } from 'keq'
-import type { ApiFile } from "../components/schemas/api_file.js"
+import type { ApiFile } from "../components/schemas/api_file"
 
 
 export interface ResponseMap {

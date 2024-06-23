@@ -1,5 +1,5 @@
 import type { KeqOperation } from 'keq'
-import type { PackageMetadataDTO } from "../components/schemas/package_metadata_dto.js"
+import type { PackageMetadataDTO } from "../components/schemas/package_metadata_dto"
 
 
 export interface ResponseMap {

@@ -1,5 +1,5 @@
 import type { KeqOperation } from 'keq'
-import type { RegisterSheetDTO } from "../components/schemas/register_sheet_dto.js"
+import type { RegisterSheetDTO } from "../components/schemas/register_sheet_dto"
 
 
 export interface ResponseMap {
