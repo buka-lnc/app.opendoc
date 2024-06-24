@@ -11,12 +11,18 @@ import { ResponseOfQuerySheetsDTO } from './dto/response-of-query-sheets.dto'
 import { SheetSynchronizeService } from './sheet-synchronize.service'
 import { ApiFile } from '../api-file/entities/api-file.entity'
 import { UpdateSheetDTO } from './dto/update-sheet.dto'
+import { EntityManager } from '@mikro-orm/mysql'
+import { MikroORM } from '@mikro-orm/core'
+
 
 @ApiTags('API Sheet')
 @Controller('sheet')
 @ApiInternalServerErrorResponse({ description: '系统异常' })
 export class SheetController {
   constructor(
+    private readonly orm: MikroORM,
+    private readonly em: EntityManager,
+
     private readonly sheetService: SheetService,
     private readonly sheetSynchronizeService: SheetSynchronizeService,
   ) {}
@@ -63,8 +69,16 @@ export class SheetController {
     await this.sheetService.remove(sheetId)
   }
 
+  @Post(':/sheetId/sync')
+  @ApiOperation({ summary: '同步指定的 API 文档' })
+  async syncApiDocument(
+    @Param('sheetId') sheetId: string,
+  ): Promise<void> {
+    await this.sheetService.sync(sheetId)
+  }
+
   @Post('sync')
-  @ApiOperation({ summary: '同步 API 文档', description: '每隔 10 分钟自动同步一次' })
+  @ApiOperation({ summary: '同步所有 API 文档', description: '每隔 10 分钟自动同步一次' })
   async syncApiDocuments(): Promise<void> {
     await this.sheetSynchronizeService.synchronizeAll()
   }

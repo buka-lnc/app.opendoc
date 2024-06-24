@@ -174,6 +174,14 @@ export class SheetService {
     await this.em.removeAndFlush(sheet)
   }
 
+  async sync(sheetId: string): Promise<void> {
+    const crontab = await this.sheetPullCrontabRepo.findOneOrFail({
+      sheet: { id: sheetId },
+    })
+
+    await this.sheetSynchronizeService.synchronize(crontab)
+  }
+
   async querySheetById(sheetId: string): Promise<Sheet> {
     return this.sheetRepo.findOneOrFail(sheetId)
   }

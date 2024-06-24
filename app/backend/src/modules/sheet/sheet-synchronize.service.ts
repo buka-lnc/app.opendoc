@@ -1,4 +1,4 @@
-import { EnsureRequestContext, EntityManager, MikroORM } from '@mikro-orm/core'
+import { EnsureRequestContext, EntityManager, MikroORM, wrap } from '@mikro-orm/core'
 import { Injectable } from '@nestjs/common'
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino'
 import { ApiFileService } from '../api-file/api-file.service'
@@ -10,6 +10,7 @@ import { SheetPullCrontab } from './entity/sheet-pull-crontab.entity'
 import { request } from 'keq'
 import { SheetType } from './constants/sheet-type.enum'
 import { CreateSheetPullCrontabDTO } from './dto/create-sheet-pull-crontab.dto'
+import { Sheet } from './entity/sheet.entity'
 
 
 @Injectable()
@@ -25,6 +26,9 @@ export class SheetSynchronizeService {
 
     @InjectRepository(SheetPullCrontab)
     private readonly sheetPullCrontabRepo: EntityRepository<SheetPullCrontab>,
+
+    @InjectRepository(Sheet)
+    private readonly sheetRepo: EntityRepository<Sheet>,
   ) {}
 
   async create(dto: CreateSheetPullCrontabDTO): Promise<SheetPullCrontab> {
@@ -53,6 +57,7 @@ export class SheetSynchronizeService {
 
     for (const crontab of crontabs) {
       await this.synchronize(crontab)
+      wrap(crontab).toReference()
       crontab.updatedAt = new Date()
       this.em.persist(crontab)
     }
@@ -61,6 +66,10 @@ export class SheetSynchronizeService {
   }
 
   async synchronize(crontab: SheetPullCrontab): Promise<void> {
+    if (!wrap(crontab).isInitialized()) {
+      await wrap(crontab).init()
+    }
+
     const sheet = await crontab.sheet.loadOrFail()
 
     if (sheet.mode !== SheetMode.PULL) return
