@@ -32,7 +32,7 @@ export interface Sdk {
   /**
    * sdk 可用状态
    */
-  "status": "pending" | "compiling" | "published"
+  "status": "pending" | "compiling" | "published" | "error"
   /**
    * @type date-time
    * 发布时间

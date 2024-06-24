@@ -19,6 +19,10 @@ defineProps<{
     SDK 待构建
   </div>
 
+  <div v-else-if="status === 'error'" class="d-badge d-badge-outline d-badge-error font-mono">
+    SDK 异常
+  </div>
+
   <div v-else class="d-badge d-badge-outline d-badge-error font-mono">
     SDK 缺失
   </div>

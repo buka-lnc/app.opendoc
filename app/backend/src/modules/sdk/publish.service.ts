@@ -9,6 +9,7 @@ import { Sdk } from './entity/sdk.entity'
 import { SdkPublishLock } from './entity/sdk-publish-lock.entity'
 import { SdkStatus } from './constant/sdk-status'
 import { CompilerService } from './compiler.service'
+import dayjs from 'dayjs'
 
 
 @Injectable()
@@ -38,12 +39,17 @@ export class PublishService {
   async clean() {
     // 自动清理五分钟无心跳的任务
     const locks = await this.sdkPublishLockRepo.find({
-      updatedAt: { $lt: new Date(Date.now() - 1000 * 60 * 5) },
+      updatedAt: {
+        $lt: dayjs()
+          .subtract(5, 'minute')
+          .toDate(),
+      },
     })
 
     this.em.remove(locks)
 
     const sdks = await this.sdkRepo.find({
+      status: { $in: [SdkStatus.compiling] },
       sdkPublishLock: { $in: locks },
     })
 
@@ -103,10 +109,18 @@ export class PublishService {
       await this.em.persistAndFlush(sdk)
     } catch (err) {
       this.logger.error(err)
+
+      sdk.status = SdkStatus.error
+      this.em.clear()
+      this.em.persist(sdk)
+      await this.em.flush()
+
       throw err
     } finally {
       this.publishLockId = undefined
-      await this.em.removeAndFlush(lock)
+      this.em.clear()
+      this.em.remove(lock)
+      await this.em.flush()
     }
   }
 }
