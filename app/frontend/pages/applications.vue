@@ -19,12 +19,17 @@ const search = ref('')
 
 const { pending, refresh } = useAsyncData(
   async () => {
-    const body = await queryApplications<'200'>({
+    console.log('123123')
+    const x = queryApplications<'200'>({
       limit: pagination.limit,
       offset: pagination.offset,
       title: filterType.value === 'title' ? search.value.trim() : undefined,
       code: filterType.value === 'code' ? search.value.trim() : undefined,
     })
+    console.log('xxx', x.end())
+
+    const body = await x.end()
+    console.log('body')
 
     applications.value = body.results
     pagination.total = body.pagination.total

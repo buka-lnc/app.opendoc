@@ -18,5 +18,7 @@ export function queryApplications<STATUS extends keyof ResponseMap>(arg?: Reques
   if (arg && "limit" in arg) req.query("limit", queryWrap(arg["limit"]))
   if (arg && "offset" in arg) req.query("offset", queryWrap(arg["offset"]))
 
+  console.log(req)
+  console.log(req.end)
   return req
 }
