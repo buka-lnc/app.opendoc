@@ -175,9 +175,12 @@ export class SheetService {
   }
 
   async sync(sheetId: string): Promise<void> {
+    console.log('🚀 ~ SheetService ~ sync ~ sheetId:', sheetId)
+
     const crontab = await this.sheetPullCrontabRepo.findOneOrFail({
       sheet: { id: sheetId },
     })
+    console.log('🚀 ~ SheetService ~ sync ~ crontab:', crontab)
 
     await this.sheetSynchronizeService.synchronize(crontab)
   }

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { deleteSheet, updateSheet } from '~/api/backend'
+import { syncApiDocument, deleteSheet, updateSheet } from '~/api/backend'
 import { Application, Sheet, SheetPullCrontabDTO } from '~/api/backend/components/schemas'
 import { SheetModeDescription } from '~/constants/sheet-mode-description'
 import { SheetTypeDescription } from '~/constants/sheet-type-description'
@@ -68,6 +68,27 @@ const {
         sheetId: sheet.value.id,
       })
       emit('deleted:sheet', sheet.value.id)
+    } catch (err) {
+      if (err instanceof Error) {
+        alert.error(err.message, 10000000)
+      } else {
+        console.error(err)
+        throw err
+      }
+    }
+  },
+)
+
+const {
+  pending: synchronizing,
+  execute: synchronize,
+} = useAsyncFn(
+  async () => {
+    try {
+      console.log(sheet.value)
+      await syncApiDocument({
+        sheetId: sheet.value.id,
+      })
     } catch (err) {
       if (err instanceof Error) {
         alert.error(err.message, 10000000)
@@ -184,6 +205,21 @@ const {
     </template>
 
     删除
+  </danger-operation>
+
+  <danger-operation
+    v-if="mode === 'pull' && pullCrontabUrl"
+    :pending="synchronizing"
+    @click="synchronize"
+  >
+    <template #title>
+      同步文档
+    </template>
+    <template #description>
+      同步会立刻生成一个新版本
+    </template>
+
+    同步
   </danger-operation>
 </template>
 

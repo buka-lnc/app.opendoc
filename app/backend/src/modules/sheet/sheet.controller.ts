@@ -69,7 +69,7 @@ export class SheetController {
     await this.sheetService.remove(sheetId)
   }
 
-  @Post(':/sheetId/sync')
+  @Post(':sheetId/sync')
   @ApiOperation({ summary: '同步指定的 API 文档' })
   async syncApiDocument(
     @Param('sheetId') sheetId: string,
