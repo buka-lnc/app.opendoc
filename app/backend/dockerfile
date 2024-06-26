@@ -20,6 +20,6 @@ COPY . /repo
 WORKDIR /repo
 
 
-RUN pnpm install --filter "backend..." --frozen-lockfile && turbo build --filter "backend..."
+RUN pnpm install --filter "backend..." --frozen-lockfile && turbo build --filter "@opendoc/backend..."
 
 CMD ["bash", "-c", "cd /repo/app/backend && pnpm run start:prod"]

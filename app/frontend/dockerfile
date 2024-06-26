@@ -8,6 +8,6 @@ WORKDIR /repo
 
 
 RUN apt update && apt install -y curl
-RUN pnpm install --filter "frontend..." --frozen-lockfile && turbo build --filter "frontend..."
+RUN pnpm install --filter "frontend..." --frozen-lockfile && turbo build --filter "@opendoc/frontend..."
 
 CMD ["bash", "-c", "cd /repo/app/frontend && pnpm run start:prod"]
