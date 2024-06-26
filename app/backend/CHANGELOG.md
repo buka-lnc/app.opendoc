@@ -1,5 +1,15 @@
 # @opendoc/backend
 
+## 1.6.3
+
+### Patch Changes
+
+- 39f69c1: 修复 swagger 文件中存在 trace 和 option 接口时导致的编译错误
+- 0661733: 增加 SDK 构建错误状态
+- 39f7346: 支持手动同步 Pull 模式的 sheet
+- Updated dependencies [39f69c1]
+  - @opendoc/sdk@1.3.2
+
 ## 1.6.2
 
 ### Patch Changes

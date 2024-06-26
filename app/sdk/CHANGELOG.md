@@ -1,5 +1,11 @@
 # @opendoc/sdk
 
+## 1.3.2
+
+### Patch Changes
+
+- 39f69c1: 修复 swagger 文件中存在 trace 和 option 接口时导致的编译错误
+
 ## 1.3.1
 
 ### Patch Changes
