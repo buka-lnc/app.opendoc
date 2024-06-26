@@ -1,5 +1,11 @@
 # @opendoc/frontend
 
+## 1.6.2
+
+### Patch Changes
+
+- 0661733: 增加 SDK 构建错误状态
+
 ## 1.6.1
 
 ### Patch Changes
