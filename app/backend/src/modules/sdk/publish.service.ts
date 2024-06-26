@@ -110,8 +110,8 @@ export class PublishService {
     } catch (err) {
       this.logger.error(err)
 
-      sdk.status = SdkStatus.error
       this.em.clear()
+      sdk.status = SdkStatus.error
       this.em.persist(sdk)
       await this.em.flush()
 

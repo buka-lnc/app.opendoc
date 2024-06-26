@@ -148,6 +148,7 @@ export class CompilerService {
     await fs.ensureDir(compileDir)
     await fs.emptyDir(compileDir)
 
+    this.logger.debug(`${sdk.fullName} compile dir: ${compileDir}`)
     this.logger.debug(`${sdk.fullName} compiling`)
 
     const sheet = await sdk.sheet.loadOrFail()
