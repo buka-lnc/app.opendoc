@@ -90,7 +90,13 @@ function compile(options: CompileOpenapiOptions): CompileResult[] {
     for (const [pathname, pathItem] of Object.entries(document.paths)) {
       if (!pathItem) continue
 
-      for (const [method, operation] of Object.entries(pathItem)) {
+      for (const [m, operation] of Object.entries(pathItem)) {
+        const method = m.toLowerCase()
+        if (!['get', 'post', 'put', 'delete', 'patch', 'head'].includes(method)) {
+          console.warn(chalk.yellow(`Method ${String(method).toUpperCase()} on path ${String(pathname)} cannot compiled, skipping`))
+          continue
+        }
+
         if (typeof operation === 'object' && !Array.isArray(operation)) {
           const context = {
             pathname,

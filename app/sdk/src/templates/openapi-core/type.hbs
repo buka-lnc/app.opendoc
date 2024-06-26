@@ -50,7 +50,7 @@ export type RouteParameters = {
 export type HeaderParameters = {
   {{#if operation.parameters}}
   {{#each (r__filter (r__propEq "in" "header") operation.parameters)}}
-  {{> parameterProperty}}
+  "{{name}}"{{#unless required}}?{{/unless}}: string
   {{/each}}
   {{/if}}
 }
