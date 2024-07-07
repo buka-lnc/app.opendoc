@@ -11,6 +11,7 @@ const { pending, data: sheetVersions } = useAsyncData(
     const body = await querySheetVersions<'200'>({
       sheetId: sheetId.value,
     })
+    console.log('🚀 ~ body:', body)
     return body.results
   },
   {

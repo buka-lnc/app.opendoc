@@ -10,17 +10,17 @@ const props = defineProps<{
   tag?: string
 }>()
 
-const { pending, data: sdks } = useAsyncData(
+const { isLoading: pending, state: sdks } = useAsyncState(
   async () => {
     const body = await querySdks<'200'>({
       sheetId: props.sheetVersion.sheet.id,
+      version: props.sheetVersion.version,
     })
+      .flowControl('serial')
 
     return body.results
   },
-  {
-    default: () => [],
-  },
+  [],
 )
 
 const sdkStatus = computed(() => {
