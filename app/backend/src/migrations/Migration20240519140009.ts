@@ -18,9 +18,10 @@ export class Migration20240519140009 extends Migration {
     this.addSql('create table `sheet_pull_crontab` (`id` bigint unsigned not null auto_increment primary key comment \'主键\', `created_at` datetime not null default CURRENT_TIMESTAMP comment \'创建时间\', `updated_at` datetime not null default CURRENT_TIMESTAMP comment \'更新时间\', `url` varchar(255) not null comment \'接口地址\', `sheet_id` bigint unsigned not null)')
     this.addSql('alter table `sheet_pull_crontab` add unique `sheet_pull_crontab_sheet_id_unique`(`sheet_id`);')
 
-    this.addSql('create table `sheet_version` (`id` bigint unsigned not null auto_increment primary key comment \'主键\', `created_at` datetime not null default CURRENT_TIMESTAMP comment \'创建时间\', `updated_at` datetime not null default CURRENT_TIMESTAMP comment \'更新时间\', `version` varchar(63) not null comment \'版本号\', `tag` varchar(24) null comment \'标签\', `sheet_id` bigint unsigned not null)')
+    this.addSql("create table `sheet_version` (`id` bigint unsigned not null auto_increment primary key comment '主键', `created_at` datetime not null default CURRENT_TIMESTAMP comment '创建时间', `updated_at` datetime not null default CURRENT_TIMESTAMP comment '更新时间', `major` int not null comment 'Major', `minor` int not null comment 'Minor', `patch` int not null comment 'Patch', `prerelease` int not null default 0 comment 'Pre-release', `tag` varchar(24) not null default '' comment '标签', `sheet_id` bigint unsigned not null)")
     this.addSql('alter table `sheet_version` add index `sheet_version_sheet_id_index`(`sheet_id`);')
-    this.addSql('alter table `sheet_version` add unique `sheet_version_sheet_id_version_unique`(`sheet_id`, `version`);')
+    this.addSql('alter table `sheet_version` add unique `sheet_version_sheet_id_major_minor_patch_tag_prerelease_unique`(`sheet_id`, `major`, `minor`, `patch`, `tag`, `prerelease`);')
+
 
     this.addSql('create table `api_file` (`id` bigint unsigned not null auto_increment primary key comment \'主键\', `created_at` datetime not null default CURRENT_TIMESTAMP comment \'创建时间\', `updated_at` datetime not null default CURRENT_TIMESTAMP comment \'更新时间\', `path` varchar(128) not null comment \'文件的路径\', `hash` varchar(10) not null default \'\' comment \'文件的指纹\', `version_id` bigint unsigned not null comment \'版本号\', `sheet_id` bigint unsigned not null comment \'Sheet\')')
     this.addSql('alter table `api_file` add index `api_file_version_id_index`(`version_id`);')

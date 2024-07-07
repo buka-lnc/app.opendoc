@@ -13,5 +13,6 @@ import { SheetVersion } from './entity/sheet-version.entity'
   ],
   controllers: [SheetVersionController],
   providers: [SheetVersionService],
+  exports: [SheetVersionService],
 })
 export class SheetVersionModule {}

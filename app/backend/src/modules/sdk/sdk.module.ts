@@ -11,12 +11,14 @@ import { CompilerService } from './compiler.service'
 import { StorageModule } from '../storage/storage.module'
 import { ApiFileModule } from '../api-file/api-file.module'
 import { ApiFile } from '../api-file/entities/api-file.entity'
+import { SheetVersionModule } from '../sheet-version/sheet-version.module'
 
 
 @Module({
   imports: [
     ApiFileModule,
     StorageModule,
+    SheetVersionModule,
     MikroOrmModule.forFeature([
       ApiFile,
       Sdk,

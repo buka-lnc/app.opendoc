@@ -1,6 +1,6 @@
-import { Cascade, Collection, Entity, ManyToOne, OneToMany, Property, Ref, Unique } from '@mikro-orm/core'
+import { Cascade, Collection, Entity, ManyToOne, OneToMany, Opt, Property, Ref, Unique } from '@mikro-orm/core'
 import { BaseEntity } from '~/entities/base.entity'
-import { IsSemVer, IsString, MaxLength } from 'class-validator'
+import { IsInt, IsString, MaxLength } from 'class-validator'
 import { ApiFile } from '~/modules/api-file/entities/api-file.entity'
 import { Sdk } from '~/modules/sdk/entity/sdk.entity'
 import { ApiHideProperty } from '@nestjs/swagger'
@@ -9,14 +9,36 @@ import { ApiForeignKey } from '~/decorators/api-reference.decorator'
 
 
 @Entity()
-@Unique({ properties: ['sheet', 'version'] })
+@Unique({ properties: ['sheet', 'major', 'minor', 'patch', 'tag', 'prerelease'] })
 export class SheetVersion extends BaseEntity {
-  @IsSemVer()
+  @IsInt()
   @Property({
-    columnType: 'varchar(63)',
-    comment: '版本号',
+    type: 'int',
+    comment: 'Major',
   })
-  version!: string
+  major!: number
+
+  @IsInt()
+  @Property({
+    type: 'int',
+    comment: 'Minor',
+  })
+  minor!: number
+
+  @IsInt()
+  @Property({
+    type: 'int',
+    comment: 'Patch',
+  })
+  patch!: number
+
+  @IsInt()
+  @Property({
+    type: 'int',
+    comment: 'Pre-release',
+    default: 0,
+  })
+  prerelease!: number
 
   /**
    * 标签
@@ -26,10 +48,18 @@ export class SheetVersion extends BaseEntity {
   @IsString()
   @Property({
     columnType: 'varchar(24)',
-    nullable: true,
     comment: '标签',
+    default: '',
   })
-  tag?: string
+  tag!: string
+
+  @Property({
+    persist: false,
+    comment: '版本号',
+  })
+  get version(): string & Opt {
+    return `${this.major}.${this.minor}.${this.patch}${this.tag ? `-${this.tag}.${this.prerelease}` : ''}`
+  }
 
   @ApiForeignKey()
   @ManyToOne({

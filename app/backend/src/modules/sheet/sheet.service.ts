@@ -20,6 +20,7 @@ import { SheetCreatedEvent } from './events/sheet-created.event'
 import { ApiFile } from '../api-file/entities/api-file.entity'
 import { UpdateSheetDTO } from './dto/update-sheet.dto'
 import { SheetPullCrontab } from './entity/sheet-pull-crontab.entity'
+import { SheetVersionService } from '../sheet-version/sheet-version.service'
 
 
 @Injectable()
@@ -32,9 +33,10 @@ export class SheetService {
     private readonly em: EntityManager,
     private readonly orm: MikroORM,
 
+    private eventEmitter: EventEmitter2,
     private readonly apiFileService: ApiFileService,
     private readonly sheetSynchronizeService: SheetSynchronizeService,
-    private eventEmitter: EventEmitter2,
+    private readonly sheetVersionService: SheetVersionService,
 
     @InjectRepository(Sheet)
     private readonly sheetRepo: EntityRepository<Sheet>,
@@ -175,12 +177,9 @@ export class SheetService {
   }
 
   async sync(sheetId: string): Promise<void> {
-    console.log('🚀 ~ SheetService ~ sync ~ sheetId:', sheetId)
-
     const crontab = await this.sheetPullCrontabRepo.findOneOrFail({
       sheet: { id: sheetId },
     })
-    console.log('🚀 ~ SheetService ~ sync ~ crontab:', crontab)
 
     await this.sheetSynchronizeService.synchronize(crontab)
   }
@@ -225,9 +224,10 @@ export class SheetService {
   }
 
   async queryApiFile(sheetId: string, version: string, path: string) : Promise<ApiFile> {
+    const sheetVersion = this.sheetVersionService.parse(version)
     return await this.apiFileRepo.findOneOrFail({
       sheet: { id: sheetId },
-      version: { version },
+      version: sheetVersion,
       path,
     })
   }

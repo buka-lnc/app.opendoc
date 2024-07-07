@@ -6,6 +6,7 @@ import { Sheet } from '../sheet/entity/sheet.entity'
 import { ApiFile } from './entities/api-file.entity'
 import { StorageModule } from '../storage/storage.module'
 import { SheetVersion } from '../sheet-version/entity/sheet-version.entity'
+import { SheetVersionModule } from '../sheet-version/sheet-version.module'
 
 
 @Module({
@@ -16,6 +17,7 @@ import { SheetVersion } from '../sheet-version/entity/sheet-version.entity'
       ApiFile,
     ]),
     StorageModule,
+    SheetVersionModule,
   ],
   controllers: [ApiFileController],
   providers: [ApiFileService],

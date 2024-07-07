@@ -10,6 +10,7 @@ import { Readable } from 'stream'
 import { EntityRepository } from '@mikro-orm/mysql'
 import { QuerySdksDTO } from './dto/query-sdks.dto'
 import { ResponseOfQuerySdksDTO } from './dto/response-of-query-sdks.dto'
+import { SheetVersionService } from '../sheet-version/sheet-version.service'
 
 
 @Injectable()
@@ -22,6 +23,7 @@ export class SdkService {
     private readonly orm: MikroORM,
 
     private readonly storageService: StorageService,
+    private readonly sheetVersionService: SheetVersionService,
 
     @InjectRepository(Sdk)
     private readonly sdkRepo: EntityRepository<Sdk>,
@@ -56,7 +58,14 @@ export class SdkService {
     }
 
     if (dto.version) {
-      void qb.andWhere('version.version = ?', [dto.version])
+      const version = this.sheetVersionService.parse(dto.version)
+
+      void qb
+        .andWhere('version.major = ?', [version.major])
+        .andWhere('version.minor = ?', [version.minor])
+        .andWhere('version.patch = ?', [version.patch])
+        .andWhere('version.tag = ?', [version.tag])
+        .andWhere('version.prerelease = ?', [version.prerelease])
     }
 
     if (!R.isNil(dto.offset)) {

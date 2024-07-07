@@ -1,10 +1,13 @@
 import { ToNumber } from '@buka/class-transformer-extra'
 import { Configuration } from '@buka/nestjs-config'
-import { IsNumber, IsString } from 'class-validator'
+import { IsBoolean, IsNumber, IsString } from 'class-validator'
 
 
 @Configuration('mysql')
 export class MysqlConfig {
+  @IsBoolean()
+  debug = false
+
   @IsString()
   dbName = 'opendoc'
 

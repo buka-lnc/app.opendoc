@@ -1,7 +1,7 @@
 {
   "name": "opendoc",
   "description": "Service document platform",
-  "packageManager": "pnpm@9.0.4",
+  "packageManager": "pnpm@9.4.0",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "pnpm -r exec rm -rf node_modules && rm -rf node_modules",
