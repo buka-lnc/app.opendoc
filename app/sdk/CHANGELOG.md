@@ -1,5 +1,11 @@
 # @opendoc/sdk
 
+## 1.3.3
+
+### Patch Changes
+
+- 8d75754: 修复 openapi 的 query 中存在 boolean 类型的字段时 sdk 构建错误
+
 ## 1.3.2
 
 ### Patch Changes

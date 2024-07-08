@@ -1,5 +1,12 @@
 # @opendoc/frontend
 
+## 1.6.4
+
+### Patch Changes
+
+- fa11121: 修复版本列表的状态展示错误
+- a570358: 修复版本号超过 0.0.9 之后无法添加新版本
+
 ## 1.6.3
 
 ### Patch Changes
