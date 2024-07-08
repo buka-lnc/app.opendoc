@@ -28,13 +28,19 @@ export interface ResponseMap {
 }
 
 {{#*inline "parameterProperty"}}
-  "{{name}}"{{#unless required}}?{{/unless}}: {{> t_json_schema_shape schema}}
+{{#if (r__equals type "number")}}
+  "{{name}}"{{#unless required}}?{{/unless}}: number
+{{else if (r__equals type "integer")}}
+  "{{name}}"{{#unless required}}?{{/unless}}: number
+{{else}}
+  "{{name}}"{{#unless required}}?{{/unless}}: string
+{{/if}}
 {{/inline}}
 
 export type QueryParameters = {
   {{#if operation.parameters}}
   {{#each (r__filter (r__propEq "in" "query") operation.parameters)}}
-  {{> parameterProperty}}
+{{> parameterProperty}}
   {{/each}}
   {{/if}}
 }
@@ -42,7 +48,7 @@ export type QueryParameters = {
 export type RouteParameters = {
   {{#if operation.parameters}}
   {{#each (r__filter (r__propEq "in" "path") operation.parameters)}}
-  {{> parameterProperty}}
+{{> parameterProperty}}
   {{/each}}
   {{/if}}
 }
