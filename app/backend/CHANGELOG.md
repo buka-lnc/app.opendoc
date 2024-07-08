@@ -1,5 +1,13 @@
 # @opendoc/backend
 
+## 1.6.5
+
+### Patch Changes
+
+- a570358: 修复版本号超过 0.0.9 之后无法添加新版本
+- Updated dependencies [8d75754]
+  - @opendoc/sdk@1.3.3
+
 ## 1.6.4
 
 ### Patch Changes
