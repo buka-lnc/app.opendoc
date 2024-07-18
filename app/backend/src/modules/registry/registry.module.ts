@@ -4,11 +4,13 @@ import { RegistryService } from './registry.service'
 import { MikroOrmModule } from '@mikro-orm/nestjs'
 import { SdkModule } from '../sdk/sdk.module'
 import { Sdk } from '../sdk/entity/sdk.entity'
+import { SheetVersionModule } from '../sheet-version/sheet-version.module'
 
 
 @Module({
   imports: [
     SdkModule,
+    SheetVersionModule,
     MikroOrmModule.forFeature([
       Sdk,
     ]),

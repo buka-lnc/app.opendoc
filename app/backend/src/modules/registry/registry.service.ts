@@ -13,6 +13,7 @@ import { AppConfig } from '~/config/app.config'
 import { SdkService } from '~/modules/sdk/sdk.service'
 import { SdkStatus } from '../sdk/constant/sdk-status'
 import { Readable } from 'stream'
+import { SheetVersionService } from '../sheet-version/sheet-version.service'
 
 
 @Injectable()
@@ -26,6 +27,7 @@ export class RegistryService {
     private readonly orm: MikroORM,
 
     private readonly sdkService: SdkService,
+    private readonly sheetVersionService: SheetVersionService,
 
     @InjectRepository(Sdk)
     private readonly sdkRepo: EntityRepository<Sdk>,
@@ -95,10 +97,11 @@ export class RegistryService {
   }
 
   async downloadPackage(packageScope: string | undefined, packageName: string, version: string): Promise<Readable> {
+    this.sheetVersionService.parse(version)
     const sdk = await this.sdkRepo.findOneOrFail({
       scope: packageScope,
       name: packageName,
-      version: { version },
+      version: this.sheetVersionService.parse(version),
       status: SdkStatus.published,
     })
 

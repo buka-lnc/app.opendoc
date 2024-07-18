@@ -224,7 +224,7 @@ export class ApiFileService {
     const sheet = this.sheetRepo.getReference(apiFileId)
     const apiFile = await this.em.findOneOrFail(ApiFile, {
       sheet,
-      version: { version },
+      version: this.sheetVersionService.parse(version),
     })
 
     return apiFile
