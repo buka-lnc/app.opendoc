@@ -1,5 +1,11 @@
 # @opendoc/backend
 
+## 1.6.6
+
+### Patch Changes
+
+- d608d9b: 修复无法安装 npm 包的问题
+
 ## 1.6.5
 
 ### Patch Changes
