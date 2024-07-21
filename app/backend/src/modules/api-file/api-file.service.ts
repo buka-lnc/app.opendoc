@@ -12,7 +12,7 @@ import { EventEmitter2 } from '@nestjs/event-emitter'
 import { StorageService } from '../storage/storage.service'
 import { Readable } from 'stream'
 import { CacheService } from '../storage/cache.service'
-import { Sheet } from '../sheet/entity/sheet.entity'
+import { Sheet } from '../sheet/entities/sheet.entity'
 import { ApiFile } from './entities/api-file.entity'
 import { ApiFileCreatedEvent } from './events/api-file-created.event'
 import { ApiFileDeletedEvent } from './events/api-file-deleted.event'
@@ -21,7 +21,7 @@ import { PathScurry } from 'path-scurry'
 import { CreateApiFilesDTO } from './dto/create-api-files.dto'
 import { CreateApiFileByTgzDTO } from './dto/create-api-file-by-tgz.dto'
 import { FileRawDTO } from './dto/file-raw.dto'
-import { SheetVersion } from '../sheet-version/entity/sheet-version.entity'
+import { SheetVersion } from '../sheet-version/entities/sheet-version.entity'
 import { ResponseOfQueryApiFilesDTO } from './dto/response-of-query-api-files.dto'
 import { SheetVersionService } from '../sheet-version/sheet-version.service'
 
@@ -109,7 +109,6 @@ export class ApiFileService {
     const sheet = await this.sheetRepo.findOneOrFail({ id: dto.sheet.id })
 
     const maxSheetVersion = await this.sheetVersionService.findMaxSheetVersion(sheet)
-    console.log('🚀 ~ ApiFileService ~ create ~ maxSheetVersion:', maxSheetVersion)
 
     if (maxSheetVersion && !(await this.hasDiff(maxSheetVersion, dto.files))) {
       this.logger.info('api file hash is same to latest, skip')

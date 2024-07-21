@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common'
 import { ForbiddenApplicationCodeService } from './forbidden-application-code.service'
-import { ForbiddenApplicationCode } from './entity/forbidden-application-code.entity'
+import { ForbiddenApplicationCode } from './entities/forbidden-application-code.entity'
 import { CreateForbiddenApplicationCodeDTO } from './dto/create-forbidden-application-code.dto'
 
 

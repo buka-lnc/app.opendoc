@@ -5,9 +5,9 @@ import { ApiHideProperty, ApiProperty } from '@nestjs/swagger'
 import { SdkStatus } from '../constant/sdk-status'
 import { IsEnum } from 'class-validator'
 import { SdkCompiler } from '../constant/sdk-compiler'
-import { Sheet } from '~/modules/sheet/entity/sheet.entity'
+import { Sheet } from '~/modules/sheet/entities/sheet.entity'
 import { ApiFile } from '~/modules/api-file/entities/api-file.entity'
-import { SheetVersion } from '~/modules/sheet-version/entity/sheet-version.entity'
+import { SheetVersion } from '~/modules/sheet-version/entities/sheet-version.entity'
 import { ApiForeignKey } from '~/decorators/api-reference.decorator'
 
 @Entity()

@@ -1,7 +1,7 @@
 import { IsInt, IsOptional, ValidateNested } from 'class-validator'
 import { Type } from 'class-transformer'
 import { SheetPullCrontabDTO } from './sheet-pull-crontab.dto'
-import { Sheet } from '../entity/sheet.entity'
+import { Sheet } from '../entities/sheet.entity'
 import { TakeType } from '@miaooo/nestjs-take-type'
 import { ApplicationIdReferenceDTO } from '~/modules/application/dto/application-id-reference.dto'
 import { ApplicationCodeReferenceDTO } from '~/modules/application/dto/application-code-reference.dto'

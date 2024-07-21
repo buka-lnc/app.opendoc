@@ -1,5 +1,5 @@
 import { EntityManager, EntityName, EventArgs, EventSubscriber, MikroORM } from '@mikro-orm/core'
-import { Sdk } from './entity/sdk.entity'
+import { Sdk } from './entities/sdk.entity'
 import { SdkService } from './sdk.service'
 import { Injectable } from '@nestjs/common'
 

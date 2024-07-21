@@ -6,7 +6,7 @@ import * as childProcess from 'child_process'
 import compressing from 'compressing'
 import { promisify } from 'util'
 import { buffer } from 'stream/consumers'
-import { Sdk } from './entity/sdk.entity'
+import { Sdk } from './entities/sdk.entity'
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino'
 import { AppConfig } from '~/config/app.config'
 import { EntityManager, MikroORM } from '@mikro-orm/core'
@@ -16,6 +16,7 @@ import { SdkCompiler } from './constant/sdk-compiler'
 import { StorageService } from '../storage/storage.service'
 import { StorageConfig } from '~/config/storage.config'
 import { ApiFileService } from '../api-file/api-file.service'
+import { RegistryConfig } from '~/config/registry.config'
 
 
 const exec = promisify(childProcess.exec)
@@ -30,6 +31,8 @@ export class CompilerService {
 
     private readonly appConfig: AppConfig,
     private readonly storageConfig: StorageConfig,
+    private readonly registryConfig: RegistryConfig,
+
     private readonly em: EntityManager,
     private readonly orm: MikroORM,
 
@@ -60,14 +63,15 @@ export class CompilerService {
     }
 
     await this.build(sdk, dir)
+    // await this.publish(sdk, dir)
     await this.compress(sdk, dir)
-    // await fs.remove(dir)
+    await fs.remove(dir)
 
     await this.em.flush()
     this.logger.info(`${sdk.fullName} published`)
   }
 
-  async build(sdk: Sdk, dir: string): Promise<void> {
+  private async build(sdk: Sdk, dir: string): Promise<void> {
     this.logger.debug(`${sdk.fullName} building`)
     const compileDir = path.join(dir, 'compiling')
 
@@ -88,7 +92,8 @@ export class CompilerService {
     }
   }
 
-  async compress(sdk: Sdk, dir: string): Promise<void> {
+  // TODO: 不在将自身作为 Registry
+  private async compress(sdk: Sdk, dir: string): Promise<void> {
     this.logger.debug(`${sdk.fullName} compressing`)
     // const tempDir = this.getTempDir(sdk)
     const compileDir = path.join(dir, 'compiling')
@@ -110,6 +115,24 @@ export class CompilerService {
     this.em.persist(sdk)
   }
 
+  private async publish(sdk: Sdk, dir: string): Promise<void> {
+    this.logger.debug(`${sdk.fullName} publishing`)
+    const compileDir = path.join(dir, 'compiling')
+
+    const registryUrl = this.registryConfig.url
+    const authToken = this.registryConfig.authToken
+    const registry = registryUrl.replace(/\/$/, '')
+
+    await fs.writeFile(
+      path.join(compileDir, '.npmrc'),
+      `registry=${registry}\n${authToken ? `_authToken=${authToken}\n` : ''}`
+    )
+
+    await exec('npm publish', { cwd: compileDir })
+
+    this.em.persist(sdk)
+  }
+
   private async getSdkRawDocumentFile(sdk: Sdk): Promise<string> {
     const apiFile = await sdk.apiFile.loadOrFail()
 
@@ -118,7 +141,7 @@ export class CompilerService {
     return buf.toString('utf8')
   }
 
-  async compileOpenapiCore(sdk: Sdk, dir: string) {
+  private async compileOpenapiCore(sdk: Sdk, dir: string) {
     const swagger = await this.getSdkRawDocumentFile(sdk)
 
     const compileDir = path.join(dir, 'compiling')
@@ -143,7 +166,7 @@ export class CompilerService {
     })
   }
 
-  async compileOpenapiReact(sdk: Sdk, dir: string) {
+  private async compileOpenapiReact(sdk: Sdk, dir: string) {
     const swagger = await this.getSdkRawDocumentFile(sdk)
 
     const compileDir = path.join(dir, 'compiling')
@@ -182,7 +205,7 @@ export class CompilerService {
   //   await new Promise((resolve) => setTimeout(resolve, 5000))
   // }
 
-  async compileAsyncapiCore(sdk: Sdk, dir: string) {
+  private async compileAsyncapiCore(sdk: Sdk, dir: string) {
     const file = await this.getSdkRawDocumentFile(sdk)
 
     const compileDir = path.join(dir, 'compiling')

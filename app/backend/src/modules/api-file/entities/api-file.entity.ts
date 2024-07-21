@@ -2,9 +2,9 @@ import { Cascade, Collection, Entity, ManyToOne, OneToMany, Property, Ref, Uniqu
 import { IsString, MaxLength } from 'class-validator'
 import { BaseEntity } from '~/entities/base.entity'
 import { ApiHideProperty, ApiProperty } from '@nestjs/swagger'
-import { Sdk } from '~/modules/sdk/entity/sdk.entity'
-import { Sheet } from '~/modules/sheet/entity/sheet.entity'
-import { SheetVersion } from '~/modules/sheet-version/entity/sheet-version.entity'
+import { Sdk } from '~/modules/sdk/entities/sdk.entity'
+import { Sheet } from '~/modules/sheet/entities/sheet.entity'
+import { SheetVersion } from '~/modules/sheet-version/entities/sheet-version.entity'
 import { ApiForeignKey } from '~/decorators/api-reference.decorator'
 
 @Entity()

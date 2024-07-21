@@ -1,7 +1,7 @@
 import { Controller, Get, Param, Query } from '@nestjs/common'
 import { SdkService } from './sdk.service'
 import { ApiInternalServerErrorResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
-import { Sdk } from './entity/sdk.entity'
+import { Sdk } from './entities/sdk.entity'
 import { QuerySdksDTO } from './dto/query-sdks.dto'
 import { ResponseOfQuerySdksDTO } from './dto/response-of-query-sdks.dto'
 

@@ -1,5 +1,5 @@
 import { ResponseOfPaginationDTO } from '~/dto/response-of-pagination.dto'
-import { SheetVersion } from '../entity/sheet-version.entity'
+import { SheetVersion } from '../entities/sheet-version.entity'
 import { Type } from 'class-transformer'
 import { ValidateNested } from 'class-validator'
 

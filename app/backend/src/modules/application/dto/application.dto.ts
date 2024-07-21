@@ -1,5 +1,5 @@
 import { OmitType } from '@nestjs/swagger'
-import { Application } from '../entity/application.entity'
+import { Application } from '../entities/application.entity'
 
 
 export class ApplicationDTO extends OmitType(Application, ['sheets']) {

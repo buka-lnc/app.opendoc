@@ -3,7 +3,7 @@ import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/
 import { ApplicationService } from './application.service'
 import { RegisterApplicationDTO } from './dto/register-application.dto'
 import { QueryApplicationsDTO } from './dto/query-applications.dto'
-import { Application } from './entity/application.entity'
+import { Application } from './entities/application.entity'
 import { ApiInternalServerErrorResponse, ApiOperation, ApiTags } from '@nestjs/swagger'
 import { EntityManager } from '@mikro-orm/core'
 import { CreateApplicationDTO } from './dto/create-application.dto'

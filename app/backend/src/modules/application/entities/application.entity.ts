@@ -2,7 +2,7 @@ import { Cascade, Collection, Entity, OneToMany, Property } from '@mikro-orm/cor
 import { ApiHideProperty } from '@nestjs/swagger'
 import { Matches, MaxLength } from 'class-validator'
 import { BaseEntity } from '~/entities/base.entity'
-import { Sheet } from '~/modules/sheet/entity/sheet.entity'
+import { Sheet } from '~/modules/sheet/entities/sheet.entity'
 
 @Entity()
 export class Application extends BaseEntity {

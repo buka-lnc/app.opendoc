@@ -18,6 +18,7 @@ import { StorageModule } from './modules/storage/storage.module'
 import { SheetModule } from './modules/sheet/sheet.module'
 import { ApiFileModule } from './modules/api-file/api-file.module'
 import { SheetVersionModule } from './modules/sheet-version/sheet-version.module'
+import { OptionModule } from './modules/option/option.module'
 
 
 @Module({
@@ -49,6 +50,7 @@ import { SheetVersionModule } from './modules/sheet-version/sheet-version.module
     SheetVersionModule,
     ApiFileModule,
     RegistryModule,
+    OptionModule,
   ],
   controllers: [AppController],
   providers: [AppService],

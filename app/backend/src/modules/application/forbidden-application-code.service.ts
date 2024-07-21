@@ -1,7 +1,7 @@
 import { EntityManager, MikroORM } from '@mikro-orm/core'
 import { InjectRepository } from '@mikro-orm/nestjs'
 import { BadRequestException, Injectable } from '@nestjs/common'
-import { ForbiddenApplicationCode } from './entity/forbidden-application-code.entity'
+import { ForbiddenApplicationCode } from './entities/forbidden-application-code.entity'
 import { EntityRepository } from '@mikro-orm/mysql'
 import { CreateForbiddenApplicationCodeDTO } from './dto/create-forbidden-application-code.dto'
 

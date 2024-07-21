@@ -3,7 +3,7 @@ import { ForbiddenApplicationCodeService } from './forbidden-application-code.se
 import { EntityManager, MikroORM } from '@mikro-orm/core'
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { RegisterApplicationDTO } from './dto/register-application.dto'
-import { Application } from './entity/application.entity'
+import { Application } from './entities/application.entity'
 import { InjectRepository } from '@mikro-orm/nestjs'
 import { QueryApplicationsDTO } from './dto/query-applications.dto'
 import { ResponseOfQueryApplicationsDTO } from './dto/response-of-query-applications.dto'

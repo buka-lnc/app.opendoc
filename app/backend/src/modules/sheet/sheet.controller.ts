@@ -5,7 +5,7 @@ import { ApiConsumes, ApiInternalServerErrorResponse, ApiOperation, ApiTags } fr
 import { SheetService } from './sheet.service'
 import { RegisterSheetDTO } from './dto/register-sheet.dto'
 import { CreateSheetDTO } from './dto/create-sheet.dto'
-import { Sheet } from './entity/sheet.entity'
+import { Sheet } from './entities/sheet.entity'
 import { QuerySheetsDTO } from './dto/query-sheets.dto'
 import { ResponseOfQuerySheetsDTO } from './dto/response-of-query-sheets.dto'
 import { SheetSynchronizeService } from './sheet-synchronize.service'

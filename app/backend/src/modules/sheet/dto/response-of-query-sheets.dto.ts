@@ -1,4 +1,4 @@
-import { Sheet } from '../entity/sheet.entity'
+import { Sheet } from '../entities/sheet.entity'
 import { ResponseOfType } from '~/type-helpers/response-of'
 
 

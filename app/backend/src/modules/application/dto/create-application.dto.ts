@@ -1,5 +1,5 @@
 import { TakeType } from '@miaooo/nestjs-take-type'
-import { Application } from '../entity/application.entity'
+import { Application } from '../entities/application.entity'
 
 
 export class CreateApplicationDTO extends TakeType(Application, ['code'], ['title']) {

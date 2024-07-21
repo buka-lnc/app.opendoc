@@ -1,14 +1,14 @@
 import * as R from 'ramda'
 import * as semver from 'semver'
 import { BadRequestException, Injectable } from '@nestjs/common'
-import { SheetVersion } from './entity/sheet-version.entity'
+import { SheetVersion } from './entities/sheet-version.entity'
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino'
 import { EntityManager, MikroORM } from '@mikro-orm/core'
 import { InjectRepository } from '@mikro-orm/nestjs'
 import { EntityRepository } from '@mikro-orm/mysql'
 import { QuerySheetVersionsDTO } from './dto/query-sheet-versions.dto'
 import { QuerySheetVersionsResponseDTO } from './dto/query-sheet-versions-response.dto'
-import { Sheet } from '../sheet/entity/sheet.entity'
+import { Sheet } from '../sheet/entities/sheet.entity'
 import { ParsedVersionDTO } from './dto/parsed-version.dto'
 
 
@@ -96,7 +96,6 @@ export class SheetVersionService {
     }
 
     const maxSheetVersion = await this.findMaxSheetVersion(sheet)
-    console.log('🚀 ~ SheetVersionService ~ bumpSheetVersion ~ maxSheetVersion:', maxSheetVersion)
 
     if (!maxSheetVersion) {
       return this.sheetVersionRepo.create({

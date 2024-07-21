@@ -3,12 +3,12 @@ import { IsEnum, IsInt, IsOptional, IsString, Matches, MaxLength } from 'class-v
 import { BaseEntity } from '~/entities/base.entity'
 import { SheetMode } from '../constants/sheet-mode.enum'
 import { ApiHideProperty, ApiProperty } from '@nestjs/swagger'
-import { Application } from '~/modules/application/entity/application.entity'
-import { Sdk } from '~/modules/sdk/entity/sdk.entity'
+import { Application } from '~/modules/application/entities/application.entity'
+import { Sdk } from '~/modules/sdk/entities/sdk.entity'
 import { ApiFile } from '~/modules/api-file/entities/api-file.entity'
 import { SheetType } from '../constants/sheet-type.enum'
 import { SheetPullCrontab } from './sheet-pull-crontab.entity'
-import { SheetVersion } from '~/modules/sheet-version/entity/sheet-version.entity'
+import { SheetVersion } from '~/modules/sheet-version/entities/sheet-version.entity'
 import { ApiForeignKey } from '~/decorators/api-reference.decorator'
 
 

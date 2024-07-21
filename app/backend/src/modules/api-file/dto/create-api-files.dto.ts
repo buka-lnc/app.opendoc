@@ -3,7 +3,7 @@ import { ValidateNested } from 'class-validator'
 import { FileRawDTO } from './file-raw.dto'
 import { Type } from 'class-transformer'
 import { EntityReferenceDTO } from '~/dto/entity-reference.dto'
-import { SheetVersion } from '~/modules/sheet-version/entity/sheet-version.entity'
+import { SheetVersion } from '~/modules/sheet-version/entities/sheet-version.entity'
 
 
 export class CreateApiFilesDTO {

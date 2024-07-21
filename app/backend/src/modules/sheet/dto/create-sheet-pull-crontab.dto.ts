@@ -1,7 +1,7 @@
 import { ValidateNested } from 'class-validator'
 import { Type } from 'class-transformer'
 import { PickType } from '@nestjs/swagger'
-import { Sheet } from '../entity/sheet.entity'
+import { Sheet } from '../entities/sheet.entity'
 import { Property, RequiredEntityData } from '@mikro-orm/core'
 import { SheetPullCrontabDTO } from './sheet-pull-crontab.dto'
 

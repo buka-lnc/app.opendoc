@@ -6,11 +6,11 @@ import { InjectRepository } from '@mikro-orm/nestjs'
 import { EntityRepository } from '@mikro-orm/mysql'
 import { Cron } from '@nestjs/schedule'
 import { SheetMode } from './constants/sheet-mode.enum'
-import { SheetPullCrontab } from './entity/sheet-pull-crontab.entity'
+import { SheetPullCrontab } from './entities/sheet-pull-crontab.entity'
 import { request } from 'keq'
 import { SheetType } from './constants/sheet-type.enum'
 import { CreateSheetPullCrontabDTO } from './dto/create-sheet-pull-crontab.dto'
-import { Sheet } from './entity/sheet.entity'
+import { Sheet } from './entities/sheet.entity'
 
 
 @Injectable()

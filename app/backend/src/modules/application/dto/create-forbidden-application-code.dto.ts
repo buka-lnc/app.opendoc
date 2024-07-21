@@ -1,5 +1,5 @@
 import { TakeType } from '@miaooo/nestjs-take-type'
-import { ForbiddenApplicationCode } from '../entity/forbidden-application-code.entity'
+import { ForbiddenApplicationCode } from '../entities/forbidden-application-code.entity'
 
 export class CreateForbiddenApplicationCodeDTO extends TakeType(
   ForbiddenApplicationCode,

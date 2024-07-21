@@ -2,7 +2,7 @@ import { Controller, Get, Param, Query } from '@nestjs/common'
 import { SheetVersionService } from './sheet-version.service'
 import { QuerySheetVersionsResponseDTO } from './dto/query-sheet-versions-response.dto'
 import { QuerySheetVersionsDTO } from './dto/query-sheet-versions.dto'
-import { SheetVersion } from './entity/sheet-version.entity'
+import { SheetVersion } from './entities/sheet-version.entity'
 
 
 @Controller('sheet-version')
