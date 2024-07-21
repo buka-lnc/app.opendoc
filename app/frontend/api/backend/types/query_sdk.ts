@@ -12,7 +12,7 @@ export type QueryParameters = {
 }
 
 export type RouteParameters = {
-    "sdkId": string
+  "sdkId": string
 }
 
 export type HeaderParameters = {

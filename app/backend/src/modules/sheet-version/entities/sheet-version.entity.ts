@@ -3,7 +3,7 @@ import { BaseEntity } from '~/entities/base.entity'
 import { IsInt, IsString, MaxLength } from 'class-validator'
 import { ApiFile } from '~/modules/api-file/entities/api-file.entity'
 import { Sdk } from '~/modules/sdk/entities/sdk.entity'
-import { ApiHideProperty } from '@nestjs/swagger'
+import { ApiHideProperty, ApiProperty } from '@nestjs/swagger'
 import { Sheet } from '~/modules/sheet/entities/sheet.entity'
 import { ApiForeignKey } from '~/decorators/api-reference.decorator'
 
@@ -53,6 +53,10 @@ export class SheetVersion extends BaseEntity {
   })
   tag!: string
 
+  @ApiProperty({
+    type: 'string',
+    required: true,
+  })
   @Property({
     persist: false,
     comment: '版本号',

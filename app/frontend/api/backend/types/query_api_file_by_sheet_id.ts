@@ -12,9 +12,9 @@ export type QueryParameters = {
 }
 
 export type RouteParameters = {
-    "sheetId": string
-    "version": string
-    "path": string
+  "sheetId": string
+  "version": string
+  "path": string
 }
 
 export type HeaderParameters = {

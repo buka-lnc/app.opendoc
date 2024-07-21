@@ -12,7 +12,7 @@ export type QueryParameters = {
 }
 
 export type RouteParameters = {
-    "applicationIdOrCode": string
+  "applicationIdOrCode": string
 }
 
 export type HeaderParameters = {

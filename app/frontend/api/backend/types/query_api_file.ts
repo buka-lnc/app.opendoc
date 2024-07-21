@@ -12,7 +12,7 @@ export type QueryParameters = {
 }
 
 export type RouteParameters = {
-    "apiFileId": string
+  "apiFileId": string
 }
 
 export type HeaderParameters = {

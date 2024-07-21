@@ -10,7 +10,7 @@ export type QueryParameters = {
 }
 
 export type RouteParameters = {
-    "code": string
+  "code": string
 }
 
 export type HeaderParameters = {

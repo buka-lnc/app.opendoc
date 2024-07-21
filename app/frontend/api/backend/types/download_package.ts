@@ -15,8 +15,8 @@ export type QueryParameters = {
 }
 
 export type RouteParameters = {
-    "packageName": string
-    "packageTag": string
+  "packageName": string
+  "packageTag": string
 }
 
 export type HeaderParameters = {

@@ -8,7 +8,7 @@ export interface ResponseMap {
 
 
 export type QueryParameters = {
-    "name"?: string
+  "name"?: string
 }
 
 export type RouteParameters = {

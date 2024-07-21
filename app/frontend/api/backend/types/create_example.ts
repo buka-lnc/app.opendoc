@@ -20,7 +20,7 @@ export type RouteParameters = {
 }
 
 export type HeaderParameters = {
-    "Authorization": string
+  "Authorization": string
 }
 
 export type BodyParameters =(ExampleDTO)

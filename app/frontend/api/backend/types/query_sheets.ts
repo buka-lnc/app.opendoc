@@ -9,11 +9,11 @@ export interface ResponseMap {
 
 
 export type QueryParameters = {
-    "title"?: string
-    "type"?: string
-    "applicationId"?: string
-    "limit"?: number
-    "offset"?: number
+  "title"?: string
+  "type"?: string
+  "applicationId"?: string
+  "limit"?: string
+  "offset"?: string
 }
 
 export type RouteParameters = {

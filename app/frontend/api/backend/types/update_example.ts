@@ -21,11 +21,11 @@ export type QueryParameters = {
 }
 
 export type RouteParameters = {
-    "id": string
+  "id": string
 }
 
 export type HeaderParameters = {
-    "Authorization": string
+  "Authorization": string
 }
 
 export type BodyParameters ={}

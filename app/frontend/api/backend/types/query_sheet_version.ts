@@ -11,7 +11,7 @@ export type QueryParameters = {
 }
 
 export type RouteParameters = {
-    "sheetVersionId": string
+  "sheetVersionId": string
 }
 
 export type HeaderParameters = {
