@@ -72,7 +72,8 @@ export class CompilerService {
     const compileDir = path.join(dir, 'compiling')
 
     try {
-      await exec('npm install --production=false --legacy-peer-deps && npm run build', { cwd: compileDir })
+      await exec('npm install --production=false --legacy-peer-deps', { cwd: compileDir })
+      await exec('npm run build', { cwd: compileDir })
     } catch (e) {
       if (e instanceof Error) {
         if ('stdout' in e) {
