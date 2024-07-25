@@ -17,6 +17,7 @@ services:
       MYSQL__USER: opendoc
       MYSQL__PASSWORD: opendoc
       MYSQL__DB_NAME: opendoc
+      REGISTER__URL: http://127.0.0.1:4873
     depends_on:
       mysql:
         condition: service_healthy
@@ -31,3 +32,7 @@ services:
       MYSQL_DATABASE: opendoc
       MYSQL_USER: opendoc
       MYSQL_PASSWORD: opendoc
+  verdaccio:
+    image: verdaccio/verdaccio
+    ports:
+      - "4873:4873"

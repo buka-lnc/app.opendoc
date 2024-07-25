@@ -1,0 +1,15 @@
+FROM ghcr.io/buka-lnc/nodejs-slim:18 as builder
+
+ARG HOST='0.0.0.0'
+ARG PORT=80
+
+ARG PINO__PRETTY
+ARG PINO__LEVEL='info'
+
+COPY . /repo
+WORKDIR /repo
+
+RUN pnpm install --filter "compiler..." --frozen-lockfile && \
+  turbo build --filter "@opendoc/compiler..."
+
+CMD ["bash", "-c", "cd /repo/app/backend && pnpm run start:prod"]

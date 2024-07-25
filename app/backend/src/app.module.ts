@@ -19,6 +19,7 @@ import { SheetModule } from './modules/sheet/sheet.module'
 import { ApiFileModule } from './modules/api-file/api-file.module'
 import { SheetVersionModule } from './modules/sheet-version/sheet-version.module'
 import { OptionModule } from './modules/option/option.module'
+import { CompilerModule } from './modules/compiler/compiler.module'
 
 
 @Module({
@@ -51,6 +52,7 @@ import { OptionModule } from './modules/option/option.module'
     ApiFileModule,
     RegistryModule,
     OptionModule,
+    CompilerModule,
   ],
   controllers: [AppController],
   providers: [AppService],

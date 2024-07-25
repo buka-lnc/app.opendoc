@@ -121,6 +121,90 @@
           "comment": "更新时间",
           "mappedType": "datetime"
         },
+        "status": {
+          "name": "status",
+          "type": "varchar(12)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "comment": "编译器状态",
+          "mappedType": "string"
+        },
+        "url": {
+          "name": "url",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "comment": "编译器地址",
+          "mappedType": "string"
+        }
+      },
+      "name": "compiler",
+      "indexes": [
+        {
+          "columnNames": [
+            "url"
+          ],
+          "composite": false,
+          "keyName": "compiler_url_unique",
+          "constraint": true,
+          "primary": false,
+          "unique": true
+        },
+        {
+          "keyName": "PRIMARY",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "constraint": true,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {},
+      "nativeEnums": {}
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "bigint",
+          "unsigned": true,
+          "autoincrement": true,
+          "primary": true,
+          "nullable": false,
+          "comment": "主键",
+          "mappedType": "bigint"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "datetime",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 0,
+          "default": "CURRENT_TIMESTAMP",
+          "comment": "创建时间",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "datetime",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 0,
+          "default": "CURRENT_TIMESTAMP",
+          "comment": "更新时间",
+          "mappedType": "datetime"
+        },
         "code": {
           "name": "code",
           "type": "varchar(255)",

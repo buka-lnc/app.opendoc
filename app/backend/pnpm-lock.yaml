@@ -143,6 +143,9 @@ importers:
       tempy:
         specifier: ^3.1.0
         version: 3.1.0
+      ws:
+        specifier: ^8.18.0
+        version: 8.18.0
     devDependencies:
       '@buka/eslint-config':
         specifier: ^1.6.4
@@ -186,6 +189,9 @@ importers:
       '@types/throttle-debounce':
         specifier: ^5.0.2
         version: 5.0.2
+      '@types/ws':
+        specifier: ^8.5.11
+        version: 8.5.11
       '@types/xml2js':
         specifier: ^0.4.14
         version: 0.4.14
@@ -1386,6 +1392,9 @@ packages:
 
   '@types/validator@13.12.0':
     resolution: {integrity: sha512-nH45Lk7oPIJ1RVOF6JgFI6Dy0QpHEzq4QecZhvguxYPDwT8c93prCMqAtiIttm39voZ+DDR+qkNnMpJmMBRqag==}
+
+  '@types/ws@8.5.11':
+    resolution: {integrity: sha512-4+q7P5h3SpJxaBft0Dzpbr6lmMaqh0Jr2tbhJZ/luAwvD7ohSCniYkwz/pLxuT2h0EOa6QADgJj1Ko+TzRfZ+w==}
 
   '@types/xml2js@0.4.14':
     resolution: {integrity: sha512-4YnrRemBShWRO2QjvUin8ESA41rH+9nQGLUGZV/1IDhi3SL9OhdpNC/MrulTWuptXKwhx/aDxE7toV0f/ypIXQ==}
@@ -4036,6 +4045,18 @@ packages:
     resolution: {integrity: sha512-7KxauUdBmSdWnmpaGFg+ppNjKF8uNLry8LyzjauQDOVONfFLNKrKvQOxZ/VuTIcS/gge/YNahf5RIIQWTSarlg==}
     engines: {node: ^12.13.0 || ^14.15.0 || >=16.0.0}
 
+  ws@8.18.0:
+    resolution: {integrity: sha512-8VbfWfHLbbwu3+N6OKsOMpBdT4kXPDDB9cJk2bJ6mh9ucxdlnNvH1e+roYkKmN9Nxw2yjz7VzeO9oOz2zJ04Pw==}
+    engines: {node: '>=10.0.0'}
+    peerDependencies:
+      bufferutil: ^4.0.1
+      utf-8-validate: '>=5.0.2'
+    peerDependenciesMeta:
+      bufferutil:
+        optional: true
+      utf-8-validate:
+        optional: true
+
   xtend@4.0.2:
     resolution: {integrity: sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ==}
     engines: {node: '>=0.4'}
@@ -5929,6 +5950,10 @@ snapshots:
   '@types/throttle-debounce@5.0.2': {}
 
   '@types/validator@13.12.0': {}
+
+  '@types/ws@8.5.11':
+    dependencies:
+      '@types/node': 20.14.8
 
   '@types/xml2js@0.4.14':
     dependencies:
@@ -8791,6 +8816,8 @@ snapshots:
     dependencies:
       imurmurhash: 0.1.4
       signal-exit: 3.0.7
+
+  ws@8.18.0: {}
 
   xtend@4.0.2: {}
 

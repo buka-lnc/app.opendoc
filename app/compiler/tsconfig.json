@@ -1,0 +1,24 @@
+{
+  "include": ["env.d.ts", "src/**/*", ".eslintrc.cjs", "test/**/*"],
+  "compilerOptions": {
+    "strict": true,
+    "module": "NodeNext",
+    "target": "ESNext",
+    "declaration": true,
+    "resolveJsonModule": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "rootDir": "./",
+    "skipLibCheck": true,
+    "noImplicitAny": false,
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "~/*": ["src/*"],
+      "~~/*": ["./*"]
+    }
+  }
+}

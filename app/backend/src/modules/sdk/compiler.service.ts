@@ -16,7 +16,6 @@ import { SdkCompiler } from './constant/sdk-compiler'
 import { StorageService } from '../storage/storage.service'
 import { StorageConfig } from '~/config/storage.config'
 import { ApiFileService } from '../api-file/api-file.service'
-import { RegistryConfig } from '~/config/registry.config'
 
 
 const exec = promisify(childProcess.exec)
@@ -31,7 +30,6 @@ export class CompilerService {
 
     private readonly appConfig: AppConfig,
     private readonly storageConfig: StorageConfig,
-    private readonly registryConfig: RegistryConfig,
 
     private readonly em: EntityManager,
     private readonly orm: MikroORM,
@@ -119,14 +117,14 @@ export class CompilerService {
     this.logger.debug(`${sdk.fullName} publishing`)
     const compileDir = path.join(dir, 'compiling')
 
-    const registryUrl = this.registryConfig.url
-    const authToken = this.registryConfig.authToken
-    const registry = registryUrl.replace(/\/$/, '')
+    // const registryUrl = this.registryConfig.url
+    // const authToken = this.registryConfig.authToken
+    // const registry = registryUrl.replace(/\/$/, '')
 
-    await fs.writeFile(
-      path.join(compileDir, '.npmrc'),
-      `registry=${registry}\n${authToken ? `_authToken=${authToken}\n` : ''}`
-    )
+    // await fs.writeFile(
+    //   path.join(compileDir, '.npmrc'),
+    //   `registry=${registry}\n${authToken ? `_authToken=${authToken}\n` : ''}`
+    // )
 
     await exec('npm publish', { cwd: compileDir })
 
