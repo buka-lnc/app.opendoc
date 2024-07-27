@@ -39,11 +39,15 @@ export class CompilerService implements OnModuleInit {
     })
 
     for (const compiler of compilers) {
-      const ws = await this.webSocketService.connect(compiler.url)
-      ws.on('error', () => {
-        this.webSocketMap.delete(compiler.id)
-      })
-      this.webSocketMap.set(compiler.id, ws)
+      try {
+        const ws = await this.webSocketService.connect(compiler.url)
+        ws.on('error', () => {
+          this.webSocketMap.delete(compiler.id)
+        })
+        this.webSocketMap.set(compiler.id, ws)
+      } catch (e) {
+        this.logger.error(`Cannot connect to compiler: ${compiler.url}`)
+      }
     }
   }
 

@@ -8,5 +8,5 @@ export class AppConfig {
   host: string = '0.0.0.0'
 
   @IsNumberString()
-  port: string = '8081'
+  port: string = '9000'
 }
