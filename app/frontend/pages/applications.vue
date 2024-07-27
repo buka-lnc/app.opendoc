@@ -17,19 +17,14 @@ const pagination = reactive({
 const filterType = ref<'title' | 'code'>('title')
 const search = ref('')
 
-const { pending, refresh } = useAsyncData(
+const { status, refresh } = useAsyncData(
   async () => {
-    console.log('123123')
-    const x = queryApplications<'200'>({
-      limit: pagination.limit,
-      offset: pagination.offset,
+    const body = await queryApplications<'200'>({
+      limit: String(pagination.limit),
+      offset: String(pagination.offset),
       title: filterType.value === 'title' ? search.value.trim() : undefined,
       code: filterType.value === 'code' ? search.value.trim() : undefined,
     })
-    console.log('xxx', x.end())
-
-    const body = await x.end()
-    console.log('body')
 
     applications.value = body.results
     pagination.total = body.pagination.total
@@ -54,7 +49,7 @@ const filterTypeDescription = {
     @created:application="() => refresh()"
   />
 
-  <StuffedLoading :pending="pending">
+  <StuffedLoading :pending="status === 'pending'">
     <div class="flex flex-col font-mono relative overflow-y-auto size-full">
       <div class="z-10 bg-base-100 sticky top-0 container m-auto flex-0 pb-4">
         <div class="flex items-center justify-between py-4">
@@ -64,7 +59,7 @@ const filterTypeDescription = {
 
           <NuxtLink
             class="d-btn d-btn-square d-btn-lg d-btn-ghost"
-            to="/administration"
+            to="/administration/forbidden-application-code-management"
           >
             <IconSettings class="w-8 h-8" />
           </NuxtLink>

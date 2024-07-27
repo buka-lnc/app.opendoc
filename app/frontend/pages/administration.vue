@@ -1,10 +1,25 @@
 <script setup lang="ts">
-
+import { IconArrowBackUp } from '@tabler/icons-vue'
 </script>
 
 <template>
   <div class="size-full flex items-stretch ">
     <div class="h-full overflow-y-auto overflow-x-hidden">
+      <div class="p-2 bg-base-100 flex items-center space-x-4">
+        <button
+          class="d-btn d-btn-square d-btn-ghost"
+          @click="$router.push('/applications')"
+        >
+          <IconArrowBackUp class="w-6 h-6" />
+        </button>
+
+        <div class="flex items-baseline space-x-1">
+          <h1 class="text-xl">
+            设置
+          </h1>
+        </div>
+      </div>
+
       <ul class="flex-0 flex-nowrap d-menu bg-base-200 h-full w-72">
         <li>
           <NuxtLink
