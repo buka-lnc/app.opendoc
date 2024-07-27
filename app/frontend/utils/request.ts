@@ -1,14 +1,20 @@
 import { request } from 'keq'
-import { throwException } from 'keq-exception'
+import { RequestException, throwException } from 'keq-exception'
 
 request
   .useRouter()
   .module('backend', throwException(async (ctx) => {
-    try {
-      const body = await ctx.response?.json()
-      if (body.message) return body.message
-      return JSON.stringify(body)
-    } catch (e) {
-      return await ctx.response?.text()
+    if (ctx.response && !ctx.response.ok) {
+      let body
+
+      try {
+        body = await ctx.response.json()
+      } catch (e) {
+        const message = await ctx.response?.text()
+        throw new RequestException(ctx.response.status, message)
+      }
+
+      const message = body.message ? body.message : JSON.stringify(body)
+      throw new RequestException(ctx.response.status, message)
     }
   }))

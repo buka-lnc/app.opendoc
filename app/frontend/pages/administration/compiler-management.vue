@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { IconPlus, IconTrash } from '@tabler/icons-vue'
 import { isURL } from 'validator'
+import { RequestException } from 'keq-exception'
 import { queryCompilers, createCompiler, deleteCompiler } from '@/api/backend'
 
 const alert = useAlert()
@@ -11,7 +12,8 @@ const { status, data: compilers, execute: reload } = useAsyncData(async () => {
   return body.results
 })
 
-const compilerUrl = ref('')
+const urlInput = ref('')
+const compilerUrl = computed(() => `ws://${urlInput.value}`)
 const isValidUrl = computed(() => isURL(compilerUrl.value, { require_host: true, require_protocol: true, protocols: ['ws'] }))
 const { pending: appending, execute: create } = useAsyncFn(async () => {
   if (!compilerUrl.value) return
@@ -22,8 +24,9 @@ const { pending: appending, execute: create } = useAsyncFn(async () => {
     })
 
     await reload()
-  } catch (e) {
-    if (e instanceof Error) alert.error(e.message)
+  } catch (err) {
+    if (!(err instanceof RequestException)) throw err
+    alert.error(err.message)
   }
 })
 
@@ -43,7 +46,7 @@ async function remove (compilerId: string): Promise<void> {
 </script>
 
 <template>
-  <stuffed-loading :pending="status === 'pending'">
+  <stuffed-loading :pending="status === 'pending' && !compilers">
     <div class="container h-full m-auto flex flex-col overflow-hidden">
       <div class="flex-grow-0 flex-shrink-0 w-full mb-6">
         <h1 class="select-none text-2xl font-bold text-gray-600">
@@ -52,18 +55,22 @@ async function remove (compilerId: string): Promise<void> {
       </div>
 
       <div class="flex-grow-0 flex-shrink-0 flex w-full space-x-4 mb-4 overflow-hidden">
-        <input
-          v-model="compilerUrl"
-          class="flex-auto d-input d-input-bordered"
-          placeholder="请输入需要添加的编译器地址"
-        >
+        <label class="flex-auto d-input d-input-bordered flex items-center gap-2">
+          ws://
+
+          <input
+            v-model="urlInput"
+            class="grow"
+            placeholder="请输入需要添加的编译器地址"
+          >
+        </label>
 
         <button
           class="flex-0 d-btn d-btn-primary d-btn-square"
-          :class="(!compilerUrl.length || !isValidUrl) && 'd-btn-disabled'"
+          :class="!isValidUrl && 'd-btn-disabled'"
           @click="() => !appending && create()"
         >
-          <span v-if="appending" class="loading loading-spinner" />
+          <span v-if="appending" class="d-loading d-loading-spinner" />
           <IconPlus v-else class="size-5" />
         </button>
       </div>

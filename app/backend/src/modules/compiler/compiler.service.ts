@@ -1,5 +1,5 @@
 import * as R from 'ramda'
-import { EnsureRequestContext, EntityManager, UniqueConstraintViolationException } from '@mikro-orm/core'
+import { EnsureRequestContext, EntityManager } from '@mikro-orm/core'
 import { EntityRepository, MikroORM } from '@mikro-orm/mysql'
 import { InjectRepository } from '@mikro-orm/nestjs'
 import { BadRequestException, Injectable, OnModuleInit } from '@nestjs/common'
@@ -77,7 +77,11 @@ export class CompilerService implements OnModuleInit {
   }
 
   async create(dto: CreateCompilerDTO): Promise<Compiler> {
-    // this.compilerRepo.findOne
+    // 提前检查避免额外向compiler发送一次 health check
+    const exist = await this.compilerRepo.findOne({
+      url: dto.url,
+    })
+    if (exist) throw new BadRequestException('请勿重复添加')
 
     const ws = await this.webSocketService.connect(dto.url)
     await this.webSocketService.send(ws, 'health')
@@ -88,15 +92,7 @@ export class CompilerService implements OnModuleInit {
       status: 'enabled',
     })
 
-    try {
-      await this.em.persistAndFlush(compiler)
-    } catch (err) {
-      if (err instanceof UniqueConstraintViolationException) {
-        throw new BadRequestException('Compiler already exists')
-      }
-
-      throw err
-    }
+    await this.em.persistAndFlush(compiler)
     return compiler
   }
 
