@@ -1,9 +1,13 @@
 import { Configuration } from '@buka/nestjs-config'
 import { IsBoolean, IsIP, IsNumberString, IsOptional, IsString } from 'class-validator'
+import { nanoid } from 'nanoid'
 
 
 @Configuration()
 export class AppConfig {
+  @IsString()
+  name: string = `opendoc_${nanoid()}`
+
   @IsIP()
   host: string = '0.0.0.0'
 

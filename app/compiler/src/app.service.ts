@@ -1,4 +1,3 @@
-import { compile } from '@opendoc/sdk'
 import { Injectable } from '@nestjs/common'
 import { HealthCheckResult, HealthCheckService } from '@nestjs/terminus'
 

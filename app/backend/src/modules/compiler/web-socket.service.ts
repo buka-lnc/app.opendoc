@@ -3,6 +3,8 @@ import { InjectPinoLogger, PinoLogger } from 'nestjs-pino'
 import WebSocket from 'ws'
 import { isURL } from 'class-validator'
 import { nanoid } from 'nanoid'
+import { version } from '~~/package.json'
+import { AppConfig } from '~/config/app.config'
 
 
 @Injectable()
@@ -10,6 +12,8 @@ export class WebSocketService {
   constructor(
     @InjectPinoLogger(WebSocketService.name)
     private readonly logger: PinoLogger,
+
+    private readonly appConfig: AppConfig,
   ) {}
 
   async connect(url: string): Promise<WebSocket> {
@@ -18,7 +22,12 @@ export class WebSocketService {
     }
 
     return await new Promise<WebSocket>((resolve, reject) => {
-      const ws = new WebSocket(url)
+      const ws = new WebSocket(url, {
+        headers: {
+          'x-opendoc-client-version': version,
+          'x-opendoc-client-name': this.appConfig.name,
+        },
+      })
 
       let pending = true
       ws.on('open', () => {
