@@ -12,6 +12,7 @@ import { QueryCompilersDTO } from './dto/query-compilers.dto'
 import { CreateCompilerDTO } from './dto/create-compiler.dto'
 import { UpdateCompilerDTO } from './dto/update-compiler.dto'
 import { WebSocketService } from './web-socket.service'
+import { CompilerMessageEvent } from './constants/compiler-message-event'
 
 
 @Injectable()
@@ -92,18 +93,15 @@ export class CompilerService implements OnModuleInit {
     if (exist) throw new BadRequestException('请勿重复添加')
 
     const ws = await this.webSocketService.connect(dto.url)
-    ws.on('message', (data) => {
-      this.logger.debug(String(data))
-    })
-    await this.webSocketService.send(ws, 'info')
-    ws.close()
+    const compilerInfo = await this.webSocketService.fetch(ws, { event: CompilerMessageEvent.INFO })
+      .finally(() => ws.close())
 
     const compiler = this.compilerRepo.create({
       url: dto.url,
-      status: 'enabled',
-      name: '',
-      author: '',
-      version: '',
+      status: 'disabled',
+      name: compilerInfo.name,
+      author: compilerInfo.author,
+      version: compilerInfo.version,
     })
 
     await this.em.persistAndFlush(compiler)

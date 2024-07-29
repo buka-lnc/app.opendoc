@@ -4,7 +4,6 @@ import WebSocket from 'ws'
 import { Server } from 'http'
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino'
 import { AppConfig } from './config/app.config'
-import { version } from '~~/package.json'
 import { AppService } from './app.service'
 import { IncomingMessage } from 'http'
 import { OpendocInformationDTO } from './dto/opendoc-information.dto'
@@ -26,6 +25,11 @@ export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGateway
     private readonly appService: AppService,
   ) {}
 
+  private prefixLog(client: WebSocket): string {
+    const opendocInformation = this.opendocInformationMap.get(client)
+    return opendocInformation ? `[${opendocInformation.name}] [v${opendocInformation.version}]` : '[unknown]'
+  }
+
   afterInit() {
     this.logger.info(`websocket listen on ${this.appConfig.host}:${this.appConfig.port}`)
   }
@@ -41,13 +45,13 @@ export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGateway
 
     this.opendocInformationMap.set(client, opendocInformation)
 
-    this.logger.info(`Opendoc WebSocket Client Connected: ${opendocInformation.name} v${opendocInformation.version}`)
+    this.logger.info(`${this.prefixLog(client)} WebSocket Client Connected`)
   }
 
   handleDisconnect(client: WebSocket) {
     const opendocInformation = this.opendocInformationMap.get(client)
     if (opendocInformation) {
-      this.logger.info(`Opendoc WebSocket Client Disconnected: ${opendocInformation.name} v${opendocInformation.version}`)
+      this.logger.info(`${this.prefixLog(client)} WebSocket Client Disconnected`)
     }
   }
 
@@ -58,17 +62,9 @@ export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGateway
   }
 
   @SubscribeMessage('info')
-  info(@MessageBody() data): CompilerInfoDTO {
-    console.log('🚀 ~ AppGateway ~ info ~ data:', data)
-    this.logger.debug('WebSocket Request: info')
-
-    return {
-      name: '@opendoc/keq-compiler',
-      description: 'Compiler for keq',
-      author: 'Val-istar-Guo <val.istar.guo@gmail.com>',
-      version,
-      config: '',
-    }
+  info(@ConnectedSocket() client): CompilerInfoDTO {
+    this.logger.debug(`${this.prefixLog(client)} Request Info`)
+    return this.appService.getInfo()
   }
 
   @SubscribeMessage('compile')

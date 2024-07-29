@@ -13,7 +13,7 @@ import { WebSocketService } from './web-socket.service'
     ]),
   ],
   controllers: [CompilerController],
-  providers: [CompilerService, WebSocketService],
+  providers: [WebSocketService, CompilerService],
 })
 export class CompilerModule {
 }

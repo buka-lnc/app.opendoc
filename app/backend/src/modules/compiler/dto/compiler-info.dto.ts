@@ -1,3 +1,4 @@
+import type { JSONSchema } from 'json-schema-typed'
 import { IsString } from 'class-validator'
 
 export class CompilerInfoDTO {
@@ -28,5 +29,5 @@ export class CompilerInfoDTO {
   /**
    * Compiler 配置
    */
-  config: any
+  options!: JSONSchema
 }
