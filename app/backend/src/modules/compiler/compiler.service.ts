@@ -39,15 +39,23 @@ export class CompilerService implements OnModuleInit {
     })
 
     for (const compiler of compilers) {
-      try {
-        const ws = await this.webSocketService.connect(compiler.url)
-        ws.on('error', () => {
-          this.webSocketMap.delete(compiler.id)
-        })
-        this.webSocketMap.set(compiler.id, ws)
-      } catch (e) {
-        this.logger.error(`Cannot connect to compiler: ${compiler.url}`)
-      }
+      await this.initCompiler(compiler)
+    }
+  }
+
+  async initCompiler(compiler: Compiler): Promise<void> {
+    try {
+      const ws = await this.webSocketService.connect(compiler.url)
+      ws.on('error', () => {
+        this.webSocketMap.delete(compiler.id)
+      })
+      this.webSocketMap.set(compiler.id, ws)
+
+      ws.on('message', (data) => {
+        this.logger.debug(data)
+      })
+    } catch (e) {
+      this.logger.error(`Cannot connect to compiler: ${compiler.url}`)
     }
   }
 
@@ -84,12 +92,18 @@ export class CompilerService implements OnModuleInit {
     if (exist) throw new BadRequestException('请勿重复添加')
 
     const ws = await this.webSocketService.connect(dto.url)
-    await this.webSocketService.send(ws, 'health')
+    ws.on('message', (data) => {
+      this.logger.debug(String(data))
+    })
+    await this.webSocketService.send(ws, 'info')
     ws.close()
 
     const compiler = this.compilerRepo.create({
       url: dto.url,
       status: 'enabled',
+      name: '',
+      author: '',
+      version: '',
     })
 
     await this.em.persistAndFlush(compiler)

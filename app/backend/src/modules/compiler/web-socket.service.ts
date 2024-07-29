@@ -2,6 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common'
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino'
 import WebSocket from 'ws'
 import { isURL } from 'class-validator'
+import { nanoid } from 'nanoid'
 
 
 @Injectable()
@@ -43,7 +44,7 @@ export class WebSocketService {
 
   async send(ws: WebSocket, event: string, data?: any): Promise<void> {
     return await new Promise<void>((resolve, reject) => {
-      ws.send(JSON.stringify({ event, data }), (err) => {
+      ws.send(JSON.stringify({ id: nanoid(), event, data }), (err) => {
         if (err) {
           reject(err)
         } else {

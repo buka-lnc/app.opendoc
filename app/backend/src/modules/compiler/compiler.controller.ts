@@ -5,8 +5,12 @@ import { QueryCompilersDTO } from './dto/query-compilers.dto'
 import { CreateCompilerDTO } from './dto/create-compiler.dto'
 import { UpdateCompilerDTO } from './dto/update-compiler.dto'
 import { Compiler } from './entities/compiler.entity'
+import { ApiExtraModels } from '@nestjs/swagger'
+import { CompilerInfoDTO } from './dto/compiler-info.dto'
+import { CompilerMessageDTO } from './dto/compiler-message.dto'
 
 
+@ApiExtraModels(CompilerInfoDTO, CompilerMessageDTO)
 @Controller('compiler')
 export class CompilerController {
   constructor(

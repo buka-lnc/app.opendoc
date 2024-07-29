@@ -1,8 +1,11 @@
 import { MessageBody, SubscribeMessage, WebSocketGateway, WebSocketServer, OnGatewayInit, ConnectedSocket } from '@nestjs/websockets'
+import { CompilerInfoDTO } from './api/backend/components/schemas'
 import WebSocket from 'ws'
 import { Server } from 'http'
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino'
 import { AppConfig } from './config/app.config'
+import { version } from '~~/package.json'
+import { AppService } from './app.service'
 
 
 @WebSocketGateway()
@@ -15,6 +18,8 @@ export class AppGateway implements OnGatewayInit {
 
     @InjectPinoLogger(AppGateway.name)
     private readonly logger: PinoLogger,
+
+    private readonly appService: AppService,
   ) {}
 
   afterInit() {
@@ -26,11 +31,26 @@ export class AppGateway implements OnGatewayInit {
     this.logger.info('health check')
   }
 
+  @SubscribeMessage('info')
+  info(@MessageBody() data): CompilerInfoDTO {
+    console.log('🚀 ~ AppGateway ~ info ~ data:', data)
+    this.logger.debug('WebSocket Request: info')
+
+    return {
+      name: '@opendoc/keq-compiler',
+      description: 'Compiler for keq',
+      author: 'Val-istar-Guo <val.istar.guo@gmail.com>',
+      version,
+      config: '',
+    }
+  }
+
   @SubscribeMessage('compile')
   compile(
     @ConnectedSocket() client: WebSocket,
     @MessageBody() data: any,
   ): void {
+    // this.appService.compile()
     console.log('🚀 ~ AppGateway ~ data:', data)
     client.send('hahaha')
     client.send('hahaha')

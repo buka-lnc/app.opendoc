@@ -1,8 +1,11 @@
 import { IsString } from 'class-validator'
 
-export class CompilerMessage {
+export class CompilerMessageDTO {
+  @IsString()
+  id!: string
+
   @IsString()
   event!: string
 
-  data: any
+  data!: any
 }

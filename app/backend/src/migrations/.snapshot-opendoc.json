@@ -10,6 +10,7 @@
           "autoincrement": true,
           "primary": true,
           "nullable": false,
+          "length": null,
           "comment": "主键",
           "mappedType": "bigint"
         },
@@ -20,7 +21,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 0,
+          "length": null,
           "default": "CURRENT_TIMESTAMP",
           "comment": "创建时间",
           "mappedType": "datetime"
@@ -32,7 +33,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 0,
+          "length": null,
           "default": "CURRENT_TIMESTAMP",
           "comment": "更新时间",
           "mappedType": "datetime"
@@ -44,6 +45,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "length": 63,
           "comment": "唯一应用编码",
           "mappedType": "string"
         },
@@ -54,6 +56,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "length": 127,
           "comment": "应用名称",
           "mappedType": "string"
         }
@@ -94,6 +97,7 @@
           "autoincrement": true,
           "primary": true,
           "nullable": false,
+          "length": null,
           "comment": "主键",
           "mappedType": "bigint"
         },
@@ -104,7 +108,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 0,
+          "length": null,
           "default": "CURRENT_TIMESTAMP",
           "comment": "创建时间",
           "mappedType": "datetime"
@@ -116,18 +120,19 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 0,
+          "length": null,
           "default": "CURRENT_TIMESTAMP",
           "comment": "更新时间",
           "mappedType": "datetime"
         },
         "status": {
           "name": "status",
-          "type": "varchar(12)",
+          "type": "varchar(15)",
           "unsigned": false,
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "length": 15,
           "comment": "编译器状态",
           "mappedType": "string"
         },
@@ -138,7 +143,41 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "length": 255,
           "comment": "编译器地址",
+          "mappedType": "string"
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(63)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 63,
+          "comment": "编译器名称",
+          "mappedType": "string"
+        },
+        "author": {
+          "name": "author",
+          "type": "varchar(63)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 63,
+          "comment": "编译器名称",
+          "mappedType": "string"
+        },
+        "version": {
+          "name": "version",
+          "type": "varchar(31)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 31,
+          "comment": "编译器版本",
           "mappedType": "string"
         }
       },
@@ -178,6 +217,7 @@
           "autoincrement": true,
           "primary": true,
           "nullable": false,
+          "length": null,
           "comment": "主键",
           "mappedType": "bigint"
         },
@@ -188,7 +228,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 0,
+          "length": null,
           "default": "CURRENT_TIMESTAMP",
           "comment": "创建时间",
           "mappedType": "datetime"
@@ -200,7 +240,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 0,
+          "length": null,
           "default": "CURRENT_TIMESTAMP",
           "comment": "更新时间",
           "mappedType": "datetime"
@@ -212,6 +252,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "length": 255,
           "comment": "唯一应用编码",
           "mappedType": "string"
         },
@@ -222,6 +263,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "length": 255,
           "default": "''",
           "comment": "描述",
           "mappedType": "string"
@@ -263,6 +305,7 @@
           "autoincrement": true,
           "primary": true,
           "nullable": false,
+          "length": null,
           "comment": "主键",
           "mappedType": "bigint"
         },
@@ -273,7 +316,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 0,
+          "length": null,
           "default": "CURRENT_TIMESTAMP",
           "comment": "创建时间",
           "mappedType": "datetime"
@@ -285,7 +328,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 0,
+          "length": null,
           "default": "CURRENT_TIMESTAMP",
           "comment": "更新时间",
           "mappedType": "datetime"
@@ -297,6 +340,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "length": 63,
           "comment": "键",
           "mappedType": "string"
         },
@@ -307,6 +351,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "length": null,
           "comment": "值",
           "mappedType": "json"
         }
@@ -337,6 +382,7 @@
           "autoincrement": true,
           "primary": true,
           "nullable": false,
+          "length": null,
           "comment": "主键",
           "mappedType": "bigint"
         },
@@ -347,7 +393,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 0,
+          "length": null,
           "default": "CURRENT_TIMESTAMP",
           "comment": "创建时间",
           "mappedType": "datetime"
@@ -359,7 +405,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 0,
+          "length": null,
           "default": "CURRENT_TIMESTAMP",
           "comment": "更新时间",
           "mappedType": "datetime"
@@ -371,6 +417,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "length": 127,
           "default": "''",
           "comment": "文档名称",
           "mappedType": "string"
@@ -382,6 +429,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "length": 63,
           "comment": "易于阅读的文档编码(Folder下唯一)",
           "mappedType": "string"
         },
@@ -392,6 +440,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "length": null,
           "default": "1",
           "comment": "文档排序",
           "mappedType": "integer"
@@ -418,6 +467,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "length": 31,
           "default": "'push'",
           "comment": "文档同步模式",
           "mappedType": "string"
@@ -429,6 +479,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "length": null,
           "comment": "文档所属的应用",
           "mappedType": "bigint"
         }
@@ -503,6 +554,7 @@
           "autoincrement": true,
           "primary": true,
           "nullable": false,
+          "length": null,
           "comment": "主键",
           "mappedType": "bigint"
         },
@@ -513,7 +565,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 0,
+          "length": null,
           "default": "CURRENT_TIMESTAMP",
           "comment": "创建时间",
           "mappedType": "datetime"
@@ -525,7 +577,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 0,
+          "length": null,
           "default": "CURRENT_TIMESTAMP",
           "comment": "更新时间",
           "mappedType": "datetime"
@@ -537,6 +589,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "length": 255,
           "comment": "接口地址",
           "mappedType": "string"
         },
@@ -547,6 +600,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "length": null,
           "mappedType": "bigint"
         }
       },
@@ -599,6 +653,7 @@
           "autoincrement": true,
           "primary": true,
           "nullable": false,
+          "length": null,
           "comment": "主键",
           "mappedType": "bigint"
         },
@@ -609,7 +664,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 0,
+          "length": null,
           "default": "CURRENT_TIMESTAMP",
           "comment": "创建时间",
           "mappedType": "datetime"
@@ -621,7 +676,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 0,
+          "length": null,
           "default": "CURRENT_TIMESTAMP",
           "comment": "更新时间",
           "mappedType": "datetime"
@@ -633,6 +688,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "length": null,
           "comment": "Major",
           "mappedType": "integer"
         },
@@ -643,6 +699,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "length": null,
           "comment": "Minor",
           "mappedType": "integer"
         },
@@ -653,6 +710,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "length": null,
           "comment": "Patch",
           "mappedType": "integer"
         },
@@ -663,6 +721,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "length": null,
           "default": "0",
           "comment": "Pre-release",
           "mappedType": "integer"
@@ -674,6 +733,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "length": 24,
           "default": "''",
           "comment": "标签",
           "mappedType": "string"
@@ -685,6 +745,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "length": null,
           "mappedType": "bigint"
         }
       },
@@ -752,6 +813,7 @@
           "autoincrement": true,
           "primary": true,
           "nullable": false,
+          "length": null,
           "comment": "主键",
           "mappedType": "bigint"
         },
@@ -762,7 +824,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 0,
+          "length": null,
           "default": "CURRENT_TIMESTAMP",
           "comment": "创建时间",
           "mappedType": "datetime"
@@ -774,7 +836,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 0,
+          "length": null,
           "default": "CURRENT_TIMESTAMP",
           "comment": "更新时间",
           "mappedType": "datetime"
@@ -786,6 +848,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "length": 128,
           "comment": "文件的路径",
           "mappedType": "string"
         },
@@ -796,6 +859,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "length": 10,
           "default": "''",
           "comment": "文件的指纹",
           "mappedType": "string"
@@ -807,6 +871,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "length": null,
           "comment": "版本号",
           "mappedType": "bigint"
         },
@@ -817,6 +882,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "length": null,
           "comment": "Sheet",
           "mappedType": "bigint"
         }
@@ -904,6 +970,7 @@
           "autoincrement": true,
           "primary": true,
           "nullable": false,
+          "length": null,
           "comment": "主键",
           "mappedType": "bigint"
         },
@@ -914,7 +981,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 0,
+          "length": null,
           "default": "CURRENT_TIMESTAMP",
           "comment": "创建时间",
           "mappedType": "datetime"
@@ -926,7 +993,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 0,
+          "length": null,
           "default": "CURRENT_TIMESTAMP",
           "comment": "更新时间",
           "mappedType": "datetime"
@@ -938,6 +1005,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "length": 63,
           "comment": "organization",
           "mappedType": "string"
         },
@@ -948,6 +1016,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "length": 63,
           "comment": "Npm包名",
           "mappedType": "string"
         },
@@ -958,6 +1027,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "length": 24,
           "comment": "编译器",
           "mappedType": "string"
         },
@@ -968,6 +1038,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "length": 10,
           "mappedType": "string"
         },
         "published_at": {
@@ -977,7 +1048,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": true,
-          "length": 0,
+          "length": null,
           "mappedType": "datetime"
         },
         "tarball": {
@@ -987,6 +1058,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": true,
+          "length": 255,
           "comment": "Npm 压缩包",
           "mappedType": "string"
         },
@@ -997,6 +1069,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": true,
+          "length": 100,
           "comment": "Npm压缩包的sha512",
           "mappedType": "string"
         },
@@ -1007,6 +1080,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "length": null,
           "comment": "版本号",
           "mappedType": "bigint"
         },
@@ -1017,6 +1091,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "length": null,
           "comment": "所属文档",
           "mappedType": "bigint"
         },
@@ -1027,6 +1102,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "length": null,
           "comment": "关联的文档文件",
           "mappedType": "bigint"
         }
@@ -1124,6 +1200,7 @@
           "autoincrement": true,
           "primary": true,
           "nullable": false,
+          "length": null,
           "comment": "主键",
           "mappedType": "bigint"
         },
@@ -1134,7 +1211,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 0,
+          "length": null,
           "default": "CURRENT_TIMESTAMP",
           "comment": "创建时间",
           "mappedType": "datetime"
@@ -1146,7 +1223,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
-          "length": 0,
+          "length": null,
           "default": "CURRENT_TIMESTAMP",
           "comment": "更新时间",
           "mappedType": "datetime"
@@ -1158,6 +1235,7 @@
           "autoincrement": false,
           "primary": false,
           "nullable": false,
+          "length": null,
           "mappedType": "bigint"
         }
       },
