@@ -1,6 +1,5 @@
-import { CreateCompilerDTO } from './create-compiler.dto'
+import { UpdateCompilerOptionDTO } from './update-compiler-option.dto'
 
-
-export class UpdateCompilerDTO extends CreateCompilerDTO {
-
+export class UpdateCompilerDTO {
+  options?: UpdateCompilerOptionDTO[]
 }

@@ -1,3 +1,6 @@
+import type { Collection } from "./collection"
+
+
 /**
  * @interface Compiler
  * @export
@@ -9,6 +12,7 @@ export interface Compiler {
   "name": string
   "author": string
   "version": string
+  "options": Collection
   /**
    * 主键
    */

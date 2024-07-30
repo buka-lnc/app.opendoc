@@ -2,20 +2,14 @@ import type { EntityReferenceDTO } from "./entity_reference_dto"
 
 
 /**
- * @interface ApiFile
+ * @interface CompilerOption
  * @export
  */
-export interface ApiFile {
-  "version": EntityReferenceDTO
-  "sheet": EntityReferenceDTO
-  /**
-   * 文件的路径
-   */
-  "path": string
-  /**
-   * 文件的指纹
-   */
-  "hash": string
+export interface CompilerOption {
+  "compiler": EntityReferenceDTO
+  "key": string
+  "format": "string" | "number" | "boolean"
+  "value"?: string
   /**
    * 主键
    */

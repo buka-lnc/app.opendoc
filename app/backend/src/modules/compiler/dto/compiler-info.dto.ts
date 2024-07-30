@@ -1,5 +1,7 @@
-import type { JSONSchema } from 'json-schema-typed'
-import { IsString } from 'class-validator'
+import { IsString, ValidateNested } from 'class-validator'
+import { Type } from 'class-transformer'
+import { CompilerInfoOptionDTO } from './compiler-info-option.dto'
+
 
 export class CompilerInfoDTO {
   /**
@@ -18,16 +20,18 @@ export class CompilerInfoDTO {
    * Compiler 描述
    */
   @IsString()
-  description!: string
+  description?: string
 
   /**
    * Compiler 作者
    */
   @IsString()
-  author!: string
+  author?: string
 
   /**
-   * Compiler 配置
+   * Compiler 选项
    */
-  options!: JSONSchema
+  @ValidateNested()
+  @Type(() => CompilerInfoOptionDTO)
+  options?: CompilerInfoOptionDTO[]
 }

@@ -1,3 +1,6 @@
+import type { CompilerInfoOptionDTO } from "./compiler_info_option_dto"
+
+
 /**
  * @interface CompilerInfoDTO
  * @export
@@ -14,14 +17,13 @@ export interface CompilerInfoDTO {
   /**
    * Compiler 描述
    */
-  "description": string
+  "description"?: string
   /**
    * Compiler 作者
    */
-  "author": string
+  "author"?: string
   /**
-   * Compiler 配置
+   * Compiler 选项
    */
-  "config": {
-  }
+  "options"?: (CompilerInfoOptionDTO)[]
 }

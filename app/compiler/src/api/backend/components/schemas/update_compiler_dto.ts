@@ -1,7 +1,10 @@
+import type { UpdateCompilerOptionDTO } from "./update_compiler_option_dto"
+
+
 /**
  * @interface UpdateCompilerDTO
  * @export
  */
 export interface UpdateCompilerDTO {
-  "url": string
+  "options"?: (UpdateCompilerOptionDTO)[]
 }

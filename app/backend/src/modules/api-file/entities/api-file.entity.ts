@@ -1,7 +1,7 @@
 import { Cascade, Collection, Entity, ManyToOne, OneToMany, Property, Ref, Unique } from '@mikro-orm/core'
 import { IsString, MaxLength } from 'class-validator'
 import { BaseEntity } from '~/entities/base.entity'
-import { ApiHideProperty, ApiProperty } from '@nestjs/swagger'
+import { ApiHideProperty } from '@nestjs/swagger'
 import { Sdk } from '~/modules/sdk/entities/sdk.entity'
 import { Sheet } from '~/modules/sheet/entities/sheet.entity'
 import { SheetVersion } from '~/modules/sheet-version/entities/sheet-version.entity'
@@ -32,9 +32,7 @@ export class ApiFile extends BaseEntity {
   })
   hash: string = ''
 
-  @ApiProperty({
-    type: () => SheetVersion,
-  })
+  @ApiForeignKey()
   @ManyToOne({
     entity: () => SheetVersion,
     comment: '版本号',

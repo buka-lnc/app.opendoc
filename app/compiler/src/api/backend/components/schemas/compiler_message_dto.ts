@@ -4,7 +4,7 @@
  */
 export interface CompilerMessageDTO {
   "id": string
-  "event": string
+  "event": "info" | "icon" | "filter" | "compile"
   "data": {
   }
 }

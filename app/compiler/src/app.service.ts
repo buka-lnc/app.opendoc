@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { HealthCheckResult, HealthCheckService } from '@nestjs/terminus'
-import { CompilerOptions } from './types/compiler-options'
-import { CompilerInfoDTO } from './api/backend/components/schemas'
+import { CompilerInfoDTO, CompilerInfoOptionDTO } from './api/backend/components/schemas'
 import { version } from '~~/package.json'
 
 
@@ -15,8 +14,22 @@ export class AppService {
     return this.health.check([])
   }
 
-  getConfig(): typeof CompilerOptions {
-    return CompilerOptions
+  getOptions(): CompilerInfoOptionDTO[] {
+    return [
+      {
+        key: 'register',
+        label: 'Npm 源',
+        format: 'string',
+        value: 'https://registry.npmjs.org',
+      },
+      {
+        key: 'packageNameTemplate',
+        label: 'SDK 名称模板',
+        description: 'Handlebars语法',
+        format: 'string',
+        value: '@{{application.code}}/{{sheet.code}}',
+      },
+    ]
   }
 
   getInfo(): CompilerInfoDTO {
@@ -25,7 +38,7 @@ export class AppService {
       description: 'Compiler for keq',
       author: 'Val-istar-Guo <val.istar.guo@gmail.com>',
       version,
-      config: this.getConfig(),
+      options: this.getOptions(),
     }
   }
 
