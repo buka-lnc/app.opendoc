@@ -2,7 +2,7 @@ import * as R from 'ramda'
 import { EnsureRequestContext, EntityManager } from '@mikro-orm/core'
 import { EntityRepository, MikroORM } from '@mikro-orm/mysql'
 import { InjectRepository } from '@mikro-orm/nestjs'
-import { BadRequestException, Injectable, OnModuleInit } from '@nestjs/common'
+import { BadRequestException, Injectable, OnApplicationShutdown, OnModuleInit } from '@nestjs/common'
 import { Compiler } from './entities/compiler.entity'
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino'
 import WebSocket from 'ws'
@@ -16,7 +16,7 @@ import { CompilerMessageEvent } from './constants/compiler-message-event'
 
 
 @Injectable()
-export class CompilerService implements OnModuleInit {
+export class CompilerService implements OnModuleInit, OnApplicationShutdown {
   private readonly webSocketMap = new Map<string, WebSocket>()
 
   constructor(
@@ -41,6 +41,12 @@ export class CompilerService implements OnModuleInit {
 
     for (const compiler of compilers) {
       await this.initCompiler(compiler)
+    }
+  }
+
+  onApplicationShutdown() {
+    for (const ws of this.webSocketMap.values()) {
+      ws.close()
     }
   }
 
