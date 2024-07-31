@@ -1,9 +1,9 @@
 import { IsString, ValidateNested } from 'class-validator'
 import { Type } from 'class-transformer'
-import { CompilerInfoOptionDTO } from './compiler-info-option.dto'
+import { CompilerIntroductionOptionDTO } from './compiler-introduction-option.dto'
 
 
-export class CompilerInfoDTO {
+export class CompilerIntroductionDTO {
   /**
    * Compiler 名称
    */
@@ -32,6 +32,6 @@ export class CompilerInfoDTO {
    * Compiler 选项
    */
   @ValidateNested()
-  @Type(() => CompilerInfoOptionDTO)
-  options?: CompilerInfoOptionDTO[]
+  @Type(() => CompilerIntroductionOptionDTO)
+  options?: CompilerIntroductionOptionDTO[]
 }

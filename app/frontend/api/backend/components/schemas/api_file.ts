@@ -1,4 +1,3 @@
-import type { SheetVersion } from "./sheet_version"
 import type { EntityReferenceDTO } from "./entity_reference_dto"
 
 
@@ -7,7 +6,7 @@ import type { EntityReferenceDTO } from "./entity_reference_dto"
  * @export
  */
 export interface ApiFile {
-  "version": SheetVersion
+  "version": EntityReferenceDTO
   "sheet": EntityReferenceDTO
   /**
    * 文件的路径

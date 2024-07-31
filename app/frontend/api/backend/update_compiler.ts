@@ -12,7 +12,7 @@ export function updateCompiler<STATUS extends keyof ResponseMap>(arg?: RequestPa
     })
 
   if (arg && "compilerId" in arg) req.params("compilerId", String(arg["compilerId"]))
-  if (arg && "url" in arg) req.send({ "url": arg["url"] })
+  if (arg && "options" in arg) req.send({ "options": arg["options"] })
 
   return req as unknown as Keq<ResponseMap[STATUS], Operation<STATUS>>
 }

@@ -1,5 +1,5 @@
 import { MessageBody, SubscribeMessage, WebSocketGateway, WebSocketServer, OnGatewayInit, ConnectedSocket, OnGatewayConnection, OnGatewayDisconnect } from '@nestjs/websockets'
-import { CompilerInfoDTO } from './api/backend/components/schemas'
+import { CompilerIntroductionDTO } from './api/backend/components/schemas'
 import WebSocket from 'ws'
 import { Server } from 'http'
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino'
@@ -61,10 +61,10 @@ export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGateway
     this.logger.info('health check')
   }
 
-  @SubscribeMessage('info')
-  info(@ConnectedSocket() client): CompilerInfoDTO {
+  @SubscribeMessage('introduce')
+  introduce(@ConnectedSocket() client): CompilerIntroductionDTO {
     this.logger.debug(`${this.prefixLog(client)} Request Info`)
-    return this.appService.getInfo()
+    return this.appService.introduce()
   }
 
   @SubscribeMessage('compile')

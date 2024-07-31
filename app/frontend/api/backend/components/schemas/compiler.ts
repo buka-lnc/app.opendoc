@@ -3,15 +3,14 @@
  * @export
  */
 export interface Compiler {
-  /**
-   * t1
-   */
   "status": {
   }
-  /**
-   * t2
-   */
   "url": string
+  "name": string
+  "author": string
+  "version": string
+  "options": {
+  }
   /**
    * 主键
    */

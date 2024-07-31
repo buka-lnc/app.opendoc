@@ -126,7 +126,7 @@ export class CompilerService implements OnModuleInit, OnApplicationShutdown {
     if (exist) throw new BadRequestException('请勿重复添加')
 
     const ws = await this.webSocketService.connect(dto.url)
-    const compilerInfo = await this.webSocketService.fetch(ws, { event: CompilerMessageEvent.INFO })
+    const compilerInfo = await this.webSocketService.fetch(ws, { event: CompilerMessageEvent.INTRODUCE })
       .finally(() => ws.close())
 
     const compiler = this.compilerRepo.create({
