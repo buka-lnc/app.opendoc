@@ -57,6 +57,6 @@ export class ApiFile extends BaseEntity {
     mappedBy: 'apiFile',
     cascade: [Cascade.ALL],
   })
-  sdks = new Collection<Sdk>(this)
+  sdks: Collection<Sdk> = new Collection<Sdk>(this)
 }
 

@@ -7,21 +7,21 @@ import type { CompilerIntroductionOptionDTO } from "./compiler_introduction_opti
  */
 export interface CompilerIntroductionDTO {
   /**
-   * Compiler 名称
-   */
-  "name": string
-  /**
-   * Compiler 版本
-   */
-  "version": string
-  /**
-   * Compiler 描述
+   * 编译器描述
    */
   "description"?: string
   /**
-   * Compiler 作者
+   * 编译器名称
    */
   "author"?: string
+  /**
+   * 编译器名称
+   */
+  "name": string
+  /**
+   * 编译器版本
+   */
+  "version": string
   /**
    * Compiler 选项
    */

@@ -94,7 +94,7 @@ export class Sheet extends BaseEntity {
     comment: '版本表',
     cascade: [Cascade.ALL],
   })
-  versions = new Collection<SheetVersion>(this)
+  versions: Collection<SheetVersion> = new Collection<SheetVersion>(this)
 
   /**
    * 文档所属的应用

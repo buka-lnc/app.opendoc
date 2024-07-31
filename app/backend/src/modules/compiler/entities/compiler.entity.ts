@@ -1,41 +1,59 @@
-import { Cascade, Collection, Entity, OneToMany, Property } from '@mikro-orm/core'
+import { Cascade, Collection, Entity, OneToMany } from '@mikro-orm/core'
 import { BaseEntity } from '~/entities/base.entity'
 import { CompilerOption } from './compiler-option.entity'
+import { EntityProperty } from '~/decorators/entity-property.decorator'
+import { CompilerStatus } from '../constants/compiler-status'
+import { IsEnum } from 'class-validator'
+import { ApiForeignKey } from '~/decorators/api-reference.decorator'
 
 
 @Entity()
 export class Compiler extends BaseEntity {
-  @Property({
-    columnType: 'varchar(15)',
+  @IsEnum(CompilerStatus)
+  @EntityProperty({
+    type: 'varchar',
+    length: 15,
     comment: '编译器状态',
   })
-  status!: 'disabled' | 'enabled'
+  status!: CompilerStatus
 
-  @Property({
-    columnType: 'varchar(255)',
+  @EntityProperty({
+    type: 'varchar',
+    length: 255,
     comment: '编译器地址',
     unique: true,
   })
   url!: string
 
-  @Property({
-    columnType: 'varchar(63)',
+  @EntityProperty({
+    type: 'varchar',
+    length: 63,
     comment: '编译器名称',
   })
   name!: string
 
-  @Property({
-    columnType: 'varchar(63)',
+  @EntityProperty({
+    type: 'varchar',
+    length: 255,
+    comment: '编译器描述',
+  })
+  description!: string
+
+  @EntityProperty({
+    type: 'varchar',
+    length: 63,
     comment: '编译器名称',
   })
   author!: string
 
-  @Property({
-    columnType: 'varchar(31)',
+  @EntityProperty({
+    type: 'varchar',
+    length: 31,
     comment: '编译器版本',
   })
   version!: string
 
+  @ApiForeignKey()
   @OneToMany({
     entity: () => CompilerOption,
     comment: '编译器选项',
@@ -43,5 +61,5 @@ export class Compiler extends BaseEntity {
     cascade: [Cascade.ALL],
     eager: true,
   })
-  options = new Collection<CompilerOption>(this)
+  options: Collection<CompilerOption> = new Collection<CompilerOption>(this)
 }

@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { IconPlus, IconTrash } from '@tabler/icons-vue'
+import { IconPlus, IconTrash, IconSettings, IconCpu, IconCpuOff } from '@tabler/icons-vue'
 import { isURL } from 'validator'
 import { RequestException } from 'keq-exception'
-import { queryCompilers, createCompiler, deleteCompiler } from '@/api/backend'
+import { queryCompilers, createCompiler, deleteCompiler, updateCompiler } from '@/api/backend'
+import { Compiler } from '~/api/backend/components/schemas'
 
 const alert = useAlert()
 
@@ -32,11 +33,24 @@ const { pending: appending, execute: create } = useAsyncFn(async () => {
 
 const removingCompilerIds = ref<string[]>([])
 
-async function remove (compilerId: string): Promise<void> {
+async function remove (compiler: Compiler): Promise<void> {
   try {
+    const compilerId = compiler.id
     removingCompilerIds.value.push(compilerId)
     await deleteCompiler({ compilerId })
     removingCompilerIds.value = removingCompilerIds.value.filter(id => id !== compilerId)
+    await reload()
+  } catch (e) {
+    if (e instanceof Error) alert.error(e.message)
+  }
+}
+
+async function toggleStatus (compiler: Compiler): Promise<void> {
+  try {
+    await updateCompiler({
+      compilerId: compiler.id,
+      status: compiler.status === 'enabled' ? 'disabled' : 'enabled',
+    })
     await reload()
   } catch (e) {
     if (e instanceof Error) alert.error(e.message)
@@ -76,33 +90,60 @@ async function remove (compilerId: string): Promise<void> {
       </div>
 
       <div class="flex-1 overflow-y-auto">
-        <table class="d-table d-table-sm">
-          <thead class="bg-base-100 sticky top-0">
-            <tr>
-              <th>编译器地址</th>
-              <th />
-            </tr>
-          </thead>
+        <div
+          v-for="compiler in compilers"
+          :key="compiler.id"
+          class="d-card d-card-compact bg-base-200/70 transition-[background] border-b last:border-none border-neutral"
+        >
+          <div class="d-card-body flex-row items-center">
+            <h2 class="d-card-title">
+              {{ compiler.name }}
+            </h2>
+            <p>{{ compiler.description }}</p>
 
-          <tbody>
-            <tr
-              v-for="compiler in compilers"
-              :key="compiler.id"
-              class="bg-base-300"
-            >
-              <th>{{ compiler.url }}</th>
-              <th class="w-10 text-center">
-                <button
-                  class="d-btn d-btn-sm d-btn-ghost d-btn-square"
-                  :class="removingCompilerIds.includes(compiler.id) && 'd-btn-disabled'"
-                  @click="() => !removingCompilerIds.includes(compiler.id) && remove(compiler.id)"
+            <div class="d-card-actions ">
+              <button
+                class="d-swap d-btn d-btn-sm d-btn-ghost d-btn-square transition-colors"
+                @click="() => toggleStatus(compiler)"
+              >
+                <div
+                  class="d-swap"
+                  :class="compiler.status === 'enabled' ? 'text-green-400 d-swap-active' : 'text-red-400'"
                 >
-                  <IconTrash class="w-6" />
-                </button>
-              </th>
-            </tr>
-          </tbody>
-        </table>
+                  <div class="d-swap-on">
+                    <IconCpu class="w-6" />
+                  </div>
+                  <div class="d-swap-off">
+                    <IconCpuOff class="w-6" />
+                  </div>
+                </div>
+              </button>
+
+              <!-- <button
+                class="d-btn d-btn-sm d-btn-ghost d-btn-square transition-colors"
+                :class="compiler.status === 'enabled' ? 'text-green-400' : 'text-red-400'"
+                @click="() => toggleStatus(compiler)"
+              >
+                <IconCpu v-if="compiler.status === 'enabled'" class="w-6" />
+                <IconCpuOff v-else class="w-6" />
+              </button> -->
+
+              <button
+                class="d-btn d-btn-sm d-btn-ghost d-btn-square"
+              >
+                <IconSettings class="w-6" />
+              </button>
+
+              <button
+                class="d-btn d-btn-sm d-btn-ghost d-btn-square"
+                :class="removingCompilerIds.includes(compiler.id) && 'd-btn-disabled'"
+                @click="() => !removingCompilerIds.includes(compiler.id) && remove(compiler)"
+              >
+                <IconTrash class="w-6" />
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </stuffed-loading>

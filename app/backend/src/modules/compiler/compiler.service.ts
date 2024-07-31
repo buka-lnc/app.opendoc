@@ -15,6 +15,7 @@ import { WebSocketService } from './web-socket.service'
 import { CompilerMessageEvent } from './constants/compiler-message-event'
 import { Cron } from '@nestjs/schedule'
 import { CompilerOption } from './entities/compiler-option.entity'
+import { CompilerStatus } from './constants/compiler-status'
 
 
 @Injectable()
@@ -51,7 +52,7 @@ export class CompilerService implements OnModuleInit, OnApplicationShutdown {
   @EnsureRequestContext()
   private async consistency() {
     const compilers = await this.compilerRepo.find({
-      status: 'enabled',
+      status: CompilerStatus.ENABLED,
     })
 
     for (const compiler of compilers) {
@@ -131,8 +132,9 @@ export class CompilerService implements OnModuleInit, OnApplicationShutdown {
 
     const compiler = this.compilerRepo.create({
       url: dto.url,
-      status: 'disabled',
+      status: CompilerStatus.DISABLED,
       name: compilerInfo.name,
+      description: '',
       author: compilerInfo.author || '',
       version: compilerInfo.version,
       options: [],
@@ -162,6 +164,10 @@ export class CompilerService implements OnModuleInit, OnApplicationShutdown {
         if (!compilerOption) throw new BadRequestException('选项不存在')
         compilerOption.value = optionDTO.value
       }
+    }
+
+    if (dto.status) {
+      compiler.status = dto.status
     }
 
     await this.em.persistAndFlush(compiler)
