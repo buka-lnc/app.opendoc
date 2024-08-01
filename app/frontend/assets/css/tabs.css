@@ -1,0 +1,9 @@
+/* 添加 .tab-base-200，使 Tabs 颜色 在 .bg-base-100 时不突兀 */
+.d-tabs.tab-base-200 .d-tab {
+  --tab-border-color: var(--fallback-b2, oklch(var(--b2) / 0.7));
+  --tab-bg: var(--fallback-b2, oklch(var(--b2) / 0.3));
+}
+
+.d-tab-content.tab-base-200 {
+  @apply bg-base-200/30 border-base-200/70 border-t-0;
+}

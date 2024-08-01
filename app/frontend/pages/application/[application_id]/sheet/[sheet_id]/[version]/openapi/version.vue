@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import * as R from 'ramda'
-import semver from 'semver'
+import * as semver from 'semver'
 import { useRouteParams } from '@vueuse/router'
 import { querySheetVersions } from '~/api/backend/query_sheet_versions.js'
 
@@ -11,7 +11,6 @@ const { pending, data: sheetVersions } = useAsyncData(
     const body = await querySheetVersions<'200'>({
       sheetId: sheetId.value,
     })
-    console.log('🚀 ~ body:', body)
     return body.results
   },
   {
@@ -46,7 +45,7 @@ const versionTagMap = computed(() => {
     <div
       v-for="sheetVersion in sheetVersions"
       :key="sheetVersion.id"
-      class="d-card bg-base-300 rounded-sm"
+      class="d-card bg-base-100 rounded-sm"
     >
       <openapi-version-preview-card
         :sheet-version="sheetVersion"

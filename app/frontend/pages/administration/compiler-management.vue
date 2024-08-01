@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { IconPlus, IconTrash, IconSettings, IconCpu, IconCpuOff } from '@tabler/icons-vue'
+import { IconPlus, IconTrash, IconSettings, IconPuzzle, IconPuzzleOff } from '@tabler/icons-vue'
 import { isURL } from 'validator'
 import { RequestException } from 'keq-exception'
 import { queryCompilers, createCompiler, deleteCompiler, updateCompiler } from '@/api/backend'
@@ -24,6 +24,7 @@ const { pending: appending, execute: create } = useAsyncFn(async () => {
       url: compilerUrl.value,
     })
 
+    urlInput.value = ''
     await reload()
   } catch (err) {
     if (!(err instanceof RequestException)) throw err
@@ -57,9 +58,14 @@ async function toggleStatus (compiler: Compiler): Promise<void> {
   }
 }
 
+const compilerInSettings = ref<Compiler | null>(null)
 </script>
 
 <template>
+  <compiler-settings-modal
+    v-model:compiler="compilerInSettings"
+  />
+
   <stuffed-loading :pending="status === 'pending' && !compilers">
     <div class="container h-full m-auto flex flex-col overflow-hidden">
       <div class="flex-grow-0 flex-shrink-0 w-full mb-6">
@@ -76,7 +82,13 @@ async function toggleStatus (compiler: Compiler): Promise<void> {
             v-model="urlInput"
             class="grow"
             placeholder="请输入需要添加的编译器地址"
+            @keydown.enter="() => !appending && create()"
           >
+
+          <kbd
+            class="d-kbd d-kbd-sm "
+            :class="isValidUrl ? 'opacity-100' : 'opacity-30'"
+          >↵</kbd>
         </label>
 
         <button
@@ -93,49 +105,47 @@ async function toggleStatus (compiler: Compiler): Promise<void> {
         <div
           v-for="compiler in compilers"
           :key="compiler.id"
-          class="d-card d-card-compact bg-base-200/70 transition-[background] border-b last:border-none border-neutral"
+          class="d-card d-card-compact bg-base-200 transition-[background] border-b last:border-none border-neutral font-sans"
         >
           <div class="d-card-body flex-row items-center">
-            <h2 class="d-card-title">
-              {{ compiler.name }}
-            </h2>
-            <p>{{ compiler.description }}</p>
+            <div class="flex-1 flex flex-col">
+              <h2 class="d-card-title items-baseline">
+                {{ compiler.name }}
+                <span class="text-sm text-base-content/70">v{{ compiler.version }}</span>
+              </h2>
+              <p class="text-base-content/60">
+                {{ compiler.description }}
+              </p>
+            </div>
 
             <div class="d-card-actions ">
               <button
-                class="d-swap d-btn d-btn-sm d-btn-ghost d-btn-square transition-colors"
+                class="d-swap d-btn d-btn-sm d-btn-ghost d-btn-square transition-colors d-tooltip"
+                :data-tip="compiler.status === 'enabled' ? '已启用' : '已禁用'"
                 @click="() => toggleStatus(compiler)"
               >
                 <div
                   class="d-swap"
-                  :class="compiler.status === 'enabled' ? 'text-green-400 d-swap-active' : 'text-red-400'"
+                  :class="compiler.status === 'enabled' ? 'text-success d-swap-active' : 'text-error'"
                 >
                   <div class="d-swap-on">
-                    <IconCpu class="w-6" />
+                    <IconPuzzle class="w-6" />
                   </div>
                   <div class="d-swap-off">
-                    <IconCpuOff class="w-6" />
+                    <IconPuzzleOff class="w-6" />
                   </div>
                 </div>
               </button>
 
-              <!-- <button
-                class="d-btn d-btn-sm d-btn-ghost d-btn-square transition-colors"
-                :class="compiler.status === 'enabled' ? 'text-green-400' : 'text-red-400'"
-                @click="() => toggleStatus(compiler)"
-              >
-                <IconCpu v-if="compiler.status === 'enabled'" class="w-6" />
-                <IconCpuOff v-else class="w-6" />
-              </button> -->
-
               <button
                 class="d-btn d-btn-sm d-btn-ghost d-btn-square"
+                @click="compilerInSettings = compiler"
               >
                 <IconSettings class="w-6" />
               </button>
 
               <button
-                class="d-btn d-btn-sm d-btn-ghost d-btn-square"
+                class="d-btn d-btn-sm d-btn-ghost d-btn-square hover:text-error"
                 :class="removingCompilerIds.includes(compiler.id) && 'd-btn-disabled'"
                 @click="() => !removingCompilerIds.includes(compiler.id) && remove(compiler)"
               >

@@ -42,7 +42,7 @@ const versionTagMap = computed(() => {
     <div
       v-for="sheetVersion in sheetVersions"
       :key="sheetVersion.id"
-      class="d-card bg-base-300 rounded-sm"
+      class="d-card bg-base-100 rounded-sm"
     >
       <asyncapi-version-preview-card
         :sheet-version="sheetVersion"

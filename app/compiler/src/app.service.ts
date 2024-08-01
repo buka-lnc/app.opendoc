@@ -18,7 +18,7 @@ export class AppService {
   introduce(): CompilerIntroductionDTO {
     return {
       name: '@opendoc/keq-compiler',
-      description: 'Compiler for keq',
+      description: '将 Openapi 编译成通用的 Javascript SDK',
       author: 'Val-istar-Guo <val.istar.guo@gmail.com>',
       version,
       options: [

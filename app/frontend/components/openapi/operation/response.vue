@@ -32,11 +32,11 @@ const headersSchema = useOpenapiParametersToJsonSchema(headers)
 <template>
   <div class="space-y-4">
     <div>
-      <div role="tablist" class="d-tabs d-tabs-lifted">
+      <div role="tablist" class="d-tabs d-tabs-lifted tab-base-200">
         <NuxtLink
           role="tab"
           class="d-tab relative"
-          :class="active === 'headers' && 'd-tab-active !bg-base-100/20'"
+          :class="active === 'headers' && 'd-tab-active'"
           aria-label="Headers"
           :to="{ query: { ...$route.query, [activeQueryKey]: 'headers' } }"
         >
@@ -49,7 +49,7 @@ const headersSchema = useOpenapiParametersToJsonSchema(headers)
         <NuxtLink
           role="tab"
           class="d-tab relative"
-          :class="active === 'body' && 'd-tab-active !bg-base-100/20'"
+          :class="active === 'body' && 'd-tab-active'"
           aria-label="Query"
           :to="{ query: { ...$route.query, [activeQueryKey]: 'body' } }"
         >
@@ -62,7 +62,7 @@ const headersSchema = useOpenapiParametersToJsonSchema(headers)
 
       <FlexibleDiv
         role="tabpanel"
-        class="d-tab-content block bg-base-100/20 border-base-300 rounded-box"
+        class="d-tab-content block tab-base-200 rounded-box"
         :class="{
           'rounded-tl-none': active === 'headers',
           'rounded-tr-none': active === 'body',
@@ -80,8 +80,8 @@ const headersSchema = useOpenapiParametersToJsonSchema(headers)
 
           <div v-if="active=== 'body'">
             <openapi-operation-body
-            v-if="response.content"
-            :body="response.content"
+              v-if="response.content"
+              :body="response.content"
               :to-reference="toReference"
             />
             <empty-placeholder v-else class="flex-1 py-8" />

@@ -18,7 +18,7 @@ const isHover = useElementHover(button)
       ref="button"
       :class="[
         'p-4 rounded-none',
-        'hover:bg-base-100 active:!bg-base-100 focus:!bg-base-100 focus-visible:!bg-base-100',
+        'hover:bg-base-300/50 active:!bg-base-300/50 focus:!bg-base-300/50 focus-visible:!bg-base-300/50',
         'hover:text-primary/70 active:!text-primary'
       ]"
       :to="to"

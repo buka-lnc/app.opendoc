@@ -33,11 +33,11 @@ const requestBody = computed(() => dereference<OpenAPIV3.RequestBodyObject>(prop
 
 <template>
   <div>
-    <div role="tablist" class="d-tabs d-tabs-lifted">
+    <div role="tablist" class="d-tabs d-tabs-lifted tab-base-200">
       <NuxtLink
         role="tab"
         class="d-tab relative"
-        :class="active === 'headers' && 'd-tab-active !bg-base-100/20'"
+        :class="active === 'headers' && 'd-tab-active'"
         aria-label="Headers"
         :to="{ query: { ...$route.query, requestActive: 'headers' } }"
       >
@@ -50,7 +50,7 @@ const requestBody = computed(() => dereference<OpenAPIV3.RequestBodyObject>(prop
       <NuxtLink
         role="tab"
         class="d-tab relative"
-        :class="active === 'query' && 'd-tab-active !bg-base-100/20'"
+        :class="active === 'query' && 'd-tab-active'"
         aria-label="Query"
         :to="{ query: { ...$route.query, requestActive: 'query' } }"
       >
@@ -63,7 +63,7 @@ const requestBody = computed(() => dereference<OpenAPIV3.RequestBodyObject>(prop
       <NuxtLink
         role="tab"
         class="d-tab relative"
-        :class="active === 'params' && 'd-tab-active !bg-base-100/20'"
+        :class="active === 'params' && 'd-tab-active'"
         aria-label="Params"
         :to="{ query: { ...$route.query, requestActive: 'params' } }"
       >
@@ -76,7 +76,7 @@ const requestBody = computed(() => dereference<OpenAPIV3.RequestBodyObject>(prop
       <NuxtLink
         role="tab"
         class="d-tab relative"
-        :class="active === 'body' && 'd-tab-active !bg-base-100/20'"
+        :class="active === 'body' && 'd-tab-active'"
         aria-label="Query"
         :to="{ query: { ...$route.query, requestActive: 'body' } }"
       >
@@ -89,7 +89,7 @@ const requestBody = computed(() => dereference<OpenAPIV3.RequestBodyObject>(prop
 
     <FlexibleDiv
       role="tabpanel"
-      class="d-tab-content block bg-base-100/20 border-base-300 rounded-box"
+      class="d-tab-content tab-base-200 block rounded-box"
       :class="{
         'rounded-tl-none': active === 'headers',
         'rounded-tr-none': active === 'body',

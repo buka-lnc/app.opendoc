@@ -28,9 +28,9 @@ useAsyncData(async () => {
 </script>
 
 <template>
-  <div class="size-full overflow-x-hidden overflow-y-auto p-10 bg-base-300">
+  <div class="size-full overflow-x-hidden overflow-y-auto p-10">
     <markdown-view
-      class="max-w-[90ch] mx-auto"
+      class="max-w-[90ch] mx-auto text-base-content"
       :content="content"
     />
   </div>

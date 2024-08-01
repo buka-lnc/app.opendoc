@@ -9,11 +9,13 @@ export interface CompilerIntroductionDTO {
   /**
    * 编译器描述
    */
-  "description"?: string
+  "description"?: {
+  }
   /**
    * 编译器名称
    */
-  "author"?: string
+  "author"?: {
+  }
   /**
    * 编译器名称
    */

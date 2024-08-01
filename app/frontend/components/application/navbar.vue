@@ -21,7 +21,7 @@ const showApiDocumentCreateModal = ref(false)
 </script>
 
 <template>
-  <div v-if="application" class="d-navbar bg-base-100">
+  <div v-if="application" class="d-navbar bg-base-300">
     <application-settings-modal
       v-model:show="showApplicationSettings"
       @updated:application="$emit('updated:application', $event)"

@@ -80,7 +80,6 @@ async function removeForbiddenApplicationCode (code: string) {
             <tr
               v-for="forbiddenCode in forbiddenApplicationCodes"
               :key="forbiddenCode.id"
-              class="bg-base-300"
             >
               <th>{{ forbiddenCode.code }}</th>
               <th>{{ forbiddenCode.description }}</th>

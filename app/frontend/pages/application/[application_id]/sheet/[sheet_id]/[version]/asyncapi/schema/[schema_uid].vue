@@ -11,13 +11,13 @@ const toReference = useAsyncapiToReference()
 </script>
 
 <template>
-  <div class="size-full bg-base-300 text-base-content">
+  <div class="size-full text-base-content">
     <div v-if="schema" class="p-10 size-full overflow-y-auto">
       <div class="mb-4 text-xl text-base-content/70">
         {{ schema.$name }}
       </div>
 
-      <flexible-div class="bg-base-100/20 rounded-sm">
+      <flexible-div class="bg-base-200/30 rounded-sm">
         <div class="p-6">
           <json-schema-lang-ts
             :schema="schema"

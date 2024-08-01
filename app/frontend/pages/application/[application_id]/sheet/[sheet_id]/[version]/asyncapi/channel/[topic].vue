@@ -11,7 +11,7 @@ const toReference = useAsyncapiToReference()
 </script>
 
 <template>
-  <div class="p-10 bg-base-300 space-y-10 overflow-y-auto size-full">
+  <div class="p-10 space-y-10 overflow-y-auto size-full">
     <div>
       <div class="text-2xl space-x-2 flex">
         <clipboard-span :text="topic" />
@@ -34,7 +34,7 @@ const toReference = useAsyncapiToReference()
 
       <FlexibleDiv
         role="tabpanel"
-        class="d-tab-content block bg-base-100/20 border-base-300 rounded-box"
+        class="d-tab-content block bg-base-200/30 border-base-300 rounded-box"
       >
         <div class="p-6">
           <json-schema

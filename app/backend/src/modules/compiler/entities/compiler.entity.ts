@@ -1,10 +1,10 @@
-import { Cascade, Collection, Entity, OneToMany } from '@mikro-orm/core'
+import { Cascade, Collection, Entity, OneToMany, Opt } from '@mikro-orm/core'
 import { BaseEntity } from '~/entities/base.entity'
 import { CompilerOption } from './compiler-option.entity'
 import { EntityProperty } from '~/decorators/entity-property.decorator'
 import { CompilerStatus } from '../constants/compiler-status'
 import { IsEnum } from 'class-validator'
-import { ApiForeignKey } from '~/decorators/api-reference.decorator'
+import { ApiProperty } from '@nestjs/swagger'
 
 
 @Entity()
@@ -36,15 +36,16 @@ export class Compiler extends BaseEntity {
     type: 'varchar',
     length: 255,
     comment: '编译器描述',
+    default: '',
   })
-  description!: string
+  description: string & Opt = ''
 
   @EntityProperty({
     type: 'varchar',
     length: 63,
     comment: '编译器名称',
   })
-  author!: string
+  author: string & Opt = ''
 
   @EntityProperty({
     type: 'varchar',
@@ -53,7 +54,11 @@ export class Compiler extends BaseEntity {
   })
   version!: string
 
-  @ApiForeignKey()
+  @ApiProperty({
+    type: () => CompilerOption,
+    description: '编译器选项',
+    isArray: true,
+  })
   @OneToMany({
     entity: () => CompilerOption,
     comment: '编译器选项',

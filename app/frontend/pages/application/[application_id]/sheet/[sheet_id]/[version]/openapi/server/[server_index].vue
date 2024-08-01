@@ -9,7 +9,7 @@ const server = computed(() => openapi?.value.servers?.[serverIndex.value])
 </script>
 
 <template>
-  <div v-if="server" class="size-full bg-base-300 p-10 space-y-10">
+  <div v-if="server" class="size-full p-10 space-y-10">
     <div>
       <h1 class="text-2xl">
         <clipboard-span :text="server.url" />

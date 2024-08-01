@@ -1,4 +1,4 @@
-import type { EntityReferenceDTO } from "./entity_reference_dto"
+import type { CompilerOption } from "./compiler_option"
 
 
 /**
@@ -21,16 +21,21 @@ export interface Compiler {
   /**
    * 编译器描述
    */
-  "description": string
+  "description": {
+  }
   /**
    * 编译器名称
    */
-  "author": string
+  "author": {
+  }
   /**
    * 编译器版本
    */
   "version": string
-  "options": (EntityReferenceDTO)[]
+  /**
+   * 编译器选项
+   */
+  "options": (CompilerOption)[]
   /**
    * 主键
    */

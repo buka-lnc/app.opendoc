@@ -5,7 +5,7 @@ const props = defineProps<{
 
 </script>
 <template>
-  <div v-if="props.pending" class="h-full w-full grid place-content-center bg-base-300">
+  <div v-if="props.pending" class="h-full w-full grid place-content-center">
     <span class="d-loading d-loading-ring d-loading-lg" />
   </div>
 

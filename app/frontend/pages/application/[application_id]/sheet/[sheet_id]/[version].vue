@@ -17,7 +17,7 @@ const sheet = inject(SHEET_INJECT_KEY)
       <NuxtPage />
     </div>
 
-    <div class="flex-0 px-4 flex items-center justify-between bg-base-100/50 text-xs">
+    <div class="flex-0 px-4 flex items-center justify-between bg-base-300/50 text-xs">
       <div>
         <div
           class="d-tooltip d-tooltip-right text-base-content/60 flex cursor-default"

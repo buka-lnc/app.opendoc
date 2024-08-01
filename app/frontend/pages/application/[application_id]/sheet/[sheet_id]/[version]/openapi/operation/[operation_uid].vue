@@ -29,7 +29,7 @@ const toReference = useOpenapiToReference()
 </script>
 
 <template>
-  <div v-if="operation" class="p-10 bg-base-300 space-y-10 overflow-y-auto size-full">
+  <div v-if="operation" class="p-10 space-y-10 overflow-y-auto size-full">
     <div>
       <div
         class="text-2xl space-x-2 flex"

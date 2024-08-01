@@ -134,8 +134,8 @@ export class CompilerService implements OnModuleInit, OnApplicationShutdown {
       url: dto.url,
       status: CompilerStatus.DISABLED,
       name: compilerInfo.name,
-      description: '',
-      author: compilerInfo.author || '',
+      description: compilerInfo.description,
+      author: compilerInfo.author,
       version: compilerInfo.version,
       options: [],
     })
@@ -166,7 +166,17 @@ export class CompilerService implements OnModuleInit, OnApplicationShutdown {
       }
     }
 
-    if (dto.status) {
+    if (dto.status && dto.status !== compiler.status) {
+      if (dto.status === CompilerStatus.ENABLED) {
+        // 启用编译器必须检查编译器是否可用
+        try {
+          const ws = await this.webSocketService.connect(compiler.url)
+          ws.close()
+        } catch (err) {
+          throw new BadRequestException('无法连接编译器')
+        }
+      }
+
       compiler.status = dto.status
     }
 

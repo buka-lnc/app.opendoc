@@ -9,7 +9,7 @@ const server = computed(() => asyncapiDocument?.value.servers[serverKey.value])
 </script>
 
 <template>
-  <div v-if="server" class="p-10 bg-base-300 space-y-10 overflow-y-auto size-full">
+  <div v-if="server" class="p-10 space-y-10 overflow-y-auto size-full">
     <div>
       <div class="text-2xl space-x-2 flex">
         <clipboard-span :text="server.host" />
