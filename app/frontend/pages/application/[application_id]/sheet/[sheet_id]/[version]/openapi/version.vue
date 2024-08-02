@@ -40,19 +40,20 @@ const versionTagMap = computed(() => {
 </script>
 
 <template>
-  <StuffedLoading v-if="pending" :pending="pending" />
-  <div v-if="!pending" class="p-10">
-    <div
-      v-for="sheetVersion in sheetVersions"
-      :key="sheetVersion.id"
-      class="d-card bg-base-100 rounded-sm"
-    >
-      <openapi-version-preview-card
-        :sheet-version="sheetVersion"
-        :tag="versionTagMap[sheetVersion.version]"
-      />
+  <StuffedLoading :pending="pending">
+    <div class="h-full p-10 bg-base-100 space-y-1">
+      <div
+        v-for="sheetVersion in sheetVersions"
+        :key="sheetVersion.id"
+        class="d-card d-card-compact bg-base-200/70 font-sans rounded-md"
+      >
+        <openapi-version-preview-card
+          :sheet-version="sheetVersion"
+          :tag="versionTagMap[sheetVersion.version]"
+        />
+      </div>
     </div>
-  </div>
+  </StuffedLoading>
 </template>
 
 <style scoped lang="postcss">

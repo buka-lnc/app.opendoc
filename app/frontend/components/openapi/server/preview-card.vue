@@ -15,7 +15,7 @@ defineProps <{
         {{ server.url }}
       </span>
       <span
-        class="text-xs leading-4 text-gray-400 max-w-full truncate"
+        class="text-xs leading-4 opacity-70 max-w-full truncate"
       >
         {{ server.description }}
       </span>

@@ -38,11 +38,11 @@ const sdkStatus = computed(() => {
         v{{ sheetVersion.version }}
       </h2>
 
-      <sdk-status-badge v-if="!pending" :status="sdkStatus" />
+      <sdk-status-badge v-if="!pending" class="select-none" :status="sdkStatus" />
 
       <span
         v-if="tag"
-        class="d-badge d-badge-outline d-badge-secondary"
+        class="d-badge d-badge-outline d-badge-secondary select-none"
       >
         {{ tag }}
       </span>

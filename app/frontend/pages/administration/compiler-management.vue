@@ -105,7 +105,7 @@ const compilerInSettings = ref<Compiler | null>(null)
         <div
           v-for="compiler in compilers"
           :key="compiler.id"
-          class="d-card d-card-compact bg-base-200 transition-[background] border-b last:border-none border-neutral font-sans"
+          class="d-card d-card-compact bg-base-200 font-sans"
         >
           <div class="d-card-body flex-row items-center">
             <div class="flex-1 flex flex-col">

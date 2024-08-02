@@ -1,19 +1,36 @@
-.schema-line {
-  @apply cursor-default transition pl-1
-}
-.schema-line:hover {
-  @apply bg-neutral cursor-default
+/* 鼠标悬浮的颜色动画 */
+.schema-root > .schema-line,
+.schema-root > .schema-block {
+  @apply transition-colors;
 }
 
+.schema-line {
+  @apply cursor-default pl-1;
+}
+
+/* 背景高亮添加圆角 */
+.schema-block-head {
+  @apply rounded-t-sm;
+}
+.schema-line:not(.schema-block-head):not(.schema-block-tail) {
+  @apply rounded-sm;
+}
+.schema-block-tail {
+  @apply rounded-b-sm;
+}
+
+/* 鼠标悬浮时主要的字体颜色 */
+.schema-line:hover,
 .schema-block-head:hover + .schema-block,
+.schema-block-head:has(+ .schema-block + .schema-block-tail:hover),
+.schema-block:has(+ .schema-block-tail:hover),
 .schema-block-head:hover + .schema-block +.schema-block-tail {
-  @apply bg-neutral
+  background-color: rgba(255,255,255,0.06);
 }
 
 .schema-block {
   @apply pl-6
 }
-
 
 .schema-keyword {
   @apply text-blue-500
@@ -35,7 +52,7 @@
 
 .schema-punctuation,
 .schema-operator {
-  @apply text-gray-500
+  @apply text-base-content/50
 }
 
 .schema-builtin {

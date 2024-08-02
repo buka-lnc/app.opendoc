@@ -59,10 +59,10 @@ watch(
         <search v-model="filter" class="d-input-xs" />
       </div>
 
-      <ul class="flex-0 flex-nowrap d-menu d-menu-sm bg-base-200 p-0 w-72 h-full">
+      <ul class="flex-0 flex-nowrap d-menu d-menu-sm w-72 h-full">
         <li v-for="schema in filteredSchemas" :key="schema.$name">
           <NuxtLink
-            class="rounded-none w-full truncate"
+            class="block w-full truncate"
             :to="`${prefix}/${schema.$uid}`"
             active-class="d-active"
           >

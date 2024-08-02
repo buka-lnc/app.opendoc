@@ -98,7 +98,7 @@ const counter = computed(() => ({
         </div>
       </div>
 
-      <ul class="flex-nowrap d-menu d-menu-sm bg-base-200 p-0 w-72 h-full">
+      <ul class="flex-nowrap d-menu d-menu-sm w-72 h-full">
         <template v-for="group in groups" :key="group.key">
           <li v-if="group.tags.length" class="d-menu-title">
             {{ group.tags.join(',') }}
@@ -106,7 +106,7 @@ const counter = computed(() => ({
 
           <li v-for="operation in group.operations" :key="operation.$uid">
             <NuxtLink
-              class="block rounded-none p-0 w-full"
+              class="block w-full"
               :to="{ path: `${prefix}/${operation.$uid}`, query: $route.query }"
               active-class="d-active"
             >

@@ -5,7 +5,7 @@ import { IconArrowBackUp } from '@tabler/icons-vue'
 <template>
   <div class="size-full flex items-stretch ">
     <div class="h-full overflow-y-auto overflow-x-hidden bg-base-200">
-      <div class="p-2 bg-neutral text-neutral-content flex items-center space-x-4">
+      <div class="p-2 bg-base-300 flex items-center space-x-4">
         <button
           class="d-btn d-btn-square d-btn-ghost"
           @click="$router.push('/applications')"
@@ -23,7 +23,6 @@ import { IconArrowBackUp } from '@tabler/icons-vue'
       <ul class="flex-0 flex-nowrap d-menu w-72">
         <li>
           <NuxtLink
-            class="rounded-none"
             to="/administration/forbidden-application-code-management"
             active-class="d-active"
           >
@@ -33,7 +32,6 @@ import { IconArrowBackUp } from '@tabler/icons-vue'
 
         <li>
           <NuxtLink
-            class="rounded-none"
             to="/administration/compiler-management"
             active-class="d-active"
           >
