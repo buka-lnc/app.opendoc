@@ -28,6 +28,7 @@ defineProps<{
       </h2>
 
       <api-file-categories
+        v-if="category.$children.length"
         :categories="category.$children"
         :to="to"
       />
