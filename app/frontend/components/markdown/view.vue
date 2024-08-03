@@ -6,7 +6,7 @@
       :class="[
         'font-sans',
         'prose prose-invert lg:prose-xl',
-        'prose-pre:shadow-lg',
+        'prose-pre:border-4 prose-pre:border-base-content/10',
         'markdown',
       ]"
       v-html="html"
@@ -26,7 +26,10 @@ import remarkParse from 'remark-parse'
 import remark2rehype from 'remark-rehype'
 import rehypeShiki from '@shikijs/rehype'
 import { unified } from 'unified'
-import { remarkReplaceImageUrl } from '~/utils/remark-replace-image-url'
+import { getSingletonHighlighter } from 'shiki'
+import { latte, macchiato } from '@catppuccin/vscode'
+
+const highlighter = await getSingletonHighlighter()
 
 defineOptions({
   inheritAttrs: false,
@@ -35,6 +38,9 @@ defineOptions({
 const props = defineProps<{
   content: string
 }>()
+
+await highlighter.loadTheme(macchiato as any)
+await highlighter.loadTheme(latte as any)
 
 const processor = unified()
   .use(remarkParse)
@@ -54,10 +60,12 @@ const processor = unified()
   .use(rehypeKatex)
   .use(rehypeShiki, {
     themes: {
-      light: 'nord',
-      dark: 'nord',
+      light: 'catppuccin-latte',
+      dark: 'catppuccin-macchiato',
     },
+    transformers: [shikiCopyButton()],
   })
+  // .use(rehypeAddCopyButtonToPre)
   .use(rehypeStringify)
 
 // const html = ref<string>('')
@@ -73,11 +81,8 @@ const { pending, data: html } = useAsyncData(
 )
 </script>
 <style lang="postcss">
-.markdown code[class*=language-],
-.markdown pre[class*=language-] {
+.markdown pre {
   text-shadow: none;
 }
-.markdown .token.operator {
-  background: none;
-}
+
 </style>

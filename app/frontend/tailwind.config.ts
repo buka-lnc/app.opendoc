@@ -24,7 +24,18 @@ export default {
     }),
   ],
   daisyui: {
-    themes: [catppuccin('macchiato')],
+    darkTheme: 'macchiato',
+    themes: [
+      {
+        light: {
+          ...catppuccin('latte').latte,
+        },
+        dark: {
+          ...catppuccin('macchiato').macchiato,
+        },
+      },
+    ],
     prefix: 'd-',
   },
+  // darkMode: ['class', '[data-theme="macchiato"]'],
 } satisfies Config

@@ -14,11 +14,13 @@ export default defineNuxtConfig({
     '~/assets/css/main.css',
     '~/assets/css/schema.css',
     '~/assets/css/tabs.css',
+    '~/assets/css/shiki-themes.css',
   ],
 
   runtimeConfig: {
     apiBaseOrigin: process.env.API_BASE_ORIGIN,
   },
+
   svgo: {
     defaultImport: 'component',
   },
@@ -52,8 +54,11 @@ export default defineNuxtConfig({
       devtools: true,
     },
   },
+
   devtools: {
     enabled: false,
   },
+
   ssr: false,
+  compatibilityDate: '2024-08-03',
 })
