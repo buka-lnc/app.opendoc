@@ -28,9 +28,9 @@ import remarkParse from 'remark-parse'
 import remark2rehype from 'remark-rehype'
 import rehypeShiki from '@shikijs/rehype'
 import { unified } from 'unified'
-import { getSingletonHighlighter } from 'shiki'
-import { latte, macchiato } from '@catppuccin/vscode'
 import copyToClipboard from 'copy-to-clipboard'
+
+await loadShikiThemes()
 
 const alert = useAlert()
 
@@ -40,8 +40,6 @@ useEventListener(el, 'copy-code', (event: CopyCodeEvent) => {
   alert.success('已复制到剪切板')
 })
 
-const highlighter = await getSingletonHighlighter()
-
 defineOptions({
   inheritAttrs: false,
 })
@@ -49,9 +47,6 @@ defineOptions({
 const props = defineProps<{
   content: string
 }>()
-
-await highlighter.loadTheme(macchiato as any)
-await highlighter.loadTheme(latte as any)
 
 const processor = unified()
   .use(remarkParse)

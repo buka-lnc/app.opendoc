@@ -26,6 +26,9 @@ importers:
       '@pinia/nuxt':
         specifier: ^0.5.1
         version: 0.5.2(magicast@0.3.4)(rollup@4.20.0)(typescript@5.5.4)(vue@3.4.35(typescript@5.5.4))
+      '@shikijs/monaco':
+        specifier: ^1.12.1
+        version: 1.12.1
       '@shikijs/rehype':
         specifier: ^1.9.0
         version: 1.12.1
@@ -1334,6 +1337,9 @@ packages:
 
   '@shikijs/core@1.12.1':
     resolution: {integrity: sha512-biCz/mnkMktImI6hMfMX3H9kOeqsInxWEyCHbSlL8C/2TR1FqfmGxTLRNwYCKsyCyxWLbB8rEqXRVZuyxuLFmA==}
+
+  '@shikijs/monaco@1.12.1':
+    resolution: {integrity: sha512-1VQHS8666UBZVY8i9cn6vNeWFlZfFD4EExC3pgHHksBOCX2ulj5NI2Qw9hYaAqvJzpotpAMwBH/zXmOwvMi2Dg==}
 
   '@shikijs/rehype@1.12.1':
     resolution: {integrity: sha512-AZLC80TIiRWFwPbSqdwykeSeMjQwYWlkX8yfI7T4nan0qgWfvv/oP7C767JQ8USudEylbe5KzBdE8Ao2sHsidA==}
@@ -7050,6 +7056,10 @@ snapshots:
   '@shikijs/core@1.12.1':
     dependencies:
       '@types/hast': 3.0.4
+
+  '@shikijs/monaco@1.12.1':
+    dependencies:
+      '@shikijs/core': 1.12.1
 
   '@shikijs/rehype@1.12.1':
     dependencies:

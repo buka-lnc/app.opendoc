@@ -1,5 +1,15 @@
 <script setup lang="ts">
 import * as monaco from 'monaco-editor'
+import { shikiToMonaco } from '@shikijs/monaco'
+import { getSingletonHighlighter } from 'shiki'
+
+await loadShikiThemes()
+
+monaco.languages.register({ id: 'json' })
+monaco.languages.register({ id: 'markdown' })
+
+const highlighter = await getSingletonHighlighter()
+shikiToMonaco(highlighter, monaco)
 
 const props = defineProps<{
   lang: string
@@ -23,15 +33,16 @@ const modalValue = computed(() => {
   }
 })
 
-const options: monaco.editor.IStandaloneEditorConstructionOptions = {
+const theme = useTheme()
+const options = computed((): monaco.editor.IStandaloneEditorConstructionOptions => ({
   readOnly: true,
-  theme: 'vs-dark',
-}
+  theme: theme.value === 'light' ? 'catcatppuccin-latte' : 'catppuccin-macchiato',
+}))
 
 </script>
 <template>
   <lazy-monaco-editor
-    lang="json"
+    :lang="props.lang"
     :model-value="modalValue"
     :options="options"
   />

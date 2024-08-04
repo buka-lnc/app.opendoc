@@ -46,6 +46,7 @@
     "@jongwooo/prism-theme-github": "^1.14.0",
     "@nuxtjs/tailwindcss": "^6.12.0",
     "@pinia/nuxt": "^0.5.1",
+    "@shikijs/monaco": "^1.12.1",
     "@shikijs/rehype": "^1.9.0",
     "@tabler/icons-vue": "^3.6.0",
     "@types/is-url": "^1.2.32",
