@@ -57,12 +57,16 @@ const filterTypeDescription = {
             Applications
           </h1>
 
-          <NuxtLink
-            class="d-btn d-btn-square d-btn-lg d-btn-ghost"
-            to="/administration/forbidden-application-code-management"
-          >
-            <IconSettings class="w-8 h-8" />
-          </NuxtLink>
+          <div>
+            <theme-swap class="d-btn d-btn-square d-btn-lg d-btn-ghost" />
+
+            <NuxtLink
+              class="d-btn d-btn-square d-btn-lg d-btn-ghost"
+              to="/administration/forbidden-application-code-management"
+            >
+              <IconSettings class="size-8" />
+            </NuxtLink>
+          </div>
         </div>
 
         <div class="flex items-center justify-between">

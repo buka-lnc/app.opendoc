@@ -7,9 +7,11 @@
 <script setup lang="ts">
 import './utils/request'
 
+const theme = useTheme()
+
 useHead({
   htmlAttrs: {
-    'data-theme': 'dark',
+    'data-theme': theme,
     class: 'dark',
   },
 })
