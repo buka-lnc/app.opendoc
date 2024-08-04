@@ -1,13 +1,25 @@
+/**
+ * Shiki Transformer
+ * 添加复制按钮
+ * 点击复制按钮，触发 copy-code 事件，携带 detail 为代码内容
+ */
 import { h } from 'hastscript'
 import { ShikiTransformer } from 'shiki'
 
-export function shikiCopyButton (): ShikiTransformer {
+export type CopyCodeEvent = CustomEvent<string>
+
+export function shikiCopyButtonTransformer (): ShikiTransformer {
   return {
     name: 'shiki-transformer-copy-button',
     pre (node: any) {
       const button = h('button', {
-        class: 'copy d-btn d-btn-xs d-btn-square absolute top-4 right-6 opacity-50',
+        class: 'copy d-btn d-btn-xs d-btn-square absolute top-4 right-6 opacity-50 d-tooltip',
         'data-code': this.source,
+        'data-tip': '复制',
+        onclick: `
+          const copyEvent = new CustomEvent("copy-code", { bubbles: true, cancelable: true, detail: this.getAttribute('data-code') })
+          this.dispatchEvent(copyEvent)
+        `,
       }, [
         h(
           'svg',
@@ -31,7 +43,6 @@ export function shikiCopyButton (): ShikiTransformer {
       ])
 
       const code = node.children[0]
-      // this.addClassToHast(code, 'mx-4')
 
       node.children = [
         {
@@ -45,7 +56,7 @@ export function shikiCopyButton (): ShikiTransformer {
         button,
       ]
 
-      this.addClassToHast(node, 'd-mockup-code !px-0 !pb-0')
+      this.addClassToHast(node, 'd-mockup-code !px-0 !pb-0 overflow-visible')
     },
     // line (node: any) {
     //   this.addClassToHast(node, 'mr-5')

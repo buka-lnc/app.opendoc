@@ -2,6 +2,7 @@
   <StuffedLoading :pending="pending">
     <!-- eslint-disable-next-line vue/no-v-html -->
     <div
+      ref="el"
       v-bind="$attrs"
       :class="[
         'font-sans',
@@ -9,6 +10,7 @@
         'prose-pre:border-4 prose-pre:border-base-content/10',
         'markdown',
       ]"
+
       v-html="html"
     />
   </StuffedLoading>
@@ -28,6 +30,15 @@ import rehypeShiki from '@shikijs/rehype'
 import { unified } from 'unified'
 import { getSingletonHighlighter } from 'shiki'
 import { latte, macchiato } from '@catppuccin/vscode'
+import copyToClipboard from 'copy-to-clipboard'
+
+const alert = useAlert()
+
+const el = ref<HTMLDivElement>()
+useEventListener(el, 'copy-code', (event: CopyCodeEvent) => {
+  copyToClipboard(event.detail)
+  alert.success('已复制到剪切板')
+})
 
 const highlighter = await getSingletonHighlighter()
 
@@ -63,7 +74,7 @@ const processor = unified()
       light: 'catppuccin-latte',
       dark: 'catppuccin-macchiato',
     },
-    transformers: [shikiCopyButton()],
+    transformers: [shikiCopyButtonTransformer()],
   })
   // .use(rehypeAddCopyButtonToPre)
   .use(rehypeStringify)
