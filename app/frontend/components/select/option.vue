@@ -3,7 +3,7 @@ import { IconCheck } from '@tabler/icons-vue'
 import { SELECT_VALUE_INJECT_KEY, SELECT_VISIBLE_INJECT_KEY } from './constants'
 
 const props = defineProps<{
-  value: string
+  value: string | number | boolean
 }>()
 
 const selectedValue = inject(SELECT_VALUE_INJECT_KEY, toRef(''))

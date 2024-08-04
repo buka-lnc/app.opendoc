@@ -5,4 +5,4 @@ export const SELECT_VISIBLE_INJECT_KEY = Symbol('SELECT_VISIBLE_INJECT_KEY') as 
   toggleVisible: (visible?: boolean) => void
 }>
 
-export const SELECT_VALUE_INJECT_KEY = Symbol('SELECT_VALUE_KEY') as InjectionKey<Ref<string | undefined>>
+export const SELECT_VALUE_INJECT_KEY = Symbol('SELECT_VALUE_KEY') as InjectionKey<Ref<string | number | boolean | undefined>>
