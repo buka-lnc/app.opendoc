@@ -1,4 +1,10 @@
-import { EntityManager, EntityName, EventArgs, EventSubscriber, MikroORM } from '@mikro-orm/core'
+import {
+  EntityManager,
+  EntityName,
+  // EventArgs,
+  EventSubscriber,
+  MikroORM,
+} from '@mikro-orm/core'
 import { Sdk } from './entities/sdk.entity'
 import { SdkService } from './sdk.service'
 import { Injectable } from '@nestjs/common'
@@ -19,8 +25,8 @@ export class SdkSubscriber implements EventSubscriber<Sdk> {
     return [Sdk]
   }
 
-  async afterDelete(args: EventArgs<Sdk>): Promise<void> {
-    const entity = args.entity
-    await this.sdkService.removeTarball(entity)
-  }
+  // async afterDelete(args: EventArgs<Sdk>): Promise<void> {
+  //   const entity = args.entity
+  //   await this.sdkService.removeTarball(entity)
+  // }
 }

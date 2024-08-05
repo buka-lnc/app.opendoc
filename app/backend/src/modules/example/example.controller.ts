@@ -19,7 +19,7 @@ export class ExampleController {
     private readonly exampleService: ExampleService,
   ) {}
 
-  @Get('example')
+  @Get('example1')
   @ApiOperation({ summary: '查询 Example 列表', description: '查询 Example 列表' })
   @ApiOkResponse({ description: '查询 Example 列表成功', headers: R.mergeAll([XSRF_TOKEN_HEADER]) })
   queryExamples(

@@ -1,15 +1,11 @@
-import { EnsureRequestContext, EntityManager, MikroORM } from '@mikro-orm/core'
+import { EntityManager, MikroORM } from '@mikro-orm/core'
 import { EntityRepository } from '@mikro-orm/mysql'
 import { InjectRepository } from '@mikro-orm/nestjs'
 import { Injectable } from '@nestjs/common'
-import { Cron } from '@nestjs/schedule'
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino'
 import { AppConfig } from '~/config/app.config'
 import { Sdk } from './entities/sdk.entity'
-import { SdkPublishLock } from './entities/sdk-publish-lock.entity'
-import { SdkStatus } from './constant/sdk-status'
 import { CompilerService } from './compiler.service'
-import dayjs from 'dayjs'
 
 
 @Injectable()
@@ -28,99 +24,96 @@ export class PublishService {
 
     @InjectRepository(Sdk)
     private readonly sdkRepo: EntityRepository<Sdk>,
-
-    @InjectRepository(SdkPublishLock)
-    private readonly sdkPublishLockRepo: EntityRepository<SdkPublishLock>,
   ) {}
 
-  // TODO: 避免多个实例同时执行清理程序
-  @Cron('0 */5 * * * *')
-  @EnsureRequestContext()
-  async clean() {
-    // 自动清理五分钟无心跳的任务
-    const locks = await this.sdkPublishLockRepo.find({
-      updatedAt: {
-        $lt: dayjs()
-          .subtract(5, 'minute')
-          .toDate(),
-      },
-    })
+  // // TODO: 避免多个实例同时执行清理程序
+  // @Cron('0 */5 * * * *')
+  // @EnsureRequestContext()
+  // async clean() {
+  //   // 自动清理五分钟无心跳的任务
+  //   const locks = await this.sdkPublishLockRepo.find({
+  //     updatedAt: {
+  //       $lt: dayjs()
+  //         .subtract(5, 'minute')
+  //         .toDate(),
+  //     },
+  //   })
 
-    this.em.remove(locks)
+  //   this.em.remove(locks)
 
-    const sdks = await this.sdkRepo.find({
-      status: { $in: [SdkStatus.compiling] },
-      sdkPublishLock: { $in: locks },
-    })
+  //   const sdks = await this.sdkRepo.find({
+  //     status: { $in: [SdkStatus.COMPILING] },
+  //     sdkPublishLock: { $in: locks },
+  //   })
 
-    for (const sdk of sdks) {
-      sdk.status = SdkStatus.pending
-      this.em.persist(sdk)
-    }
+  //   for (const sdk of sdks) {
+  //     sdk.status = SdkStatus.PENDING
+  //     this.em.persist(sdk)
+  //   }
 
-    await this.em.flush()
-  }
+  //   await this.em.flush()
+  // }
 
 
-  @Cron('0 */1 * * * *')
-  @EnsureRequestContext()
-  async sendHeartbeat() {
-    if (this.publishLockId) {
-      await this.sdkPublishLockRepo.nativeUpdate(
-        { id: this.publishLockId },
-        { updatedAt: new Date() }
-      )
-    }
-  }
+  // @Cron('0 */1 * * * *')
+  // @EnsureRequestContext()
+  // async sendHeartbeat() {
+  //   if (this.publishLockId) {
+  //     await this.sdkPublishLockRepo.nativeUpdate(
+  //       { id: this.publishLockId },
+  //       { updatedAt: new Date() }
+  //     )
+  //   }
+  // }
 
-  @Cron('0/10 * * * * *')
-  @EnsureRequestContext()
-  async publishPackage() {
-    // 存在正在构建的SDK，跳过
-    if (this.publishLockId) return
+  // @Cron('0/10 * * * * *')
+  // @EnsureRequestContext()
+  // async publishPackage() {
+  //   // 存在正在构建的SDK，跳过
+  //   if (this.publishLockId) return
 
-    const sdk = await this.sdkRepo.findOne(
-      { status: SdkStatus.pending, sdkPublishLock: null },
-      {
-        populate: ['apiFile', 'apiFile.sheet'],
-      }
-    )
+  //   const sdk = await this.sdkRepo.findOne(
+  //     { status: SdkStatus.PENDING, sdkPublishLock: null },
+  //     {
+  //       populate: ['apiFile', 'apiFile.sheet'],
+  //     }
+  //   )
 
-    // 无待构建 SDK
-    if (!sdk) return
+  //   // 无待构建 SDK
+  //   if (!sdk) return
 
-    const lock = this.sdkPublishLockRepo.create({ sdk: sdk.id })
-    sdk.status = SdkStatus.compiling
+  //   const lock = this.sdkPublishLockRepo.create({ sdk: sdk.id })
+  //   sdk.status = SdkStatus.COMPILING
 
-    try {
-      this.em.persist(sdk)
-      this.em.persist(lock)
-      await this.em.flush()
+  //   try {
+  //     this.em.persist(sdk)
+  //     this.em.persist(lock)
+  //     await this.em.flush()
 
-      this.publishLockId = lock.id
+  //     this.publishLockId = lock.id
 
-      this.logger.debug('PUBLISHING')
+  //     this.logger.debug('PUBLISHING')
 
-      await this.compilerService.compile(sdk)
+  //     await this.compilerService.compile(sdk)
 
-      sdk.status = SdkStatus.published
-      sdk.publishedAt = new Date()
+  //     sdk.status = SdkStatus.PUBLISHED
+  //     sdk.publishedAt = new Date()
 
-      await this.em.persistAndFlush(sdk)
-    } catch (err) {
-      this.logger.error(err)
+  //     await this.em.persistAndFlush(sdk)
+  //   } catch (err) {
+  //     this.logger.error(err)
 
-      this.em.clear()
-      sdk.status = SdkStatus.error
-      this.em.persist(sdk)
-      await this.em.flush()
+  //     this.em.clear()
+  //     sdk.status = SdkStatus.ERROR
+  //     this.em.persist(sdk)
+  //     await this.em.flush()
 
-      throw err
-    } finally {
-      this.publishLockId = undefined
-      this.em.clear()
-      this.em.remove(lock)
-      await this.em.flush()
-    }
-  }
+  //     throw err
+  //   } finally {
+  //     this.publishLockId = undefined
+  //     this.em.clear()
+  //     this.em.remove(lock)
+  //     await this.em.flush()
+  //   }
+  // }
 }

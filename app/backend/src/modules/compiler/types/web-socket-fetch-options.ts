@@ -1,10 +1,6 @@
-import { CompilerMessageEvent } from '../constants/compiler-message-event'
+import { CompilerEvent } from '../constants/compiler-message-event'
 
-export interface WebSocketFetchOptions<T extends CompilerMessageEvent> {
+export interface WebSocketFetchOptions<T extends CompilerEvent> {
   event: T
-
   data?: any
-
-  // ms
-  ttl?: number
 }

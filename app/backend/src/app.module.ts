@@ -10,7 +10,6 @@ import { AppConfig } from './config/app.config'
 import { PinoConfig } from './config/pino.config'
 import { ApplicationModule } from './modules/application/application.module'
 import { ExampleModule } from './modules/example/example.module'
-import { RegistryModule } from './modules/registry/registry.module'
 import { ScheduleModule } from '@nestjs/schedule'
 import { StorageConfig } from './config/storage.config'
 import { MysqlConfig } from './config/mysql.config'
@@ -20,6 +19,7 @@ import { ApiFileModule } from './modules/api-file/api-file.module'
 import { SheetVersionModule } from './modules/sheet-version/sheet-version.module'
 import { OptionModule } from './modules/option/option.module'
 import { CompilerModule } from './modules/compiler/compiler.module'
+import { SdkModule } from './modules/sdk/sdk.module'
 
 
 @Module({
@@ -50,7 +50,8 @@ import { CompilerModule } from './modules/compiler/compiler.module'
     SheetModule,
     SheetVersionModule,
     ApiFileModule,
-    RegistryModule,
+    SdkModule,
+    // RegistryModule,
     OptionModule,
     CompilerModule,
   ],

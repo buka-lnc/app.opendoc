@@ -1,5 +1,5 @@
 import * as R from 'ramda'
-import { EnsureRequestContext, EntityManager } from '@mikro-orm/core'
+import { EnsureRequestContext, EntityManager, wrap } from '@mikro-orm/core'
 import { EntityRepository, MikroORM } from '@mikro-orm/mysql'
 import { InjectRepository } from '@mikro-orm/nestjs'
 import { BadRequestException, Injectable, OnApplicationShutdown, OnModuleInit } from '@nestjs/common'
@@ -12,10 +12,12 @@ import { QueryCompilersDTO } from './dto/query-compilers.dto'
 import { CreateCompilerDTO } from './dto/create-compiler.dto'
 import { UpdateCompilerDTO } from './dto/update-compiler.dto'
 import { WebSocketService } from './web-socket.service'
-import { CompilerMessageEvent } from './constants/compiler-message-event'
+import { CompilerEvent } from './constants/compiler-message-event'
 import { Cron } from '@nestjs/schedule'
 import { CompilerOption } from './entities/compiler-option.entity'
 import { CompilerStatus } from './constants/compiler-status'
+import { CompilerEventData } from './types/compiler-event-data'
+import { CompilerEventMessageDTO } from './dto/compiler-event-message.dto'
 
 
 @Injectable()
@@ -82,6 +84,15 @@ export class CompilerService implements OnModuleInit, OnApplicationShutdown {
         const ws = await this.webSocketService.connect(compiler.url)
         ws.on('error', (err) => this.logger.error(err))
         ws.on('close', () => this.webSocketMap.delete(compiler.id))
+        ws.on('message', (data: Buffer) => {
+          const message: CompilerEventMessageDTO = JSON.parse(data.toString())
+
+          this.eventEmitter.emit(
+            message.event,
+            message.data,
+            compiler,
+          )
+        })
 
         this.webSocketMap.set(compiler.id, ws)
 
@@ -91,6 +102,7 @@ export class CompilerService implements OnModuleInit, OnApplicationShutdown {
       }
     }
   }
+
 
   async queryAll(dto: QueryCompilersDTO): Promise<ResponseOfQueryCompilerDTO> {
     const qb = this.compilerRepo.createQueryBuilder('compiler')
@@ -103,7 +115,6 @@ export class CompilerService implements OnModuleInit, OnApplicationShutdown {
     }
 
     const [results, total] = await qb.getResultAndCount()
-    console.log('🚀 ~ CompilerService ~ queryAll ~ results:', results)
 
     return {
       results,
@@ -127,7 +138,11 @@ export class CompilerService implements OnModuleInit, OnApplicationShutdown {
     if (exist) throw new BadRequestException('请勿重复添加')
 
     const ws = await this.webSocketService.connect(dto.url)
-    const compilerInfo = await this.webSocketService.fetch(ws, { event: CompilerMessageEvent.INTRODUCE })
+    const compilerInfo = await this.webSocketService.sendAndWait(
+      ws,
+      { event: CompilerEvent.COMPILER_JOIN },
+      { event: CompilerEvent.COMPILER_JOIN_ACK },
+    )
       .finally(() => ws.close())
 
     const compiler = this.compilerRepo.create({
@@ -188,5 +203,20 @@ export class CompilerService implements OnModuleInit, OnApplicationShutdown {
     const compiler = await this.compilerRepo.findOneOrFail(compilerId)
     await this.em.removeAndFlush(compiler)
     return compiler
+  }
+
+  async broadcast<E extends CompilerEvent>(event: string, data: CompilerEventData[E]): Promise<void> {
+    this.logger.debug(`Broadcast ${event} event to ${this.webSocketMap.size} compilers `)
+
+    for (const [id, ws] of this.webSocketMap.entries()) {
+      this.logger.debug(`Broadcast ${event} event to id:${id}`)
+      const compiler = await this.compilerRepo.findOneOrFail(id)
+
+      if (typeof data === 'object') {
+        data['compiler'] = wrap(compiler).toObject()
+      }
+
+      await this.webSocketService.send(ws, event, data)
+    }
   }
 }

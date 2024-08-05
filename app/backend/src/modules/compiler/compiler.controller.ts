@@ -6,11 +6,13 @@ import { CreateCompilerDTO } from './dto/create-compiler.dto'
 import { UpdateCompilerDTO } from './dto/update-compiler.dto'
 import { Compiler } from './entities/compiler.entity'
 import { ApiExtraModels } from '@nestjs/swagger'
-import { CompilerIntroductionDTO } from './dto/compiler-introduction.dto'
-import { CompilerMessageDTO } from './dto/compiler-message.dto'
+import { CompilerInformation } from './dto/compiler-information.dto'
+import { CompilerEventMessageDTO } from './dto/compiler-event-message.dto'
+import { SheetVersionBumpEventMessageDataDTO } from './dto/sheet-version-bump-event-message-data.dto'
+import { CompilerJoinAckEventDataDTO } from './dto/compiler-join-ack-event-data.dto'
 
 
-@ApiExtraModels(CompilerIntroductionDTO, CompilerMessageDTO)
+@ApiExtraModels(CompilerInformation, CompilerEventMessageDTO, CompilerJoinAckEventDataDTO, SheetVersionBumpEventMessageDataDTO)
 @Controller('compiler')
 export class CompilerController {
   constructor(

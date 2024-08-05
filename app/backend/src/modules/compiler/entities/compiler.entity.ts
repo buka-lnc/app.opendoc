@@ -5,6 +5,8 @@ import { EntityProperty } from '~/decorators/entity-property.decorator'
 import { CompilerStatus } from '../constants/compiler-status'
 import { IsEnum } from 'class-validator'
 import { ApiProperty } from '@nestjs/swagger'
+import { ApiForeignKey } from '~/decorators/api-reference.decorator'
+import { Sdk } from '~/modules/sdk/entities/sdk.entity'
 
 
 @Entity()
@@ -67,4 +69,13 @@ export class Compiler extends BaseEntity {
     eager: true,
   })
   options: Collection<CompilerOption> = new Collection<CompilerOption>(this)
+
+  @ApiForeignKey()
+  @OneToMany({
+    entity: () => Sdk,
+    mappedBy: 'compiler',
+    comment: 'sdks',
+    cascade: [Cascade.ALL],
+  })
+  sdks: Collection<Sdk> = new Collection<Sdk>(this)
 }

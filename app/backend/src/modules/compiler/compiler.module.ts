@@ -5,6 +5,7 @@ import { MikroOrmModule } from '@mikro-orm/nestjs'
 import { Compiler } from './entities/compiler.entity'
 import { WebSocketService } from './web-socket.service'
 import { CompilerOption } from './entities/compiler-option.entity'
+import { CompilerListener } from './compiler.listener'
 
 
 @Module({
@@ -15,7 +16,7 @@ import { CompilerOption } from './entities/compiler-option.entity'
     ]),
   ],
   controllers: [CompilerController],
-  providers: [WebSocketService, CompilerService],
+  providers: [WebSocketService, CompilerService, CompilerListener],
 })
 export class CompilerModule {
 }

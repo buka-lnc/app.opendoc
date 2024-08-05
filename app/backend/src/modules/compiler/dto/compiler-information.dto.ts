@@ -1,11 +1,11 @@
 import { ValidateNested } from 'class-validator'
 import { Type } from 'class-transformer'
-import { CompilerIntroductionOptionDTO } from './compiler-introduction-option.dto'
+import { CompilerOptionDefinition } from './compiler-option-definition'
 import { TakeType } from '@miaooo/nestjs-take-type'
 import { Compiler } from '../entities/compiler.entity'
 
 
-export class CompilerIntroductionDTO extends TakeType(
+export class CompilerInformation extends TakeType(
   Compiler,
   ['name', 'version'],
   ['description', 'author']
@@ -14,6 +14,6 @@ export class CompilerIntroductionDTO extends TakeType(
    * Compiler 选项
    */
   @ValidateNested()
-  @Type(() => CompilerIntroductionOptionDTO)
-  options?: CompilerIntroductionOptionDTO[]
+  @Type(() => CompilerOptionDefinition)
+  options?: CompilerOptionDefinition[]
 }

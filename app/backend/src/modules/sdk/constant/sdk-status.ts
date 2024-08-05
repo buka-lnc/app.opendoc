@@ -1,6 +1,6 @@
 export enum SdkStatus {
-  pending = 'pending',
-  compiling = 'compiling',
-  published = 'published',
-  error = 'error',
+  PENDING = 'pending',
+  COMPILING = 'compiling',
+  PUBLISHED = 'published',
+  ERROR = 'error',
 }

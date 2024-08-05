@@ -46,6 +46,7 @@
     "dayjs": "^1.11.11",
     "fs-extra": "^11.2.0",
     "get-stream": "^9.0.1",
+    "handlebars": "^4.7.8",
     "into-stream": "^8.0.1",
     "json-schema-typed": "^7.0.3",
     "keq": "^2.7.1",

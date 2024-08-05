@@ -114,8 +114,7 @@ export class ApplicationService {
           'sheets.versions',
           'sheets.pullCrontab',
           'sheets.apiFiles',
-          'sheets.apiFiles.sdks',
-          'sheets.apiFiles.sdks.sdkPublishLock',
+          'sheets.sdks',
         ],
       }
     )

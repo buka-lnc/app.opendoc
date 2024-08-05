@@ -1,15 +1,10 @@
 import { Injectable } from '@nestjs/common'
-import { OnEvent } from '@nestjs/event-emitter'
 import { EntityManager, MikroORM } from '@mikro-orm/core'
 import { InjectRepository } from '@mikro-orm/nestjs'
 import { EntityRepository } from '@mikro-orm/mysql'
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino'
 import { Sdk } from './entities/sdk.entity'
-import { SdkStatus } from './constant/sdk-status'
-import { SdkCompiler } from './constant/sdk-compiler'
 import { ApiFile } from '../api-file/entities/api-file.entity'
-import { ApiFileCreatedEvent } from '../api-file/events/api-file-created.event'
-import { SheetType } from '../sheet/constants/sheet-type.enum'
 
 
 @Injectable()
@@ -29,67 +24,67 @@ export class SdkListener {
     private readonly sdkRepo: EntityRepository<Sdk>,
   ) {}
 
-  @OnEvent('api-file.created')
-  async createSdk(event: ApiFileCreatedEvent) {
-    const apiFile = await this.apiFileRepo.findOne(
-      {
-        id: event.apiFile.id,
-        sheet: {
-          type: { $in: [SheetType.OPEN_API, SheetType.ASYNC_API] },
-        },
-      },
-      {
-        populate: ['sheet', 'sheet.application', 'version'],
-      }
-    )
+  // @OnEvent('api-file.created')
+  // async createSdk(event: ApiFileCreatedEvent) {
+  //   const apiFile = await this.apiFileRepo.findOne(
+  //     {
+  //       id: event.apiFile.id,
+  //       sheet: {
+  //         type: { $in: [SheetType.OPEN_API, SheetType.ASYNC_API] },
+  //       },
+  //     },
+  //     {
+  //       populate: ['sheet', 'sheet.application', 'version'],
+  //     }
+  //   )
 
-    if (!apiFile) {
-      this.logger.error(`apiFile(id: ${event.apiFile.id}) not found`)
-      return
-    }
+  //   if (!apiFile) {
+  //     this.logger.error(`apiFile(id: ${event.apiFile.id}) not found`)
+  //     return
+  //   }
 
-    const sheet = apiFile.sheet.get()
-    const version = apiFile.version.get()
-    const application = sheet.application.get()
+  //   const sheet = apiFile.sheet.get()
+  //   const version = apiFile.version.get()
+  //   const application = sheet.application.get()
 
-    if (sheet.type === SheetType.OPEN_API) {
-      const core = this.sdkRepo.create({
-        scope: application.code,
-        name: sheet.code,
-        compiler: SdkCompiler.openapiCore,
-        version,
-        status: SdkStatus.pending,
-        apiFile: apiFile.id,
-        sheet: sheet.id,
-      })
-      this.em.persist(core)
+  //   if (sheet.type === SheetType.OPEN_API) {
+  //     const core = this.sdkRepo.create({
+  //       scope: application.code,
+  //       name: sheet.code,
+  //       compiler: SdkCompiler.openapiCore,
+  //       version,
+  //       status: SdkStatus.PENDING,
+  //       apiFile: apiFile.id,
+  //       sheet: sheet.id,
+  //     })
+  //     this.em.persist(core)
 
-      const react = this.sdkRepo.create({
-        scope: application.code,
-        name: `${sheet.code}.react`,
-        compiler: SdkCompiler.openapiReact,
-        version,
-        status: SdkStatus.pending,
-        apiFile: apiFile.id,
-        sheet: sheet.id,
-      })
-      this.em.persist(react)
-    }
+  //     const react = this.sdkRepo.create({
+  //       scope: application.code,
+  //       name: `${sheet.code}.react`,
+  //       compiler: SdkCompiler.openapiReact,
+  //       version,
+  //       status: SdkStatus.PENDING,
+  //       apiFile: apiFile.id,
+  //       sheet: sheet.id,
+  //     })
+  //     this.em.persist(react)
+  //   }
 
-    if (sheet.type === SheetType.ASYNC_API) {
-      const core = this.sdkRepo.create({
-        scope: application.code,
-        name: sheet.code,
-        compiler: SdkCompiler.asyncapiCore,
-        version,
-        status: SdkStatus.pending,
-        apiFile: apiFile.id,
-        sheet: sheet.id,
-      })
-      this.em.persist(core)
-    }
+  //   if (sheet.type === SheetType.ASYNC_API) {
+  //     const core = this.sdkRepo.create({
+  //       scope: application.code,
+  //       name: sheet.code,
+  //       compiler: SdkCompiler.asyncapiCore,
+  //       version,
+  //       status: SdkStatus.PENDING,
+  //       apiFile: apiFile.id,
+  //       sheet: sheet.id,
+  //     })
+  //     this.em.persist(core)
+  //   }
 
 
-    await this.em.flush()
-  }
+  //   await this.em.flush()
+  // }
 }

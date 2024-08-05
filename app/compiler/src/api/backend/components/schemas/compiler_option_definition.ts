@@ -1,8 +1,8 @@
 /**
- * @interface CompilerIntroductionOptionDTO
+ * @interface CompilerOptionDefinition
  * @export
  */
-export interface CompilerIntroductionOptionDTO {
+export interface CompilerOptionDefinition {
   "label"?: string
   "description"?: string
   "key": string

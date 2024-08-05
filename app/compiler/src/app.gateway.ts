@@ -1,5 +1,6 @@
+import { CreateSdkDTO } from '~/api/backend/components/schemas'
 import { MessageBody, SubscribeMessage, WebSocketGateway, WebSocketServer, OnGatewayInit, ConnectedSocket, OnGatewayConnection, OnGatewayDisconnect } from '@nestjs/websockets'
-import { CompilerIntroductionDTO } from './api/backend/components/schemas'
+import { CompilerInformation, SheetVersionBumpEventMessageDataDTO } from './api/backend/components/schemas'
 import WebSocket from 'ws'
 import { Server } from 'http'
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino'
@@ -7,6 +8,7 @@ import { AppConfig } from './config/app.config'
 import { AppService } from './app.service'
 import { IncomingMessage } from 'http'
 import { OpendocInformationDTO } from './dto/opendoc-information.dto'
+import Handlebars from 'handlebars'
 
 
 @WebSocketGateway()
@@ -17,11 +19,10 @@ export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGateway
   opendocInformationMap = new Map<WebSocket, OpendocInformationDTO>()
 
   constructor(
-    private readonly appConfig: AppConfig,
-
     @InjectPinoLogger(AppGateway.name)
     private readonly logger: PinoLogger,
 
+    private readonly appConfig: AppConfig,
     private readonly appService: AppService,
   ) {}
 
@@ -61,22 +62,42 @@ export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGateway
     this.logger.info('health check')
   }
 
-  @SubscribeMessage('introduce')
-  introduce(@ConnectedSocket() client): CompilerIntroductionDTO {
-    this.logger.debug(`${this.prefixLog(client)} Request Info`)
-    return this.appService.introduce()
+  @SubscribeMessage('compiler-join')
+  introduce(@ConnectedSocket() client): CompilerInformation {
+    this.logger.debug(`${this.prefixLog(client)} compiler-join`)
+
+    return this.appService.getInformation()
   }
 
-  @SubscribeMessage('compile')
+  @SubscribeMessage('sheet-version-bump')
   compile(
     @ConnectedSocket() client: WebSocket,
-    @MessageBody() data: any,
+    @MessageBody() data: SheetVersionBumpEventMessageDataDTO,
   ): void {
+    const templateOption = data.compiler.options.find((option) => option.key === 'packageNameTemplate')
+    if (!templateOption) {
+      this.logger.error(`${this.prefixLog(client)} missing option: packageNameTemplate`)
+      return
+    }
+
+    console.log('🚀 ~ AppGateway ~ templateOption:', templateOption)
+
+    const packageName = Handlebars.compile(templateOption.value)(data)
+    console.log('🚀 ~ AppGateway ~ packageName:', packageName)
+
+    client.send(JSON.stringify({
+      event: 'create-sdk',
+      data: <CreateSdkDTO>{
+        name: packageName,
+        sheet: { id: data.sheet.id },
+        compiler: { id: data.compiler.id },
+        version: data.version,
+      },
+    }))
+
+    this.logger.debug(`${this.prefixLog(client)} sheet-version-bump`)
+
     // this.appService.compile()
     console.log('🚀 ~ AppGateway ~ data:', data)
-    client.send('hahaha')
-    client.send('hahaha')
-    client.send('hahaha')
-    client.send('hahaha')
   }
 }

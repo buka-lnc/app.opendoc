@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { HealthCheckResult, HealthCheckService } from '@nestjs/terminus'
-import { CompilerIntroductionDTO } from './api/backend/components/schemas'
+import { CompilerInformation } from './api/backend/components/schemas'
 import { version } from '~~/package.json'
 
 
@@ -15,7 +15,7 @@ export class AppService {
   }
 
 
-  introduce(): CompilerIntroductionDTO {
+  getInformation(): CompilerInformation {
     return {
       name: '@opendoc/keq-compiler',
       description: '将 Openapi 编译成通用的 Javascript SDK',

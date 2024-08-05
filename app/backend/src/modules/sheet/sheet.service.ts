@@ -166,8 +166,7 @@ export class SheetService {
           'pullCrontab',
           'versions',
           'apiFiles',
-          'apiFiles.sdks',
-          'apiFiles.sdks.sdkPublishLock',
+          'sdks',
         ],
       }
     )

@@ -24,6 +24,7 @@ import { FileRawDTO } from './dto/file-raw.dto'
 import { SheetVersion } from '../sheet-version/entities/sheet-version.entity'
 import { ResponseOfQueryApiFilesDTO } from './dto/response-of-query-api-files.dto'
 import { SheetVersionService } from '../sheet-version/sheet-version.service'
+import { SheetVersionBumpEvent } from '../sheet-version/events/sheet-version-bump.event'
 
 
 @Injectable()
@@ -147,13 +148,17 @@ export class ApiFileService {
       )
     }
 
+    this.eventEmitter.emit(
+      'sheet-version.bump',
+      new SheetVersionBumpEvent(newSheetVersion)
+    )
+
     return apiFiles
   }
 
   async queryApiFiles(dto: QueryApiFilesDTO): Promise<ResponseOfQueryApiFilesDTO> {
     const qb = this.apiFileRepo
       .createQueryBuilder('file')
-      .leftJoinAndSelect('file.sdks', 'sdks')
       .leftJoinAndSelect('file.version', 'version')
 
     if (dto.sheetId) {

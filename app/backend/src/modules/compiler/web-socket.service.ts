@@ -5,10 +5,9 @@ import { isURL } from 'class-validator'
 import { nanoid } from 'nanoid'
 import { version } from '~~/package.json'
 import { AppConfig } from '~/config/app.config'
-import { CompilerMessageDTO } from './dto/compiler-message.dto'
-import { WebSocketFetchOptions } from './types/web-socket-fetch-options'
-import { CompilerMessageEvent } from './constants/compiler-message-event'
-import { CompilerMessageEventResponse } from './types/compiler-message-event-response'
+import { CompilerEventMessageDTO } from './dto/compiler-event-message.dto'
+import { CompilerEvent } from './constants/compiler-message-event'
+import { CompilerEventData } from './types/compiler-event-data'
 
 
 @Injectable()
@@ -67,12 +66,15 @@ export class WebSocketService {
     })
   }
 
-  async fetch<E extends CompilerMessageEvent >(ws: WebSocket, options: WebSocketFetchOptions<E>): Promise<CompilerMessageEventResponse[E]> {
-    const { event, data, ttl = this.appConfig.ttl } = options
-
-    return await new Promise<CompilerMessageEventResponse[E]>((resolve, reject) => {
+  async sendAndWait<S extends CompilerEvent, W extends CompilerEvent>(
+    ws: WebSocket,
+    sendEvent: { event: S; data?: CompilerEventData[S] },
+    waitEvent: { event: W; ttl?: number },
+  ): Promise<CompilerEventData[W]> {
+    return await new Promise<CompilerEventData[W]>((resolve, reject) => {
       const messageId = nanoid()
-      const message = JSON.stringify({ id: messageId, event, data })
+      const message = JSON.stringify({ id: messageId, ...sendEvent })
+      const ttl = waitEvent.ttl || this.appConfig.ttl
 
       const ttlHandler = setTimeout(() => {
         ws.off('message', onMessage)
@@ -81,7 +83,7 @@ export class WebSocketService {
 
       function onMessage(data: Buffer, isBuffer: boolean) {
         if (!isBuffer) {
-          const message = <CompilerMessageDTO>JSON.parse(data.toString())
+          const message = <CompilerEventMessageDTO>JSON.parse(data.toString())
 
           if (message.id === messageId) {
             clearTimeout(ttlHandler)
