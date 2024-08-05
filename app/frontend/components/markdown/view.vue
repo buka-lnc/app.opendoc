@@ -6,7 +6,7 @@
       v-bind="$attrs"
       :class="[
         'font-sans',
-        'prose prose-invert lg:prose-xl',
+        'prose dark:prose-invert lg:prose-xl',
         'prose-pre:border-4 prose-pre:border-base-content/10',
         'markdown',
       ]"

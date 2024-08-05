@@ -6,6 +6,10 @@
     scrollbar-gutter: auto;
   }
 
+  html[data-theme=dark] {
+    color-scheme: dark;
+  }
+
   body {
     overflow: hidden;
   }

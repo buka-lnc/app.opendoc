@@ -37,5 +37,5 @@ export default {
     ],
     prefix: 'd-',
   },
-  // darkMode: ['class', '[data-theme="macchiato"]'],
+  darkMode: ['class', '[data-theme="dark"]'],
 } satisfies Config
