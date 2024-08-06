@@ -8,6 +8,7 @@ import { CompilerOption } from './entities/compiler-option.entity'
 import { CompilerListener } from './compiler.listener'
 import { SheetModule } from '../sheet/sheet.module'
 import { SheetVersionModule } from '../sheet-version/sheet-version.module'
+import { CompilerGateway } from './compiler.gateway'
 
 
 @Module({
@@ -20,7 +21,7 @@ import { SheetVersionModule } from '../sheet-version/sheet-version.module'
     SheetVersionModule,
   ],
   controllers: [CompilerController],
-  providers: [WebSocketService, CompilerService, CompilerListener],
+  providers: [WebSocketService, CompilerService, CompilerListener, CompilerGateway],
 })
 export class CompilerModule {
 }

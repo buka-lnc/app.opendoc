@@ -1,4 +1,5 @@
 import * as R from 'ramda'
+import * as semver from 'semver'
 import { EnsureRequestContext, EntityManager, wrap } from '@mikro-orm/core'
 import { EntityRepository, MikroORM } from '@mikro-orm/mysql'
 import { InjectRepository } from '@mikro-orm/nestjs'
@@ -18,6 +19,8 @@ import { CompilerOption } from './entities/compiler-option.entity'
 import { CompilerStatus } from './constants/compiler-status'
 import { CompilerEventData } from './types/compiler-event-data'
 import { CompilerEventMessageDTO } from './dto/compiler-event-message.dto'
+import { version as OPENDOC_VERSION } from '~~/package.json'
+import { CompilerIncomingMessageEvent } from './events/compiler-incoming-message.event'
 
 
 @Injectable()
@@ -87,9 +90,14 @@ export class CompilerService implements OnModuleInit, OnApplicationShutdown {
         ws.on('message', (data: Buffer) => {
           const message: CompilerEventMessageDTO = JSON.parse(data.toString())
 
+          this.logger.debug(`!!!!!!! compiler.${message.event} !!!!!!!`,)
           this.eventEmitter.emit(
-            message.event,
-            message.data,
+            `compiler.${message.event}`,
+            new CompilerIncomingMessageEvent(
+              compiler.id,
+              message.event,
+              message.data
+            )
           )
         })
 
@@ -101,7 +109,6 @@ export class CompilerService implements OnModuleInit, OnApplicationShutdown {
       }
     }
   }
-
 
   async queryAll(dto: QueryCompilersDTO): Promise<ResponseOfQueryCompilerDTO> {
     const qb = this.compilerRepo.createQueryBuilder('compiler')
@@ -129,6 +136,12 @@ export class CompilerService implements OnModuleInit, OnApplicationShutdown {
     return await this.compilerRepo.findOneOrFail(compilerId)
   }
 
+  validateApiVersion(apiVersion: string): void {
+    if (!semver.satisfies(OPENDOC_VERSION, apiVersion)) {
+      throw new BadRequestException(`编译器需要 OpenDoc 版本 ${apiVersion}，但是当前的 OpenDoc 版本是 ${OPENDOC_VERSION}，不兼容。`)
+    }
+  }
+
   async create(dto: CreateCompilerDTO): Promise<Compiler> {
     // 提前检查避免额外向compiler发送一次 health check
     const exist = await this.compilerRepo.findOne({
@@ -140,9 +153,11 @@ export class CompilerService implements OnModuleInit, OnApplicationShutdown {
     const compilerInfo = await this.webSocketService.sendAndWait(
       ws,
       { event: CompilerEvent.COMPILER_JOIN },
-      { event: CompilerEvent.COMPILER_JOIN_ACK },
+      { event: CompilerEvent.COMPILER_INFORMATION, ttl: 10 * 1000 },
     )
       .finally(() => ws.close())
+
+    this.validateApiVersion(compilerInfo.apiVersion)
 
     const compiler = this.compilerRepo.create({
       url: dto.url,
@@ -155,9 +170,10 @@ export class CompilerService implements OnModuleInit, OnApplicationShutdown {
     })
 
     if (compilerInfo.options) {
-      compiler.options.set(compilerInfo.options.map((option) => this.compilerOptionRepo.create({
+      compiler.options.set(compilerInfo.options.map((option, index) => this.compilerOptionRepo.create({
         key: option.key,
         label: option.label || option.key,
+        order: index + 1,
         description: option.description || '',
         format: option.format,
         value: option.value,

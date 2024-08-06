@@ -14,7 +14,7 @@ export interface Sdk {
   /**
    * sdk 可用状态
    */
-  "status": "pending" | "compiling" | "published" | "error"
+  "status": "pending" | "compiling" | "published" | "failed"
   /**
    * @type date-time
    * 发布时间

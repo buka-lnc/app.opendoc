@@ -67,6 +67,7 @@ export class Compiler extends BaseEntity {
     mappedBy: 'compiler',
     cascade: [Cascade.ALL],
     eager: true,
+    orphanRemoval: true,
   })
   options: Collection<CompilerOption> = new Collection<CompilerOption>(this)
 

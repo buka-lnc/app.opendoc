@@ -2,7 +2,6 @@ import { BadRequestException, Injectable } from '@nestjs/common'
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino'
 import WebSocket from 'ws'
 import { isURL } from 'class-validator'
-import { nanoid } from 'nanoid'
 import { version } from '~~/package.json'
 import { AppConfig } from '~/config/app.config'
 import { CompilerEventMessageDTO } from './dto/compiler-event-message.dto'
@@ -56,7 +55,7 @@ export class WebSocketService {
 
   async send(ws: WebSocket, event: string, data?: any): Promise<void> {
     return await new Promise<void>((resolve, reject) => {
-      ws.send(JSON.stringify({ id: nanoid(), event, data }), (err) => {
+      ws.send(JSON.stringify({ event, data }), (err) => {
         if (err) {
           reject(err)
         } else {
@@ -72,8 +71,7 @@ export class WebSocketService {
     waitEvent: { event: W; ttl?: number },
   ): Promise<CompilerEventData[W]> {
     return await new Promise<CompilerEventData[W]>((resolve, reject) => {
-      const messageId = nanoid()
-      const message = JSON.stringify({ id: messageId, ...sendEvent })
+      const message = JSON.stringify(sendEvent)
       const ttl = waitEvent.ttl || this.appConfig.ttl
 
       const ttlHandler = setTimeout(() => {
@@ -84,8 +82,7 @@ export class WebSocketService {
       function onMessage(data: Buffer, isBuffer: boolean) {
         if (!isBuffer) {
           const message = <CompilerEventMessageDTO>JSON.parse(data.toString())
-
-          if (message.id === messageId) {
+          if (message.event === waitEvent.event) {
             clearTimeout(ttlHandler)
             ws.off('message', onMessage)
             resolve(message.data)

@@ -269,6 +269,17 @@
           "comment": "选项键",
           "mappedType": "string"
         },
+        "order": {
+          "name": "order",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": null,
+          "comment": "选项排序",
+          "mappedType": "integer"
+        },
         "label": {
           "name": "label",
           "type": "varchar(63)",

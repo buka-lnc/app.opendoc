@@ -25,6 +25,11 @@ export interface CompilerInformation {
    */
   "version": string
   /**
+   * 兼容的 OpenDoc API 版本
+   * 遵守 semver 规范 https://www.npmjs.com/package/semver
+   */
+  "apiVersion": string
+  /**
    * Compiler 选项
    */
   "options"?: (CompilerOptionDefinition)[]

@@ -17,16 +17,23 @@ export class AppService {
 
   getInformation(): CompilerInformation {
     return {
+      apiVersion: '^1',
       name: '@opendoc/keq-compiler',
       description: '将 Openapi 编译成通用的 Javascript SDK',
       author: 'Val-istar-Guo <val.istar.guo@gmail.com>',
       version,
       options: [
         {
-          key: 'register',
+          key: 'registerUrl',
           label: 'Npm 源',
           format: 'string',
           value: 'https://registry.npmjs.org',
+        },
+        {
+          key: 'registerAccessToken',
+          label: 'Npm 源访问令牌',
+          format: 'string',
+          value: '',
         },
         {
           key: 'packageNameTemplate',

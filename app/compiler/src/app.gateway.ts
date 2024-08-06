@@ -1,6 +1,6 @@
 import { CreateSdkDTO, SdkCreatedEventMessageDataDTO, UpdateSdkDTO } from '~/api/backend/components/schemas'
 import { MessageBody, SubscribeMessage, WebSocketGateway, WebSocketServer, OnGatewayInit, ConnectedSocket, OnGatewayConnection, OnGatewayDisconnect } from '@nestjs/websockets'
-import { CompilerInformation, SheetVersionBumpEventMessageDataDTO } from './api/backend/components/schemas'
+import { SheetVersionBumpEventMessageDataDTO } from './api/backend/components/schemas'
 import WebSocket from 'ws'
 import { Server } from 'http'
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino'
@@ -49,6 +49,12 @@ export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGateway
     this.opendocInformationMap.set(client, opendocInformation)
 
     this.logger.info(`${this.prefixLog(client)} WebSocket Client Connected`)
+
+    const info = this.appService.getInformation()
+    client.send(JSON.stringify({
+      event: 'compiler-information',
+      data: info,
+    }))
   }
 
   handleDisconnect(client: WebSocket) {
@@ -58,17 +64,9 @@ export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGateway
     }
   }
 
-
   @SubscribeMessage('health')
   health(): void {
     this.logger.info('health check')
-  }
-
-  @SubscribeMessage('compiler-join')
-  introduce(@ConnectedSocket() client): CompilerInformation {
-    this.logger.debug(`${this.prefixLog(client)} compiler-join`)
-
-    return this.appService.getInformation()
   }
 
   @SubscribeMessage('sheet-version-bump')
@@ -112,6 +110,23 @@ export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGateway
       },
     }))
 
-    await this.compilerService.compile(data)
+    try {
+      await this.compilerService.compile(data)
+      client.send(JSON.stringify({
+        event: 'update-sdk',
+        data: <UpdateSdkDTO> {
+          id: data.sdk.id,
+          status: 'published',
+        },
+      }))
+    } catch (err) {
+      client.send(JSON.stringify({
+        event: 'update-sdk',
+        data: <UpdateSdkDTO> {
+          id: data.sdk.id,
+          status: 'failed',
+        },
+      }))
+    }
   }
 }
