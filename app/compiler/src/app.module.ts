@@ -8,6 +8,7 @@ import { AppService } from './app.service'
 import { AppConfig } from './config/app.config'
 import { PinoConfig } from './config/pino.config'
 import { AppGateway } from './app.gateway'
+import { CompilerService } from './compiler.service'
 
 
 @Module({
@@ -30,6 +31,6 @@ import { AppGateway } from './app.gateway'
     TerminusModule,
   ],
   controllers: [AppController],
-  providers: [AppService, AppGateway],
+  providers: [AppService, AppGateway, CompilerService],
 })
 export class AppModule {}
