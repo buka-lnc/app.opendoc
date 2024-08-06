@@ -36,8 +36,9 @@ export class Sdk extends BaseEntity {
   @ManyToOne({
     entity: () => Compiler,
     comment: '编译器',
+    ref: true,
   })
-  compiler!: Compiler
+  compiler!: Ref<Compiler>
 
   /**
    * 版本号
@@ -49,10 +50,9 @@ export class Sdk extends BaseEntity {
     entity: () => SheetVersion,
     comment: '版本号',
     nullable: false,
-    ref: true,
     eager: true,
   })
-  version!: Ref<SheetVersion>
+  version!: SheetVersion
 
   /**
    * 所属文档

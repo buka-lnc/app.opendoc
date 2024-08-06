@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/require-await */
 import { Migration } from '@mikro-orm/migrations'
 
-export class Migration20240805185611 extends Migration {
+export class Migration20240806060714 extends Migration {
   async up(): Promise<void> {
     this.addSql('create table `application` (`id` bigint unsigned not null auto_increment primary key comment \'主键\', `created_at` datetime not null default CURRENT_TIMESTAMP comment \'创建时间\', `updated_at` datetime not null default CURRENT_TIMESTAMP comment \'更新时间\', `code` varchar(63) not null comment \'唯一应用编码\', `title` varchar(127) not null comment \'应用名称\') default character set utf8mb4 engine = InnoDB;')
     this.addSql('alter table `application` add unique `application_code_unique`(`code`);')

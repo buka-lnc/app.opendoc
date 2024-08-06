@@ -5,10 +5,11 @@ import { Sdk } from './entities/sdk.entity'
 import { QuerySdksDTO } from './dto/query-sdks.dto'
 import { ResponseOfQuerySdksDTO } from './dto/response-of-query-sdks.dto'
 import { CreateSdkDTO } from './dto/create-sdk.dto'
+import { UpdateSdkDTO } from './dto/update-sdk.dto'
 
 
 @ApiTags('SDK')
-@ApiExtraModels(CreateSdkDTO)
+@ApiExtraModels(CreateSdkDTO, UpdateSdkDTO)
 @Controller('sdk')
 @ApiInternalServerErrorResponse({ description: '系统异常' })
 export class SdkController {

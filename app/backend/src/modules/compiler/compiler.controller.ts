@@ -10,9 +10,16 @@ import { CompilerInformation } from './dto/compiler-information.dto'
 import { CompilerEventMessageDTO } from './dto/compiler-event-message.dto'
 import { SheetVersionBumpEventMessageDataDTO } from './dto/sheet-version-bump-event-message-data.dto'
 import { CompilerJoinAckEventDataDTO } from './dto/compiler-join-ack-event-data.dto'
+import { SdkCreatedEventMessageDataDTO } from './dto/sdk-created-event-message-data.dto'
 
 
-@ApiExtraModels(CompilerInformation, CompilerEventMessageDTO, CompilerJoinAckEventDataDTO, SheetVersionBumpEventMessageDataDTO)
+@ApiExtraModels(
+  CompilerInformation,
+  CompilerEventMessageDTO,
+  CompilerJoinAckEventDataDTO,
+  SheetVersionBumpEventMessageDataDTO,
+  SdkCreatedEventMessageDataDTO,
+)
 @Controller('compiler')
 export class CompilerController {
   constructor(

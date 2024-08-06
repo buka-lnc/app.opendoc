@@ -164,9 +164,9 @@ export class SheetService {
       {
         populate: [
           'pullCrontab',
+          'sdks',
           'versions',
           'apiFiles',
-          'sdks',
         ],
       }
     )

@@ -1,4 +1,5 @@
 import type { CompilerOption } from "./compiler_option"
+import type { EntityReferenceDTO } from "./entity_reference_dto"
 
 
 /**
@@ -36,6 +37,7 @@ export interface Compiler {
    * 编译器选项
    */
   "options": (CompilerOption)[]
+  "sdks": (EntityReferenceDTO)[]
   /**
    * 主键
    */

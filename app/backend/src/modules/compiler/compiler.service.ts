@@ -90,7 +90,6 @@ export class CompilerService implements OnModuleInit, OnApplicationShutdown {
           this.eventEmitter.emit(
             message.event,
             message.data,
-            compiler,
           )
         })
 
@@ -218,5 +217,18 @@ export class CompilerService implements OnModuleInit, OnApplicationShutdown {
 
       await this.webSocketService.send(ws, event, data)
     }
+  }
+
+  async unicast<E extends CompilerEvent>(compilerId: string, event: string, data: CompilerEventData[E]): Promise<void> {
+    const ws = this.webSocketMap.get(compilerId)
+    if (!ws) throw new BadRequestException('编译器未连接')
+
+    const compiler = await this.compilerRepo.findOneOrFail(compilerId)
+
+    if (typeof data === 'object') {
+      data['compiler'] = wrap(compiler).toObject()
+    }
+
+    await this.webSocketService.send(ws, event, data)
   }
 }

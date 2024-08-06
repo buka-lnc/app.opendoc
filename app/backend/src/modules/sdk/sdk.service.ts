@@ -14,7 +14,10 @@ import { SheetVersion } from '../sheet-version/entities/sheet-version.entity'
 import { SdkStatus } from './constant/sdk-status'
 import { CreateSdkDTO } from './dto/create-sdk.dto'
 import { Compiler } from '../compiler/entities/compiler.entity'
-import { OnEvent } from '@nestjs/event-emitter'
+import { EventEmitter2, OnEvent } from '@nestjs/event-emitter'
+import { UpdateSdkDTO } from './dto/update-sdk.dto'
+import { SdkCreatedEvent } from './events/sdk-created.event'
+import { SdkUpdatedEvent } from './events/sdk-updated.event'
 
 
 @Injectable()
@@ -26,6 +29,7 @@ export class SdkService {
     private readonly em: EntityManager,
     private readonly orm: MikroORM,
 
+    private readonly eventEmitter: EventEmitter2,
     private readonly storageService: StorageService,
     private readonly sheetVersionService: SheetVersionService,
 
@@ -133,6 +137,34 @@ export class SdkService {
     })
 
     await this.em.persistAndFlush(sdk)
+
+    this.eventEmitter.emit(
+      'sdk.created',
+      new SdkCreatedEvent(sdk)
+    )
+
+    return sdk
+  }
+
+  @OnEvent('update-sdk')
+  @EnsureRequestContext()
+  async update(dto: UpdateSdkDTO): Promise<Sdk> {
+    const sdk = await this.sdkRepo.findOneOrFail(dto.id)
+    if (dto.status && dto.status !== sdk.status) {
+      sdk.status = dto.status
+
+      if (dto.status === SdkStatus.PUBLISHED) {
+        sdk.publishedAt = new Date()
+      }
+    }
+
+    await this.em.persistAndFlush(sdk)
+
+    this.eventEmitter.emit(
+      'sdk.updated',
+      new SdkUpdatedEvent(sdk)
+    )
+
     return sdk
   }
 }

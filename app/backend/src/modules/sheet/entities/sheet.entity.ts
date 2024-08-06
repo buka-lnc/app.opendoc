@@ -120,15 +120,12 @@ export class Sheet extends BaseEntity {
   })
   apiFiles!: Collection<ApiFile>
 
-  // @ApiProperty({
-  //   type: () => Sdk,
-  //   isArray: true,
-  // })
   @ApiHideProperty()
   @OneToMany({
     entity: () => Sdk,
     mappedBy: 'sheet',
     comment: 'Npm 包',
+    cascade: [Cascade.ALL],
   })
   sdks!: Collection<Sdk>
 }

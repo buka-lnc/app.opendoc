@@ -7,6 +7,7 @@ import { SheetVersionBumpEvent } from '../sheet-version/events/sheet-version-bum
 import { CompilerEvent } from './constants/compiler-message-event'
 import { EnsureRequestContext, EntityManager, wrap } from '@mikro-orm/core'
 import { MikroORM } from '@mikro-orm/mysql'
+import { SdkCreatedEvent } from '../sdk/events/sdk-created.event'
 
 @Injectable()
 export class CompilerListener {
@@ -41,6 +42,21 @@ export class CompilerListener {
       sheet: R.omit(['application', 'versions', 'sdks', 'apiFiles', 'pullCrontab'], wrap(sheet).toObject()),
       application: R.omit(['sheets'], wrap(application).toObject()),
       version: R.pick(['major', 'minor', 'patch', 'tag', 'prerelease'], event.sheetVersion),
+    })
+  }
+
+  @OnEvent('sdk.created')
+  @EnsureRequestContext()
+  async onSdkCreated(event: SdkCreatedEvent): Promise<void> {
+    const sdk = event.sdk
+    const compiler = await sdk.compiler.load()
+    if (!compiler) {
+      this.logger.error('Cannot send sdk-created event to compiler: compiler not found')
+      return
+    }
+
+    await this.compilerService.unicast(compiler.id, CompilerEvent.SDK_CREATED, {
+      sdk: R.omit(['sheet', 'compiler'], wrap(sdk).toObject()),
     })
   }
 }

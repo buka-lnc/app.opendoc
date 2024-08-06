@@ -1,4 +1,4 @@
-import { CreateSdkDTO } from '~/api/backend/components/schemas'
+import { CreateSdkDTO, SdkCreatedEventMessageDataDTO, UpdateSdkDTO } from '~/api/backend/components/schemas'
 import { MessageBody, SubscribeMessage, WebSocketGateway, WebSocketServer, OnGatewayInit, ConnectedSocket, OnGatewayConnection, OnGatewayDisconnect } from '@nestjs/websockets'
 import { CompilerInformation, SheetVersionBumpEventMessageDataDTO } from './api/backend/components/schemas'
 import WebSocket from 'ws'
@@ -70,7 +70,7 @@ export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGateway
   }
 
   @SubscribeMessage('sheet-version-bump')
-  compile(
+  createSdk(
     @ConnectedSocket() client: WebSocket,
     @MessageBody() data: SheetVersionBumpEventMessageDataDTO,
   ): void {
@@ -80,10 +80,7 @@ export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGateway
       return
     }
 
-    console.log('🚀 ~ AppGateway ~ templateOption:', templateOption)
-
     const packageName = Handlebars.compile(templateOption.value)(data)
-    console.log('🚀 ~ AppGateway ~ packageName:', packageName)
 
     client.send(JSON.stringify({
       event: 'create-sdk',
@@ -99,5 +96,21 @@ export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGateway
 
     // this.appService.compile()
     console.log('🚀 ~ AppGateway ~ data:', data)
+  }
+
+  @SubscribeMessage('sdk-created')
+  compileSdk(
+    @ConnectedSocket() client: WebSocket,
+    @MessageBody() data: SdkCreatedEventMessageDataDTO,
+  ): void {
+    this.logger.debug(`${this.prefixLog(client)} sdk-created`)
+
+    client.send(JSON.stringify({
+      event: 'update-sdk',
+      data: <UpdateSdkDTO> {
+        id: data.sdk.id,
+        status: 'compiling',
+      },
+    }))
   }
 }
