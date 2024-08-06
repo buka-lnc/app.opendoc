@@ -9,6 +9,7 @@ import { AppService } from './app.service'
 import { IncomingMessage } from 'http'
 import { OpendocInformationDTO } from './dto/opendoc-information.dto'
 import Handlebars from 'handlebars'
+import { CompilerService } from './compiler.service'
 
 
 @WebSocketGateway()
@@ -24,6 +25,7 @@ export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGateway
 
     private readonly appConfig: AppConfig,
     private readonly appService: AppService,
+    private readonly compilerService: CompilerService,
   ) {}
 
   private prefixLog(client: WebSocket): string {
@@ -70,10 +72,12 @@ export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGateway
   }
 
   @SubscribeMessage('sheet-version-bump')
-  createSdk(
+  onSheetVersionBump(
     @ConnectedSocket() client: WebSocket,
     @MessageBody() data: SheetVersionBumpEventMessageDataDTO,
   ): void {
+    this.logger.debug(`${this.prefixLog(client)} sheet-version-bump`)
+
     const templateOption = data.compiler.options.find((option) => option.key === 'packageNameTemplate')
     if (!templateOption) {
       this.logger.error(`${this.prefixLog(client)} missing option: packageNameTemplate`)
@@ -91,18 +95,13 @@ export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGateway
         version: data.version,
       },
     }))
-
-    this.logger.debug(`${this.prefixLog(client)} sheet-version-bump`)
-
-    // this.appService.compile()
-    console.log('🚀 ~ AppGateway ~ data:', data)
   }
 
   @SubscribeMessage('sdk-created')
-  compileSdk(
+  async onSdkCreated(
     @ConnectedSocket() client: WebSocket,
     @MessageBody() data: SdkCreatedEventMessageDataDTO,
-  ): void {
+  ): Promise<void> {
     this.logger.debug(`${this.prefixLog(client)} sdk-created`)
 
     client.send(JSON.stringify({
@@ -112,5 +111,7 @@ export class AppGateway implements OnGatewayInit, OnGatewayConnection, OnGateway
         status: 'compiling',
       },
     }))
+
+    await this.compilerService.compile(data)
   }
 }

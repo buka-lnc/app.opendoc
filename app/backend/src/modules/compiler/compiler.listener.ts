@@ -8,6 +8,9 @@ import { CompilerEvent } from './constants/compiler-message-event'
 import { EnsureRequestContext, EntityManager, wrap } from '@mikro-orm/core'
 import { MikroORM } from '@mikro-orm/mysql'
 import { SdkCreatedEvent } from '../sdk/events/sdk-created.event'
+import { SheetService } from '../sheet/sheet.service'
+import { SheetVersionService } from '../sheet-version/sheet-version.service'
+
 
 @Injectable()
 export class CompilerListener {
@@ -19,7 +22,9 @@ export class CompilerListener {
     private readonly em: EntityManager,
     private readonly orm: MikroORM,
 
-    private readonly compilerService: CompilerService
+    private readonly compilerService: CompilerService,
+    private readonly sheetService: SheetService,
+    private readonly sheetVersionService: SheetVersionService,
   ) {}
 
   @OnEvent('sheet-version.bump')
@@ -49,14 +54,22 @@ export class CompilerListener {
   @EnsureRequestContext()
   async onSdkCreated(event: SdkCreatedEvent): Promise<void> {
     const sdk = event.sdk
+    const parsedVersion = this.sheetVersionService.parse(sdk.version)
     const compiler = await sdk.compiler.load()
     if (!compiler) {
       this.logger.error('Cannot send sdk-created event to compiler: compiler not found')
       return
     }
 
+    const apiFilesRaw = await this.sheetService.getApiFilesRaw(sdk.sheet.id, sdk.version.version)
+
     await this.compilerService.unicast(compiler.id, CompilerEvent.SDK_CREATED, {
-      sdk: R.omit(['sheet', 'compiler'], wrap(sdk).toObject()),
+      sdk: {
+        ...R.omit(['sheet', 'compiler', 'version'], wrap(sdk).toObject()),
+        version: parsedVersion,
+      },
+      version: parsedVersion,
+      apiFilesRaw: apiFilesRaw.toString('base64'),
     })
   }
 }

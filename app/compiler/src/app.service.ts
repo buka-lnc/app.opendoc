@@ -38,34 +38,4 @@ export class AppService {
       ],
     }
   }
-
-  // private async getTempDir(sdk: Sdk): Promise<string> {
-  //   const sheetVersion = await sdk.version.loadOrFail()
-  //   return path.join(this.tempDir, sdk.scope, sdk.name, `${sheetVersion.version}`)
-  // }
-
-
-  // async compile() {
-  //   const dir = await this.getTempDir(sdk)
-
-  //   if (sdk.compiler === SdkCompiler.openapiCore) {
-  //     await this.compileOpenapiCore(sdk, dir)
-  //   } else if (sdk.compiler === SdkCompiler.openapiReact) {
-  //     await this.compileOpenapiReact(sdk, dir)
-  //   // } else if (sdk.compiler === SdkCompiler.openapiVue) {
-  //   //   await this.compileOpenapiVue(sdk)
-  //   } else if (sdk.compiler === SdkCompiler.asyncapiCore) {
-  //     await this.compileAsyncapiCore(sdk, dir)
-  //   } else {
-  //     throw new BadRequestException(`Unsupported compiler: ${sdk.compiler}`)
-  //   }
-
-  //   await this.build(sdk, dir)
-  //   // await this.publish(sdk, dir)
-  //   await this.compress(sdk, dir)
-  //   await fs.remove(dir)
-
-  //   await this.em.flush()
-  //   this.logger.info(`${sdk.fullName} published`)
-  // }
 }

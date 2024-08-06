@@ -131,6 +131,9 @@ importers:
       pino-pretty:
         specifier: ^11.2.1
         version: 11.2.2
+      promise-writable:
+        specifier: ^8.0.0
+        version: 8.0.0
       ramda:
         specifier: ^0.30.1
         version: 0.30.1
@@ -3325,6 +3328,10 @@ packages:
   process@0.11.10:
     resolution: {integrity: sha512-cdGef/drWFoydD1JsMzuFf8100nZl+GT+yacc2bEced5f9Rjk4z+WtFUTBu9PhOi9j/jfmBPu0mMEY4wIdAF8A==}
     engines: {node: '>= 0.6.0'}
+
+  promise-writable@8.0.0:
+    resolution: {integrity: sha512-Qn7/5tE42fjLUWevPm/SFmVz26tRdhmxmPXgOJSeIwLnkI2V4u0/t+CrRXb8ic1Jy9qqvOHVYm+sAIgel++eVA==}
+    engines: {node: '>=16.0.0'}
 
   prompts@2.4.2:
     resolution: {integrity: sha512-NxNv/kLguCA7p3jE8oL2aEBsrJWgAakBpgmgK6lpPWV+WuOmY6r2/zbAVnP+T8bQlA0nzHXSJSJW0Hq7ylaD2Q==}
@@ -8084,6 +8091,8 @@ snapshots:
   process-warning@4.0.0: {}
 
   process@0.11.10: {}
+
+  promise-writable@8.0.0: {}
 
   prompts@2.4.2:
     dependencies:

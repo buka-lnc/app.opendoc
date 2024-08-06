@@ -6,6 +6,8 @@ import { Compiler } from './entities/compiler.entity'
 import { WebSocketService } from './web-socket.service'
 import { CompilerOption } from './entities/compiler-option.entity'
 import { CompilerListener } from './compiler.listener'
+import { SheetModule } from '../sheet/sheet.module'
+import { SheetVersionModule } from '../sheet-version/sheet-version.module'
 
 
 @Module({
@@ -14,6 +16,8 @@ import { CompilerListener } from './compiler.listener'
       Compiler,
       CompilerOption,
     ]),
+    SheetModule,
+    SheetVersionModule,
   ],
   controllers: [CompilerController],
   providers: [WebSocketService, CompilerService, CompilerListener],

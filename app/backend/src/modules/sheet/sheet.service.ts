@@ -1,7 +1,10 @@
+import * as path from 'path'
 import * as R from 'ramda'
+import * as fs from 'fs-extra'
+import compressing from 'compressing'
 import { SheetSynchronizeService } from './sheet-synchronize.service'
 import { EnsureRequestContext, EntityManager, MikroORM, wrap } from '@mikro-orm/core'
-import { Injectable } from '@nestjs/common'
+import { BadRequestException, Injectable } from '@nestjs/common'
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino'
 import { AppConfig } from '~/config/app.config'
 import { ApiFileService } from '../api-file/api-file.service'
@@ -240,5 +243,40 @@ export class SheetService {
     )
 
     return sheet.sdks.getItems()
+  }
+
+  async getApiFilesRaw(sheetId: string, version: string): Promise<Buffer> {
+    const sheet = await this.sheetRepo.findOneOrFail(sheetId)
+    await sheet.versions.init()
+
+    if (!sheet.versions.exists((item) => item.version === version)) {
+      throw new BadRequestException('sheet version not exists')
+    }
+
+    const apiFiles = await this.apiFileRepo.find({
+      sheet: { id: sheetId },
+      version: this.sheetVersionService.parse(version),
+    })
+
+    const { temporaryDirectory } = (await import('tempy'))
+    const dir = temporaryDirectory()
+
+    const { getStreamAsBuffer } = (await import('get-stream'))
+
+    // 在临时文件夹构造apiFile目录结构
+    await Promise.all(apiFiles.map(async (apiFile) => {
+      const stream = await this.apiFileService.queryApiFileRaw(apiFile.id)
+      const buf = await getStreamAsBuffer(stream)
+
+      const filepath = path.join(dir, apiFile.path)
+      await fs.writeFile(filepath, buf)
+    }))
+
+    const tgzStream = new compressing.tgz.Stream()
+    tgzStream.addEntry(dir, { ignoreBase: true })
+
+    const buf = await getStreamAsBuffer(tgzStream)
+
+    return buf
   }
 }

@@ -54,21 +54,35 @@ export class SheetVersionService {
     return this.sheetVersionRepo.findOneOrFail(sheetVersionId)
   }
 
-  parse(version: string): ParsedVersionDTO {
-    const parsed = semver.parse(version)
-    if (!parsed) {
-      throw new BadRequestException('invalid version')
+  parse(version: string | SheetVersion): ParsedVersionDTO {
+    if (version instanceof SheetVersion) {
+      return {
+        major: version.major,
+        minor: version.minor,
+        patch: version.patch,
+        tag: version.tag,
+        prerelease: version.prerelease,
+      }
     }
 
-    const [tag, prerelease] = parsed.prerelease.length === 2 ? [String(parsed.prerelease[0]), Number(parsed.prerelease[1])] : ['', 0]
+    if (typeof version === 'string') {
+      const parsed = semver.parse(version)
+      if (!parsed) {
+        throw new BadRequestException('invalid version')
+      }
 
-    return {
-      major: parsed.major,
-      minor: parsed.minor,
-      patch: parsed.patch,
-      tag,
-      prerelease,
+      const [tag, prerelease] = parsed.prerelease.length === 2 ? [String(parsed.prerelease[0]), Number(parsed.prerelease[1])] : ['', 0]
+
+      return {
+        major: parsed.major,
+        minor: parsed.minor,
+        patch: parsed.patch,
+        tag,
+        prerelease,
+      }
     }
+
+    throw new BadRequestException('version cannot be parsed')
   }
 
   async findMaxSheetVersion(sheet: Sheet, tag: string = ''): Promise<SheetVersion | null> {
