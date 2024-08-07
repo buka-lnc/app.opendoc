@@ -9,6 +9,10 @@ const theme = useTheme()
 function changeTheme () {
   theme.value = theme.value === 'dark' ? 'light' : 'dark'
 }
+
+defineProps<{
+  size: number
+}>()
 </script>
 
 <template>
@@ -19,10 +23,10 @@ function changeTheme () {
   >
 
     <div class="d-swap-on">
-      <IconSun class="size-8" />
+      <IconSun :class="`size-${$props.size}`" />
     </div>
     <div class="d-swap-off">
-      <IconMoon class="size-8" />
+      <IconMoon :class="`size-${$props.size}`" />
     </div>
   </label>
 </template>

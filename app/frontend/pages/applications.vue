@@ -58,7 +58,7 @@ const filterTypeDescription = {
           </h1>
 
           <div>
-            <theme-swap class="d-btn d-btn-square d-btn-lg d-btn-ghost" />
+            <theme-swap class="d-btn d-btn-square d-btn-lg d-btn-ghost" :size="8" />
 
             <NuxtLink
               class="d-btn d-btn-square d-btn-lg d-btn-ghost"

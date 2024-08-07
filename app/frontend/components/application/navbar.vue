@@ -52,7 +52,7 @@ const showApiDocumentCreateModal = ref(false)
     </div>
 
     <div role="tablist" class="d-navbar-center">
-      <div class="d-tabs d-tabs-boxed d-tabs">
+      <div class="d-tabs d-tabs-boxed">
         <template
           v-for="sheet of sheets"
           :key="sheet.id"
@@ -94,12 +94,14 @@ const showApiDocumentCreateModal = ref(false)
     </div>
 
     <div class="d-navbar-end">
+      <theme-swap class="d-btn d-btn-square d-btn-ghost" :size="6" />
+
       <button class="d-btn d-btn-square d-btn-ghost" @click="showApiDocumentCreateModal = true">
-        <IconPlus class="w-6 h-6" />
+        <IconPlus class="size-6" />
       </button>
 
       <button class="d-btn d-btn-square d-btn-ghost" @click="showApplicationSettings = true">
-        <IconSettings class="w-6 h-6" />
+        <IconSettings class="size-6" />
       </button>
     </div>
   </div>
