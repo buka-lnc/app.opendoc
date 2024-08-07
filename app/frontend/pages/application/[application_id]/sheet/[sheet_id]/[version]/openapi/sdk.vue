@@ -52,6 +52,7 @@ watch(
             <span v-if="sdk.status === 'pending'" class="text-warning font-sans">待构建</span>
             <span v-else-if="sdk.status === 'compiling'" class="text-warning font-sans">构建中</span>
             <span v-else-if="sdk.status === 'published'" class="text-success font-sans">已发布</span>
+            <span v-else-if="sdk.status === 'failed'" class="text-error font-sans">异常</span>
             <span v-else class="text-error font-sans">缺失</span>
           </NuxtLink>
         </li>

@@ -7,6 +7,10 @@ const compiler = defineModel<Compiler | null>('compiler', {
   default: null,
 })
 
+const emit = defineEmits<{
+  'updated:compiler': [id: string]
+}>()
+
 const editingCompiler = ref<Compiler | null>()
 syncRef(
   editingCompiler,
@@ -25,6 +29,8 @@ const { execute: save, pending: saving } = useAsyncFn(async () => {
     options: editingCompiler.value.options,
   })
   compiler.value = null
+
+  emit('updated:compiler', editingCompiler.value.id)
 })
 </script>
 

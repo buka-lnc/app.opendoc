@@ -23,7 +23,7 @@ defineProps<{
     SDK 待构建
   </div>
 
-  <div v-else-if="status === 'error'" v-bind="$attrs" class="d-badge d-badge-outline d-badge-error font-mono">
+  <div v-else-if="status === 'failed'" v-bind="$attrs" class="d-badge d-badge-outline d-badge-error font-mono">
     SDK 异常
   </div>
 

@@ -150,7 +150,7 @@ export class ApiFileService {
 
     this.eventEmitter.emit(
       'sheet-version.bump',
-      new SheetVersionBumpEvent(newSheetVersion)
+      new SheetVersionBumpEvent(newSheetVersion.id)
     )
 
     return apiFiles

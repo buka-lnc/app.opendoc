@@ -67,7 +67,7 @@ export class SdkGateway {
 
     this.eventEmitter.emit(
       'sdk.created',
-      new SdkCreatedEvent(sdk)
+      new SdkCreatedEvent(sdk.id)
     )
 
     return sdk

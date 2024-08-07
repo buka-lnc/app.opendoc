@@ -24,13 +24,13 @@ export class AppService {
       version,
       options: [
         {
-          key: 'registerUrl',
+          key: 'registryUrl',
           label: 'Npm 源',
           format: 'string',
           value: 'https://registry.npmjs.org',
         },
         {
-          key: 'registerAccessToken',
+          key: 'registryAccessToken',
           label: 'Npm 源访问令牌',
           format: 'string',
           value: '',

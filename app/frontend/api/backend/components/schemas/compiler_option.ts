@@ -6,12 +6,31 @@ import type { EntityReferenceDTO } from "./entity_reference_dto"
  * @export
  */
 export interface CompilerOption {
-  "compiler": EntityReferenceDTO
+  /**
+   * 选项键
+   */
   "key": string
+  /**
+   * 选项排序
+   */
+  "order": number
+  /**
+   * 选项名
+   */
   "label": string
+  /**
+   * 选项描述
+   */
   "description": string
+  /**
+   * 选项格式
+   */
   "format": "string" | "number" | "boolean"
+  /**
+   * 选项值
+   */
   "value"?: string
+  "compiler": EntityReferenceDTO
   /**
    * 主键
    */

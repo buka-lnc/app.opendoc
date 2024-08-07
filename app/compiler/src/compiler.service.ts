@@ -66,6 +66,7 @@ export class CompilerService {
 
     this.logger.debug(`Publish ${sdk.name} SDK`)
     await this.publish(compileDir, data)
+    this.logger.debug(`${sdk.name} SDK Published`)
   }
 
   async build(dir: string): Promise<void> {
@@ -90,22 +91,24 @@ export class CompilerService {
   async publish(compileDir: string, data: SdkCreatedEventMessageDataDTO): Promise<void> {
     const npmrcFilepath = path.join(compileDir, '.npmrc')
 
+    console.log('🚀 ~ CompilerService ~ publish ~ data.compiler.options:', data.compiler.options)
     // register url
     const registerUrlOption = data.compiler.options.find((option) => option.key === 'registryUrl')
     if (!registerUrlOption || !registerUrlOption.value) {
-      throw new Error('Cannot publish SDK: registry option not found')
+      throw new Error('Cannot publish SDK: registryUrl option not found')
     }
-    const registerUrl = registerUrlOption.value.replace(/\/$/, '')
-    await fs.appendFile(npmrcFilepath, `\nregistry=${registerUrl}`)
+    const registryUrl = registerUrlOption.value.replace(/\/$/, '')
+    await fs.appendFile(npmrcFilepath, `\nregistry=${registryUrl}`)
 
     // register access token
     const registerAccessTokenOption = data.compiler.options.find((option) => option.key === 'registryAccessToken')
     if (registerAccessTokenOption && registerAccessTokenOption.value) {
-      await fs.appendFile(npmrcFilepath, `\n//${registerUrl}/:_authToken=${registerAccessTokenOption.value}`)
+      const registryHost = registryUrl.replace(/^https?:\/\//, '')
+      await fs.appendFile(npmrcFilepath, `\n//${registryHost}/:_authToken=${registerAccessTokenOption.value}\n`)
     }
 
     try {
-      await exec('npm publish', { cwd: compileDir })
+      await exec(`npm publish --registry ${registryUrl}`, { cwd: compileDir })
     } catch (e) {
       if (e instanceof Error) {
         if ('stdout' in e) {

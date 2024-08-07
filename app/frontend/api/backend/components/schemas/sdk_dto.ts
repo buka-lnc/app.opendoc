@@ -1,12 +1,11 @@
-import type { EntityReferenceDTO } from "./entity_reference_dto"
-import type { SheetVersion } from "./sheet_version"
+import type { ParsedVersionDTO } from "./parsed_version_dto"
 
 
 /**
- * @interface Sdk
+ * @interface SdkDTO
  * @export
  */
-export interface Sdk {
+export interface SdkDTO {
   /**
    * sdk 名
    */
@@ -20,15 +19,7 @@ export interface Sdk {
    * 发布时间
    */
   "publishedAt"?: string
-  "compiler": EntityReferenceDTO
-  /**
-   * 版本号
-   */
-  "version": SheetVersion
-  /**
-   * 所属文档
-   */
-  "sheet": EntityReferenceDTO
+  "version": ParsedVersionDTO
   /**
    * 主键
    */
