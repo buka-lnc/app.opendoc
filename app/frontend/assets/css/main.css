@@ -20,7 +20,6 @@
   }
 }
 
-
 :root {
   /* 使JS可以获取safe-area-inset-top的值 */
   --safe-top: env(safe-area-inset-top);

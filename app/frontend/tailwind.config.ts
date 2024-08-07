@@ -1,10 +1,12 @@
 import type { Config } from 'tailwindcss'
 import plugin from 'tailwindcss/plugin'
 import catppuccin from '@catppuccin/daisyui'
+import catppuccinTailwindPlugin from '@catppuccin/tailwindcss'
 
 export default {
   content: [],
   plugins: [
+    catppuccinTailwindPlugin({ prefix: 'ctp' }),
     require('tailwindcss-safe-area'),
     require('tailwind-scrollbar-hide'),
     require('daisyui'),
