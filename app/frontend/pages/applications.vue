@@ -38,8 +38,8 @@ const { status, refresh } = useAsyncData(
 const showCreateModal = ref(false)
 
 const filterTypeDescription = {
-  title: 'Title',
-  code: 'Code',
+  title: '名称',
+  code: '编码',
 }
 </script>
 
@@ -49,68 +49,73 @@ const filterTypeDescription = {
     @created:application="() => refresh()"
   />
 
-  <StuffedLoading :pending="status === 'pending'">
-    <div class="flex flex-col font-mono relative overflow-y-auto size-full">
-      <div class="z-10 bg-base-100 sticky top-0 container m-auto flex-0 pb-4">
-        <div class="flex items-center justify-between py-4">
-          <h1 class="select-none text-5xl font-bold text-gray-600">
-            Applications
-          </h1>
-
-          <div>
-            <theme-swap class="d-btn d-btn-square d-btn-lg d-btn-ghost" :size="8" />
-
-            <NuxtLink
-              class="d-btn d-btn-square d-btn-lg d-btn-ghost"
-              to="/administration/forbidden-application-code-management"
-            >
-              <IconSettings class="size-8" />
-            </NuxtLink>
-          </div>
+  <div class="flex flex-col font-mono relative overflow-y-auto size-full">
+    <div class="z-10 bg-base-100 sticky top-0 m-0 flex-0 pb-4">
+      <div class="d-navbar bg-base-300">
+        <div class="flex-1">
+          <a
+            class="d-btn d-btn-ghost text-xl"
+            href="https://github.com/buka-lnc/app.opendoc"
+            target="_blank"
+          >OpenDoc</a>
         </div>
 
-        <div class="flex items-center justify-between">
-          <div class="d-join  w-1/2 flex">
-            <SelectBox v-model="filterType" class="w-32">
-              <SelectButton
-                class="d-join-item d-select-lg d-select-bordered"
-              >
-                {{ filterTypeDescription[filterType] }}
-              </SelectButton>
+        <div class="flex-none">
+          <theme-swap class="d-btn d-btn-square d-btn-ghost" :size="8" />
 
-              <template #options>
-                <SelectOption class="d-btn-lg" value="title">
-                  {{ filterTypeDescription.title }}
-                </SelectOption>
-                <SelectOption class="d-btn-lg" value="code">
-                  {{ filterTypeDescription.code }}
-                </SelectOption>
-              </template>
-            </SelectBox>
-            <input
-              v-model="search"
-              class="d-join-item flex-auto d-input d-input-bordered d-input-lg"
-              type="text"
-              placeholder="Search"
-            >
-          </div>
-
-          <button
-            class="d-btn d-btn-lg d-btn-primary"
-            @click="showCreateModal = true"
+          <NuxtLink
+            class="d-btn d-btn-square d-btn-ghost"
+            to="/administration/forbidden-application-code-management"
           >
-            Create Application
-          </button>
+            <IconSettings class="size-8" />
+          </NuxtLink>
         </div>
       </div>
+    </div>
 
-      <div class="container m-auto flex-auto pt-6 space-y-4">
+    <div class="pt-2 container m-auto flex items-center justify-between">
+      <div class="d-join  w-1/2 flex">
+        <SelectBox v-model="filterType" class="w-32">
+          <SelectButton
+            class="d-join-item d-select-bordered"
+          >
+            {{ filterTypeDescription[filterType] }}
+          </SelectButton>
+
+          <template #options>
+            <SelectOption value="title" class="!w-32">
+              {{ filterTypeDescription.title }}
+            </SelectOption>
+            <SelectOption value="code" class="!w-32">
+              {{ filterTypeDescription.code }}
+            </SelectOption>
+          </template>
+        </SelectBox>
+
+        <input
+          v-model="search"
+          class="d-join-item flex-auto d-input d-input-bordered"
+          type="text"
+          placeholder="搜索"
+        >
+      </div>
+
+      <button
+        class="d-btn d-btn-primary"
+        @click="showCreateModal = true"
+      >
+        新建应用
+      </button>
+    </div>
+
+    <StuffedLoading :pending="status === 'pending' && !applications.length">
+      <div class="container m-auto flex-auto pt-4 space-y-4">
         <div v-for="application in applications" :key="application.id">
           <application-preview-card :application="application" />
         </div>
       </div>
-    </div>
-  </StuffedLoading>
+    </StuffedLoading>
+  </div>
 </template>
 
 <style scoped lang="postcss">
