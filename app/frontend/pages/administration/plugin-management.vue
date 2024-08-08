@@ -141,7 +141,7 @@ const tipMap = {
                   <div
                     v-else
                     class="d-swap"
-                    :class="plugin.status === 'enabled' ? 'text-success d-swap-active' : ''"
+                    :class="plugin.status === 'enabled' ? 'text-success d-swap-active' : 'text-base-content/70'"
                   >
                     <div class="d-swap-on">
                       <IconPuzzle class="w-6" />
