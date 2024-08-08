@@ -2,26 +2,26 @@
 import { IconPlus, IconTrash, IconSettings, IconPuzzle, IconPuzzleOff } from '@tabler/icons-vue'
 import { isURL } from 'validator'
 import { RequestException } from 'keq-exception'
-import { queryCompilers, createCompiler, deleteCompiler, updateCompiler } from '@/api/backend'
-import { Compiler } from '~/api/backend/components/schemas'
+import { queryPlugins, createPlugin, deletePlugin, updatePlugin } from '@/api/backend'
+import { Plugin } from '~/api/backend/components/schemas'
 
 const alert = useAlert()
 
-const { status, data: compilers, execute: reload } = useAsyncData(async () => {
-  const body = await queryCompilers()
+const { status, data: plugins, execute: reload } = useAsyncData(async () => {
+  const body = await queryPlugins()
 
   return body.results
 })
 
 const urlInput = ref('')
-const compilerUrl = computed(() => `ws://${urlInput.value}`)
-const isValidUrl = computed(() => isURL(compilerUrl.value, { require_host: true, require_protocol: true, protocols: ['ws'] }))
+const pluginUrl = computed(() => `ws://${urlInput.value}`)
+const isValidUrl = computed(() => isURL(pluginUrl.value, { require_host: true, require_protocol: true, protocols: ['ws'] }))
 const { pending: appending, execute: create } = useAsyncFn(async () => {
-  if (!compilerUrl.value) return
+  if (!pluginUrl.value) return
 
   try {
-    await createCompiler({
-      url: compilerUrl.value,
+    await createPlugin({
+      url: pluginUrl.value,
     })
 
     urlInput.value = ''
@@ -34,23 +34,23 @@ const { pending: appending, execute: create } = useAsyncFn(async () => {
 
 const removingCompilerIds = ref<string[]>([])
 
-async function remove (compiler: Compiler): Promise<void> {
+async function remove (plugin: Plugin): Promise<void> {
   try {
-    const compilerId = compiler.id
-    removingCompilerIds.value.push(compilerId)
-    await deleteCompiler({ compilerId })
-    removingCompilerIds.value = removingCompilerIds.value.filter(id => id !== compilerId)
+    const pluginId = plugin.id
+    removingCompilerIds.value.push(pluginId)
+    await deletePlugin({ pluginId })
+    removingCompilerIds.value = removingCompilerIds.value.filter(id => id !== pluginId)
     await reload()
   } catch (e) {
     if (e instanceof Error) alert.error(e.message)
   }
 }
 
-async function toggleStatus (compiler: Compiler): Promise<void> {
+async function toggleStatus (plugin: Plugin): Promise<void> {
   try {
-    await updateCompiler({
-      compilerId: compiler.id,
-      status: compiler.status === 'enabled' ? 'disabled' : 'enabled',
+    await updatePlugin({
+      pluginId: plugin.id,
+      status: plugin.status === 'enabled' ? 'disabled' : 'enabled',
     })
     await reload()
   } catch (e) {
@@ -58,23 +58,23 @@ async function toggleStatus (compiler: Compiler): Promise<void> {
   }
 }
 
-const compilerInSettings = ref<Compiler | null>(null)
+const pluginInSettings = ref<Plugin | null>(null)
 </script>
 
 <template>
-  <compiler-settings-modal
-    v-model:compiler="compilerInSettings"
-    @updated:compiler="() => reload()"
+  <plugin-settings-modal
+    v-model:plugin="pluginInSettings"
+    @updated:plugin="() => reload()"
   />
 
-  <stuffed-loading :pending="status === 'pending' && !compilers">
+  <stuffed-loading :pending="status === 'pending' && !plugins">
     <div class="container h-full m-auto flex flex-col">
       <div class="flex-grow-0 flex-shrink-0 w-full mb-6 flex items-center">
         <h1 class="select-none text-2xl font-bold text-gray-600">
           <span>插件</span>
         </h1>
 
-        <span v-if="status === 'pending' && !!compilers" class="ml-2 d-loading d-loading-sm d-loading-spinner text-gray-600" />
+        <span v-if="status === 'pending' && !!plugins" class="ml-2 d-loading d-loading-sm d-loading-spinner text-gray-600" />
       </div>
 
       <div class="flex-grow-0 flex-shrink-0 flex w-full space-x-4 mb-4">
@@ -106,30 +106,30 @@ const compilerInSettings = ref<Compiler | null>(null)
 
       <div class="flex-1 overflow-y-auto">
         <div
-          v-for="compiler in compilers"
-          :key="compiler.id"
+          v-for="plugin in plugins"
+          :key="plugin.id"
           class="d-card d-card-compact bg-base-200/70 font-sans"
         >
           <div class="d-card-body flex-row items-center">
             <div class="flex-1 flex flex-col">
               <h2 class="d-card-title items-baseline">
-                {{ compiler.name }}
-                <span class="text-sm text-base-content/70">v{{ compiler.version }}</span>
+                {{ plugin.name }}
+                <span class="text-sm text-base-content/70">v{{ plugin.version }}</span>
               </h2>
               <p class="text-base-content/60">
-                {{ compiler.description }}
+                {{ plugin.description }}
               </p>
             </div>
 
             <div class="d-card-actions ">
               <button
                 class="d-swap d-btn d-btn-sm d-btn-ghost d-btn-square transition-colors d-tooltip"
-                :data-tip="compiler.status === 'enabled' ? '已启用' : '已禁用'"
-                @click="() => toggleStatus(compiler)"
+                :data-tip="plugin.status === 'enabled' ? '已启用' : '已禁用'"
+                @click="() => toggleStatus(plugin)"
               >
                 <div
                   class="d-swap"
-                  :class="compiler.status === 'enabled' ? 'text-success d-swap-active' : 'text-error'"
+                  :class="plugin.status === 'enabled' ? 'text-success d-swap-active' : 'text-error'"
                 >
                   <div class="d-swap-on">
                     <IconPuzzle class="w-6" />
@@ -142,15 +142,15 @@ const compilerInSettings = ref<Compiler | null>(null)
 
               <button
                 class="d-btn d-btn-sm d-btn-ghost d-btn-square"
-                @click="compilerInSettings = compiler"
+                @click="pluginInSettings = plugin"
               >
                 <IconSettings class="w-6" />
               </button>
 
               <button
                 class="d-btn d-btn-sm d-btn-ghost d-btn-square hover:text-error"
-                :class="removingCompilerIds.includes(compiler.id) && 'd-btn-disabled'"
-                @click="() => !removingCompilerIds.includes(compiler.id) && remove(compiler)"
+                :class="removingCompilerIds.includes(plugin.id) && 'd-btn-disabled'"
+                @click="() => !removingCompilerIds.includes(plugin.id) && remove(plugin)"
               >
                 <IconTrash class="w-6" />
               </button>

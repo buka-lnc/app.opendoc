@@ -7,8 +7,7 @@ import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { AppConfig } from './config/app.config'
 import { PinoConfig } from './config/pino.config'
-import { AppGateway } from './app.gateway'
-import { CompilerService } from './compiler.service'
+import { CompilerModule } from './modules/compiler/compiler.module'
 
 
 @Module({
@@ -29,8 +28,11 @@ import { CompilerService } from './compiler.service'
     EventEmitterModule.forRoot(),
 
     TerminusModule,
+    CompilerModule,
   ],
   controllers: [AppController],
-  providers: [AppService, AppGateway, CompilerService],
+  providers: [
+    AppService,
+  ],
 })
 export class AppModule {}

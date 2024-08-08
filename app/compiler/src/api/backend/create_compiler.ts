@@ -5,10 +5,10 @@ import type { RequestParameters, ResponseMap, Operation } from "./types/create_c
 
 
 export function createCompiler<STATUS extends keyof ResponseMap>(arg?: RequestParameters): Keq<ResponseMap[STATUS], Operation<STATUS>> {
-  const req = request.post<ResponseMap[STATUS]>("/api/compiler")
+  const req = request.post<ResponseMap[STATUS]>("/api/plugin")
     .option('module', {
       name: "backend",
-      pathname: "/api/compiler",
+      pathname: "/api/plugin",
     })
 
   if (arg && "url" in arg) req.send({ "url": arg["url"] })

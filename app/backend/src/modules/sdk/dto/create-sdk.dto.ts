@@ -20,5 +20,5 @@ export class CreateSdkDTO extends TakeType(
 
   @ValidateNested()
   @Type(() => EntityReferenceDTO)
-  compiler!: EntityReferenceDTO
+  plugin!: EntityReferenceDTO
 }

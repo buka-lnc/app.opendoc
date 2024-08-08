@@ -9,7 +9,7 @@ import { ApiFile } from '../api-file/entities/api-file.entity'
 import { SheetVersionModule } from '../sheet-version/sheet-version.module'
 import { Sheet } from '../sheet/entities/sheet.entity'
 import { SheetVersion } from '../sheet-version/entities/sheet-version.entity'
-import { Compiler } from '../compiler/entities/compiler.entity'
+import { Plugin } from '../plugin/entities/plugin.entity'
 import { SdkGateway } from './sdk.gateway'
 
 
@@ -23,7 +23,7 @@ import { SdkGateway } from './sdk.gateway'
       Sdk,
       Sheet,
       SheetVersion,
-      Compiler,
+      Plugin,
     ]),
   ],
   controllers: [SdkController],

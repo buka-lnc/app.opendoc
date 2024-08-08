@@ -1,10 +1,10 @@
 import type { KeqOperation } from 'keq'
-import type { Compiler } from "../components/schemas/compiler"
-import type { UpdateCompilerDTO } from "../components/schemas/update_compiler_dto"
+import type { Plugin } from "../components/schemas/plugin"
+import type { UpdatePluginDTO } from "../components/schemas/update_plugin_dto"
 
 
 export interface ResponseMap {
-  "200": Compiler
+  "200": Plugin
 }
 
 
@@ -18,7 +18,7 @@ export type RouteParameters = {
 export type HeaderParameters = {
 }
 
-export type BodyParameters =(UpdateCompilerDTO)
+export type BodyParameters =(UpdatePluginDTO)
 
 export type RequestParameters = QueryParameters & RouteParameters & HeaderParameters & BodyParameters
 

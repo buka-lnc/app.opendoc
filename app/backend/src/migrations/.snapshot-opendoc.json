@@ -125,306 +125,6 @@
           "comment": "更新时间",
           "mappedType": "datetime"
         },
-        "status": {
-          "name": "status",
-          "type": "varchar(15)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 15,
-          "comment": "编译器状态",
-          "mappedType": "string"
-        },
-        "url": {
-          "name": "url",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 255,
-          "comment": "编译器地址",
-          "mappedType": "string"
-        },
-        "name": {
-          "name": "name",
-          "type": "varchar(63)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 63,
-          "comment": "编译器名称",
-          "mappedType": "string"
-        },
-        "description": {
-          "name": "description",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 255,
-          "default": "''",
-          "comment": "编译器描述",
-          "mappedType": "string"
-        },
-        "author": {
-          "name": "author",
-          "type": "varchar(63)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 63,
-          "default": "''",
-          "comment": "编译器名称",
-          "mappedType": "string"
-        },
-        "version": {
-          "name": "version",
-          "type": "varchar(31)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 31,
-          "comment": "编译器版本",
-          "mappedType": "string"
-        }
-      },
-      "name": "compiler",
-      "indexes": [
-        {
-          "columnNames": [
-            "url"
-          ],
-          "composite": false,
-          "keyName": "compiler_url_unique",
-          "constraint": true,
-          "primary": false,
-          "unique": true
-        },
-        {
-          "keyName": "PRIMARY",
-          "columnNames": [
-            "id"
-          ],
-          "composite": false,
-          "constraint": true,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {},
-      "nativeEnums": {}
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "bigint",
-          "unsigned": true,
-          "autoincrement": true,
-          "primary": true,
-          "nullable": false,
-          "length": null,
-          "comment": "主键",
-          "mappedType": "bigint"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "datetime",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": null,
-          "default": "CURRENT_TIMESTAMP",
-          "comment": "创建时间",
-          "mappedType": "datetime"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "datetime",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": null,
-          "default": "CURRENT_TIMESTAMP",
-          "comment": "更新时间",
-          "mappedType": "datetime"
-        },
-        "key": {
-          "name": "key",
-          "type": "varchar(63)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 63,
-          "comment": "选项键",
-          "mappedType": "string"
-        },
-        "order": {
-          "name": "order",
-          "type": "int",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": null,
-          "comment": "选项排序",
-          "mappedType": "integer"
-        },
-        "label": {
-          "name": "label",
-          "type": "varchar(63)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 63,
-          "comment": "选项名",
-          "mappedType": "string"
-        },
-        "description": {
-          "name": "description",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 255,
-          "default": "''",
-          "comment": "选项描述",
-          "mappedType": "string"
-        },
-        "format": {
-          "name": "format",
-          "type": "varchar(31)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": 31,
-          "comment": "选项格式",
-          "mappedType": "string"
-        },
-        "value": {
-          "name": "value",
-          "type": "varchar(255)",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": true,
-          "length": 255,
-          "comment": "选项值",
-          "mappedType": "string"
-        },
-        "compiler_id": {
-          "name": "compiler_id",
-          "type": "bigint",
-          "unsigned": true,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": null,
-          "comment": "Compiler",
-          "mappedType": "bigint"
-        }
-      },
-      "name": "compiler_option",
-      "indexes": [
-        {
-          "columnNames": [
-            "compiler_id"
-          ],
-          "composite": false,
-          "keyName": "compiler_option_compiler_id_index",
-          "constraint": false,
-          "primary": false,
-          "unique": false
-        },
-        {
-          "keyName": "compiler_option_key_compiler_id_unique",
-          "columnNames": [
-            "key",
-            "compiler_id"
-          ],
-          "composite": true,
-          "constraint": true,
-          "primary": false,
-          "unique": true
-        },
-        {
-          "keyName": "PRIMARY",
-          "columnNames": [
-            "id"
-          ],
-          "composite": false,
-          "constraint": true,
-          "primary": true,
-          "unique": true
-        }
-      ],
-      "checks": [],
-      "foreignKeys": {
-        "compiler_option_compiler_id_foreign": {
-          "constraintName": "compiler_option_compiler_id_foreign",
-          "columnNames": [
-            "compiler_id"
-          ],
-          "localTableName": "compiler_option",
-          "referencedColumnNames": [
-            "id"
-          ],
-          "referencedTableName": "compiler",
-          "updateRule": "cascade"
-        }
-      },
-      "nativeEnums": {}
-    },
-    {
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "bigint",
-          "unsigned": true,
-          "autoincrement": true,
-          "primary": true,
-          "nullable": false,
-          "length": null,
-          "comment": "主键",
-          "mappedType": "bigint"
-        },
-        "created_at": {
-          "name": "created_at",
-          "type": "datetime",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": null,
-          "default": "CURRENT_TIMESTAMP",
-          "comment": "创建时间",
-          "mappedType": "datetime"
-        },
-        "updated_at": {
-          "name": "updated_at",
-          "type": "datetime",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "length": null,
-          "default": "CURRENT_TIMESTAMP",
-          "comment": "更新时间",
-          "mappedType": "datetime"
-        },
         "code": {
           "name": "code",
           "type": "varchar(255)",
@@ -551,6 +251,306 @@
       ],
       "checks": [],
       "foreignKeys": {},
+      "nativeEnums": {}
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "bigint",
+          "unsigned": true,
+          "autoincrement": true,
+          "primary": true,
+          "nullable": false,
+          "length": null,
+          "comment": "主键",
+          "mappedType": "bigint"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "datetime",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": null,
+          "default": "CURRENT_TIMESTAMP",
+          "comment": "创建时间",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "datetime",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": null,
+          "default": "CURRENT_TIMESTAMP",
+          "comment": "更新时间",
+          "mappedType": "datetime"
+        },
+        "status": {
+          "name": "status",
+          "type": "varchar(15)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 15,
+          "comment": "编译器状态",
+          "mappedType": "string"
+        },
+        "url": {
+          "name": "url",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 255,
+          "comment": "编译器地址",
+          "mappedType": "string"
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(63)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 63,
+          "comment": "编译器名称",
+          "mappedType": "string"
+        },
+        "description": {
+          "name": "description",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 255,
+          "default": "''",
+          "comment": "编译器描述",
+          "mappedType": "string"
+        },
+        "author": {
+          "name": "author",
+          "type": "varchar(63)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 63,
+          "default": "''",
+          "comment": "编译器名称",
+          "mappedType": "string"
+        },
+        "version": {
+          "name": "version",
+          "type": "varchar(31)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 31,
+          "comment": "编译器版本",
+          "mappedType": "string"
+        }
+      },
+      "name": "plugin",
+      "indexes": [
+        {
+          "columnNames": [
+            "url"
+          ],
+          "composite": false,
+          "keyName": "plugin_url_unique",
+          "constraint": true,
+          "primary": false,
+          "unique": true
+        },
+        {
+          "keyName": "PRIMARY",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "constraint": true,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {},
+      "nativeEnums": {}
+    },
+    {
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "bigint",
+          "unsigned": true,
+          "autoincrement": true,
+          "primary": true,
+          "nullable": false,
+          "length": null,
+          "comment": "主键",
+          "mappedType": "bigint"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "datetime",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": null,
+          "default": "CURRENT_TIMESTAMP",
+          "comment": "创建时间",
+          "mappedType": "datetime"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "datetime",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": null,
+          "default": "CURRENT_TIMESTAMP",
+          "comment": "更新时间",
+          "mappedType": "datetime"
+        },
+        "key": {
+          "name": "key",
+          "type": "varchar(63)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 63,
+          "comment": "选项键",
+          "mappedType": "string"
+        },
+        "order": {
+          "name": "order",
+          "type": "int",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": null,
+          "comment": "选项排序",
+          "mappedType": "integer"
+        },
+        "label": {
+          "name": "label",
+          "type": "varchar(63)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 63,
+          "comment": "选项名",
+          "mappedType": "string"
+        },
+        "description": {
+          "name": "description",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 255,
+          "default": "''",
+          "comment": "选项描述",
+          "mappedType": "string"
+        },
+        "format": {
+          "name": "format",
+          "type": "varchar(31)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": 31,
+          "comment": "选项格式",
+          "mappedType": "string"
+        },
+        "value": {
+          "name": "value",
+          "type": "varchar(255)",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": true,
+          "length": 255,
+          "comment": "选项值",
+          "mappedType": "string"
+        },
+        "plugin_id": {
+          "name": "plugin_id",
+          "type": "bigint",
+          "unsigned": true,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "length": null,
+          "comment": "插件",
+          "mappedType": "bigint"
+        }
+      },
+      "name": "plugin_option",
+      "indexes": [
+        {
+          "columnNames": [
+            "plugin_id"
+          ],
+          "composite": false,
+          "keyName": "plugin_option_plugin_id_index",
+          "constraint": false,
+          "primary": false,
+          "unique": false
+        },
+        {
+          "keyName": "plugin_option_key_plugin_id_unique",
+          "columnNames": [
+            "key",
+            "plugin_id"
+          ],
+          "composite": true,
+          "constraint": true,
+          "primary": false,
+          "unique": true
+        },
+        {
+          "keyName": "PRIMARY",
+          "columnNames": [
+            "id"
+          ],
+          "composite": false,
+          "constraint": true,
+          "primary": true,
+          "unique": true
+        }
+      ],
+      "checks": [],
+      "foreignKeys": {
+        "plugin_option_plugin_id_foreign": {
+          "constraintName": "plugin_option_plugin_id_foreign",
+          "columnNames": [
+            "plugin_id"
+          ],
+          "localTableName": "plugin_option",
+          "referencedColumnNames": [
+            "id"
+          ],
+          "referencedTableName": "plugin",
+          "updateRule": "cascade"
+        }
+      },
       "nativeEnums": {}
     },
     {
@@ -1054,8 +1054,8 @@
           "comment": "发布时间",
           "mappedType": "datetime"
         },
-        "compiler_id": {
-          "name": "compiler_id",
+        "plugin_id": {
+          "name": "plugin_id",
           "type": "bigint",
           "unsigned": true,
           "autoincrement": false,
@@ -1092,10 +1092,10 @@
       "indexes": [
         {
           "columnNames": [
-            "compiler_id"
+            "plugin_id"
           ],
           "composite": false,
-          "keyName": "sdk_compiler_id_index",
+          "keyName": "sdk_plugin_id_index",
           "constraint": false,
           "primary": false,
           "unique": false
@@ -1133,16 +1133,16 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "sdk_compiler_id_foreign": {
-          "constraintName": "sdk_compiler_id_foreign",
+        "sdk_plugin_id_foreign": {
+          "constraintName": "sdk_plugin_id_foreign",
           "columnNames": [
-            "compiler_id"
+            "plugin_id"
           ],
           "localTableName": "sdk",
           "referencedColumnNames": [
             "id"
           ],
-          "referencedTableName": "compiler",
+          "referencedTableName": "plugin",
           "updateRule": "cascade"
         },
         "sdk_version_id_foreign": {

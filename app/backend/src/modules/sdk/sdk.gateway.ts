@@ -7,12 +7,13 @@ import { EventEmitter2, OnEvent } from '@nestjs/event-emitter'
 import { InjectRepository } from '@mikro-orm/nestjs'
 import { SheetVersion } from '../sheet-version/entities/sheet-version.entity'
 import { Sheet } from '../sheet/entities/sheet.entity'
-import { Compiler } from '../compiler/entities/compiler.entity'
+import { Plugin } from '../plugin/entities/plugin.entity'
 import { SdkStatus } from './constant/sdk-status'
 import { SdkCreatedEvent } from './events/sdk-created.event'
 import { SdkUpdatedEvent } from './events/sdk-updated.event'
-import { CompilerIncomingMessageEvent } from '../compiler/events/compiler-incoming-message.event'
-import { CompilerEvent } from '../compiler/constants/compiler-message-event'
+import { PluginCommandEvent } from '../plugin/events/plugin-command.event'
+import { PluginCommandName } from '../plugin/constants/plugin-command-name'
+
 
 @Injectable()
 export class SdkGateway {
@@ -34,13 +35,17 @@ export class SdkGateway {
     @InjectRepository(SheetVersion)
     private readonly sheetVersionRepo: EntityRepository<SheetVersion>,
 
-    @InjectRepository(Compiler)
-    private readonly compilerRepo: EntityRepository<Compiler>,
+    @InjectRepository(Plugin)
+    private readonly pluginRepo: EntityRepository<Plugin>,
   ) {}
 
-  @OnEvent('compiler.create-sdk')
+  @OnEvent('plugin.command.create-sdk')
+  async onCreateSdk(message: PluginCommandEvent<PluginCommandName.CREATE_SDK>): Promise<void> {
+    await this.createSdk(message)
+  }
+
   @EnsureRequestContext()
-  async create(message: CompilerIncomingMessageEvent<CompilerEvent.CREATE_SDK>): Promise<Sdk> {
+  async createSdk(message: PluginCommandEvent<PluginCommandName.CREATE_SDK>): Promise<Sdk> {
     const dto = message.data
     const sheet = await this.sheetRepo.findOneOrFail(dto.sheet.id)
 
@@ -52,13 +57,13 @@ export class SdkGateway {
       prerelease: dto.version.prerelease,
     })
 
-    const compiler = await this.compilerRepo.findOneOrFail(dto.compiler.id)
+    const plugin = await this.pluginRepo.findOneOrFail(dto.plugin.id)
 
 
     const sdk = this.sdkRepo.create({
       sheet,
       version,
-      compiler,
+      plugin: plugin,
       name: dto.name,
       status: SdkStatus.PENDING,
     })
@@ -73,9 +78,13 @@ export class SdkGateway {
     return sdk
   }
 
-  @OnEvent('compiler.update-sdk')
+  @OnEvent('plugin.command.update-sdk')
+  async onUpdateSdk(message: PluginCommandEvent<PluginCommandName.UPDATE_SDK>): Promise<void> {
+    await this.updateSdk(message)
+  }
+
   @EnsureRequestContext()
-  async update(message: CompilerIncomingMessageEvent<CompilerEvent.UPDATE_SDK>): Promise<Sdk> {
+  async updateSdk(message: PluginCommandEvent<PluginCommandName.UPDATE_SDK>): Promise<Sdk> {
     const dto = message.data
 
     const sdk = await this.sdkRepo.findOneOrFail(dto.id)

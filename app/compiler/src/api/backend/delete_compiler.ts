@@ -5,10 +5,10 @@ import type { RequestParameters, ResponseMap, Operation } from "./types/delete_c
 
 
 export function deleteCompiler<STATUS extends keyof ResponseMap>(arg?: RequestParameters): Keq<ResponseMap[STATUS], Operation<STATUS>> {
-  const req = request.delete<ResponseMap[STATUS]>("/api/compiler/:compilerId")
+  const req = request.delete<ResponseMap[STATUS]>("/api/plugin/:compilerId")
     .option('module', {
       name: "backend",
-      pathname: "/api/compiler/:compilerId",
+      pathname: "/api/plugin/:compilerId",
     })
 
   if (arg && "compilerId" in arg) req.params("compilerId", String(arg["compilerId"]))

@@ -13,5 +13,5 @@ export interface CreateSdkDTO {
   "name": string
   "sheet": EntityReferenceDTO
   "version": ParsedVersionDTO
-  "compiler": EntityReferenceDTO
+  "plugin": EntityReferenceDTO
 }

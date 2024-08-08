@@ -1,9 +1,9 @@
 import type { KeqOperation } from 'keq'
-import type { Compiler } from "../components/schemas/compiler"
+import type { Plugin } from "../components/schemas/plugin"
 
 
 export interface ResponseMap {
-  "200": Compiler
+  "200": Plugin
 }
 
 

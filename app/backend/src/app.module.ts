@@ -18,8 +18,8 @@ import { SheetModule } from './modules/sheet/sheet.module'
 import { ApiFileModule } from './modules/api-file/api-file.module'
 import { SheetVersionModule } from './modules/sheet-version/sheet-version.module'
 import { OptionModule } from './modules/option/option.module'
-import { CompilerModule } from './modules/compiler/compiler.module'
 import { SdkModule } from './modules/sdk/sdk.module'
+import { PluginModule } from './modules/plugin/plugin.module'
 
 
 @Module({
@@ -53,7 +53,7 @@ import { SdkModule } from './modules/sdk/sdk.module'
     SdkModule,
     // RegistryModule,
     OptionModule,
-    CompilerModule,
+    PluginModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -20,7 +20,7 @@ export interface Sdk {
    * 发布时间
    */
   "publishedAt"?: string
-  "compiler": EntityReferenceDTO
+  "plugin": EntityReferenceDTO
   /**
    * 版本号
    */

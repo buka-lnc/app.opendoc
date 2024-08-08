@@ -6,7 +6,7 @@ import { IsEnum } from 'class-validator'
 import { Sheet } from '~/modules/sheet/entities/sheet.entity'
 import { SheetVersion } from '~/modules/sheet-version/entities/sheet-version.entity'
 import { ApiForeignKey } from '~/decorators/api-reference.decorator'
-import { Compiler } from '~/modules/compiler/entities/compiler.entity'
+import { Plugin } from '~/modules/plugin/entities/plugin.entity'
 import { EntityProperty } from '~/decorators/entity-property.decorator'
 
 @Entity()
@@ -34,11 +34,11 @@ export class Sdk extends BaseEntity {
 
   @ApiForeignKey()
   @ManyToOne({
-    entity: () => Compiler,
+    entity: () => Plugin,
     comment: '编译器',
     ref: true,
   })
-  compiler!: Ref<Compiler>
+  plugin!: Ref<Plugin>
 
   /**
    * 版本号

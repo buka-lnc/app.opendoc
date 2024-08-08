@@ -5,7 +5,7 @@ import { ValidateNested } from 'class-validator'
 import { Type } from 'class-transformer'
 
 
-export class SdkDTO extends OmitType(Sdk, ['compiler', 'sheet', 'version']) {
+export class SdkDTO extends OmitType(Sdk, ['plugin', 'sheet', 'version']) {
   @ValidateNested()
   @Type(() => ParsedVersionDTO)
   version!: ParsedVersionDTO

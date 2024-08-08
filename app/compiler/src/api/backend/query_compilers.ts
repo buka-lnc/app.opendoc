@@ -5,10 +5,10 @@ import type { RequestParameters, ResponseMap, Operation } from "./types/query_co
 
 
 export function queryCompilers<STATUS extends keyof ResponseMap>(arg?: RequestParameters): Keq<ResponseMap[STATUS], Operation<STATUS>> {
-  const req = request.get<ResponseMap[STATUS]>("/api/compiler")
+  const req = request.get<ResponseMap[STATUS]>("/api/plugin")
     .option('module', {
       name: "backend",
-      pathname: "/api/compiler",
+      pathname: "/api/plugin",
     })
 
   const queryWrap = (value: any) => typeof value === 'boolean' ? String(value) : value
