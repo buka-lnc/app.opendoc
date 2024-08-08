@@ -108,3 +108,18 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
           dockerfile: ./app/frontend/dockerfile
           tags: ghcr.io/buka-lnc/opendoc-frontend:latest
+
+  buildCompilerApplication:
+    name: "Build Compiler Application"
+    runs-on: ubuntu-latest
+    needs: pullRequest
+    if: ${{ needs.pullRequest.outputs.released == 'true' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: buka-lnc/github.actions/build-docker-image@main
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          dockerfile: ./app/compiler/dockerfile
+          tags: ghcr.io/buka-lnc/opendoc-compiler:latest
