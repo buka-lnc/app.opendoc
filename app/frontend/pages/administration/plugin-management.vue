@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { IconPlus, IconTrash, IconSettings, IconPuzzle, IconPuzzleOff } from '@tabler/icons-vue'
+import { IconPlus, IconTrash, IconSettings, IconPuzzle, IconPuzzleOff, IconAlertTriangle } from '@tabler/icons-vue'
 import { isURL } from 'validator'
 import { RequestException } from 'keq-exception'
 import { queryPlugins, createPlugin, deletePlugin, updatePlugin } from '@/api/backend'
@@ -50,7 +50,7 @@ async function toggleStatus (plugin: Plugin): Promise<void> {
   try {
     await updatePlugin({
       pluginId: plugin.id,
-      status: plugin.status === 'enabled' ? 'disabled' : 'enabled',
+      status: plugin.status !== 'enabled' ? 'enabled' : 'disabled',
     })
     await reload()
   } catch (e) {
@@ -59,6 +59,12 @@ async function toggleStatus (plugin: Plugin): Promise<void> {
 }
 
 const pluginInSettings = ref<Plugin | null>(null)
+
+const tipMap = {
+  enabled: '已启用',
+  disabled: '已禁用',
+  breakdown: '已损坏',
+}
 </script>
 
 <template>
@@ -122,23 +128,30 @@ const pluginInSettings = ref<Plugin | null>(null)
             </div>
 
             <div class="d-card-actions ">
-              <button
-                class="d-swap d-btn d-btn-sm d-btn-ghost d-btn-square transition-colors d-tooltip"
-                :data-tip="plugin.status === 'enabled' ? '已启用' : '已禁用'"
-                @click="() => toggleStatus(plugin)"
-              >
-                <div
-                  class="d-swap"
-                  :class="plugin.status === 'enabled' ? 'text-success d-swap-active' : 'text-error'"
+              <div class="d-tooltip" :data-tip="tipMap[plugin.status]">
+                <button
+                  class="d-btn d-btn-sm d-btn-ghost d-btn-square transition-colors"
+                  @click="() => toggleStatus(plugin)"
                 >
-                  <div class="d-swap-on">
-                    <IconPuzzle class="w-6" />
+                  <IconAlertTriangle
+                    v-if="plugin.status === 'breakdown'"
+                    class="w-6 text-error"
+                  />
+
+                  <div
+                    v-else
+                    class="d-swap"
+                    :class="plugin.status === 'enabled' ? 'text-success d-swap-active' : ''"
+                  >
+                    <div class="d-swap-on">
+                      <IconPuzzle class="w-6" />
+                    </div>
+                    <div class="d-swap-off">
+                      <IconPuzzleOff class="w-6" />
+                    </div>
                   </div>
-                  <div class="d-swap-off">
-                    <IconPuzzleOff class="w-6" />
-                  </div>
-                </div>
-              </button>
+                </button>
+              </div>
 
               <button
                 class="d-btn d-btn-sm d-btn-ghost d-btn-square"

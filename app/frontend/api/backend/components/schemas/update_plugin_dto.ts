@@ -9,6 +9,6 @@ export interface UpdatePluginDTO {
   /**
    * 编译器状态
    */
-  "status"?: "disabled" | "enabled"
+  "status"?: "disabled" | "enabled" | "breakdown"
   "options"?: (UpdatePluginOptionDTO)[]
 }
