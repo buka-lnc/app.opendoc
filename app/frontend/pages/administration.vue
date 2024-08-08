@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { IconArrowBackUp } from '@tabler/icons-vue'
+
+const router = useRouter()
 </script>
 
 <template>
@@ -8,7 +10,7 @@ import { IconArrowBackUp } from '@tabler/icons-vue'
       <div class="p-2 bg-base-300 flex items-center space-x-4">
         <button
           class="d-btn d-btn-square d-btn-ghost"
-          @click="$router.push('/applications')"
+          @click="router.push('/applications')"
         >
           <IconArrowBackUp class="w-6 h-6" />
         </button>
@@ -32,10 +34,10 @@ import { IconArrowBackUp } from '@tabler/icons-vue'
 
         <li>
           <NuxtLink
-            to="/administration/compiler-management"
+            to="/administration/plugin-management"
             active-class="d-active"
           >
-            <span>编译器</span>
+            <span>插件</span>
           </NuxtLink>
         </li>
       </ul>

@@ -3,6 +3,7 @@ import { IconSettings, IconPlus, IconArrowBackUp } from '@tabler/icons-vue'
 import { useRouteParams } from '@vueuse/router'
 import { APPLICATION_INJECT_KEY } from '~/constants/application-inject-key'
 
+const router = useRouter()
 const { application, sheets } = inject(APPLICATION_INJECT_KEY, { application: toRef(null), sheets: toRef([]) })
 const applicationId = useRouteParams<string>('application_id')
 const sheetId = useRouteParams<string>('sheet_id')
@@ -38,16 +39,16 @@ const showApiDocumentCreateModal = ref(false)
     <div class="d-navbar-start space-x-2">
       <button
         class="d-btn d-btn-square d-btn-ghost"
-        @click="$router.push('/applications')"
+        @click="router.push('/applications')"
       >
-        <IconArrowBackUp class="w-6 h-6" />
+        <IconArrowBackUp class="size-6" />
       </button>
 
       <div class="flex items-baseline space-x-1">
         <h1 class="text-xl">
           {{ application.title }}
         </h1>
-        <span class="text-gray-400">{{ application.code }}</span>
+        <span class="text-base-content/50">{{ application.code }}</span>
       </div>
     </div>
 

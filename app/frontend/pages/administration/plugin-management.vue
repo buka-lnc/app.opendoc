@@ -68,16 +68,16 @@ const compilerInSettings = ref<Compiler | null>(null)
   />
 
   <stuffed-loading :pending="status === 'pending' && !compilers">
-    <div class="container h-full m-auto flex flex-col overflow-hidden">
+    <div class="container h-full m-auto flex flex-col">
       <div class="flex-grow-0 flex-shrink-0 w-full mb-6 flex items-center">
         <h1 class="select-none text-2xl font-bold text-gray-600">
-          <span>编译器</span>
+          <span>插件</span>
         </h1>
 
         <span v-if="status === 'pending' && !!compilers" class="ml-2 d-loading d-loading-sm d-loading-spinner text-gray-600" />
       </div>
 
-      <div class="flex-grow-0 flex-shrink-0 flex w-full space-x-4 mb-4 overflow-hidden">
+      <div class="flex-grow-0 flex-shrink-0 flex w-full space-x-4 mb-4">
         <label class="flex-auto d-input d-input-bordered flex items-center gap-2">
           ws://
 

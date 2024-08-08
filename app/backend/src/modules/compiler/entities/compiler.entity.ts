@@ -68,6 +68,7 @@ export class Compiler extends BaseEntity {
     cascade: [Cascade.ALL],
     eager: true,
     orphanRemoval: true,
+    orderBy: { order: 'ASC' },
   })
   options: Collection<CompilerOption> = new Collection<CompilerOption>(this)
 

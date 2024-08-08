@@ -39,19 +39,27 @@ async function removeForbiddenApplicationCode (code: string) {
 
 <template>
   <StuffedLoading :pending="pending && !forbiddenApplicationCodes">
-    <div class="container h-full m-auto flex flex-col overflow-hidden">
+    <div class="container h-full m-auto flex flex-col">
       <div class="flex-grow-0 flex-shrink-0 w-full mb-6">
         <h1 class="select-none text-2xl font-bold text-gray-600">
           应用编码黑名单
         </h1>
       </div>
 
-      <div class="flex-grow-0 flex-shrink-0 flex w-full space-x-4 mb-4 overflow-hidden">
-        <input
-          v-model="applicationCode"
-          class="flex-auto d-input d-input-bordered"
-          placeholder="请输入需要添加的应用编号"
-        >
+      <div class="flex-grow-0 flex-shrink-0 flex w-full space-x-4 mb-4">
+        <label class="flex-auto d-input d-input-bordered flex items-center gap-2">
+          <input
+            v-model="applicationCode"
+            class="grow"
+            placeholder="请输入需要添加的应用编号"
+            @keydown.enter="() => !appending && appendForbiddenApplicationCode()"
+          >
+
+          <kbd
+            class="d-kbd d-kbd-sm"
+            :class="!!applicationCode.length ? 'opacity-100' : 'opacity-30'"
+          >↵</kbd>
+        </label>
 
         <button
           class="flex-0 d-btn d-btn-primary d-btn-square"

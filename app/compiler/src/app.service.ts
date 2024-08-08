@@ -18,7 +18,7 @@ export class AppService {
   getInformation(): CompilerInformation {
     return {
       apiVersion: '^1',
-      name: '@opendoc/keq-compiler',
+      name: '@opendoc/typescript-sdk-compiler',
       description: '将 Openapi 编译成通用的 Javascript SDK',
       author: 'Val-istar-Guo <val.istar.guo@gmail.com>',
       version,

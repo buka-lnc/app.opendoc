@@ -7,7 +7,7 @@ const sheetId = useRouteParams<string>('sheet_id')
 const version = useRouteParams<string>('version')
 const prefix = computed(() => `/application/${applicationId.value}/sheet/${sheetId.value}/${version.value}/code`)
 
-const { data: apiFiles } = useAsyncData(
+const { data: apiFiles, status } = useAsyncData(
   async () => {
     const body = await queryApiFiles<'200'>({
       sheetId: sheetId.value,
@@ -26,6 +26,7 @@ const categories = toApiFileCategories(apiFiles)
 const route = useRoute()
 const router = useRouter()
 watchEffect(() => {
+  if (status.value === 'pending') return
   if (route.path !== prefix.value) return
   if (apiFiles.value.length === 0) return
   const apiFile = apiFiles.value[0]

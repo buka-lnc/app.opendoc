@@ -41,9 +41,9 @@ const { execute: save, pending: saving } = useAsyncFn(async () => {
       :class="!!editingCompiler && 'd-modal-open'"
     >
       <div v-if="editingCompiler" class="d-modal-box font-sans">
-        <h3 class="text-lg font-bold pb-6">
+        <modal-title>
           {{ editingCompiler.name }}
-        </h3>
+        </modal-title>
 
         <div class="space-y-3">
           <label>
@@ -72,7 +72,11 @@ const { execute: save, pending: saving } = useAsyncFn(async () => {
             >
           </label>
 
-          <compiler-option v-for="opt of editingCompiler.options" :key="opt.id" :option="opt" />
+          <compiler-option
+            v-for="opt of editingCompiler.options"
+            :key="opt.id"
+            :option="opt"
+          />
         </div>
 
         <div class="d-modal-action">

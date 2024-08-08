@@ -35,9 +35,10 @@ const { pending: creating, execute: create } = useAsyncFn(
   <Teleport to="body">
     <dialog class="d-modal" :class="show && 'd-modal-open'">
       <div class="d-modal-box font-sans !border-[#5b6078]">
-        <h3 class="font-bold text-lg">
+        <modal-title>
           创建 Application
-        </h3>
+        </modal-title>
+
         <div class="flex flex-col space-y-4">
           <div class="form-control w-full max-w-md">
             <div class="d-label">

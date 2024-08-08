@@ -113,6 +113,7 @@ export class CompilerService implements OnModuleInit, OnApplicationShutdown {
   async queryAll(dto: QueryCompilersDTO): Promise<ResponseOfQueryCompilerDTO> {
     const qb = this.compilerRepo.createQueryBuilder('compiler')
       .leftJoinAndSelect('compiler.options', 'options')
+      .orderBy({ options: { order: 'ASC' } })
 
     if (!R.isNil(dto.offset)) {
       void qb
