@@ -37,10 +37,10 @@ const { execute: save, pending: saving } = useAsyncFn(async () => {
 <template>
   <teleport to="body">
     <dialog
-      class="d-modal"
+      class="d-modal overflow-y-auto"
       :class="!!editingPlugin && 'd-modal-open'"
     >
-      <div v-if="editingPlugin" class="d-modal-box font-sans">
+      <div v-if="editingPlugin" class="d-modal-box font-sans overflow-visible max-h-none h-fit">
         <modal-title>
           {{ editingPlugin.name }}
         </modal-title>
