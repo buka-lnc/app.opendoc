@@ -1,5 +1,11 @@
 # @opendoc/backend
 
+## 1.7.0
+
+### Minor Changes
+
+- df84fa3: 移除内置的 SDK 模块并添加插件功能，SDK 由插件生成
+
 ## 1.6.6
 
 ### Patch Changes
