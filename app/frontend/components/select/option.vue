@@ -18,7 +18,7 @@ const { toggleVisible } = inject(SELECT_VISIBLE_INJECT_KEY, {
 
 <template>
   <li
-    class="d-join-item d-btn relative w-44"
+    class="d-join-item d-btn bg-ctp-mantle relative w-44 border-r-0 border-l-0 border-b-0 first:border-t-0 !rounded-s-none !rounded-e-none border-ctp-crust"
     @click="() => {
       toggleVisible(false)
       selectedValue = props.value

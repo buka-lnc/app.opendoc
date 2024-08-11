@@ -57,8 +57,8 @@ watchEffect(() => {
             </ul>
           </div>
 
-          <div class="flex-auto flex flex-col px-8 py-4 bg-base-100 size-full overflow-hidden">
-            <div class="flex-auto overflow-auto">
+          <div class="flex-auto flex flex-col px-8 py-4 bg-base-100 size-full">
+            <div class="flex-auto">
               <application-settings-modal-application-settings
                 v-if="activeSheetId === '0'"
                 :application="application"
