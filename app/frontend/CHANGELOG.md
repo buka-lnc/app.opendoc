@@ -1,5 +1,17 @@
 # @opendoc/frontend
 
+## 1.7.0
+
+### Minor Changes
+
+- df84fa3: 移除内置的 SDK 模块并添加插件功能，SDK 由插件生成
+
+### Patch Changes
+
+- 969136d: 修复 markdown 目录列表间距过大的问题
+- 0426f09: 增加主题切换功能
+- 9b9299c: Markdown 的代码块增加复制功能
+
 ## 1.6.4
 
 ### Patch Changes

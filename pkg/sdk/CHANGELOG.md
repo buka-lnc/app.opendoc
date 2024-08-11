@@ -1,5 +1,11 @@
 # @opendoc/sdk
 
+## 1.3.4
+
+### Patch Changes
+
+- 764e43f: 修复 sdk 无法解析 requestBody,request,parameter,header 的$ref 问题
+
 ## 1.3.3
 
 ### Patch Changes
