@@ -9,7 +9,6 @@ const props = defineProps<{
 const id = computed(() => md5(props.reference))
 const title = computed(() => props.reference.split('/').pop())
 const href = computed(() => props.toReference(id.value, props.reference))
-// :to="`/application/${$route.params.application_id}/api-document/${$route.params.api_document_id}/${$route.params.version}/openapi/schema/${id}`"
 </script>
 
 <template>

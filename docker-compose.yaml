@@ -21,6 +21,10 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
+  compiler:
+    image: ghcr.io/buka-lnc/opendoc-compiler:latest
+    ports:
+      - "9000:9000"
   mysql:
     image: mysql:8
     healthcheck:

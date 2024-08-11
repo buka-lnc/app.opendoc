@@ -3,6 +3,7 @@ import { IconSchema } from '@tabler/icons-vue'
 import { useRouteParams } from '@vueuse/router'
 import { Sdk } from '~/api/backend/components/schemas'
 
+const route = useRoute()
 const version = useRouteParams<string>('version')
 
 const props = defineProps<{
@@ -22,7 +23,7 @@ const sdk = toRef(props, 'sdk')
     ]"
   >
     <h1 class="text-3xl py-4 !mb-2">
-      {{ sdk.fullName }}
+      {{ sdk.name }}
     </h1>
 
     <div class="space-x-2 pb-8 font-mono">
@@ -33,7 +34,7 @@ const sdk = toRef(props, 'sdk')
       <sdk-status-badge :status="sdk.status" />
     </div>
 
-    <p>{{ sdk.fullName }} 是从 Asyncapi 文档自动生成的 Typescript Interface 库。</p>
+    <p>{{ sdk.name }} 是从 Asyncapi 文档自动生成的 Typescript Interface 库。</p>
 
     <h2>
       安装 Package
@@ -51,7 +52,7 @@ const sdk = toRef(props, 'sdk')
       替换为
 
       <nuxt-link
-        :to="`/application/${$route.params.application_id}/api-document/${$route.params.api_document_id}/${$route.params.version}/openapi/operation`"
+        :to="`/application/${route.params.application_id}/api-document/${route.params.api_document_id}/${route.params.version}/openapi/operation`"
       >
         <icon-schema class="inline-block w-8 h-8" />
       </nuxt-link>

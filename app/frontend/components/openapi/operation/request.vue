@@ -39,7 +39,7 @@ const requestBody = computed(() => dereference<OpenAPIV3.RequestBodyObject>(prop
         class="d-tab relative"
         :class="active === 'headers' && 'd-tab-active'"
         aria-label="Headers"
-        :to="{ query: { ...$route.query, requestActive: 'headers' } }"
+        :to="{ query: { ...route.query, requestActive: 'headers' } }"
       >
         <div class="flex items-center space-x-1">
           <span>Headers</span>
@@ -52,7 +52,7 @@ const requestBody = computed(() => dereference<OpenAPIV3.RequestBodyObject>(prop
         class="d-tab relative"
         :class="active === 'query' && 'd-tab-active'"
         aria-label="Query"
-        :to="{ query: { ...$route.query, requestActive: 'query' } }"
+        :to="{ query: { ...route.query, requestActive: 'query' } }"
       >
         <div class="flex items-center space-x-1">
           <span>Query</span>
@@ -65,7 +65,7 @@ const requestBody = computed(() => dereference<OpenAPIV3.RequestBodyObject>(prop
         class="d-tab relative"
         :class="active === 'params' && 'd-tab-active'"
         aria-label="Params"
-        :to="{ query: { ...$route.query, requestActive: 'params' } }"
+        :to="{ query: { ...route.query, requestActive: 'params' } }"
       >
         <div class="flex items-center space-x-1">
           <span>Params</span>
@@ -78,7 +78,7 @@ const requestBody = computed(() => dereference<OpenAPIV3.RequestBodyObject>(prop
         class="d-tab relative"
         :class="active === 'body' && 'd-tab-active'"
         aria-label="Query"
-        :to="{ query: { ...$route.query, requestActive: 'body' } }"
+        :to="{ query: { ...route.query, requestActive: 'body' } }"
       >
         <div class="flex items-center space-x-1">
           <span>Body</span>

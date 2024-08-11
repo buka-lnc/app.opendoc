@@ -3,6 +3,7 @@ import { useRouteParams } from '@vueuse/router'
 import { querySdks } from '~/api/backend'
 import { SheetVersion } from '~/api/backend/components/schemas'
 
+const route = useRoute()
 const version = useRouteParams<string>('version')
 
 const props = defineProps<{
@@ -50,7 +51,7 @@ const sdkStatus = computed(() => {
 
     <div class="d-card-actions">
       <NuxtLink
-        :to="{ params: { ...$route.params, version: sheetVersion.version }}"
+        :to="{ params: { ...route.params, version: sheetVersion.version }}"
         class="d-btn d-btn-sm font-sans"
         :aria-disabled="version === sheetVersion.version"
         :class="version === sheetVersion.version && 'd-btn-disabled'"

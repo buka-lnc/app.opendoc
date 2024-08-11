@@ -38,7 +38,7 @@ const headersSchema = useOpenapiParametersToJsonSchema(headers)
           class="d-tab relative"
           :class="active === 'headers' && 'd-tab-active'"
           aria-label="Headers"
-          :to="{ query: { ...$route.query, [activeQueryKey]: 'headers' } }"
+          :to="{ query: { ...route.query, [activeQueryKey]: 'headers' } }"
         >
           <div class="flex items-center space-x-1">
             <span>Headers</span>
@@ -51,7 +51,7 @@ const headersSchema = useOpenapiParametersToJsonSchema(headers)
           class="d-tab relative"
           :class="active === 'body' && 'd-tab-active'"
           aria-label="Query"
-          :to="{ query: { ...$route.query, [activeQueryKey]: 'body' } }"
+          :to="{ query: { ...route.query, [activeQueryKey]: 'body' } }"
         >
           <div class="flex items-center space-x-1">
             <span>Body</span>
