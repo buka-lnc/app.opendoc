@@ -34,7 +34,7 @@ onUnmounted(() => {
         v-show="props.show"
         v-bind="$attrs"
         ref="popover"
-        class="absolute top-0 left-0 popover bg-base-200 border border-[#5b6078] text-[#c5ceef]"
+        class="absolute top-0 left-0 popover bg-ctp-crust ring-1 ring-ctp-surface2 text-ctp-subtext0"
       >
         <slot />
       </div>

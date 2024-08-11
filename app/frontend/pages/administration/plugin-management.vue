@@ -128,7 +128,7 @@ const tipMap = {
             </div>
 
             <div class="d-card-actions ">
-              <div class="d-tooltip" :data-tip="tipMap[plugin.status]">
+              <div class="d-tooltip d-tooltip-left" :data-tip="tipMap[plugin.status]">
                 <button
                   class="d-btn d-btn-sm d-btn-ghost d-btn-square transition-colors"
                   @click="() => toggleStatus(plugin)"

@@ -47,7 +47,7 @@ watch(
       enter-active-to="opacity-100"
     >
       <div
-        v-if="props.show"
+        v-if="show"
         v-bind="$attrs"
         ref="tip"
         :class="[
@@ -64,8 +64,8 @@ watch(
 <style lang="postcss">
 
 .tip {
-  --bg-color: #2f3347;
-  --ft-color: #cad3f5;
+  --bg-color: rgb(var(--ctp-crust));
+  --ft-color: var(--bc);
 
   &.error {
     --bg-color: var(--fallback-er, oklch(var(--er)));
