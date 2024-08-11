@@ -54,12 +54,12 @@ watch(
 
 <template>
   <div class="size-full flex items-stretch ">
-    <div class="h-full overflow-y-auto overflow-x-hidden">
+    <div class="bg-ctp-mantle h-full overflow-y-auto overflow-x-hidden">
       <div class="p-2">
         <search v-model="filter" class="d-input-xs" />
       </div>
 
-      <ul class="flex-0 flex-nowrap d-menu d-menu-sm w-72 h-full">
+      <ul class="flex-0 flex-nowrap d-menu d-menu-sm w-72">
         <li v-for="schema in filteredSchemas" :key="schema.$name">
           <NuxtLink
             class="block w-full truncate"
@@ -72,7 +72,7 @@ watch(
       </ul>
     </div>
 
-    <div class="flex-1 bg-base-100">
+    <div class="flex-1 bg-ctp-base">
       <NuxtPage />
     </div>
   </div>

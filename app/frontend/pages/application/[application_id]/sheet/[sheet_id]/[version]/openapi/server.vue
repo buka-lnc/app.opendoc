@@ -31,11 +31,11 @@ watch(
 
 <template>
   <div class="size-full flex items-stretch">
-    <ul class="flex-0 d-menu d-menu-sm overflow-hidden w-72 h-full">
+    <ul class="bg-ctp-mantle flex-0 d-menu d-menu-sm overflow-hidden w-72 h-full">
       <li v-for="(server, index) in servers" :key="index">
         <NuxtLink
           class="block w-full truncate"
-          :to="{ path: `${prefix}/${index}`, query: $route.query }"
+          :to="{ path: `${prefix}/${index}`, query: route.query }"
           active-class="d-active"
         >
           <openapi-server-preview-card :server="server" />

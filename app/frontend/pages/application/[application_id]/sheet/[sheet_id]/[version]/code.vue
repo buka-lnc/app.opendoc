@@ -38,14 +38,14 @@ watchEffect(() => {
 
 <template>
   <div class="size-full flex flex-row">
-    <div class="w-72 flex-shrink-0 flex-grow-0 overflow-y-auto">
+    <div class="bg-ctp-mantle w-72 flex-shrink-0 flex-grow-0 overflow-y-auto">
       <api-file-categories
         :categories="categories"
         :to="(category) => `${prefix}/${category.$path}`"
       />
     </div>
 
-    <div class="flex-1 bg-base-100">
+    <div class="flex-1 bg-ctp-base">
       <nuxt-page />
     </div>
   </div>

@@ -30,16 +30,16 @@ watch(
 
 <template>
   <div class="size-full flex items-stretch">
-    <div class="bg-base-200 flex-0 overflow-y-auto overflow-x-hidden h-full">
+    <div class="bg-ctp-mantle flex-0 overflow-y-auto overflow-x-hidden h-full">
       <div class="p-2">
         <search v-model="filter" class="d-input-xs" />
       </div>
 
-      <ul class="flex-nowrap d-menu d-menu-sm bg-base-200 p-0 w-72 h-full">
+      <ul class="flex-nowrap d-menu d-menu-sm bg-base-200 p-0 w-72">
         <li v-for="(server, serverKey) in servers" :key="serverKey">
           <NuxtLink
             class="rounded-none w-full truncate font-sans"
-            :to="{ path: `${prefix}/${serverKey}`, query: $route.query }"
+            :to="{ path: `${prefix}/${serverKey}`, query: route.query }"
             active-class="d-active"
           >
             <div v-if="server.description" class="space-x-1">
@@ -54,7 +54,7 @@ watch(
       </ul>
     </div>
 
-    <div class="flex-1 bg-base-100">
+    <div class="flex-1 bg-ctp-base">
       <NuxtPage />
     </div>
   </div>

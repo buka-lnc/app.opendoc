@@ -85,7 +85,7 @@ const counter = computed(() => ({
 
 <template>
   <div class="size-full flex items-stretch">
-    <div class="bg-base-200 flex-0 overflow-y-auto overflow-x-hidden h-full">
+    <div class="bg-ctp-mantle flex-0 overflow-y-auto overflow-x-hidden h-full">
       <div class="p-2">
         <search v-model="filter" class="d-input-xs" />
 
@@ -107,7 +107,7 @@ const counter = computed(() => ({
           <li v-for="operation in group.operations" :key="operation.$uid">
             <NuxtLink
               class="block w-full"
-              :to="{ path: `${prefix}/${operation.$uid}`, query: $route.query }"
+              :to="{ path: `${prefix}/${operation.$uid}`, query: route.query }"
               active-class="d-active"
             >
               <OpenapiOperationPreviewCard :operation="operation" />
@@ -117,7 +117,7 @@ const counter = computed(() => ({
       </ul>
     </div>
 
-    <div class="flex-1 bg-base-100">
+    <div class="flex-1 bg-ctp-base">
       <NuxtPage />
     </div>
   </div>

@@ -8,7 +8,7 @@ const props = defineProps<{
 
 <template>
   <NuxtLink
-    class="group d-card bg-base-200 transition-[background] hover:bg-base-200/70 cursor-pointer border-b last:border-none border-neutral"
+    class="group d-card bg-ctp-mantle transition-[background] hover:bg-ctp-mantle/70 cursor-pointer border-b last:border-none border-neutral"
     :to="`/application/${props.application.id}`"
   >
     <div class="d-card-body">

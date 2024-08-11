@@ -45,7 +45,7 @@ const versionTagMap = computed(() => {
       <div
         v-for="sheetVersion in sheetVersions"
         :key="sheetVersion.id"
-        class="d-card d-card-compact bg-base-200/70 font-sans rounded-md"
+        class="d-card d-card-compact bg-ctp-mantle font-sans rounded-md"
       >
         <openapi-version-preview-card
           :sheet-version="sheetVersion"

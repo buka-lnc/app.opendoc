@@ -38,11 +38,11 @@ const versionTagMap = computed(() => {
 
 <template>
   <StuffedLoading v-if="pending" :pending="pending" />
-  <div v-if="!pending" class="p-10">
+  <div v-if="!pending" class="bg-ctp-base p-10">
     <div
       v-for="sheetVersion in sheetVersions"
       :key="sheetVersion.id"
-      class="d-card bg-base-100 rounded-sm"
+      class="d-card bg-ctp-mantle rounded-sm"
     >
       <asyncapi-version-preview-card
         :sheet-version="sheetVersion"

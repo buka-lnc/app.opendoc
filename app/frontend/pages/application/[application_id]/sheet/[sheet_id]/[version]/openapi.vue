@@ -51,7 +51,7 @@ watchEffect(async () => {
 </script>
 <template>
   <div class="size-full flex overflow-hidden">
-    <icon-menu-container>
+    <icon-menu-container class="bg-ctp-crust">
       <icon-menu-button
         :to="`${prefix}/version`"
         tip="版本"

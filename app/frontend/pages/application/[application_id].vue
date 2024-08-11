@@ -64,7 +64,7 @@ watchEffect(async () => {
           @updated:sheet="() => refresh()"
         />
 
-        <div class="flex-1 py overflow-hidden bg-base-200">
+        <div class="flex-1 py overflow-hidden">
           <NuxtPage />
         </div>
       </div>

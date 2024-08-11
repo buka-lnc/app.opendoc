@@ -49,9 +49,9 @@ const filterTypeDescription = {
     @created:application="() => refresh()"
   />
 
-  <div class="flex flex-col font-mono relative overflow-y-auto size-full">
-    <div class="z-10 bg-base-100 sticky top-0 m-0 flex-0 pb-4">
-      <div class="d-navbar bg-base-300">
+  <div class="flex flex-col font-mono relative overflow-y-auto size-full bg-ctp-base">
+    <div class="z-10 sticky top-0 m-0 flex-0 pb-4">
+      <div class="d-navbar bg-ctp-crust">
         <div class="flex-1">
           <a
             class="d-btn d-btn-ghost text-xl"

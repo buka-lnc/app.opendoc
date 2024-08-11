@@ -51,7 +51,7 @@ const { filter, data: filteredSchemas } = useFilter(schemas, schema => schema.$n
 
 <template>
   <div class="size-full flex items-stretch ">
-    <div class="h-full overflow-y-auto overflow-x-hidden">
+    <div class="bg-ctp-mantle h-full overflow-y-auto overflow-x-hidden">
       <div class="p-2">
         <search v-model="filter" class="d-input-xs" />
       </div>
@@ -69,7 +69,7 @@ const { filter, data: filteredSchemas } = useFilter(schemas, schema => schema.$n
       </ul>
     </div>
 
-    <div class="flex-1 bg-base-100">
+    <div class="flex-1 bg-ctp-base">
       <NuxtPage />
     </div>
   </div>

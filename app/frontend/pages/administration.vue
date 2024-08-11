@@ -6,8 +6,8 @@ const router = useRouter()
 
 <template>
   <div class="size-full flex items-stretch ">
-    <div class="h-full overflow-y-auto overflow-x-hidden bg-base-200">
-      <div class="p-2 bg-base-300 flex items-center space-x-4">
+    <div class="h-full overflow-y-auto overflow-x-hidden bg-ctp-mantle">
+      <div class="p-2 bg-ctp-crust flex items-center space-x-4">
         <button
           class="d-btn d-btn-square d-btn-ghost"
           @click="router.push('/applications')"

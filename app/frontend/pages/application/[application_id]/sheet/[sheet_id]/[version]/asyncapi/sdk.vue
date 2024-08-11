@@ -37,7 +37,7 @@ watch(
   <div class="size-full flex items-stretch ">
     <stuffed-loading :pending="pending" />
 
-    <div class="h-full overflow-y-auto overflow-x-hidden">
+    <div class="bg-ctp-mantle h-full overflow-y-auto overflow-x-hidden">
       <ul class="flex-0 flex-nowrap d-menu d-menu-sm bg-base-200 p-0 h-full w-72">
         <li v-for="sdk in sdks" :key="sdk.id">
           <NuxtLink
@@ -57,7 +57,7 @@ watch(
       </ul>
     </div>
 
-    <div class="flex-1 bg-base-100">
+    <div class="flex-1 bg-ctp-base">
       <NuxtPage />
     </div>
   </div>

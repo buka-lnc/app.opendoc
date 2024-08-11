@@ -30,7 +30,7 @@ watch(
 
 <template>
   <div class="size-full flex items-stretch">
-    <div class="bg-base-200 flex-0 overflow-y-auto overflow-x-hidden h-full">
+    <div class="bg-ctp-mantle flex-0 overflow-y-auto overflow-x-hidden h-full">
       <div class="p-2">
         <search v-model="filter" class="d-input-xs" />
       </div>
@@ -39,7 +39,7 @@ watch(
         <li v-for="(channel, topic) in channels" :key="topic">
           <NuxtLink
             class="rounded-none w-full truncate"
-            :to="{ path: `${prefix}/${topic}`, query: $route.query }"
+            :to="{ path: `${prefix}/${topic}`, query: route.query }"
             active-class="d-active"
           >
             {{ topic }}
@@ -48,7 +48,7 @@ watch(
       </ul>
     </div>
 
-    <div class="flex-1 bg-base-100">
+    <div class="flex-1 bg-ctp-base">
       <NuxtPage />
     </div>
   </div>
