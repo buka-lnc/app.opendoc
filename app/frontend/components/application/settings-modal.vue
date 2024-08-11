@@ -31,7 +31,7 @@ watchEffect(() => {
     <dialog v-if="application" class="d-modal overflow-auto" :class="show && 'd-modal-open'">
       <div class="d-modal-box w-[48rem] max-w-[48rem] h-[44rem] max-h-[44rem] p-0 font-sans !border-[#5b6078] overflow-auto">
         <div class="flex-auto flex flex-row size-full overflow-hidden">
-          <div class="flex-0 bg-base-200 w-40">
+          <div class="flex-0 bg-ctp-mantle w-40">
             <ul class="d-menu">
               <li>
                 <button
