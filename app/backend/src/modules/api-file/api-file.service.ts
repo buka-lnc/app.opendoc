@@ -57,11 +57,16 @@ export class ApiFileService {
     return path.join('api-file', file.sheet.id, sheetVersion.version, file.path)
   }
 
-  async createByTgz(dto: CreateApiFileByTgzDTO): Promise<ApiFile[]> {
+  /**
+   * Decompress tgz file buffer to files
+   * @param raw the tgz file buffer
+   */
+  async decompress(raw: Buffer): Promise<FileRawDTO[]> {
     const { temporaryDirectory } = (await import('tempy'))
+
     const dir = temporaryDirectory()
 
-    await compressing.tgz.uncompress(dto.raw, dir)
+    await compressing.tgz.uncompress(raw, dir)
 
     const pw = new PathScurry(dir, {
       nocase: false,
@@ -71,17 +76,15 @@ export class ApiFileService {
       filter: (file) => file.isFile(),
     })
 
-    const fileRaws = await Promise.all(pwFiles.map(async (file): Promise<FileRawDTO> => ({
+    return await Promise.all(pwFiles.map(async (file): Promise<FileRawDTO> => ({
       path: file.relative(),
       raw: await fs.readFile(file.fullpath()),
     })))
+  }
 
-
-    const apiFiles = await this.create({
-      ...dto,
-      files: fileRaws,
-    })
-
+  async createByTgz(dto: CreateApiFileByTgzDTO): Promise<ApiFile[]> {
+    const fileRaws = await this.decompress(dto.raw)
+    const apiFiles = await this.create({ ...dto, files: fileRaws })
     return apiFiles
   }
 
