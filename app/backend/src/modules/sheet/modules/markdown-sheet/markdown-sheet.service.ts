@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common'
-import { TypeSheet } from '../../types/type-sheet'
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino'
+import { TypeSheet } from '../../types/type-sheet'
 
 
 @Injectable()
-export class OpenapiSheetService implements TypeSheet {
+export class MarkdownSheetService implements TypeSheet {
   constructor(
-    @InjectPinoLogger(OpenapiSheetService.name)
+    @InjectPinoLogger(MarkdownSheetService.name)
     private readonly logger: PinoLogger
   ) {}
 
