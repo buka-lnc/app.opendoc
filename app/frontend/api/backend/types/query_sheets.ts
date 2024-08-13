@@ -12,8 +12,8 @@ export type QueryParameters = {
   "title"?: string
   "type"?: string
   "applicationId"?: string
-  "limit"?: string
-  "offset"?: string
+  "limit"?: number
+  "offset"?: number
 }
 
 export type RouteParameters = {

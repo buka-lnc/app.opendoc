@@ -1,27 +1,25 @@
 import type { KeqOperation } from 'keq'
-import type { ResponseOfQueryApplicationsDTO } from "../components/schemas/response_of_query_applications_dto"
+import type { Plugin } from "../components/schemas/plugin"
+import type { UpdatePluginDTO } from "../components/schemas/update_plugin_dto"
 
 
 export interface ResponseMap {
-  "200": ResponseOfQueryApplicationsDTO
-  "500": unknown
+  "200": Plugin
 }
 
 
 export type QueryParameters = {
-  "title"?: string
-  "code"?: string
-  "limit"?: number
-  "offset"?: number
 }
 
 export type RouteParameters = {
+  "pluginId": string
 }
 
 export type HeaderParameters = {
 }
 
-export type BodyParameters ={}
+export type BodyParameters =(UpdatePluginDTO)
+
 export type RequestParameters = QueryParameters & RouteParameters & HeaderParameters & BodyParameters
 
 

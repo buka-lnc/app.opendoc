@@ -9,8 +9,8 @@ export interface ResponseMap {
 
 export type QueryParameters = {
   "sheetId": string
-  "limit"?: string
-  "offset"?: string
+  "limit"?: number
+  "offset"?: number
 }
 
 export type RouteParameters = {

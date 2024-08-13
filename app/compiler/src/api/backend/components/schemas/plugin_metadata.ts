@@ -30,7 +30,7 @@ export interface PluginMetadata {
    */
   "apiVersion": string
   /**
-   * Compiler 选项
+   * Plugin 选项
    */
   "options"?: (PluginOptionDefinition)[]
 }

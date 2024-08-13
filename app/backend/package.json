@@ -48,7 +48,7 @@
     "get-stream": "^9.0.1",
     "into-stream": "^8.0.1",
     "json-schema-typed": "^7.0.3",
-    "keq": "^2.7.1",
+    "keq": "^2.7.3",
     "keq-debug": "^2.0.5",
     "keq-headers": "^2.0.4",
     "mime": "^4.0.3",

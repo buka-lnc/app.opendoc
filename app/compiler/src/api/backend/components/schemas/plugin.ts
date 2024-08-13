@@ -10,7 +10,7 @@ export interface Plugin {
   /**
    * 编译器状态
    */
-  "status": "disabled" | "enabled"
+  "status": "disabled" | "enabled" | "breakdown"
   /**
    * 编译器地址
    */
