@@ -19,12 +19,11 @@ export class WebSocketService {
   ) {}
 
   async connect(url: string): Promise<[WebSocket, PluginMetadata]> {
-    if (!isURL(url, { require_host: true, require_protocol: true, protocols: ['ws'] })) {
+    if (!isURL(url, { require_host: true, require_tld: false, require_protocol: true, protocols: ['ws'] })) {
       throw new BadRequestException('Invalid URL')
     }
 
     const ttl = this.appConfig.ttl
-    console.log('🚀 ~ WebSocketService ~ connect ~ ttl:', ttl)
     const appName = this.appConfig.appName
     const logger = this.logger
 
@@ -52,7 +51,7 @@ export class WebSocketService {
           ws.off('message', onMessage)
           ws.off('error', onError)
 
-          reject(new BadRequestException('Invalid Websocket message'))
+          reject(new BadRequestException('编译器回应了无法识别的数据格式，请检查 OpenDoc 与 Plugin 版本是否兼容'))
         }
       }
 
@@ -60,7 +59,14 @@ export class WebSocketService {
         logger.error(`Plugin ${url} is breakdown`)
         clearTimeout(ttlHandler)
         ws.close()
-        reject(err)
+
+        if ('code' in err && err['code'] === 'ENOTFOUND') {
+          reject(new BadRequestException(`无法连接至 Plugin(${url})`))
+        } else if ('code' in err && err['code'] === 'ECONNREFUSED') {
+          reject(new BadRequestException(`Plugin(${url}) 拒绝连接`))
+        } else {
+          reject(err)
+        }
       }
 
       const ws = new WebSocket(url, {

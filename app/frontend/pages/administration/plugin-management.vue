@@ -15,7 +15,7 @@ const { status, data: plugins, execute: reload } = useAsyncData(async () => {
 
 const urlInput = ref('')
 const pluginUrl = computed(() => `ws://${urlInput.value}`)
-const isValidUrl = computed(() => isURL(pluginUrl.value, { require_host: true, require_protocol: true, protocols: ['ws'] }))
+const isValidUrl = computed(() => isURL(pluginUrl.value, { require_host: true, require_tld: false, require_protocol: false, protocols: ['ws'] }))
 const { pending: appending, execute: create } = useAsyncFn(async () => {
   if (!pluginUrl.value) return
 
