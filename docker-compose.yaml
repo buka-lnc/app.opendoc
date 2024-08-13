@@ -40,3 +40,35 @@ services:
     image: verdaccio/verdaccio
     ports:
       - "4873:4873"
+    configs:
+      - source: verdaccio_conf.yaml
+        target: /verdaccio/conf/config.yaml
+configs:
+  verdaccio_conf.yaml:
+    content: |
+      storage: /verdaccio/storage/data
+      plugins: /verdaccio/plugins
+      web:
+        title: Opendoc Compiler Test
+      uplinks:
+        npmjs:
+          url: https://registry.npmjs.org/
+      packages:
+        '@*/*':
+          # scoped packages
+          access: $$all
+          publish: $$all
+          unpublish: $$all
+          proxy: npmjs
+        '**':
+          access: $$all
+          publish: $$all
+          unpublish: $$all
+          proxy: npmjs
+      server:
+        keepAliveTimeout: 60
+      publish:
+        allow_offline: true
+      middlewares:
+        audit:
+          enabled: true
