@@ -1,5 +1,11 @@
 # @opendoc/backend
 
+## 1.7.1
+
+### Patch Changes
+
+- d8461f8: 修复插件配置将自定义 Host 识别为非法地址的问题
+
 ## 1.7.0
 
 ### Minor Changes
