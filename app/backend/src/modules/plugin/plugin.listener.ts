@@ -63,10 +63,12 @@ export class PluginListener {
       return
     }
 
+    const version = this.sheetVersionService.parse(sheetVersion.version)
+
     await this.pluginService.broadcast(PluginEventName.SHEET_VERSION_BUMP, {
       sheet: R.omit(['application', 'versions', 'sdks', 'apiFiles', 'pullCrontab'], wrap(sheet).toObject()),
       application: R.omit(['sheets'], wrap(application).toObject()),
-      version: R.pick(['major', 'minor', 'patch', 'tag', 'prerelease'], sheetVersion),
+      version,
     })
   }
 
@@ -80,17 +82,11 @@ export class PluginListener {
     }
 
     const parsedVersion = this.sheetVersionService.parse(sdk.version)
-    const plugin = await sdk.plugin.load()
-    if (!plugin) {
-      this.logger.error('Cannot send sdk-created event to plugin: plugin not found')
-      return
-    }
-
     const apiFilesRaw = await this.sheetService.getApiFilesRaw(sdk.sheet.id, sdk.version.version)
 
-    await this.pluginService.unicast(plugin.id, PluginEventName.SDK_CREATED, {
+    await this.pluginService.broadcast(PluginEventName.SDK_CREATED, {
       sdk: {
-        ...R.omit(['sheet', 'plugin', 'version'], wrap(sdk).toObject()),
+        ...wrap(sdk).serialize(),
         version: parsedVersion,
       },
       version: parsedVersion,

@@ -92,7 +92,13 @@ export class CompilerGateway implements OnGatewayInit, OnGatewayConnection, OnGa
     @ConnectedSocket() client: WebSocket,
     @MessageBody() data: SdkCreatedPluginEventMessageData,
   ): Promise<void> {
+    console.log('🚀 ~ CompilerGateway ~ data:', data)
     this.logger.debug(`${this.prefixLog(client)} sdk-created`)
+
+    if (data.sdk.plugin.id !== data.plugin.id) {
+      this.logger.debug(`${this.prefixLog(client)} ignore sdk-created event from other plugin`)
+      return
+    }
 
     this.webSocketService.sendCommand(client, 'update-sdk', <UpdateSdkDTO> {
       id: data.sdk.id,
