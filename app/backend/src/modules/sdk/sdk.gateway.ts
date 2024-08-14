@@ -9,8 +9,6 @@ import { SheetVersion } from '../sheet-version/entities/sheet-version.entity'
 import { Sheet } from '../sheet/entities/sheet.entity'
 import { Plugin } from '../plugin/entities/plugin.entity'
 import { SdkStatus } from './constant/sdk-status'
-import { SdkCreatedEvent } from './events/sdk-created.event'
-import { SdkUpdatedEvent } from './events/sdk-updated.event'
 import { PluginCommandEvent } from '../plugin/events/plugin-command.event'
 import { PluginCommandName } from '../plugin/constants/plugin-command-name'
 
@@ -70,11 +68,6 @@ export class SdkGateway {
 
     await this.em.persistAndFlush(sdk)
 
-    this.eventEmitter.emit(
-      'sdk.created',
-      new SdkCreatedEvent(sdk.id)
-    )
-
     return sdk
   }
 
@@ -97,11 +90,6 @@ export class SdkGateway {
     }
 
     await this.em.persistAndFlush(sdk)
-
-    this.eventEmitter.emit(
-      'sdk.updated',
-      new SdkUpdatedEvent(sdk)
-    )
 
     return sdk
   }

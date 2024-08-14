@@ -19,7 +19,6 @@ import { SheetMode } from './constants/sheet-mode.enum'
 import { QuerySheetsDTO } from './dto/query-sheets.dto'
 import { ResponseOfQuerySheetsDTO } from './dto/response-of-query-sheets.dto'
 import { Sdk } from '../sdk/entities/sdk.entity'
-import { SheetCreatedEvent } from './events/sheet-created.event'
 import { ApiFile } from '../api-file/entities/api-file.entity'
 import { UpdateSheetDTO } from './dto/update-sheet.dto'
 import { SheetPullCrontab } from './entities/sheet-pull-crontab.entity'
@@ -77,11 +76,6 @@ export class SheetService {
       if (dto.sheetOrder) sheet.order = dto.sheetOrder
 
       await this.em.persistAndFlush(sheet)
-
-      this.eventEmitter.emit(
-        'sheet.created',
-        new SheetCreatedEvent(sheet)
-      )
     } else {
       if (dto.sheetTitle) sheet.title = dto.sheetTitle
       if (dto.sheetOrder) sheet.order = dto.sheetOrder
@@ -124,11 +118,6 @@ export class SheetService {
     })
 
     await this.em.persistAndFlush(sheet)
-
-    this.eventEmitter.emit(
-      'sheet.created',
-      new SheetCreatedEvent(sheet)
-    )
 
     if (dto.pullCrontab) {
       await this.sheetSynchronizeService.create({

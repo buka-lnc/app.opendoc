@@ -14,6 +14,10 @@ import { InjectRepository } from '@mikro-orm/nestjs'
 import { SheetVersion } from '../sheet-version/entities/sheet-version.entity'
 import { Sheet } from '../sheet/entities/sheet.entity'
 import { Sdk } from '../sdk/entities/sdk.entity'
+import { SheetCreatedEvent } from '../sheet/events/sheet-created.event'
+import { SheetDeletedEvent } from '../sheet/events/sheet-deleted.event'
+import { SdkDeletedEvent } from '../sdk/events/sdk-deleted.event'
+import { SdkUpdatedEvent } from '../sdk/events/sdk-updated.event'
 
 
 @Injectable()
@@ -75,7 +79,7 @@ export class PluginListener {
   @OnEvent('sdk.created')
   @CreateRequestContext()
   async onSdkCreated(event: SdkCreatedEvent): Promise<void> {
-    const sdk = await this.sdkRepo.findOne(event.sdkId)
+    const sdk = await this.sdkRepo.findOne(event.sdk.id)
     if (!sdk) {
       this.logger.error('Cannot send sdk-created event to plugin: sdk not found')
       return
@@ -91,6 +95,85 @@ export class PluginListener {
       },
       version: parsedVersion,
       apiFilesRaw: apiFilesRaw.toString('base64'),
+    })
+  }
+
+  @OnEvent('sdk.updated')
+  @CreateRequestContext()
+  async onSdkUpdated(event: SdkUpdatedEvent): Promise<void> {
+    const sdk = await this.sdkRepo.findOne(event.sdk.id)
+    if (!sdk) {
+      this.logger.error('Cannot send sdk-updated event to plugin: sdk not found')
+      return
+    }
+
+    const parsedVersion = this.sheetVersionService.parse(sdk.version)
+
+    await this.pluginService.broadcast(PluginEventName.SDK_UPDATED, {
+      sdk: {
+        ...wrap(sdk).serialize(),
+        version: parsedVersion,
+      },
+      version: parsedVersion,
+    })
+  }
+
+  @OnEvent('sdk.deleted')
+  @CreateRequestContext()
+  async onSdkDeleted(event: SdkDeletedEvent): Promise<void> {
+    const sdk = await this.sdkRepo.findOne(event.sdk.id)
+    if (!sdk) {
+      this.logger.error('Cannot send sdk-deleted event to plugin: sdk not found')
+      return
+    }
+    const parsedVersion = this.sheetVersionService.parse(sdk.version)
+
+    await this.pluginService.broadcast(PluginEventName.SDK_DELETED, {
+      sdk: {
+        ...wrap(sdk).serialize(),
+        version: parsedVersion,
+      },
+      version: parsedVersion,
+    })
+  }
+
+  @OnEvent('sheet.created')
+  @CreateRequestContext()
+  async onSheetCreated(event: SheetCreatedEvent): Promise<void> {
+    const sheet = await this.sheetRepo.findOne(event.sheet.id)
+    if (!sheet) {
+      this.logger.error('Cannot send sheet-created event to plugin: sheet not found')
+      return
+    }
+    const application = await sheet.application.load()
+    if (!application) {
+      this.logger.error('Cannot send sheet-created event to plugin: application not found')
+      return
+    }
+
+    await this.pluginService.broadcast(PluginEventName.SHEET_CREATED, {
+      sheet: wrap(sheet).serialize(),
+      application: wrap(application).serialize(),
+    })
+  }
+
+  @OnEvent('sheet.deleted')
+  @CreateRequestContext()
+  async onSheetDeleted(event: SheetDeletedEvent): Promise<void> {
+    const sheet = await this.sheetRepo.findOne(event.sheet.id)
+    if (!sheet) {
+      this.logger.error('Cannot send sheet-deleted event to plugin: sheet not found')
+      return
+    }
+    const application = await sheet.application.load()
+    if (!application) {
+      this.logger.error('Cannot send sheet-deleted event to plugin: application not found')
+      return
+    }
+
+    await this.pluginService.broadcast(PluginEventName.SHEET_DELETED, {
+      sheet: wrap(sheet).serialize(),
+      application: wrap(application).serialize(),
     })
   }
 }

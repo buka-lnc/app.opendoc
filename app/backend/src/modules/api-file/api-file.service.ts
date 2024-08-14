@@ -14,8 +14,6 @@ import { Readable } from 'stream'
 import { CacheService } from '../storage/cache.service'
 import { Sheet } from '../sheet/entities/sheet.entity'
 import { ApiFile } from './entities/api-file.entity'
-import { ApiFileCreatedEvent } from './events/api-file-created.event'
-import { ApiFileDeletedEvent } from './events/api-file-deleted.event'
 import { QueryApiFilesDTO } from './dto/query-api-files.dto'
 import { PathScurry } from 'path-scurry'
 import { CreateApiFilesDTO } from './dto/create-api-files.dto'
@@ -144,13 +142,6 @@ export class ApiFileService {
 
     await this.em.flush()
 
-    for (const apiFile of apiFiles) {
-      this.eventEmitter.emit(
-        'api-file.created',
-        new ApiFileCreatedEvent(apiFile)
-      )
-    }
-
     this.eventEmitter.emit(
       'sheet-version.bump',
       new SheetVersionBumpEvent(newSheetVersion.id)
@@ -252,10 +243,6 @@ export class ApiFileService {
     if (!apiFile) return
 
     this.em.remove(apiFile)
-    this.eventEmitter.emit(
-      'api-file.deleted',
-      new ApiFileDeletedEvent(apiFile)
-    )
 
     const filepath = await this.getFilepath(apiFile)
     await this.storageService.removeFile(filepath)

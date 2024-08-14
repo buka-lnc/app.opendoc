@@ -11,6 +11,7 @@ import { Sheet } from '../sheet/entities/sheet.entity'
 import { SheetVersion } from '../sheet-version/entities/sheet-version.entity'
 import { Plugin } from '../plugin/entities/plugin.entity'
 import { SdkGateway } from './sdk.gateway'
+import { SdkSubscriber } from './sdk.subscriber'
 
 
 @Module({
@@ -27,7 +28,7 @@ import { SdkGateway } from './sdk.gateway'
     ]),
   ],
   controllers: [SdkController],
-  providers: [SdkService, SdkGateway],
+  providers: [SdkService, SdkGateway, SdkSubscriber],
   exports: [SdkService],
 })
 export class SdkModule {}
