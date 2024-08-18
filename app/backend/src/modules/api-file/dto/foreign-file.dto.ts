@@ -1,12 +1,11 @@
-import { TakeType } from '@miaooo/nestjs-take-type'
 import { ApiProperty } from '@nestjs/swagger'
-import { ApiFile } from '../entities/api-file.entity'
+import { IsString, MaxLength } from 'class-validator'
 
-export class FileRawDTO extends TakeType(
-  ApiFile,
-  ['path'],
-  [],
-) {
+export class ForeignFile {
+  @MaxLength(128)
+  @IsString()
+  path!: string
+
   /**
    * 文档文件
    */

@@ -1,4 +1,5 @@
 import type { ParsedVersionDTO } from "./parsed_version_dto"
+import type { EntityReferenceDTO } from "./entity_reference_dto"
 
 
 /**
@@ -20,6 +21,8 @@ export interface SdkDTO {
    */
   "publishedAt"?: string
   "version": ParsedVersionDTO
+  "plugin": EntityReferenceDTO
+  "sheet": EntityReferenceDTO
   /**
    * 主键
    */

@@ -1,6 +1,6 @@
 import { ConfigModule } from '@buka/nestjs-config'
 import * as util from 'util'
-import { MySqlDriver, defineConfig } from '@mikro-orm/mysql'
+import { FlushMode, MySqlDriver, defineConfig } from '@mikro-orm/mysql'
 import { MysqlConfig } from './config/mysql.config'
 import { Migrator } from '@mikro-orm/migrations'
 import { BadRequestException } from '@nestjs/common'
@@ -16,6 +16,7 @@ export default (async function loadConfig() {
   return defineConfig({
     ...config,
     entities: ['dist/**/*.entity.js'],
+    flushMode: FlushMode.COMMIT,
     extensions: [Migrator],
     serialization: {
       forceObject: true,

@@ -16,6 +16,6 @@ import { CacheService } from './cache.service'
     S3Service,
     OssService,
   ],
-  exports: [StorageService, CacheService],
+  exports: [StorageService],
 })
 export class StorageModule {}

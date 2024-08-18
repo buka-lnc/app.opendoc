@@ -7,6 +7,7 @@ import { S3Service } from "./s3.service";
 import { InjectPinoLogger, PinoLogger } from "nestjs-pino";
 import { Readable } from "stream";
 import { OssService } from "./oss.service";
+import { CacheService } from "./cache.service";
 
 @Injectable()
 export class StorageService implements StandardStorageService {
@@ -15,6 +16,7 @@ export class StorageService implements StandardStorageService {
     private readonly logger: PinoLogger,
 
     private readonly storageConfig: StorageConfig,
+    private readonly cacheService: CacheService,
 
     private readonly diskService: DiskService,
     private readonly s3Service: S3Service,
@@ -32,15 +34,23 @@ export class StorageService implements StandardStorageService {
     }
   }
 
-  readFile(filepath: string): Promise<Buffer> {
+  async readFile(filepath: string): Promise<Buffer> {
+    if (await this.cacheService.exists(filepath)) {
+      return this.cacheService.readFile(filepath)
+    }
+
+    let content: Buffer
     switch (this.storageConfig.type) {
       case StorageConfigType.Disk:
-        return this.diskService.readFile(filepath);
+        content = await this.diskService.readFile(filepath);
       case StorageConfigType.S3:
-        return this.s3Service.readFile(filepath);
+        content = await this.s3Service.readFile(filepath);
       case StorageConfigType.Oss:
-        return this.ossService.readFile(filepath);
+        content = await this.ossService.readFile(filepath);
     }
+
+    await this.cacheService.add(filepath, content)
+    return content
   }
 
   createStream(filepath: string): Promise<Readable> {
@@ -54,14 +64,16 @@ export class StorageService implements StandardStorageService {
     }
   }
 
-  removeFile(filepath: string): Promise<void> {
+  async removeFile(filepath: string): Promise<void> {
     switch (this.storageConfig.type) {
       case StorageConfigType.Disk:
-        return this.diskService.removeFile(filepath);
+        await this.diskService.removeFile(filepath);
       case StorageConfigType.S3:
-        return this.s3Service.removeFile(filepath);
+        await this.s3Service.removeFile(filepath);
       case StorageConfigType.Oss:
-        return this.ossService.removeFile(filepath);
+        await this.ossService.removeFile(filepath);
     }
+
+    await this.cacheService.removeFile(filepath)
   }
 }

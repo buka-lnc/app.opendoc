@@ -42,6 +42,7 @@ export class SheetController {
       ...dto,
       apiFileRaw: apiFileRaw?.buffer,
     })
+    await this.em.flush()
   }
 
   @Put(':sheetId')
@@ -50,7 +51,9 @@ export class SheetController {
     @Param('sheetId') sheetId: string,
     @Body() dto: UpdateSheetDTO,
   ): Promise<Sheet> {
-    return this.sheetService.update(sheetId, dto)
+    const sheet = await this.sheetService.update(sheetId, dto)
+    await this.em.flush()
+    return sheet
   }
 
   @Post()
@@ -58,7 +61,9 @@ export class SheetController {
   async createSheet(
     @Body() dto: CreateSheetDTO,
   ): Promise<Sheet> {
-    return this.sheetService.create(dto)
+    const sheet = await this.sheetService.create(dto)
+    await this.em.flush()
+    return sheet
   }
 
   @Delete(':sheetId')
@@ -67,6 +72,7 @@ export class SheetController {
     @Param('sheetId') sheetId: string,
   ): Promise<void> {
     await this.sheetService.remove(sheetId)
+    await this.em.flush()
   }
 
   @Post(':sheetId/sync')
@@ -75,6 +81,7 @@ export class SheetController {
     @Param('sheetId') sheetId: string,
   ): Promise<void> {
     await this.sheetService.sync(sheetId)
+    await this.em.flush()
   }
 
   @Post('sync')

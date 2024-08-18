@@ -28,7 +28,7 @@ const versionTagMap = computed(() => {
 
   for (const [tag, sheetVersions] of Object.entries(tags)) {
     if (sheetVersions?.length) {
-      const versions = sheetVersions.map(R.prop('version'))
+      const versions = R.pluck('string', sheetVersions)
       const maxVersion = R.sort(semver.rcompare, versions)[0]
       mapping[maxVersion] = tag
     }
@@ -49,7 +49,7 @@ const versionTagMap = computed(() => {
       >
         <openapi-version-preview-card
           :sheet-version="sheetVersion"
-          :tag="versionTagMap[sheetVersion.version]"
+          :tag="versionTagMap[sheetVersion.string]"
         />
       </div>
     </div>

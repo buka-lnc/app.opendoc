@@ -8,6 +8,7 @@ import type { SheetPullCrontabDTO } from "./sheet_pull_crontab_dto"
  * @export
  */
 export interface CreateSheetDTO {
+  "mode": "pull" | "push"
   /**
    * 应用编码
    * 将文档创建到哪个应用下
@@ -33,5 +34,4 @@ export interface CreateSheetDTO {
    * 文档名称
    */
   "title": string
-  "mode": "pull" | "push"
 }

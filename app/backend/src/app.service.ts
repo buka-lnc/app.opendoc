@@ -81,5 +81,7 @@ export class AppService {
     await this.registerApplication()
     await this.registerDocs()
     await this.registerOpenapi(openapi)
+
+    await this.em.flush()
   }
 }

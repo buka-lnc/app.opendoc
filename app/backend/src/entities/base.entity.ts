@@ -1,7 +1,9 @@
-import { OptionalProps, PrimaryKey, Property } from '@mikro-orm/core'
+import { Config, DefineConfig, OptionalProps, PrimaryKey, Property } from '@mikro-orm/core'
 
 export abstract class BaseEntity<Optional = never> {
   [OptionalProps]?: 'createdAt' | 'updatedAt' | Optional
+  [Config]?: DefineConfig<{ forceObject: true }>
+
 
   /**
    * 主键

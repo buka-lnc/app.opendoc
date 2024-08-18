@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import * as R from 'ramda'
-import semver from 'semver'
+import * as semver from 'semver'
 import { useRouteParams } from '@vueuse/router'
 import { queryApiFiles, querySheetById, querySheetVersions } from '~/api/backend'
 import { ApiFile, Sheet, SheetVersion } from '~/api/backend/components/schemas'
@@ -49,7 +49,7 @@ watchEffect(async () => {
 
   if (route.path === prefix.value) {
     if (!apiFiles.value.length) return
-    const versions = R.sort(semver.rcompare, sheetVersions.value.map(R.prop('version')))
+    const versions = R.sort(semver.rcompare, R.pluck('string', sheetVersions.value))
     const maxVersion = versions[0]
 
     if (sheet.value.type === 'markdown') {

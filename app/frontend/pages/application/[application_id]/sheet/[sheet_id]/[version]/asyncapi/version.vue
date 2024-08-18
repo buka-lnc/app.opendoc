@@ -27,7 +27,7 @@ const versionTagMap = computed(() => {
 
   for (const [tag, versions] of Object.entries(tags)) {
     if (versions?.length) {
-      const version = versions[0].version
+      const version = versions[0].string
       mapping[version] = tag
     }
   }
@@ -46,7 +46,7 @@ const versionTagMap = computed(() => {
     >
       <asyncapi-version-preview-card
         :sheet-version="sheetVersion"
-        :tag="versionTagMap[sheetVersion.version]"
+        :tag="versionTagMap[sheetVersion.string]"
       />
     </div>
   </div>

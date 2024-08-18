@@ -48,7 +48,7 @@ export class PluginListener {
   @OnEvent('sheet-version.bump')
   @CreateRequestContext()
   async onApiFileCreated(event: SheetVersionBumpEvent): Promise<void> {
-    const sheetVersion = await this.sheetVersionRepo.findOne(event.sheetVersionId)
+    const sheetVersion = await this.sheetVersionRepo.findOne(event.sheetVersion.id)
     if (!sheetVersion) {
       this.logger.error('Cannot send sheet-version-bump event to plugin: sheet version not found')
       return
@@ -67,7 +67,7 @@ export class PluginListener {
       return
     }
 
-    const version = this.sheetVersionService.parse(sheetVersion.version)
+    const version = this.sheetVersionService.parse(sheetVersion.string)
 
     await this.pluginService.broadcast(PluginEventName.SHEET_VERSION_BUMP, {
       sheet: R.omit(['application', 'versions', 'sdks', 'apiFiles', 'pullCrontab'], wrap(sheet).toObject()),
@@ -86,7 +86,7 @@ export class PluginListener {
     }
 
     const parsedVersion = this.sheetVersionService.parse(sdk.version)
-    const apiFilesRaw = await this.sheetService.getApiFilesRaw(sdk.sheet.id, sdk.version.version)
+    const apiFilesRaw = await this.sheetService.getApiFilesRaw(sdk.sheet.id, sdk.version.string)
 
     await this.pluginService.broadcast(PluginEventName.SDK_CREATED, {
       sdk: {

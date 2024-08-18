@@ -51,7 +51,6 @@ import { PluginModule } from './modules/plugin/plugin.module'
     SheetVersionModule,
     ApiFileModule,
     SdkModule,
-    // RegistryModule,
     OptionModule,
     PluginModule,
   ],

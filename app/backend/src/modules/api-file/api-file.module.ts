@@ -8,6 +8,7 @@ import { StorageModule } from '../storage/storage.module'
 import { SheetVersion } from '../sheet-version/entities/sheet-version.entity'
 import { SheetVersionModule } from '../sheet-version/sheet-version.module'
 import { ApiFileSubscriber } from './api-file.subscriber'
+import { ApiFileStorageService } from './api-file-storage.service'
 
 
 @Module({
@@ -21,7 +22,7 @@ import { ApiFileSubscriber } from './api-file.subscriber'
     SheetVersionModule,
   ],
   controllers: [ApiFileController],
-  providers: [ApiFileService, ApiFileSubscriber],
+  providers: [ApiFileService, ApiFileStorageService, ApiFileSubscriber],
   exports: [ApiFileService],
 })
 export class ApiFileModule {}

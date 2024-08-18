@@ -18,12 +18,13 @@ export class ApplicationController {
     private readonly applicationService: ApplicationService
   ) {}
 
-  @Put()
+  @Put('register')
   @ApiOperation({ summary: '注册应用' })
   async registerApplication(
     @Body() dto: RegisterApplicationDTO
   ): Promise<void> {
     await this.applicationService.register(dto)
+    await this.em.flush()
   }
 
   @Post()
@@ -31,7 +32,9 @@ export class ApplicationController {
   async createApplication(
     @Body() dto: CreateApplicationDTO,
   ): Promise<Application> {
-    return await this.applicationService.create(dto)
+    const application = await this.applicationService.create(dto)
+    await this.em.flush()
+    return application
   }
 
   @Get()
@@ -56,6 +59,7 @@ export class ApplicationController {
     @Param('applicationIdOrCode') applicationIdOrCode: string
   ): Promise<void> {
     await this.applicationService.remove(applicationIdOrCode)
+    await this.em.flush()
   }
 }
 

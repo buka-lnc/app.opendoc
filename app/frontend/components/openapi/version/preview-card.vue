@@ -15,7 +15,7 @@ const { isLoading: pending, state: sdks } = useAsyncState(
   async () => {
     const body = await querySdks<'200'>({
       sheetId: props.sheetVersion.sheet.id,
-      version: props.sheetVersion.version,
+      version: props.sheetVersion.string,
     })
       .flowControl('serial')
 
@@ -36,7 +36,7 @@ const sdkStatus = computed(() => {
   <div class="d-card-body py-2 flex flex-row items-center justify-between">
     <div class="flex items-center space-x-2">
       <h2 class="d-card-title inline-block">
-        v{{ sheetVersion.version }}
+        v{{ sheetVersion.string }}
       </h2>
 
       <sdk-status-badge
@@ -55,12 +55,12 @@ const sdkStatus = computed(() => {
 
     <div class="d-card-actions">
       <NuxtLink
-        :to="{ params: { ...route.params, version: sheetVersion.version }}"
+        :to="{ params: { ...route.params, version: sheetVersion.string }}"
         class="d-btn d-btn-sm font-sans"
-        :aria-disabled="version === sheetVersion.version"
-        :class="version === sheetVersion.version && 'd-btn-disabled'"
+        :aria-disabled="version === sheetVersion.string"
+        :class="version === sheetVersion.string && 'd-btn-disabled'"
       >
-        {{ version === sheetVersion.version ? '当前版本' : '查看' }}
+        {{ version === sheetVersion.string ? '当前版本' : '查看' }}
       </NuxtLink>
     </div>
   </div>

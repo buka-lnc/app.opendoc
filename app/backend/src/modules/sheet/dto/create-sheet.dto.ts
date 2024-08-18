@@ -1,12 +1,13 @@
 import { IsInt, IsOptional, ValidateNested } from 'class-validator'
-import { Type } from 'class-transformer'
+import { Exclude, Type } from 'class-transformer'
 import { SheetPullCrontabDTO } from './sheet-pull-crontab.dto'
 import { Sheet } from '../entities/sheet.entity'
 import { TakeType } from '@miaooo/nestjs-take-type'
 import { ApplicationIdReferenceDTO } from '~/modules/application/dto/application-id-reference.dto'
 import { ApplicationCodeReferenceDTO } from '~/modules/application/dto/application-code-reference.dto'
 import { ApplicationReference } from '~/modules/application/decorators/application-reference.decorator'
-import { ApiExtraModels } from '@nestjs/swagger'
+import { ApiExtraModels, ApiHideProperty } from '@nestjs/swagger'
+import { ForeignFile } from '~/modules/api-file/dto/foreign-file.dto'
 
 
 @ApiExtraModels(ApplicationIdReferenceDTO, ApplicationCodeReferenceDTO)

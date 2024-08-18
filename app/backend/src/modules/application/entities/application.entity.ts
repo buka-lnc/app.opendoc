@@ -1,11 +1,14 @@
-import { Cascade, Collection, Entity, OneToMany, Property } from '@mikro-orm/core'
+import { Cascade, Collection, Entity, EntityRepositoryType, OneToMany, Property } from '@mikro-orm/core'
 import { ApiHideProperty } from '@nestjs/swagger'
 import { Matches, MaxLength } from 'class-validator'
 import { BaseEntity } from '~/entities/base.entity'
 import { Sheet } from '~/modules/sheet/entities/sheet.entity'
+import { ApplicationRepository } from '../repository/application.repository'
 
-@Entity()
+@Entity({ repository: () => ApplicationRepository })
 export class Application extends BaseEntity {
+  [EntityRepositoryType]?: ApplicationRepository
+
   /**
    * 唯一应用编码
    */

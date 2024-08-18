@@ -5,10 +5,10 @@ import type { RequestParameters, ResponseMap, Operation } from "./types/register
 
 
 export function registerApplication<STATUS extends keyof ResponseMap>(arg?: RequestParameters): Keq<ResponseMap[STATUS], Operation<STATUS>> {
-  const req = request.put<ResponseMap[STATUS]>("/api/application")
+  const req = request.put<ResponseMap[STATUS]>("/api/application/register")
     .option('module', {
       name: "backend",
-      pathname: "/api/application",
+      pathname: "/api/application/register",
     })
 
   if (arg && "title" in arg) req.send({ "title": arg["title"] })

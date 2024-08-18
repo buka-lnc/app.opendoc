@@ -1,5 +1,5 @@
 import { EnsureRequestContext, EntityManager, MikroORM, wrap } from '@mikro-orm/core'
-import { Injectable } from '@nestjs/common'
+import { BadRequestException, Injectable } from '@nestjs/common'
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino'
 import { ApiFileService } from '../api-file/api-file.service'
 import { InjectRepository } from '@mikro-orm/nestjs'
@@ -9,8 +9,8 @@ import { SheetMode } from './constants/sheet-mode.enum'
 import { SheetPullCrontab } from './entities/sheet-pull-crontab.entity'
 import { request } from 'keq'
 import { SheetType } from './constants/sheet-type.enum'
-import { CreateSheetPullCrontabDTO } from './dto/create-sheet-pull-crontab.dto'
-import { Sheet } from './entities/sheet.entity'
+import { SheetRepository } from './repository/sheet.repository'
+import { ForeignFile } from '../api-file/dto/foreign-file.dto'
 
 
 @Injectable()
@@ -27,20 +27,8 @@ export class SheetSynchronizeService {
     @InjectRepository(SheetPullCrontab)
     private readonly sheetPullCrontabRepo: EntityRepository<SheetPullCrontab>,
 
-    @InjectRepository(Sheet)
-    private readonly sheetRepo: EntityRepository<Sheet>,
+    private readonly sheetRepo: SheetRepository,
   ) {}
-
-  async create(dto: CreateSheetPullCrontabDTO): Promise<SheetPullCrontab> {
-    const pullCrontab = this.sheetPullCrontabRepo.create({
-      sheet: dto.sheet,
-      url: dto.url,
-    })
-
-    await this.em.persistAndFlush(pullCrontab)
-    await this.synchronize(pullCrontab)
-    return pullCrontab
-  }
 
   @Cron('0 */10 * * * *')
   @EnsureRequestContext()
@@ -57,7 +45,6 @@ export class SheetSynchronizeService {
 
     for (const crontab of crontabs) {
       await this.synchronize(crontab)
-      wrap(crontab).toReference()
       crontab.updatedAt = new Date()
       this.em.persist(crontab)
     }
@@ -70,38 +57,57 @@ export class SheetSynchronizeService {
       await wrap(crontab).init()
     }
 
-    const sheet = await crontab.sheet.loadOrFail()
-
+    const sheet = await crontab.sheet.loadOrFail({
+      populate: ['application'],
+    })
     if (sheet.mode !== SheetMode.PULL) return
 
+    let res
+    try {
+      res = await request
+        .get(crontab.url)
+        .option('resolveWithFullResponse')
+    } catch (err) {
+      if (err instanceof Error) {
+        throw new BadRequestException(`无法获取 API 文档: ${err.message}`)
+      }
 
-    const res = await request
-      .get(crontab.url)
-      .option('resolveWithFullResponse')
+      throw err
+    }
 
     const buf = Buffer.from(await res.arrayBuffer())
 
+    let foreignFiles: ForeignFile[]
     if (sheet.type === SheetType.OPEN_API) {
-      await this.apiFileService.create({
-        sheet,
-        files: [{
-          path: 'openapi.json',
-          raw: buf,
-        }],
-      })
-    } else if (sheet.type === SheetType.ASYNC_API) {
-      await this.apiFileService.create({
-        sheet: sheet,
-        files: [{
-          path: 'asyncapi.json',
-          raw: buf,
-        }],
-      })
-    } else if (sheet.type === SheetType.MARKDOWN) {
-      await this.apiFileService.createByTgz({
-        sheet,
+      try {
+        JSON.parse(buf.toString())
+      } catch (err) {
+        throw new BadRequestException('不是有效的 OpenAPI 文档')
+      }
+
+      foreignFiles = [{
+        path: 'openapi.json',
         raw: buf,
-      })
+      }]
+    } else if (sheet.type === SheetType.ASYNC_API) {
+      try {
+        JSON.parse(buf.toString())
+      } catch (err) {
+        throw new BadRequestException('不是有效的 AsyncAPI 文档')
+      }
+
+      foreignFiles = [{
+        path: 'asyncapi.json',
+        raw: buf,
+      }]
+    } else if (sheet.type === SheetType.MARKDOWN) {
+      foreignFiles = await this.apiFileService.decompress(buf)
+    } else {
+      throw new BadRequestException('不支持的 API 文档类型')
     }
+
+    const sheetVersion = await this.sheetRepo.bumpVersion(sheet, foreignFiles, 'patch')
+    this.em.persist(sheetVersion)
+    this.em.persist(sheet)
   }
 }

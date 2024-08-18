@@ -1,4 +1,4 @@
-import { FileRawDTO } from '~/modules/api-file/dto/file-raw.dto'
+import { ForeignFile } from '~/modules/api-file/dto/foreign-file.dto'
 
 export interface TypeSheet {
   /**
@@ -7,5 +7,5 @@ export interface TypeSheet {
    * @param nextFiles 下一个版本的文件
    * @returns 文件版本差异
    */
-  bumpSheetVersion(lastFiles: FileRawDTO[], nextFiles: FileRawDTO[]): Promise<'major' | 'minor' | 'patch'> | 'major' | 'minor' | 'patch'
+  bumpSheetVersion(lastFiles: ForeignFile[], nextFiles: ForeignFile[]): Promise<'major' | 'minor' | 'patch'> | 'major' | 'minor' | 'patch'
 }

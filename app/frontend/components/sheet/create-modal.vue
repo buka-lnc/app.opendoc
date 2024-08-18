@@ -20,17 +20,27 @@ const pullCrontabUrl = ref('')
 
 const show = defineModel<boolean>('show')
 
-async function create (): Promise<void> {
-  await createSheet({
-    application: {
-      id: props.application.id,
-    },
-    title: title.value,
-    code: code.value,
-    type: type.value,
-    mode: mode.value,
-    pullCrontab: mode.value === 'pull' ? { url: pullCrontabUrl.value } : undefined,
-  })
+const alert = useAlert()
+const { pending, execute: create } = useAsyncFn(async function (): Promise<void> {
+  try {
+    await createSheet({
+      application: {
+        id: props.application.id,
+      },
+      title: title.value,
+      code: code.value,
+      type: type.value,
+      mode: mode.value,
+      pullCrontab: mode.value === 'pull' ? { url: pullCrontabUrl.value } : undefined,
+    })
+  } catch (err) {
+    if (err instanceof Error) {
+      alert.error(err.message)
+    }
+
+    console.error(err)
+    throw err
+  }
 
   show.value = false
   emit('created:sheet', code.value)
@@ -39,7 +49,7 @@ async function create (): Promise<void> {
   code.value = ''
   title.value = ''
   pullCrontabUrl.value = ''
-}
+})
 </script>
 
 <template>
@@ -147,6 +157,8 @@ async function create (): Promise<void> {
           </button>
 
           <button class="d-btn d-btn-primary" @click="create">
+            <span v-if="pending" class="d-loading d-loading-spinner" />
+
             创建
           </button>
         </div>

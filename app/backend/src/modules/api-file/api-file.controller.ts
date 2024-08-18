@@ -4,6 +4,8 @@ import { ApiInternalServerErrorResponse, ApiOkResponse, ApiOperation, ApiTags } 
 import { QueryApiFilesDTO } from './dto/query-api-files.dto'
 import { ResponseOfQueryApiFilesDTO } from './dto/response-of-query-api-files.dto'
 import { ApiFile } from './entities/api-file.entity'
+import { EntityManager } from '@mikro-orm/core'
+import { MikroORM } from '@mikro-orm/mysql'
 
 
 @ApiTags('API 文件')
@@ -11,6 +13,9 @@ import { ApiFile } from './entities/api-file.entity'
 @ApiInternalServerErrorResponse({ description: '系统异常' })
 export class ApiFileController {
   constructor(
+    private readonly em: EntityManager,
+    private readonly orm: MikroORM,
+
     private readonly ApiFileService: ApiFileService,
   ) {}
 

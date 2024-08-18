@@ -7,6 +7,7 @@ import type { EntityReferenceDTO } from "./entity_reference_dto"
  * @export
  */
 export interface Sheet {
+  "mode": "pull" | "push"
   /**
    * 文档文件的定时同步地址
    */
@@ -26,12 +27,12 @@ export interface Sheet {
   /**
    * 文档排序
    */
-  "order": number
+  "order": {
+  }
   /**
    * 文档类型
    */
   "type": "markdown" | "openapi" | "asyncapi"
-  "mode": "pull" | "push"
   /**
    * 主键
    */

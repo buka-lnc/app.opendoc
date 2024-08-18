@@ -1,26 +1,25 @@
-import { ApiProperty, PickType } from '@nestjs/swagger'
 import { ValidateNested } from 'class-validator'
-import { FileRawDTO } from './file-raw.dto'
-import { Type } from 'class-transformer'
+import { ForeignFile } from './foreign-file.dto'
+import { Transform, Type } from 'class-transformer'
 import { EntityReferenceDTO } from '~/dto/entity-reference.dto'
+import { Sheet } from '~/modules/sheet/entities/sheet.entity'
+import { ApiProperty } from '@nestjs/swagger'
+import { Reference } from '@mikro-orm/core'
 import { SheetVersion } from '~/modules/sheet-version/entities/sheet-version.entity'
 
 
 export class CreateApiFilesDTO {
-  @Type(() => EntityReferenceDTO)
-  @ValidateNested()
-  sheet!: EntityReferenceDTO
-
   @ApiProperty({
-    type: () => PickType(SheetVersion, ['tag']),
+    type: () => EntityReferenceDTO,
   })
-  @Type(() => PickType(SheetVersion, ['tag']))
-  @ValidateNested()
-  version?: {
-    tag: string
-  }
+  @Transform(({ value }) => Reference.createFromPK(Sheet, value.id as string))
+  sheet!: Sheet
 
-  @Type(() => FileRawDTO)
+  // @Type(() => ParsedVersionDTO)
+  // @ValidateNested()
+  version!: SheetVersion
+
+  @Type(() => ForeignFile)
   @ValidateNested({ each: true })
-  files!: FileRawDTO[]
+  files!: ForeignFile[]
 }

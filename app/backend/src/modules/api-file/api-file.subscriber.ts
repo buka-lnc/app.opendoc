@@ -1,9 +1,6 @@
-import { CacheService } from './../storage/cache.service'
+import { ApiFileStorageService } from './api-file-storage.service'
 import { Injectable } from '@nestjs/common'
-import * as fs from 'fs-extra'
-import * as path from 'path'
 import { EntityManager, EntityName, EventArgs, EventSubscriber, MikroORM, wrap } from '@mikro-orm/core'
-import { ApiFileService } from './api-file.service'
 import { ApiFile } from './entities/api-file.entity'
 import { EventEmitter2 } from '@nestjs/event-emitter'
 import { ApiFileCreatedEvent } from './events/api-file-created.event'
@@ -15,8 +12,8 @@ export class ApiFileSubscriber implements EventSubscriber<ApiFile> {
     private readonly orm: MikroORM,
 
     private readonly eventEmitter: EventEmitter2,
-    private readonly apiFilerService: ApiFileService,
-    private readonly cacheService: CacheService,
+    private readonly apiFileStorageService: ApiFileStorageService,
+
   ) {
     em.getEventManager().registerSubscriber(this)
   }
@@ -25,19 +22,22 @@ export class ApiFileSubscriber implements EventSubscriber<ApiFile> {
     return [ApiFile]
   }
 
-  private async clean(filepath: string): Promise<void> {
-    if (await fs.exists(filepath)) {
-      await fs.remove(filepath)
+  beforeCreate(args: EventArgs<ApiFile>): void | Promise<void> {
+    const entity = args.entity
+    if (!entity.raw) {
+      throw new Error('ApiFile.__raw__ must be set before creating')
     }
   }
 
-  afterCreate(args: EventArgs<ApiFile>): void | Promise<void> {
+  async afterCreate(args: EventArgs<ApiFile>): Promise<void> {
+    const entity = args.entity
+    await this.apiFileStorageService.flush(entity)
+
     this.eventEmitter.emit(
       'api-file.created',
-      new ApiFileCreatedEvent(wrap(args.entity).serialize())
+      new ApiFileCreatedEvent(wrap(entity).serialize())
     )
   }
-
 
   async afterDelete(args: EventArgs<ApiFile>): Promise<void> {
     const entity = args.entity
@@ -47,13 +47,7 @@ export class ApiFileSubscriber implements EventSubscriber<ApiFile> {
       new ApiFileCreatedEvent(wrap(entity).serialize())
     )
 
-    const filepath = await this.apiFilerService.getFilepath(entity)
-    const cacheFilepath = path.join(this.cacheService.directory, filepath)
-
-    await Promise.all([
-      this.clean(cacheFilepath),
-      this.clean(cacheFilepath),
-    ])
+    await this.apiFileStorageService.removeFile(entity)
   }
 }
 

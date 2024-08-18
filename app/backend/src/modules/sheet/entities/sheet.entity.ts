@@ -1,4 +1,4 @@
-import { Cascade, Collection, Entity, Enum, ManyToOne, OneToMany, OneToOne, Opt, Property, Ref, Unique, t } from '@mikro-orm/core'
+import { Cascade, Collection, Entity, EntityRepositoryType, Enum, ManyToOne, OneToMany, OneToOne, Opt, Property, Ref, Unique, t } from '@mikro-orm/core'
 import { IsEnum, IsInt, IsOptional, IsString, Matches, MaxLength } from 'class-validator'
 import { BaseEntity } from '~/entities/base.entity'
 import { SheetMode } from '../constants/sheet-mode.enum'
@@ -10,11 +10,14 @@ import { SheetType } from '../constants/sheet-type.enum'
 import { SheetPullCrontab } from './sheet-pull-crontab.entity'
 import { SheetVersion } from '~/modules/sheet-version/entities/sheet-version.entity'
 import { ApiForeignKey } from '~/decorators/api-reference.decorator'
+import { SheetRepository } from '../repository/sheet.repository'
 
 
-@Entity()
+@Entity({ repository: () => SheetRepository })
 @Unique({ properties: ['code', 'application'] })
 export class Sheet extends BaseEntity {
+  [EntityRepositoryType]?: SheetRepository
+
   /**
    * 文档名称
    */
@@ -47,8 +50,9 @@ export class Sheet extends BaseEntity {
   @Property({
     type: t.integer,
     comment: '文档排序',
+    default: 1,
   })
-  order: number = 1
+  order: number & Opt = 1
 
   /**
    * 文档类型
@@ -64,11 +68,13 @@ export class Sheet extends BaseEntity {
 
   @IsEnum(SheetMode)
   @IsOptional()
+  @ApiProperty({ enum: SheetMode })
   @Property({
     columnType: 'varchar(31)',
     comment: '文档同步模式',
+    default: SheetMode.PUSH,
   })
-  mode: SheetMode = SheetMode.PUSH
+  mode: SheetMode & Opt = SheetMode.PUSH
 
   /**
    * 文档文件的定时同步地址
@@ -78,14 +84,14 @@ export class Sheet extends BaseEntity {
   })
   @OneToOne({
     entity: () => SheetPullCrontab,
-    ref: true,
     comment: '文档文件的定时同步地址',
     cascade: [Cascade.ALL],
     mappedBy: 'sheet',
     orphanRemoval: true,
-    lazy: false,
+    ref: false,
+    eager: true,
   })
-  pullCrontab?: Ref<SheetPullCrontab> & Opt
+  pullCrontab?: SheetPullCrontab & Opt
 
   @ApiHideProperty()
   @OneToMany({

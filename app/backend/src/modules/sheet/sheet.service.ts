@@ -2,20 +2,16 @@ import * as path from 'path'
 import * as R from 'ramda'
 import * as fs from 'fs-extra'
 import compressing from 'compressing'
-import { SheetSynchronizeService } from './sheet-synchronize.service'
-import { EnsureRequestContext, EntityManager, MikroORM, wrap } from '@mikro-orm/core'
+import { EntityManager, MikroORM } from '@mikro-orm/core'
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { InjectPinoLogger, PinoLogger } from 'nestjs-pino'
 import { AppConfig } from '~/config/app.config'
 import { ApiFileService } from '../api-file/api-file.service'
-import { EventEmitter2 } from '@nestjs/event-emitter'
 import { InjectRepository } from '@mikro-orm/nestjs'
 import { EntityRepository } from '@mikro-orm/mysql'
 import { Sheet } from './entities/sheet.entity'
-import { Application } from '../application/entities/application.entity'
 import { RegisterSheetDTO } from './dto/register-sheet.dto'
 import { CreateSheetDTO } from './dto/create-sheet.dto'
-import { SheetMode } from './constants/sheet-mode.enum'
 import { QuerySheetsDTO } from './dto/query-sheets.dto'
 import { ResponseOfQuerySheetsDTO } from './dto/response-of-query-sheets.dto'
 import { Sdk } from '../sdk/entities/sdk.entity'
@@ -23,6 +19,10 @@ import { ApiFile } from '../api-file/entities/api-file.entity'
 import { UpdateSheetDTO } from './dto/update-sheet.dto'
 import { SheetPullCrontab } from './entities/sheet-pull-crontab.entity'
 import { SheetVersionService } from '../sheet-version/sheet-version.service'
+import { SheetRepository } from './repository/sheet.repository'
+import { ApiFileRepository } from '../api-file/repository/api-file.repository'
+import { SheetSynchronizeService } from './sheet-synchronize.service'
+import { ApplicationRepository } from '../application/repository/application.repository'
 
 
 @Injectable()
@@ -35,71 +35,50 @@ export class SheetService {
     private readonly em: EntityManager,
     private readonly orm: MikroORM,
 
-    private eventEmitter: EventEmitter2,
     private readonly apiFileService: ApiFileService,
     private readonly sheetSynchronizeService: SheetSynchronizeService,
     private readonly sheetVersionService: SheetVersionService,
 
-    @InjectRepository(Sheet)
-    private readonly sheetRepo: EntityRepository<Sheet>,
+    private readonly applicationRepo: ApplicationRepository,
+    private readonly sheetRepo: SheetRepository,
+    private readonly apiFileRepo: ApiFileRepository,
 
     @InjectRepository(SheetPullCrontab)
     private readonly sheetPullCrontabRepo: EntityRepository<SheetPullCrontab>,
-
-    @InjectRepository(Application)
-    private readonly applicationRepo: EntityRepository<Application>,
-
-    @InjectRepository(ApiFile)
-    private readonly apiFileRepo: EntityRepository<ApiFile>,
   ) {}
 
-  @EnsureRequestContext()
+
   async register(dto: RegisterSheetDTO): Promise<Sheet> {
-    const application = await this.applicationRepo.findOneOrFail({
-      code: dto.applicationCode,
-    })
+    const application = await this.applicationRepo.register({ code: dto.applicationCode })
 
-    let sheet: Sheet | null
-
-    sheet = await this.em.findOne(Sheet, {
+    const sheet = await this.sheetRepo.register({
+      application,
       code: dto.sheetCode,
+      type: dto.sheetType,
+      title: dto.sheetTitle,
+      mode: dto.sheetMode,
+      order: dto.sheetOrder,
     })
 
-    if (!sheet) {
-      sheet = new Sheet()
-      sheet.type = dto.sheetType
-      sheet.code = dto.sheetCode
-      sheet.application = wrap(application).toReference()
-      sheet.mode = dto.sheetMode || SheetMode.PUSH
-
-      if (dto.sheetTitle) sheet.title = dto.sheetTitle
-      if (dto.sheetOrder) sheet.order = dto.sheetOrder
-
-      await this.em.persistAndFlush(sheet)
-    } else {
-      if (dto.sheetTitle) sheet.title = dto.sheetTitle
-      if (dto.sheetOrder) sheet.order = dto.sheetOrder
-      await this.em.persistAndFlush(sheet)
-    }
-
+    this.em.persist(sheet)
 
     if (dto.sheetPullCrontabUrl) {
-      await this.sheetSynchronizeService.create({
+      sheet.pullCrontab = this.sheetPullCrontabRepo.create({
         url: dto.sheetPullCrontabUrl,
-        sheet: sheet,
-      })
-    }
-
-    if (dto.apiFileRaw) {
-      await this.apiFileService.createByTgz({
-        raw: dto.apiFileRaw,
         sheet,
-        version: dto.apiFileVersionTag ? { tag: dto.apiFileVersionTag } : undefined,
       })
     }
 
+    const files = dto.apiFileRaw ? await this.apiFileService.decompress(dto.apiFileRaw) : undefined
+    if (files && await this.sheetRepo.needBump(sheet, files)) {
+      const version = await this.sheetRepo.bumpVersion(sheet, files, 'patch', dto.apiFileVersionTag)
+      this.em.persist(version)
+    }
+
+    this.em.persist(sheet)
     return sheet
   }
+
 
   async create(dto: CreateSheetDTO): Promise<Sheet> {
     const application = await this.applicationRepo.findOneOrFail(
@@ -117,15 +96,16 @@ export class SheetService {
       order: dto.order || 1,
     })
 
-    await this.em.persistAndFlush(sheet)
-
     if (dto.pullCrontab) {
-      await this.sheetSynchronizeService.create({
+      sheet.pullCrontab = this.sheetPullCrontabRepo.create({
         url: dto.pullCrontab.url,
         sheet,
       })
+
+      await this.sheetSynchronizeService.synchronize(sheet.pullCrontab)
     }
 
+    this.em.persist(sheet)
     return sheet
   }
 
@@ -146,7 +126,6 @@ export class SheetService {
 
     this.em.persist(sheet)
 
-    await this.em.flush()
     return sheet
   }
 
@@ -164,7 +143,7 @@ export class SheetService {
     )
 
     if (!sheet) return
-    await this.em.removeAndFlush(sheet)
+    this.em.remove(sheet)
   }
 
   async sync(sheetId: string): Promise<void> {
@@ -238,7 +217,7 @@ export class SheetService {
     const sheet = await this.sheetRepo.findOneOrFail(sheetId)
     await sheet.versions.init()
 
-    if (!sheet.versions.exists((item) => item.version === version)) {
+    if (!sheet.versions.exists((item) => item.string === version)) {
       throw new BadRequestException('sheet version not exists')
     }
 

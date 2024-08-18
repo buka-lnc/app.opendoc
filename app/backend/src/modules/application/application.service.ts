@@ -4,11 +4,10 @@ import { EntityManager, MikroORM } from '@mikro-orm/core'
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { RegisterApplicationDTO } from './dto/register-application.dto'
 import { Application } from './entities/application.entity'
-import { InjectRepository } from '@mikro-orm/nestjs'
 import { QueryApplicationsDTO } from './dto/query-applications.dto'
 import { ResponseOfQueryApplicationsDTO } from './dto/response-of-query-applications.dto'
-import { EntityRepository } from '@mikro-orm/mysql'
 import { CreateApplicationDTO } from './dto/create-application.dto'
+import { ApplicationRepository } from './repository/application.repository'
 
 
 @Injectable()
@@ -17,30 +16,13 @@ export class ApplicationService {
     private readonly em: EntityManager,
     private readonly orm: MikroORM,
 
-    @InjectRepository(Application)
-    private readonly applicationRepo: EntityRepository<Application>,
+    private readonly applicationRepo: ApplicationRepository,
 
     private readonly forbiddenApplicationCodeService: ForbiddenApplicationCodeService
   ) {}
 
-  async register(dto: RegisterApplicationDTO): Promise<void> {
-    let application = await this.applicationRepo.findOne({
-      code: dto.code,
-    })
-
-    if (application) {
-      if (dto.title) application.title = dto.title
-
-      await this.em.persistAndFlush(application)
-      return
-    }
-
-    application = this.applicationRepo.create({
-      code: dto.code,
-      title: dto.title || dto.code,
-    })
-
-    await this.em.persistAndFlush(application)
+  async register(dto: RegisterApplicationDTO): Promise<Application> {
+    return await this.applicationRepo.register(dto)
   }
 
   async create(dto: CreateApplicationDTO): Promise<Application> {
@@ -54,8 +36,8 @@ export class ApplicationService {
       code: dto.code,
       title: dto.title || dto.code,
     })
-    await this.em.persistAndFlush(application)
 
+    this.em.persist(application)
     return application
   }
 
@@ -122,6 +104,5 @@ export class ApplicationService {
     if (!application) return
 
     this.em.remove(application)
-    await this.em.flush()
   }
 }
