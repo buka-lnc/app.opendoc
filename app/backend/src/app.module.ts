@@ -17,7 +17,6 @@ import { StorageModule } from './modules/storage/storage.module'
 import { SheetModule } from './modules/sheet/sheet.module'
 import { ApiFileModule } from './modules/api-file/api-file.module'
 import { SheetVersionModule } from './modules/sheet-version/sheet-version.module'
-import { OptionModule } from './modules/option/option.module'
 import { SdkModule } from './modules/sdk/sdk.module'
 import { PluginModule } from './modules/plugin/plugin.module'
 import { PluginConfig } from './config/plugin.config'
@@ -52,7 +51,6 @@ import { PluginConfig } from './config/plugin.config'
     SheetVersionModule,
     ApiFileModule,
     SdkModule,
-    OptionModule,
     PluginModule,
   ],
   controllers: [AppController],
