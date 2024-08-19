@@ -1,5 +1,5 @@
 import { Configuration } from '@buka/nestjs-config'
-import { IsAscii, IsBoolean, IsInt, IsIP, IsNumberString, IsOptional, IsString } from 'class-validator'
+import { IsAscii, IsBoolean, IsIP, IsNumberString, IsOptional, IsString } from 'class-validator'
 import { nanoid } from 'nanoid'
 
 
@@ -25,7 +25,4 @@ export class AppConfig {
   @IsBoolean()
   @IsOptional()
   migration: boolean = false
-
-  @IsInt()
-  ttl: number = 100
 }

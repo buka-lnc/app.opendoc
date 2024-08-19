@@ -20,6 +20,7 @@ import { SheetVersionModule } from './modules/sheet-version/sheet-version.module
 import { OptionModule } from './modules/option/option.module'
 import { SdkModule } from './modules/sdk/sdk.module'
 import { PluginModule } from './modules/plugin/plugin.module'
+import { PluginConfig } from './config/plugin.config'
 
 
 @Module({
@@ -27,7 +28,7 @@ import { PluginModule } from './modules/plugin/plugin.module'
     ScheduleModule.forRoot(),
     ConfigModule.register({
       isGlobal: true,
-      providers: [AppConfig, PinoConfig, StorageConfig, MysqlConfig],
+      providers: [AppConfig, PinoConfig, StorageConfig, MysqlConfig, PluginConfig],
     }),
 
     ConfigModule.inject(PinoConfig, LoggerModule, (config) => ({

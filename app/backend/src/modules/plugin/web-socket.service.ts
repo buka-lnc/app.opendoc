@@ -3,10 +3,11 @@ import { InjectPinoLogger, PinoLogger } from 'nestjs-pino'
 import WebSocket from 'ws'
 import { isURL } from 'class-validator'
 import { version as OPENDOC_API_VERSION } from '~~/package.json'
-import { AppConfig } from '~/config/app.config'
 import { PluginCommandMessage } from './dto/plugin-command-message.dto'
 import { PluginCommandName } from './constants/plugin-command-name'
 import { PluginMetadata } from './dto/plugin-command-message/plugin-metadata.dto'
+import { PluginConfig } from '~/config/plugin.config'
+import { AppConfig } from '~/config/app.config'
 
 
 @Injectable()
@@ -16,6 +17,7 @@ export class WebSocketService {
     private readonly logger: PinoLogger,
 
     private readonly appConfig: AppConfig,
+    private readonly pluginConfig: PluginConfig,
   ) {}
 
   async connect(url: string): Promise<[WebSocket, PluginMetadata]> {
@@ -23,7 +25,7 @@ export class WebSocketService {
       throw new BadRequestException('Invalid URL')
     }
 
-    const ttl = this.appConfig.ttl
+    const ttl = this.pluginConfig.ttl
     const appName = this.appConfig.appName
     const logger = this.logger
 
