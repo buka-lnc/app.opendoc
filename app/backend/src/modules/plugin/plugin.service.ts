@@ -155,6 +155,9 @@ export class PluginService implements OnModuleInit, OnApplicationShutdown {
     if (exist) throw new BadRequestException('请勿重复添加')
 
     const [ws, pluginMetadata] = await this.webSocketService.connect(dto.url)
+      .catch((err) => {
+        throw new BadRequestException(`无法连接插件：${err.message}`)
+      })
     ws.close()
 
     this.validateApiVersion(pluginMetadata.apiVersion)
