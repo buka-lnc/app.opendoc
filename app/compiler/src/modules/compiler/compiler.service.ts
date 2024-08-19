@@ -19,7 +19,7 @@ export class CompilerService {
     private readonly logger: PinoLogger
   ) {}
 
-  readonly tempDir = path.resolve('./temp')
+  readonly tempDir = path.resolve('./.opendoc/temp')
 
   metadata = {
     apiVersion: '^1',

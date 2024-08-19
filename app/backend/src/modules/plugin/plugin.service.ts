@@ -22,6 +22,7 @@ import { PluginCommandEvent } from './events/plugin-command.event'
 import { PluginCommandMessage } from './dto/plugin-command-message.dto'
 import { PluginMetadata } from './dto/plugin-command-message/plugin-metadata.dto'
 import { PluginEventMessageDataMap } from './types/plugin-event-message-data-map'
+import { PluginConfig } from '~/config/plugin.config'
 
 
 @Injectable()
@@ -32,11 +33,12 @@ export class PluginService implements OnModuleInit, OnApplicationShutdown {
     @InjectPinoLogger(PluginService.name)
     private readonly logger: PinoLogger,
 
-    private readonly eventEmitter: EventEmitter2,
-    private readonly webSocketService: WebSocketService,
-
     private readonly em: EntityManager,
     private readonly orm: MikroORM,
+
+    private readonly pluginConfig: PluginConfig,
+    private readonly eventEmitter: EventEmitter2,
+    private readonly webSocketService: WebSocketService,
 
     @InjectRepository(Plugin)
     private readonly pluginRepo: EntityRepository<Plugin>,
@@ -98,7 +100,7 @@ export class PluginService implements OnModuleInit, OnApplicationShutdown {
           this.eventEmitter.emit(
             `plugin.command.${message.command}`,
             new PluginCommandEvent(
-              plugin.id,
+              wrap(plugin).serialize(),
               message.command,
               message.data
             )

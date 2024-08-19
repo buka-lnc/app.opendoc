@@ -8,7 +8,7 @@ export class StorageConfig {
   type: StorageConfigType = StorageConfigType.Disk
 
   @IsString()
-  directory: string = './storage'
+  directory: string = './.opendoc/storage'
 
   @IsString()
   @ValidateIf((o) => o.type === StorageConfigType.Oss)

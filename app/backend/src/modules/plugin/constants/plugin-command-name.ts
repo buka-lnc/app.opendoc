@@ -7,6 +7,10 @@ export enum PluginCommandName {
 
   // 创建Sdk
   CREATE_SDK = 'create-sdk',
+
   // 更新Sdk
   UPDATE_SDK = 'update-sdk',
+
+  // 添加日志
+  LOG = 'log',
 }

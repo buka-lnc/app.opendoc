@@ -26,7 +26,7 @@ export default (async function loadConfig() {
       pathTs: 'src/migrations',
     },
     driver: MySqlDriver,
-    findOneOrFailHandler: (entityName, where) => new BadRequestException(`Failed: ${entityName} in ${util.inspect(where)}`),
+    findOneOrFailHandler: (entityName, where) => new BadRequestException(`Cannot find ${entityName} where ${util.inspect(where)}`),
   })
 })()
 

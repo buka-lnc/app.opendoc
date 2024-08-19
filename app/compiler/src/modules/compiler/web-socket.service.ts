@@ -12,6 +12,8 @@ export class WebSocketService {
   ) {}
 
   sendCommand(ws: WebSocket, command: PluginCommandMessage['command'], data: any) {
+    this.logger.debug(`sendCommand: ${command}`)
+
     const message: PluginCommandMessage = {
       command,
       data,

@@ -11,7 +11,7 @@ const sdk = toRef(props, 'sdk')
 const { data } = useAsyncData(
   async () => {
     if (!sdk.value) return ''
-    const fullName = sdk.value.fullName
+    const fullName = sdk.value.name
 
     return await codeToHtml(`
 import { operationId } from '${fullName}/operations'

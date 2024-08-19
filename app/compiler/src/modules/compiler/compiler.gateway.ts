@@ -50,6 +50,7 @@ export class CompilerGateway implements OnGatewayInit, OnGatewayConnection, OnGa
     this.logger.info(`${this.prefixLog(client)} WebSocket Client Connected`)
 
     this.webSocketService.sendCommand(client, 'join', this.compilerService.metadata)
+    this.webSocketService.sendCommand(client, 'log', { message: 'Hello, World!' })
   }
 
   handleDisconnect(client: WebSocket) {

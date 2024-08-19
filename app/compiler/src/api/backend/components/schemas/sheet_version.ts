@@ -6,16 +6,31 @@ import type { EntityReferenceDTO } from "./entity_reference_dto"
  * @export
  */
 export interface SheetVersion {
-  "version": string
-  "sheet": EntityReferenceDTO
+  /**
+   * Major/主版本号
+   */
   "major": number
+  /**
+   * Minor/次版本号
+   */
   "minor": number
+  /**
+   * Patch/修订号
+   */
   "patch": number
+  /**
+   * Pre-release/预发布号
+   */
   "prerelease": number
   /**
    * 标签
    */
   "tag": string
+  "sheet": EntityReferenceDTO
+  /**
+   * 版本号
+   */
+  "string": string
   /**
    * 主键
    */

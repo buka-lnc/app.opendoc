@@ -12,6 +12,7 @@ import { PluginGateway } from './plugin.gateway'
 import { SheetVersion } from '../sheet-version/entities/sheet-version.entity'
 import { Sheet } from '../sheet/entities/sheet.entity'
 import { Sdk } from '../sdk/entities/sdk.entity'
+import { PluginLogService } from './plugin-log.service'
 
 
 @Module({
@@ -27,7 +28,7 @@ import { Sdk } from '../sdk/entities/sdk.entity'
     SheetVersionModule,
   ],
   controllers: [PluginController],
-  providers: [WebSocketService, PluginService, PluginListener, PluginGateway],
+  providers: [WebSocketService, PluginService, PluginListener, PluginGateway, PluginLogService],
 })
 export class PluginModule {
 }

@@ -11,13 +11,13 @@ export function createSheet<STATUS extends keyof ResponseMap>(arg?: RequestParam
       pathname: "/api/sheet",
     })
 
+  if (arg && "mode" in arg) req.send({ "mode": arg["mode"] })
   if (arg && "application" in arg) req.send({ "application": arg["application"] })
   if (arg && "order" in arg) req.send({ "order": arg["order"] })
   if (arg && "pullCrontab" in arg) req.send({ "pullCrontab": arg["pullCrontab"] })
   if (arg && "code" in arg) req.send({ "code": arg["code"] })
   if (arg && "type" in arg) req.send({ "type": arg["type"] })
   if (arg && "title" in arg) req.send({ "title": arg["title"] })
-  if (arg && "mode" in arg) req.send({ "mode": arg["mode"] })
 
   return req as unknown as Keq<ResponseMap[STATUS], Operation<STATUS>>
 }

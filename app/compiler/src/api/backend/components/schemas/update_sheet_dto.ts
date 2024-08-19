@@ -6,6 +6,7 @@ import type { SheetPullCrontabDTO } from "./sheet_pull_crontab_dto"
  * @export
  */
 export interface UpdateSheetDTO {
+  "mode"?: "pull" | "push"
   "order"?: number
   /**
    * 文档类型
@@ -15,7 +16,6 @@ export interface UpdateSheetDTO {
    * 文档名称
    */
   "title"?: string
-  "mode"?: "pull" | "push"
   /**
    * 文档拉取定时任务(mode &#x3D; pull)
    */

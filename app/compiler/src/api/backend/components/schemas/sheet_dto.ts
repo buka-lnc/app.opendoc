@@ -3,6 +3,7 @@
  * @export
  */
 export interface SheetDTO {
+  "mode": "pull" | "push"
   /**
    * 主键
    */
@@ -28,10 +29,10 @@ export interface SheetDTO {
   /**
    * 文档排序
    */
-  "order": number
+  "order": {
+  }
   /**
    * 文档类型
    */
   "type": "markdown" | "openapi" | "asyncapi"
-  "mode": "pull" | "push"
 }

@@ -102,14 +102,14 @@ importers:
         specifier: ^7.0.3
         version: 7.0.3
       keq:
-        specifier: ^2.7.3
-        version: 2.7.3
+        specifier: ^2.7.4
+        version: 2.7.4
       keq-debug:
         specifier: ^2.0.5
-        version: 2.0.5(keq@2.7.3)
+        version: 2.0.5(keq@2.7.4)
       keq-headers:
         specifier: ^2.0.4
-        version: 2.0.4(keq@2.7.3)
+        version: 2.0.4(keq@2.7.4)
       mime:
         specifier: ^4.0.3
         version: 4.0.4
@@ -196,8 +196,8 @@ importers:
         specifier: 29.7.0
         version: 29.7.0(@types/node@20.14.8)(ts-node@10.9.2(@types/node@20.14.8)(typescript@5.5.4))
       keq-cli:
-        specifier: ^4.6.4
-        version: 4.6.4(keq@2.7.3)
+        specifier: ^4.7.1
+        version: 4.7.1(keq@2.7.4)
       source-map-support:
         specifier: ^0.5.21
         version: 0.5.21
@@ -1393,14 +1393,14 @@ packages:
   '@types/node@14.18.63':
     resolution: {integrity: sha512-fAtCfv4jJg+ExtXhvCkCqUKZ+4ok/JQk01qDKhL5BDDoS3AxKXhV5/MAVUZyQnSEd2GT92fkgZl0pz0Q0AzcIQ==}
 
-  '@types/node@20.14.15':
-    resolution: {integrity: sha512-Fz1xDMCF/B00/tYSVMlmK7hVeLh7jE5f3B7X1/hmV0MJBwE27KlS7EvD/Yp+z1lm8mVhwV5w+n8jOZG8AfTlKw==}
-
   '@types/node@20.14.8':
     resolution: {integrity: sha512-DO+2/jZinXfROG7j7WKFn/3C6nFwxy2lLpgLjEXJz+0XKphZlTLJ14mo8Vfg8X5BWN6XjyESXq+LcYdT7tR3bA==}
 
-  '@types/node@22.2.0':
-    resolution: {integrity: sha512-bm6EG6/pCpkxDf/0gDNDdtDILMOHgaQBVOJGdwsqClnxA3xL6jtMv76rLBc006RVMWbmaf0xbmom4Z/5o2nRkQ==}
+  '@types/node@20.16.1':
+    resolution: {integrity: sha512-zJDo7wEadFtSyNz5QITDfRcrhqDvQI1xQNQ0VoizPjM/dVAODqqIUWbJPkvsxmTI0MYRGRikcdjMPhOssnPejQ==}
+
+  '@types/node@22.4.1':
+    resolution: {integrity: sha512-1tbpb9325+gPnKK0dMm+/LMriX0vKxf6RnB0SZUqfyVkQ4fMgUSySqhxE/y8Jvs4NyF1yHzTfG9KlnkIODxPKg==}
 
   '@types/qs@6.9.15':
     resolution: {integrity: sha512-uXHQKES6DQKKCLh441Xv/dwxOq1TVS3JPUMlEqoEglvlhR6Mxnlew/Xq/LRVHpLyk7iK3zODe1qYHIMltO7XGg==}
@@ -2923,8 +2923,8 @@ packages:
     engines: {node: '>=14.0.0'}
     hasBin: true
 
-  keq-cli@4.6.4:
-    resolution: {integrity: sha512-MDu0i0crjhSb7p4lYMfnx3hCcGfx5ePKOFvKZ7I9FNBXwOySOb+yLOWimtEIOAl4l1hsrLPvL4JQcyPmh0wAug==}
+  keq-cli@4.7.1:
+    resolution: {integrity: sha512-Kot7F0Qj9AYAQBTnf3dnKQOV2LfAHPler925sqNw6ZNRJBIrd6zy8OIReO2dEB5U+ycT0IGbc9HczDQh1WVD8Q==}
     engines: {node: '>=18.0.0'}
     hasBin: true
     peerDependencies:
@@ -2940,8 +2940,8 @@ packages:
     peerDependencies:
       keq: ^2
 
-  keq@2.7.3:
-    resolution: {integrity: sha512-aC+NWz4IQQio7NG1Sdlo4bpczvr6j6Yruw5O5ydAFS2F2BRZ8ZJTXMRu0O3A9vJG3m79FYJRzjo+1ykpUjM5/A==}
+  keq@2.7.4:
+    resolution: {integrity: sha512-uRHXQKFmy1QYke3EVMiMcdWx1qVX8FbOkUTF+dr8eEm+IhhCFehOpJ66IhHZtlQWYJfiU1YTLuRdgBYhpBD90A==}
     engines: {node: '>=18.0.0'}
 
   keyv@4.5.4:
@@ -3739,8 +3739,8 @@ packages:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
 
-  swagger-fix@1.0.3:
-    resolution: {integrity: sha512-xBXVE21ik1aZ/sfRHM4LUhVOVgSbrFz4Vv1fucLrLhG0McnETN8WjcW6uOtX2N3PHqTFxIzycIWrs5Qz31nooQ==}
+  swagger-fix@1.0.4:
+    resolution: {integrity: sha512-YynvnfHf+CeD8mG3CIQGlgopOcGjGMJoQhdIMQ7m39SJ205Fw+earLA+vc+aHROJQGkJ+4Eq+NttfRb4qnEuCw==}
 
   swagger-ui-dist@5.17.14:
     resolution: {integrity: sha512-CVbSfaLpstV65OnSjbXfVd6Sta3q3F7Cj/yYuvHMp1P90LztOLs6PfUnKEVAeiIVQt9u2SaPwv0LiH/OyMjHRw==}
@@ -3980,8 +3980,8 @@ packages:
   undici-types@5.26.5:
     resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==}
 
-  undici-types@6.13.0:
-    resolution: {integrity: sha512-xtFJHudx8S2DSoujjMd1WeWvn7KKWFRESZTMeL1RptAYERu29D6jphMjjY+vn96jvN3kVPDNxU/E13VTaXj6jg==}
+  undici-types@6.19.6:
+    resolution: {integrity: sha512-e/vggGopEfTKSvj4ihnOLTsqhrKRN3LeO6qSN/GxohhuRv8qH9bNQ4B8W7e/vFL+0XTnmHPB4/kegunZGA4Org==}
 
   unique-string@3.0.0:
     resolution: {integrity: sha512-VGXBUVwxKMBUznyffQweQABPRRW1vHZAbadFZud4pLFAqRGvv/96vafgjWFqzourzr8YonlQiPgH0YCJfawoGQ==}
@@ -5027,7 +5027,7 @@ snapshots:
       '@inquirer/figures': 1.0.5
       '@inquirer/type': 1.5.2
       '@types/mute-stream': 0.0.4
-      '@types/node': 20.14.15
+      '@types/node': 20.16.1
       '@types/wrap-ansi': 3.0.0
       ansi-escapes: 4.3.2
       cli-spinners: 2.9.2
@@ -5043,7 +5043,7 @@ snapshots:
       '@inquirer/figures': 1.0.5
       '@inquirer/type': 1.5.2
       '@types/mute-stream': 0.0.4
-      '@types/node': 22.2.0
+      '@types/node': 22.4.1
       '@types/wrap-ansi': 3.0.0
       ansi-escapes: 4.3.2
       cli-spinners: 2.9.2
@@ -6031,21 +6031,21 @@ snapshots:
 
   '@types/mute-stream@0.0.4':
     dependencies:
-      '@types/node': 20.14.15
+      '@types/node': 20.16.1
 
   '@types/node@14.18.63': {}
-
-  '@types/node@20.14.15':
-    dependencies:
-      undici-types: 5.26.5
 
   '@types/node@20.14.8':
     dependencies:
       undici-types: 5.26.5
 
-  '@types/node@22.2.0':
+  '@types/node@20.16.1':
     dependencies:
-      undici-types: 6.13.0
+      undici-types: 6.19.6
+
+  '@types/node@22.4.1':
+    dependencies:
+      undici-types: 6.19.6
 
   '@types/qs@6.9.15': {}
 
@@ -7909,7 +7909,7 @@ snapshots:
       '@jsep-plugin/regex': 1.0.3(jsep@1.3.9)
       jsep: 1.3.9
 
-  keq-cli@4.6.4(keq@2.7.3):
+  keq-cli@4.7.1(keq@2.7.4):
     dependencies:
       '@apidevtools/swagger-parser': 10.1.0(openapi-types@12.1.3)
       '@inquirer/prompts': 5.3.8
@@ -7925,12 +7925,13 @@ snapshots:
       inquirer-select-pro: 1.0.0-alpha.7
       js-yaml: 4.1.0
       jsonpath-plus: 9.0.0
-      keq: 2.7.3
+      keq: 2.7.4
       openapi-types: 12.1.3
+      ora: 5.4.1
       p-map: 4.0.0
       ramda: 0.30.1
       semver: 7.6.3
-      swagger-fix: 1.0.3
+      swagger-fix: 1.0.4
       swagger2openapi: 7.0.8
       ts-custom-error: 3.3.1
       typescript: 5.5.4
@@ -7939,17 +7940,17 @@ snapshots:
     transitivePeerDependencies:
       - encoding
 
-  keq-debug@2.0.5(keq@2.7.3):
+  keq-debug@2.0.5(keq@2.7.4):
     dependencies:
-      keq: 2.7.3
+      keq: 2.7.4
       object-inspect: 1.13.2
       ramda: 0.29.1
 
-  keq-headers@2.0.4(keq@2.7.3):
+  keq-headers@2.0.4(keq@2.7.4):
     dependencies:
-      keq: 2.7.3
+      keq: 2.7.4
 
-  keq@2.7.3:
+  keq@2.7.4:
     dependencies:
       fastq: 1.17.1
       minimatch: 9.0.5
@@ -8763,7 +8764,7 @@ snapshots:
 
   supports-preserve-symlinks-flag@1.0.0: {}
 
-  swagger-fix@1.0.3:
+  swagger-fix@1.0.4:
     dependencies:
       openapi-types: 12.1.3
       pinyin-pro: 3.24.2
@@ -8987,7 +8988,7 @@ snapshots:
 
   undici-types@5.26.5: {}
 
-  undici-types@6.13.0: {}
+  undici-types@6.19.6: {}
 
   unique-string@3.0.0:
     dependencies:

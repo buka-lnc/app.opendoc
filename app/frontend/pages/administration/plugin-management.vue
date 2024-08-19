@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { IconPlus, IconTrash, IconSettings, IconPuzzle, IconPuzzleOff, IconAlertTriangle } from '@tabler/icons-vue'
+import { IconPlus, IconTrash, IconSettings, IconPuzzle, IconPuzzleOff, IconAlertTriangle, IconLogs } from '@tabler/icons-vue'
 import { isURL } from 'validator'
 import { RequestException } from 'keq-exception'
 import { queryPlugins, createPlugin, deletePlugin, updatePlugin } from '@/api/backend'
@@ -59,6 +59,7 @@ async function toggleStatus (plugin: Plugin): Promise<void> {
 }
 
 const pluginInSettings = ref<Plugin | null>(null)
+const pluginInLogs = ref<Plugin | null>(null)
 
 const tipMap = {
   enabled: '已启用',
@@ -73,6 +74,8 @@ const tipMap = {
     @updated:plugin="() => reload()"
   />
 
+  <plugin-logs-modal v-model:plugin="pluginInLogs" />
+
   <stuffed-loading :pending="status === 'pending' && !plugins">
     <div class="container h-full m-auto flex flex-col">
       <div class="flex-grow-0 flex-shrink-0 w-full mb-6 flex items-center">
@@ -83,7 +86,7 @@ const tipMap = {
         <span v-if="status === 'pending' && !!plugins" class="ml-2 d-loading d-loading-sm d-loading-spinner text-gray-600" />
       </div>
 
-      <div class="flex-grow-0 flex-shrink-0 flex w-full space-x-4 mb-4">
+      <div class="flex-grow-0 flex-shrink-0 flex w-full space-x-4 mb-2">
         <label class="flex-auto d-input d-input-bordered flex items-center gap-2">
           ws://
 
@@ -110,7 +113,7 @@ const tipMap = {
         </button>
       </div>
 
-      <div class="flex-1 overflow-y-auto">
+      <div class="flex-1 overflow-y-auto py-2">
         <div
           v-for="plugin in plugins"
           :key="plugin.id"
@@ -128,7 +131,7 @@ const tipMap = {
             </div>
 
             <div class="d-card-actions ">
-              <div class="d-tooltip d-tooltip-left" :data-tip="tipMap[plugin.status]">
+              <div class="d-tooltip" :data-tip="tipMap[plugin.status]">
                 <button
                   class="d-btn d-btn-sm d-btn-ghost d-btn-square transition-colors"
                   @click="() => toggleStatus(plugin)"
@@ -153,12 +156,23 @@ const tipMap = {
                 </button>
               </div>
 
-              <button
-                class="d-btn d-btn-sm d-btn-ghost d-btn-square"
-                @click="pluginInSettings = plugin"
-              >
-                <IconSettings class="w-6" />
-              </button>
+              <div class="d-tooltip" data-tip="日志">
+                <button
+                  class="d-btn d-btn-sm d-btn-ghost d-btn-square"
+                  @click="pluginInLogs = plugin"
+                >
+                  <IconLogs class="w-6" />
+                </button>
+              </div>
+
+              <div class="d-tooltip" data-tip="设置">
+                <button
+                  class="d-btn d-btn-sm d-btn-ghost d-btn-square"
+                  @click="pluginInSettings = plugin"
+                >
+                  <IconSettings class="w-6" />
+                </button>
+              </div>
 
               <button
                 class="d-btn d-btn-sm d-btn-ghost d-btn-square hover:text-error"

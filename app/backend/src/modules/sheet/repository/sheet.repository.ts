@@ -41,7 +41,7 @@ export class SheetRepository extends EntityRepository<Sheet> {
   }
 
   async register(dto: RegisterSheet): Promise<Sheet> {
-    let sheet = await this.em.findOneOrFail(Sheet, { code: dto.code })
+    let sheet = await this.em.findOne(Sheet, { code: dto.code })
 
     if (!sheet) {
       sheet = this.create({
@@ -66,7 +66,7 @@ export class SheetRepository extends EntityRepository<Sheet> {
     const apiFileRepo = this.em.getRepository(ApiFile)
 
     const maxSheetVersion = await this.findMaxVersion(sheet)
-    const version = maxSheetVersion ? await sheetVersionRepo.increase(maxSheetVersion, releaseType, tag) : sheetVersionRepo.createInitialVersion(sheet, tag)
+    const version = maxSheetVersion ? sheetVersionRepo.increase(maxSheetVersion, releaseType, tag) : sheetVersionRepo.createInitialVersion(sheet, tag)
 
     for (const file of files) {
       apiFileRepo.create({
