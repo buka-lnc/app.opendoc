@@ -9,7 +9,7 @@ import { ApiException } from '@nanogiants/nestjs-swagger-api-exception-decorator
 import { ExampleFilterDTO } from './dto/example-filter.dto'
 
 
-@ApiTags('Example', 'Useless')
+@ApiTags('Example', '示例')
 @Controller()
 @ApiBearerAuth()
 @ApiCookieAuth()

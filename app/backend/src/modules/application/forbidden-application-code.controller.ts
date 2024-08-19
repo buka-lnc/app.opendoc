@@ -2,7 +2,9 @@ import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common'
 import { ForbiddenApplicationCodeService } from './forbidden-application-code.service'
 import { ForbiddenApplicationCode } from './entities/forbidden-application-code.entity'
 import { CreateForbiddenApplicationCodeDTO } from './dto/create-forbidden-application-code.dto'
+import { ApiTags } from '@nestjs/swagger'
 
+@ApiTags('Administration', '管理员配置')
 
 @Controller('forbidden-application-code')
 export class ForbiddenApplicationCodeController {

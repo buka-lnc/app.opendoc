@@ -8,7 +8,7 @@ import { EntityManager } from '@mikro-orm/core'
 import { MikroORM } from '@mikro-orm/mysql'
 
 
-@ApiTags('API 文件')
+@ApiTags('File', '文件')
 @Controller('api-file')
 @ApiInternalServerErrorResponse({ description: '系统异常' })
 export class ApiFileController {

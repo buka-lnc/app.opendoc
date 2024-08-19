@@ -15,7 +15,7 @@ import { EntityManager } from '@mikro-orm/mysql'
 import { MikroORM } from '@mikro-orm/core'
 
 
-@ApiTags('API Sheet')
+@ApiTags('Sheet', '页签')
 @Controller('sheet')
 @ApiInternalServerErrorResponse({ description: '系统异常' })
 export class SheetController {

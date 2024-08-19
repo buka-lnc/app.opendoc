@@ -9,7 +9,7 @@ import { EntityManager } from '@mikro-orm/core'
 import { CreateApplicationDTO } from './dto/create-application.dto'
 
 
-@ApiTags('Application')
+@ApiTags('Application', '应用')
 @Controller('application')
 @ApiInternalServerErrorResponse({ description: '系统异常' })
 export class ApplicationController {
