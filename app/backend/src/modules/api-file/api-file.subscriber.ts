@@ -35,7 +35,7 @@ export class ApiFileSubscriber implements EventSubscriber<ApiFile> {
 
     this.eventEmitter.emit(
       'api-file.created',
-      new ApiFileCreatedEvent(wrap(entity).serialize())
+      new ApiFileCreatedEvent(wrap(entity).serialize()),
     )
   }
 
@@ -44,7 +44,7 @@ export class ApiFileSubscriber implements EventSubscriber<ApiFile> {
 
     this.eventEmitter.emit(
       'api-file.deleted',
-      new ApiFileCreatedEvent(wrap(entity).serialize())
+      new ApiFileCreatedEvent(wrap(entity).serialize()),
     )
 
     await this.apiFileStorageService.removeFile(entity)

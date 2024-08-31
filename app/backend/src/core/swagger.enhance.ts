@@ -18,7 +18,7 @@ export function swaggerEnhance(app: INestApplication): OpenAPIObject {
   const docOptions: SwaggerDocumentOptions = {
     operationIdFactory: (
       controllerKey: string,
-      methodKey: string
+      methodKey: string,
     ) => methodKey,
   }
 

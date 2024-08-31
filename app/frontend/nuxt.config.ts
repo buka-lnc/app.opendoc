@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { defineNuxtConfig } from 'nuxt/config'
 
 export default defineNuxtConfig({
   modules: [
+    '@nuxt/eslint',
     '@pinia/nuxt',
     '@nuxtjs/tailwindcss',
     '@vueuse/nuxt',
@@ -18,6 +20,12 @@ export default defineNuxtConfig({
     '~/assets/css/tabler-icon.css',
   ],
 
+  eslint: {
+    config: {
+      stylistic: true,
+    },
+  },
+
   runtimeConfig: {
     apiBaseOrigin: process.env.API_BASE_ORIGIN,
   },
@@ -28,11 +36,11 @@ export default defineNuxtConfig({
 
   viewport: {
     breakpoints: {
-      xs: 320,
-      sm: 640,
-      md: 768,
-      lg: 1024,
-      xl: 1280,
+      'xs': 320,
+      'sm': 640,
+      'md': 768,
+      'lg': 1024,
+      'xl': 1280,
       '2xl': 1536,
     },
 

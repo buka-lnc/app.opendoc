@@ -20,8 +20,8 @@ const search = ref('')
 const { status, refresh } = useAsyncData(
   async () => {
     const body = await queryApplications<'200'>({
-      limit: String(pagination.limit),
-      offset: String(pagination.offset),
+      limit: pagination.limit,
+      offset: pagination.offset,
       title: filterType.value === 'title' ? search.value.trim() : undefined,
       code: filterType.value === 'code' ? search.value.trim() : undefined,
     })

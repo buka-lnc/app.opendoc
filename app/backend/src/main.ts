@@ -9,7 +9,7 @@ import { FormDataEnhance } from './core/form-data.enhance'
 import { MikroORM } from '@mikro-orm/core'
 
 
-async function bootstrap() {
+async function bootstrap(): Promise<void> {
   const app = await NestFactory.create(AppModule, {
     bufferLogs: true,
   })

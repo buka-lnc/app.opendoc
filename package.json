@@ -14,8 +14,8 @@
   "author": "Val.istar.Guo <val.istar.guo@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "@changesets/cli": "^2.27.6",
-    "@nestjs/cli": "^10.3.2",
-    "turbo": "^2.0.4"
+    "@changesets/cli": "^2.27.7",
+    "@nestjs/cli": "^10.4.5",
+    "turbo": "^2.1.1"
   }
 }
