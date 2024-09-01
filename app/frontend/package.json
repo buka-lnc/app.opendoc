@@ -11,7 +11,7 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
-    "@buka/eslint-config": "^2.0.2",
+    "@buka/eslint-config": "^2.0.3",
     "@catppuccin/tailwindcss": "^0.1.6",
     "@nuxt/devtools": "^1.4.1",
     "@nuxt/eslint": "^0.5.4",

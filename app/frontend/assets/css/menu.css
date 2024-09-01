@@ -1,0 +1,13 @@
+/* 更改 menu 组件选中后的背景/前景色 */
+.d-menu li > *:not(ul, .d-menu-title, details, .d-btn):active,
+.d-menu li > *:not(ul, .d-menu-title, details, .d-btn).d-active,
+.d-menu li > details > summary:active {
+  @apply bg-ctp-surface0 text-inherit;
+}
+
+/* 更改 menu 鼠标悬浮时的背景色 */
+@media (hover: hover) {
+  :where(.d-menu li:not(.d-menu-title, .d-disabled) > *:not(ul, details, .d-menu-title)):not(.d-active, .d-btn):hover, :where(.d-menu li:not(.d-menu-title, .d-disabled) > details > summary:not(.d-menu-title)):not(.d-active, .d-btn):hover {
+    @apply bg-ctp-surface0/30;
+  }
+}

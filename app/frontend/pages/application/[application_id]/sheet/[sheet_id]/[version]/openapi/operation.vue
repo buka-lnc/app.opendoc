@@ -87,7 +87,10 @@ const counter = computed(() => ({
   <div class="size-full flex items-stretch">
     <div class="bg-ctp-mantle flex-0 overflow-y-auto overflow-x-hidden h-full">
       <div class="p-2">
-        <search v-model="filter" class="d-input-xs" />
+        <search
+          v-model="filter"
+          class="d-input-xs"
+        />
 
         <div class="w-full px-1 text-xs text-base-content/50 font-bold inline-flex justify-between">
           <span>GET: {{ counter.get }}</span>
@@ -99,12 +102,21 @@ const counter = computed(() => ({
       </div>
 
       <ul class="flex-nowrap d-menu d-menu-sm w-72 h-full">
-        <template v-for="group in groups" :key="group.key">
-          <li v-if="group.tags.length" class="d-menu-title">
+        <template
+          v-for="group in groups"
+          :key="group.key"
+        >
+          <li
+            v-if="group.tags.length"
+            class="d-menu-title"
+          >
             {{ group.tags.join(',') }}
           </li>
 
-          <li v-for="operation in group.operations" :key="operation.$uid">
+          <li
+            v-for="operation in group.operations"
+            :key="operation.$uid"
+          >
             <NuxtLink
               class="block w-full"
               :to="{ path: `${prefix}/${operation.$uid}`, query: route.query }"

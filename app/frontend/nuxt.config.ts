@@ -16,6 +16,7 @@ export default defineNuxtConfig({
     '~/assets/css/main.css',
     '~/assets/css/schema.css',
     '~/assets/css/tabs.css',
+    '~/assets/css/menu.css',
     '~/assets/css/shiki-themes.css',
     '~/assets/css/tabler-icon.css',
   ],
