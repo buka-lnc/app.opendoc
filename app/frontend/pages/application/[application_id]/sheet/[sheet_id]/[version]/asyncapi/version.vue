@@ -5,7 +5,7 @@ import { querySheetVersions } from '~/api/backend'
 
 const sheetId = useRouteParams<string>('sheet_id')
 
-const { pending, data: sheetVersions } = useAsyncData(
+const { pending, data: sheetVersions, execute: reload } = useAsyncData(
   async () => {
     const body = await querySheetVersions<'200'>({
       sheetId: sheetId.value,
@@ -16,6 +16,7 @@ const { pending, data: sheetVersions } = useAsyncData(
     default: () => [],
   },
 )
+useIntervalFn(reload, 10000)
 
 const versionTagMap = computed(() => {
   const tags = R.groupBy(
@@ -37,8 +38,14 @@ const versionTagMap = computed(() => {
 </script>
 
 <template>
-  <StuffedLoading v-if="pending" :pending="pending" />
-  <div v-if="!pending" class="bg-ctp-base p-10">
+  <StuffedLoading
+    v-if="pending"
+    :pending="pending"
+  />
+  <div
+    v-if="!pending"
+    class="bg-ctp-base p-10"
+  >
     <div
       v-for="sheetVersion in sheetVersions"
       :key="sheetVersion.id"

@@ -12,6 +12,7 @@ const { status, data: plugins, execute: reload } = useAsyncData(async () => {
 
   return body.results
 })
+useIntervalFn(reload, 10000)
 
 const urlInput = ref('')
 const pluginUrl = computed(() => `ws://${urlInput.value}`)
@@ -26,7 +27,8 @@ const { pending: appending, execute: create } = useAsyncFn(async () => {
 
     urlInput.value = ''
     await reload()
-  } catch (err) {
+  }
+  catch (err) {
     if (!(err instanceof RequestException)) throw err
     alert.error(err.message)
   }
@@ -34,26 +36,28 @@ const { pending: appending, execute: create } = useAsyncFn(async () => {
 
 const removingCompilerIds = ref<string[]>([])
 
-async function remove (plugin: Plugin): Promise<void> {
+async function remove(plugin: Plugin): Promise<void> {
   try {
     const pluginId = plugin.id
     removingCompilerIds.value.push(pluginId)
     await deletePlugin({ pluginId })
     removingCompilerIds.value = removingCompilerIds.value.filter(id => id !== pluginId)
     await reload()
-  } catch (e) {
+  }
+  catch (e) {
     if (e instanceof Error) alert.error(e.message)
   }
 }
 
-async function toggleStatus (plugin: Plugin): Promise<void> {
+async function toggleStatus(plugin: Plugin): Promise<void> {
   try {
     await updatePlugin({
       pluginId: plugin.id,
       status: plugin.status !== 'enabled' ? 'enabled' : 'disabled',
     })
     await reload()
-  } catch (e) {
+  }
+  catch (e) {
     if (e instanceof Error) alert.error(e.message)
   }
 }
@@ -83,7 +87,10 @@ const tipMap = {
           <span>插件</span>
         </h1>
 
-        <span v-if="status === 'pending' && !!plugins" class="ml-2 d-loading d-loading-sm d-loading-spinner text-gray-600" />
+        <span
+          v-if="status === 'pending' && !!plugins"
+          class="ml-2 d-loading d-loading-sm d-loading-spinner text-gray-600"
+        />
       </div>
 
       <div class="flex-grow-0 flex-shrink-0 flex w-full space-x-4 mb-2">
@@ -108,8 +115,14 @@ const tipMap = {
           :class="!isValidUrl && 'd-btn-disabled'"
           @click="() => !appending && create()"
         >
-          <span v-if="appending" class="d-loading d-loading-spinner" />
-          <IconPlus v-else class="size-5" />
+          <span
+            v-if="appending"
+            class="d-loading d-loading-spinner"
+          />
+          <IconPlus
+            v-else
+            class="size-5"
+          />
         </button>
       </div>
 
@@ -131,7 +144,10 @@ const tipMap = {
             </div>
 
             <div class="d-card-actions ">
-              <div class="d-tooltip" :data-tip="tipMap[plugin.status]">
+              <div
+                class="d-tooltip"
+                :data-tip="tipMap[plugin.status]"
+              >
                 <button
                   class="d-btn d-btn-sm d-btn-ghost d-btn-square transition-colors"
                   @click="() => toggleStatus(plugin)"
@@ -156,7 +172,10 @@ const tipMap = {
                 </button>
               </div>
 
-              <div class="d-tooltip" data-tip="日志">
+              <div
+                class="d-tooltip"
+                data-tip="日志"
+              >
                 <button
                   class="d-btn d-btn-sm d-btn-ghost d-btn-square"
                   @click="pluginInLogs = plugin"
@@ -165,7 +184,10 @@ const tipMap = {
                 </button>
               </div>
 
-              <div class="d-tooltip" data-tip="设置">
+              <div
+                class="d-tooltip"
+                data-tip="设置"
+              >
                 <button
                   class="d-btn d-btn-sm d-btn-ghost d-btn-square"
                   @click="pluginInSettings = plugin"

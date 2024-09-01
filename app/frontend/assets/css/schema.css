@@ -33,16 +33,16 @@
 }
 
 .schema-keyword {
-  @apply text-blue-500
+  @apply text-ctp-blue
 }
 
 .schema-string {
-  @apply text-green-500
+  @apply text-ctp-green
 }
 
 .schema-constant,
 .schema-number {
-  @apply text-orange-500
+  @apply text-ctp-peach
 }
 
 .schema-prompt:hover,
@@ -56,7 +56,7 @@
 }
 
 .schema-builtin {
-  @apply text-purple-500
+  @apply text-purple-500 text-ctp-mauve
 }
 
 .schema-prompt:hover {

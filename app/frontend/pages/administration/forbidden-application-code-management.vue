@@ -6,6 +6,8 @@ import { createForbiddenApplicationCode, deleteForbiddenApplicationCode, queryFo
 const { data: forbiddenApplicationCodes, pending, execute: reload } = useAsyncData(
   async () => await queryForbiddenApplicationCodes<'200'>(),
 )
+// 定时刷新列表
+useIntervalFn(reload, 10000)
 
 const alert = useAlert()
 const applicationCode = ref('')
@@ -19,7 +21,8 @@ const {
         code: applicationCode.value,
       })
       applicationCode.value = ''
-    } catch (e) {
+    }
+    catch (e) {
       if (e instanceof Error) alert.error(e.message)
     }
 
@@ -29,7 +32,7 @@ const {
 
 const removingForbiddenApplicationCode = ref<string[]>([])
 
-async function removeForbiddenApplicationCode (code: string) {
+async function removeForbiddenApplicationCode(code: string): Promise<void> {
   removingForbiddenApplicationCode.value.push(code)
   await deleteForbiddenApplicationCode({ code })
   await reload()
@@ -66,8 +69,14 @@ async function removeForbiddenApplicationCode (code: string) {
           :class="!applicationCode.length && 'd-btn-disabled'"
           @click="() => !appending && appendForbiddenApplicationCode()"
         >
-          <span v-if="appending" class="loading loading-spinner" />
-          <IconPlus v-else class="size-5" />
+          <span
+            v-if="appending"
+            class="loading loading-spinner"
+          />
+          <IconPlus
+            v-else
+            class="size-5"
+          />
         </button>
       </div>
 

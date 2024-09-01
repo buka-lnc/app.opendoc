@@ -35,6 +35,9 @@ const { status, refresh } = useAsyncData(
   },
 )
 
+// 定时刷新应用列表
+useIntervalFn(refresh, 10000)
+
 const showCreateModal = ref(false)
 
 const filterTypeDescription = {
@@ -61,7 +64,10 @@ const filterTypeDescription = {
         </div>
 
         <div class="flex-none">
-          <theme-swap class="d-btn d-btn-square d-btn-ghost" :size="8" />
+          <theme-swap
+            class="d-btn d-btn-square d-btn-ghost"
+            :size="8"
+          />
 
           <NuxtLink
             class="d-btn d-btn-square d-btn-ghost"
@@ -75,7 +81,10 @@ const filterTypeDescription = {
 
     <div class="pt-2 container m-auto flex items-center justify-between">
       <div class="d-join  w-1/2 flex">
-        <SelectBox v-model="filterType" class="w-32">
+        <SelectBox
+          v-model="filterType"
+          class="w-32"
+        >
           <SelectButton
             class="d-join-item d-select-bordered"
           >
@@ -83,10 +92,16 @@ const filterTypeDescription = {
           </SelectButton>
 
           <template #options>
-            <SelectOption value="title" class="!w-32">
+            <SelectOption
+              value="title"
+              class="!w-32"
+            >
               {{ filterTypeDescription.title }}
             </SelectOption>
-            <SelectOption value="code" class="!w-32">
+            <SelectOption
+              value="code"
+              class="!w-32"
+            >
               {{ filterTypeDescription.code }}
             </SelectOption>
           </template>
@@ -110,7 +125,10 @@ const filterTypeDescription = {
 
     <StuffedLoading :pending="status === 'pending' && !applications.length">
       <div class="container m-auto flex-auto pt-4 space-y-4">
-        <div v-for="application in applications" :key="application.id">
+        <div
+          v-for="application in applications"
+          :key="application.id"
+        >
           <application-preview-card :application="application" />
         </div>
       </div>
