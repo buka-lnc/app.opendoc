@@ -4,11 +4,12 @@ import { DiskService } from './disk.service'
 import { S3Service } from './s3.service'
 import { OssService } from './oss.service'
 import { CacheService } from './cache.service'
+import { StorageController } from './storage.controller'
 
 
 @Module({
   imports: [],
-  controllers: [],
+  controllers: [StorageController],
   providers: [
     CacheService,
     StorageService,

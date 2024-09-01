@@ -25,6 +25,15 @@ const router = useRouter()
       <ul class="flex-0 flex-nowrap d-menu w-72">
         <li>
           <NuxtLink
+            to="/administration/console"
+            active-class="d-active"
+          >
+            <span>控制台</span>
+          </NuxtLink>
+        </li>
+
+        <li>
+          <NuxtLink
             to="/administration/forbidden-application-code-management"
             active-class="d-active"
           >

@@ -1,4 +1,5 @@
 export * from "./check_health"
+export * from "./clear_storage_cache"
 export * from "./create_application"
 export * from "./create_example"
 export * from "./create_forbidden_application_code"

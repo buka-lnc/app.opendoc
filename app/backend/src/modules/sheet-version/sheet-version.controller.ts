@@ -3,11 +3,12 @@ import { SheetVersionService } from './sheet-version.service'
 import { QuerySheetVersionsResponseDTO } from './dto/query-sheet-versions-response.dto'
 import { QuerySheetVersionsDTO } from './dto/query-sheet-versions.dto'
 import { SheetVersion } from './entities/sheet-version.entity'
-import { ApiTags } from '@nestjs/swagger'
+import { ApiInternalServerErrorResponse, ApiTags } from '@nestjs/swagger'
 
 
 @ApiTags('Sheet Version', '版本')
 @Controller('sheet-version')
+@ApiInternalServerErrorResponse({ description: '系统异常' })
 export class SheetVersionController {
   constructor(
     private readonly sheetVersionService: SheetVersionService,

@@ -1,12 +1,12 @@
 import * as path from 'path'
 import * as fs from 'fs-extra'
-import { Injectable } from "@nestjs/common";
-import { StorageConfig } from "~/config/storage.config";
-import { Readable } from 'stream';
+import { Injectable } from '@nestjs/common'
+import { StorageConfig } from '~/config/storage.config'
+import { Readable } from 'stream'
 
 @Injectable()
 export class CacheService {
-  readonly directory: string;
+  readonly directory: string
 
   constructor(
     private readonly storageConfig: StorageConfig,
@@ -50,5 +50,9 @@ export class CacheService {
     const intoStream = (await import('into-stream')).default
     const stream = fs.createReadStream(cacheFilepath)
     return intoStream(stream)
+  }
+
+  async clear(): Promise<void> {
+    await fs.emptyDir(this.directory)
   }
 }

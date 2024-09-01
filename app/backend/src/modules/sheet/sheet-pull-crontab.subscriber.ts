@@ -17,7 +17,7 @@ export class SheetPullCrontabSubscriber implements EventSubscriber<SheetPullCron
     private readonly orm: MikroORM,
 
     private readonly eventEmitter: EventEmitter2,
-    private readonly sheetSynchronizeService: SheetSynchronizeService
+    private readonly sheetSynchronizeService: SheetSynchronizeService,
   ) {
     em.getEventManager().registerSubscriber(this)
   }

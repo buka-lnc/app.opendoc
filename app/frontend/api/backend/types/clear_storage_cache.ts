@@ -1,9 +1,8 @@
 import type { KeqOperation } from 'keq'
-import type { SheetVersion } from "../components/schemas/sheet_version"
 
 
 export interface ResponseMap {
-  "200": SheetVersion
+  "200": unknown
   "500": unknown
 }
 
@@ -12,7 +11,6 @@ export type QueryParameters = {
 }
 
 export type RouteParameters = {
-  "sheetVersionId": string
 }
 
 export type HeaderParameters = {

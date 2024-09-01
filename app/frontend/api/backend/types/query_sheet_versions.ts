@@ -4,6 +4,7 @@ import type { QuerySheetVersionsResponseDTO } from "../components/schemas/query_
 
 export interface ResponseMap {
   "200": QuerySheetVersionsResponseDTO
+  "500": unknown
 }
 
 
