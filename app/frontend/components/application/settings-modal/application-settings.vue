@@ -41,17 +41,18 @@ const {
         applicationIdOrCode: props.application.id,
       })
       await router.push('/applications')
-    } catch (err) {
+    }
+    catch (err) {
       if (err instanceof Error) {
         alert.error(err.message)
-      } else {
+      }
+      else {
         console.error(err)
         throw err
       }
     }
   },
 )
-
 </script>
 
 <template>
@@ -81,10 +82,7 @@ const {
     </div>
   </div>
 
-  <danger-operation
-    :pending="removing"
-    @click="remove"
-  >
+  <form-operation class="max-w-md">
     <template #title>
       删除应用
     </template>
@@ -92,8 +90,14 @@ const {
       一旦删除，应用将无法恢复，请慎重操作。
     </template>
 
-    删除
-  </danger-operation>
+    <basic-button
+      class="d-btn-error"
+      :loading="removing"
+      @click="remove"
+    >
+      删除
+    </basic-button>
+  </form-operation>
 </template>
 
 <style scoped lang="postcss">

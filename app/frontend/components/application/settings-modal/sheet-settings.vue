@@ -42,7 +42,7 @@ watchDebounced(
       }
     }
 
-    if (mode) {
+    if (mode.value) {
       await updateSheet({
         sheetId: sheet.value.id,
         type: type.value,
@@ -68,10 +68,12 @@ const {
         sheetId: sheet.value.id,
       })
       emit('deleted:sheet', sheet.value.id)
-    } catch (err) {
+    }
+    catch (err) {
       if (err instanceof Error) {
         alert.error(err.message, 10000000)
-      } else {
+      }
+      else {
         console.error(err)
         throw err
       }
@@ -89,10 +91,12 @@ const {
       await syncApiDocument({
         sheetId: sheet.value.id,
       })
-    } catch (err) {
+    }
+    catch (err) {
       if (err instanceof Error) {
         alert.error(err.message, 10000000)
-      } else {
+      }
+      else {
         console.error(err)
         throw err
       }
@@ -193,24 +197,9 @@ const {
     </div>
   </div>
 
-  <danger-operation
-    :pending="removing"
-    @click="remove"
-  >
-    <template #title>
-      删除文档
-    </template>
-    <template #description>
-      一旦删除，应用将无法恢复，请慎重操作。
-    </template>
-
-    删除
-  </danger-operation>
-
-  <danger-operation
+  <form-operation
     v-if="mode === 'pull' && pullCrontabUrl"
-    :pending="synchronizing"
-    @click="synchronize"
+    class="max-w-md"
   >
     <template #title>
       同步文档
@@ -219,8 +208,30 @@ const {
       同步会立刻生成一个新版本
     </template>
 
-    同步
-  </danger-operation>
+    <basic-button
+      :loading="synchronizing"
+      @click="synchronize"
+    >
+      同步
+    </basic-button>
+  </form-operation>
+
+  <form-operation class="max-w-md">
+    <template #title>
+      删除文档
+    </template>
+    <template #description>
+      一旦删除，应用将无法恢复，请慎重操作。
+    </template>
+
+    <basic-button
+      class="d-btn-error"
+      :loading="removing"
+      @click="remove"
+    >
+      删除
+    </basic-button>
+  </form-operation>
 </template>
 
 <style scoped lang="postcss">
