@@ -37,7 +37,7 @@ export class WebSocketService {
         reject(new BadRequestException('Timeout'))
       }, ttl)
 
-      function onMessage(data: Buffer, isBuffer: boolean) {
+      function onMessage(data: Buffer, isBuffer: boolean): void {
         if (!isBuffer) {
           const message = <PluginCommandMessage>JSON.parse(data.toString())
           if (message.command === PluginCommandName.JOIN) {
@@ -57,7 +57,7 @@ export class WebSocketService {
         }
       }
 
-      function onError(err: Error) {
+      function onError(err: Error): void {
         logger.error(`Plugin ${url} is breakdown`)
         clearTimeout(ttlHandler)
         ws.close()

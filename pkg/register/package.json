@@ -33,7 +33,7 @@
     "test:update": "jest --updateSnapshot"
   },
   "devDependencies": {
-    "@buka/eslint-config": "^2.0.1",
+    "@buka/eslint-config": "^2.0.2",
     "@jest/globals": "^29.7.0",
     "@types/fs-extra": "^11.0.4",
     "@types/node": "^20.16.2",

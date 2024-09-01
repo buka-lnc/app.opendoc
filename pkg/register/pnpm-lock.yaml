@@ -28,8 +28,8 @@ importers:
         version: 1.0.1
     devDependencies:
       '@buka/eslint-config':
-        specifier: ^2.0.1
-        version: 2.0.1(eslint@9.9.1)(typescript@5.4.5)
+        specifier: ^2.0.2
+        version: 2.0.2(eslint@9.9.1)(typescript@5.4.5)
       '@jest/globals':
         specifier: ^29.7.0
         version: 29.7.0
@@ -251,8 +251,8 @@ packages:
   '@bcoe/v8-coverage@0.2.3':
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
 
-  '@buka/eslint-config@2.0.1':
-    resolution: {integrity: sha512-zlBPrKoV2zkAvo+kpTLglrL7altRlQfkzIplly4mAO/RvWh5swBmvjBYskstN+gFuOfoXzpBOshn+CRzKtD2qg==}
+  '@buka/eslint-config@2.0.2':
+    resolution: {integrity: sha512-+aENKDsOiKNaqdHGYtV6zrm1BkVT1bkiTXPSZD7WiSuzb1tyB7Hmip4gmQ8fFVITVyxalBkSYxYVBULoL2Uv1Q==}
     peerDependencies:
       eslint: ^9.9.1
 
@@ -2640,7 +2640,7 @@ snapshots:
 
   '@bcoe/v8-coverage@0.2.3': {}
 
-  '@buka/eslint-config@2.0.1(eslint@9.9.1)(typescript@5.4.5)':
+  '@buka/eslint-config@2.0.2(eslint@9.9.1)(typescript@5.4.5)':
     dependencies:
       '@eslint/js': 9.9.1
       '@stylistic/eslint-plugin': 2.7.2(eslint@9.9.1)(typescript@5.4.5)

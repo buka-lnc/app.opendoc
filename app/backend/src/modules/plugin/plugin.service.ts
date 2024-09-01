@@ -23,6 +23,7 @@ import { PluginCommandMessage } from './dto/plugin-command-message.dto'
 import { PluginMetadata } from './dto/plugin-command-message/plugin-metadata.dto'
 import { PluginEventMessageDataMap } from './types/plugin-event-message-data-map'
 import { PluginConfig } from '~/config/plugin.config'
+import { pe } from '~/utils/pe'
 
 
 @Injectable()
@@ -47,7 +48,7 @@ export class PluginService implements OnModuleInit, OnApplicationShutdown {
     private readonly pluginOptionRepo: EntityRepository<PluginOption>,
   ) {}
 
-  async onModuleInit() {
+  async onModuleInit(): Promise<void> {
     await this.consistency()
   }
 
@@ -58,7 +59,7 @@ export class PluginService implements OnModuleInit, OnApplicationShutdown {
    */
   @Cron('*/10 * * * * *')
   @EnsureRequestContext()
-  private async consistency() {
+  private async consistency(): Promise<void> {
     const plugins = await this.pluginRepo.find({
       status: PluginStatus.ENABLED,
     })
@@ -80,7 +81,7 @@ export class PluginService implements OnModuleInit, OnApplicationShutdown {
     }
   }
 
-  onApplicationShutdown() {
+  onApplicationShutdown(): void {
     for (const ws of this.webSocketMap.values()) {
       ws.close()
     }
@@ -96,25 +97,48 @@ export class PluginService implements OnModuleInit, OnApplicationShutdown {
         ws.on('message', (data: Buffer) => {
           const message: PluginCommandMessage = JSON.parse(data.toString())
 
-          this.logger.debug(`!!!!!!! plugin.command.${message.command} !!!!!!!`,)
+          this.logger.debug(`!!!!!!! plugin.command.${message.command} !!!!!!!`)
           this.eventEmitter.emit(
             `plugin.command.${message.command}`,
             new PluginCommandEvent(
               wrap(plugin).serialize(),
               message.command,
-              message.data
-            )
+              message.data,
+            ),
           )
         })
 
         this.webSocketMap.set(plugin.id, ws)
 
         break
-      } catch (e) {
+      } catch (err) {
         plugin.status = PluginStatus.BREAKDOWN
-        this.logger.error(`Cannot connect to plugin: ${plugin.url}`)
+        this.logger.error(`Cannot connect to plugin ${plugin.url}: ${pe(err)}`)
       }
     }
+  }
+
+  @Cron('0 * * * * *')
+  @EnsureRequestContext()
+  async recoverBreakdownPlugins(): Promise<void> {
+    const plugins = await this.pluginRepo.find({
+      status: PluginStatus.BREAKDOWN,
+    })
+    if (plugins.length === 0) return
+
+    this.logger.debug(`Recover ${plugins.length} breakdown plugins`)
+
+    for (const plugin of plugins) {
+      try {
+        const [ws] = await this.webSocketService.connect(plugin.url)
+        ws.close()
+        plugin.status = PluginStatus.ENABLED
+      } catch (err) {
+        continue
+      }
+    }
+
+    await this.em.persistAndFlush(plugins)
   }
 
   async queryAll(dto: QueryPluginsDTO): Promise<ResponseOfQueryPluginsDTO> {
@@ -253,7 +277,7 @@ export class PluginService implements OnModuleInit, OnApplicationShutdown {
     await this.webSocketService.send(ws, event, fullData)
   }
 
-  async updateMetadata(pluginId: string, metadata: PluginMetadata) {
+  async updateMetadata(pluginId: string, metadata: PluginMetadata): Promise<void> {
     const plugin = await this.pluginRepo.findOneOrFail(pluginId)
 
     this.validateApiVersion(metadata.apiVersion)
