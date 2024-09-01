@@ -30,7 +30,7 @@ export class AppService {
     return this.health.check([])
   }
 
-  private async registerApplication() {
+  private async registerApplication(): Promise<void> {
     await this.applicationService.register({
       code: 'opendoc',
       title: 'OpenDoc',
@@ -38,7 +38,7 @@ export class AppService {
     await this.em.flush()
   }
 
-  async registerDocs() {
+  async registerDocs(): Promise<void> {
     const docsDir = path.join(process.cwd(), '../../docs')
 
     const tgzStream = new compressing.tgz.Stream()
@@ -57,7 +57,7 @@ export class AppService {
     })
   }
 
-  async registerOpenapi(openapi: OpenAPIObject) {
+  async registerOpenapi(openapi: OpenAPIObject): Promise<void> {
     const { temporaryFile } = await import('tempy')
 
     const openapiBuf = Buffer.from(JSON.stringify(openapi), 'utf-8')
@@ -77,7 +77,7 @@ export class AppService {
   }
 
   @EnsureRequestContext()
-  async registerOpendoc(openapi: OpenAPIObject) {
+  async registerOpendoc(openapi: OpenAPIObject): Promise<void> {
     await this.registerApplication()
     await this.registerDocs()
     await this.registerOpenapi(openapi)
