@@ -15,13 +15,9 @@
     "@catppuccin/tailwindcss": "^0.1.6",
     "@nuxt/devtools": "^1.4.1",
     "@nuxt/eslint": "^0.5.4",
-    "@nuxtjs/eslint-config": "^12.0.0",
-    "@nuxtjs/eslint-config-typescript": "^12.1.0",
     "@tailwindcss/typography": "^0.5.15",
     "@types/node": "^20.16.2",
     "@types/ramda": "^0.30.2",
-    "@typescript-eslint/parser": "^8.3.0",
-    "@vue/eslint-config-typescript": "^13.0.0",
     "@vue/tsconfig": "^0.5.1",
     "autoprefixer": "^10.4.20",
     "daisyui": "^4.12.10",
@@ -38,8 +34,7 @@
     "stylelint-config-recommended-vue": "^1.5.0",
     "tailwind-scrollbar-hide": "^1.1.7",
     "tailwindcss": "^3.4.10",
-    "tailwindcss-safe-area": "^0.6.0",
-    "vue-eslint-parser": "^9.4.3"
+    "tailwindcss-safe-area": "^0.6.0"
   },
   "dependencies": {
     "@asyncapi/converter": "^1.5.1",
