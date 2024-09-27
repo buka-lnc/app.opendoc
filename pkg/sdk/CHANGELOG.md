@@ -1,5 +1,11 @@
 # @opendoc/sdk
 
+## 1.3.5
+
+### Patch Changes
+
+- a4b1215: 修复 allOf/oneOf/anyOf 的 schmea 枚举不是 ref 时编译错误的问题
+
 ## 1.3.4
 
 ### Patch Changes
