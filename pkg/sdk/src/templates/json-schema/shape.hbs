@@ -16,14 +16,6 @@
 {{~else if (r__isArray allOf)~}}
 {{> t_json_schema_shape__all_of}}
 
-{{~else if (h__or (r__equals type "object") (r__isObject properties) additionalProperties)~}}
-{
-  {{> t_json_schema_shape__object}}
-}
-
-{{~else if (r__equals type "array")~}}
-{{> t_json_schema_shape__array}}
-
 {{~else if (r__equals type "number")~}}
 number
 
@@ -35,6 +27,14 @@ string
 
 {{~else if (r__equals type "boolean")~}}
 boolean
+
+{{~else if (r__equals type "array")~}}
+{{> t_json_schema_shape__array}}
+
+{{~else if (h__or (r__equals type "object") (r__isObject properties) additionalProperties)~}}
+{
+  {{> t_json_schema_shape__object}}
+}
 
 {{~else~}}
 any
