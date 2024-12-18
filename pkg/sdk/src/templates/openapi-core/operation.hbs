@@ -30,41 +30,71 @@ export function {{h__get-safe-operation-name pathname method operation}}<STATUS 
   {{/each~}}
   {{/if}}
 
-  {{~#each operation.requestBody.content}}
-  {{~#if (r__and (r__equals @key "application/json") this.schema)}}
+  {{~#each operation.requestBody.content as |body contentType|}}
 
-    {{~#*inline "SchemaSend"}}
-      {{#each properties}}
+    {{~#if body.schema}}
+      {{~#if (r__equals contentType "application/json")}}
+
+        {{~#*inline "eachProperties"}}
+          {{~#if (h__is-ref this)}}
+            {{~#with (h__dereference this)}}
+              {{~> eachProperties this}}
+            {{~/with}}
+          {{~else if this.allOf}}
+            {{#each this.allOf}}
+              {{~> eachProperties this}}
+            {{/each}}
+          {{~else if this.oneOf}}
+            {{#each this.oneOf}}
+              {{~> eachProperties this}}
+            {{/each}}
+          {{~else if this.anyOf}}
+            {{#each this.anyOf}}
+              {{~> eachProperties this}}
+            {{/each}}
+          {{~else}}
+            {{#each this.properties}}
   if (arg && "{{@key}}" in arg) req.send({ "{{@key}}": arg["{{@key}}"] })
-      {{/each}}
-    {{/inline}}
+            {{/each}}
+          {{~/if}}
+        {{/inline}}
 
+        {{~> eachProperties body.schema}}
 
-    {{~#*inline "send"}}
-      {{~#if (h__is-ref this)}}
-        {{~#with (h__dereference this)}}
-          {{~> send this}}
-        {{~/with}}
-      {{~else if this.allOf}}
-        {{#each this.allOf}}
-          {{~> send this}}
-        {{/each}}
-      {{~else if this.oneOf}}
-        {{#each this.oneOf}}
-          {{~> send this}}
-        {{/each}}
-      {{~else if this.anyOf}}
-        {{#each this.anyOf}}
-          {{~> send this}}
-        {{/each}}
-      {{~else}}
-        {{~> SchemaSend this}}
+      {{~else if (r__equals contentType "multipart/form-data")}}
+
+        {{~#*inline "eachProperties"}}
+          {{~#if (h__is-ref this)}}
+            {{~#with (h__dereference this)}}
+              {{~> eachProperties this}}
+            {{~/with}}
+          {{~else if this.allOf}}
+            {{#each this.allOf}}
+              {{~> eachProperties this}}
+            {{/each}}
+          {{~else if this.oneOf}}
+            {{#each this.oneOf}}
+              {{~> eachProperties this}}
+            {{/each}}
+          {{~else if this.anyOf}}
+            {{#each this.anyOf}}
+              {{~> eachProperties this}}
+            {{/each}}
+          {{~else}}
+            {{#each this.properties as |prop key|}}
+              {{~#if (r__equals prop.format "binary")}}
+  if (arg && "{{key}}" in arg) req.attach({ "{{key}}": arg["{{key}}"] })
+              {{~else}}
+  if (arg && "{{key}}" in arg) req.field({ "{{key}}": arg["{{key}}"] })
+              {{~/if}}
+            {{/each}}
+          {{~/if}}
+        {{/inline}}
+
+        {{~> eachProperties this.schema}}
       {{~/if}}
-    {{/inline}}
+    {{~/if}}
 
-    {{~> send this.schema}}
-
-  {{~/if}}
   {{~/each}}
 
   return req as unknown as Keq<ResponseMap[STATUS], Operation<STATUS>>
