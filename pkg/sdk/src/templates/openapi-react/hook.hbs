@@ -10,7 +10,7 @@ export interface Use{{h__change-case "pascalCase" (h__get-safe-operation-name pa
   loading: boolean
 }
 
-{{> t_comments operation}}
+{{> snippet/comment description=operation.description summary=operation.summary deprecated=operation.deprecated }}
 export function use{{h__change-case "pascalCase" (h__get-safe-operation-name pathname method operation)}}<STATUS extends keyof ResponseMap>(args?: RequestParameters, deps?: any[])
 export function use{{h__change-case "pascalCase" (h__get-safe-operation-name pathname method operation)}}<STATUS extends keyof ResponseMap>(deps?: any[])
 export function use{{h__change-case "pascalCase" (h__get-safe-operation-name pathname method operation)}}<STATUS extends keyof ResponseMap>(argsOrDeps?: RequestParameters | any[] | undefined, deps?: any[]) {

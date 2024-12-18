@@ -8,6 +8,7 @@ import './or-helper.js'
 import './ref-name-helper.js'
 import './regexp-helper.js'
 import './stringify-helper.js'
+import './indent-helper.js'
 
 import * as Handlebars from 'handlebars'
 import * as HandlebarsRamdaHelpers from 'handlebars-ramda-helpers'

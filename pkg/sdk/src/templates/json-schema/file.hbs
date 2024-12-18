@@ -12,5 +12,5 @@ import type { {{this}} } from "./{{h__change-case @root.fileNamingStyle this}}.j
 {{/each}}
 
 
-{{~> t_comments jsonSchema interface=name export=true}}
+{{~> snippet/comment export=true interface=name description=jsonSchema.description summary=jsonSchema.summary deprecated=jsonSchema.deprecated }}
 {{> t_json_schema_interface this export=true}}

@@ -1,10 +1,10 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-/* eslint-disable @typescript-eslint/no-unsafe-return */
+
+
 import * as Handlebars from 'handlebars'
 import { readTemplate } from '../utils/read-template'
 
 
-Handlebars.registerPartial('t_comments', readTemplate('comments'))
+Handlebars.registerPartial('snippet/comment', readTemplate('snippet/comment'))
 
 Handlebars.registerPartial('t_json_schema_shape', readTemplate('json-schema/shape'))
 Handlebars.registerPartial('t_json_schema_shape__enum', readTemplate('json-schema/shape/enum'))
