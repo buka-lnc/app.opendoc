@@ -3,13 +3,14 @@ import { request } from '../request.js'
 import type { RequestParameters, ResponseMap, Operation } from "../types/{{h__change-case @root.fileNamingStyle (h__get-safe-operation-name pathname method operation)}}.js"
 
 
+const pathname = "{{{r__replace (h__regexp "{(.*?)}" flags="g") ":$1" pathname}}}"
 
 {{> snippet/comment description=operation.description summary=operation.summary deprecated=operation.deprecated }}
 export function {{h__get-safe-operation-name pathname method operation}}<STATUS extends keyof ResponseMap>(arg?: RequestParameters): Keq<ResponseMap[STATUS], Operation<STATUS>> {
   const req = request.{{method}}<ResponseMap[STATUS]>("{{{r__replace (h__regexp "{(.*?)}" flags="g") ":$1" pathname}}}")
     .option('module', {
       name: "{{{moduleName}}}",
-      pathname: "{{{r__replace (h__regexp "{(.*?)}" flags="g") ":$1" pathname}}}",
+      pathname,
     })
 
   {{#if operation.parameters}}
@@ -99,3 +100,6 @@ export function {{h__get-safe-operation-name pathname method operation}}<STATUS 
 
   return req as unknown as Keq<ResponseMap[STATUS], Operation<STATUS>>
 }
+
+{{h__get-safe-operation-name pathname method operation}}.pathname = pathname
+{{h__get-safe-operation-name pathname method operation}}.method = "{{method}}"

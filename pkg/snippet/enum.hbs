@@ -1,0 +1,11 @@
+{{!--
+  生成 Typescript 字符串枚举
+
+  Usage:
+    {{> snippet/enum name="EnumName" values=(r__Array "value1" "value2")}}
+--}}
+{{#if export}}export {{/if}}enum {{name}} {
+{{#each values}}
+  {{this}} = '{{this}}',
+{{/each}}
+}
