@@ -19,9 +19,11 @@ jobs:
       - name: Setup Node.js 20
         uses: actions/setup-node@v4
         with:
+          node-version-file: ".node-version"
           node-version: 20
+      - uses: pnpm/action-setup@v4
       - name: Install Dependencies
-        run: corepack pnpm install -w
+        run: pnpm install -w
       - name: Create Release Pull Request
         id: changesets
         uses: changesets/action@v1
@@ -49,13 +51,13 @@ jobs:
         with:
           node-version: 20
       - name: Install Dependencies
-        run: corepack pnpm install -w
+        run: pnpm install -w
       - name: Set Git User
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@github.com"
       - name: Create Tag
-        run: corepack pnpm changeset tag
+        run: pnpm changeset tag
       - name: Push Tag
         run: |
           REMOTE_TAGS=$(git ls-remote --refs -t | awk '{print $2}' | awk -F '/' '{print $3}')
@@ -74,8 +76,8 @@ jobs:
         with:
           node-version: 20
           registry-url: https://registry.npmjs.org/
-      - run: corepack pnpm install
-      - run: corepack pnpm -r publish --provenance
+      - run: pnpm install
+      - run: pnpm -r publish --provenance
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
 
