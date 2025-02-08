@@ -15,9 +15,14 @@ jobs:
       issues: write
       pull-requests: write
     steps:
+      - id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ vars.BOT_APP_ID }}
+          private-key: ${{ secrets.BOT_PRIVATE_KEY }}
       - name: Assign issues and pull requests
         uses: gustavofreze/auto-assign@1.0.0
         with:
           assignees: "Val-istar-Guo"
-          github_token: "${{ secrets.GITHUB_TOKEN }}"
+          github_token: "${{ steps.app-token.outputs.token }}"
           assignment_options: "ISSUE,PULL_REQUEST"
