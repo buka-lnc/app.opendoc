@@ -15,7 +15,6 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "moduleResolution": "node",
-    "sourceMap": true,
     "module": "ESNext",
     "target": "ESNext",
     "baseUrl": "./",
