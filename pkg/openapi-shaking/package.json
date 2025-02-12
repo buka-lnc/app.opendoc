@@ -68,9 +68,6 @@
   },
   "dependencies": {
     "@opendoc/openapi-reference-parser": "workspace:*",
-    "@types/object-path": "^0.11.4",
-    "jsonpath-plus": "^9.0.0",
-    "object-path": "^0.11.8",
     "openapi-types": "^12.1.3",
     "ramda": "^0.30.1",
     "type-fest": "^4.34.1"
