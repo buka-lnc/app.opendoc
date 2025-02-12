@@ -83,7 +83,7 @@ jobs:
           node-version-file: ".node-version"
       - uses: pnpm/action-setup@v4
       - run: pnpm install
-      - run: pnpm -r publish --provenance
+      - run: pnpm -r publish --provenance --access=public
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
 
