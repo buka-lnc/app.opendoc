@@ -1,5 +1,11 @@
 # @opendoc/openapi-reference-parser
 
+## 1.3.6
+
+### Patch Changes
+
+- f30fb82: 新增 @opendoc/openapi-shaking
+
 ## 1.3.5
 
 ### Patch Changes
