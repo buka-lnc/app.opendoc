@@ -1,6 +1,6 @@
 # @opendoc/openapi-shaking
 
-Get the dependencies of reference in openapi.
+This packages is used to **remove operation and orphaned components** of openapi document.
 
 ## Usage
 
@@ -200,7 +200,7 @@ The Result will be:
 
 ### `openapiShakingOrphanedComponents(openapiDocument)`
 
-Delete components that are not used by any path.
+Delete components that are not used by any operation.
 
 ```typescript
 import { openapiShakingOrphanedComponents } from "@opendoc/openapi-shaking";
