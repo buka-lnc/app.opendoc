@@ -1,5 +1,11 @@
 # @opendoc/openapi-shaking
 
+## 1.5.0
+
+### Minor Changes
+
+- 159f994: openapiShaking 函数以支持异步过滤器
+
 ## 1.4.0
 
 ### Minor Changes
