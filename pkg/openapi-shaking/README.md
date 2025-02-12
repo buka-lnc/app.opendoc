@@ -110,7 +110,7 @@ const doc = {
 };
 ```
 
-### `openapiShaking(openapiDocument, filter)`
+### `openapiShaking(openapiDocument, filter)` / `openapiShakingSync(openapiDocument, filter)`
 
 The filter is a function that determines which operation to keep.
 All filtered operation and unused components will be deleted
@@ -118,7 +118,7 @@ All filtered operation and unused components will be deleted
 ```typescript
 import { openapiShaking } from "@opendoc/openapi-shaking";
 
-const result = openapiShaking(doc, (path, method, operation) => {
+const result = await openapiShaking(doc, async (path, method, operation) => {
   // Only "PUT /users/{id}" and its associated components will be retained
   return path === "/users/{id}" && method === "put";
 });
